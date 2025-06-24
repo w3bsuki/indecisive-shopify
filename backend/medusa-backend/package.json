@@ -16,7 +16,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "medusa build",
+    "build": "medusa build --admin",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "NODE_ENV=production medusa start",
     "dev": "medusa develop",
