@@ -34,9 +34,9 @@ yarn-error.log*
 next-env.d.ts
 
 # Medusa
-.medusa
+# .medusa - commented out to include admin build
 uploads/
-backend/medusa-backend/.medusa/
+# backend/medusa-backend/.medusa/ - commented out to include admin build
 
 # IDE
 .vscode/
