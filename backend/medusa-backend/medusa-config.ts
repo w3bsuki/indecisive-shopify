@@ -14,9 +14,6 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     }
   },
-  admin: {
-    disable: process.env.DISABLE_ADMIN === "true",
-  },
   modules: {
     // Stripe payment provider
     ...(process.env.STRIPE_API_KEY && process.env.STRIPE_WEBHOOK_SECRET && {
