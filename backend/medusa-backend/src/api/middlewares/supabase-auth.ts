@@ -115,8 +115,8 @@ export async function optionalSupabaseAuth(
         try {
           const customer = await (customerService as any).retrieveByEmail(user.email)
           if (customer) {
-            req.customer = customer
-            req.customer_id = customer.id
+            (req as any).customer = customer
+            (req as any).customer_id = customer.id
           }
         } catch (e) {
           // Ignore
