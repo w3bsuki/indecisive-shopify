@@ -1,4 +1,5 @@
-import { NextFunction, MedusaRequest, MedusaResponse } from "@medusajs/framework"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
+import { NextFunction } from "express"
 import jwt from 'jsonwebtoken'
 import { supabaseAdmin } from "../../utils/supabase/client"
 
@@ -63,10 +64,10 @@ export async function authenticateSupabaseUser(
     if (user.email) {
       const customerService = req.scope.resolve("customer")
       try {
-        const customer = await customerService.retrieveByEmail(user.email)
+        const customer = await (customerService as any).retrieveByEmail(user.email)
         if (customer) {
-          req.customer = customer
-          req.customer_id = customer.id
+          (req as any).customer = customer
+          (req as any).customer_id = customer.id
         }
       } catch (e) {
         // Customer doesn't exist yet, that's ok
@@ -112,7 +113,7 @@ export async function optionalSupabaseAuth(
       if (user.email) {
         const customerService = req.scope.resolve("customer")
         try {
-          const customer = await customerService.retrieveByEmail(user.email)
+          const customer = await (customerService as any).retrieveByEmail(user.email)
           if (customer) {
             req.customer = customer
             req.customer_id = customer.id

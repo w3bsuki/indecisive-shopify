@@ -8,7 +8,7 @@ export const POST = [
   async (req: MedusaRequest, res: MedusaResponse) => {
     try {
       const reviewId = req.params.id
-      const { is_helpful } = req.body
+      const { is_helpful } = req.body as any
 
       if (typeof is_helpful !== 'boolean') {
         return res.status(400).json({ 
@@ -17,7 +17,7 @@ export const POST = [
       }
 
       // Get customer ID
-      let customerId = req.customer_id
+      let customerId = (req as any).customer_id
       
       if (!customerId && req.supabaseUser) {
         const { data: profile } = await supabaseAdmin
@@ -104,7 +104,7 @@ export const DELETE = [
       const reviewId = req.params.id
 
       // Get customer ID
-      let customerId = req.customer_id
+      let customerId = (req as any).customer_id
       
       if (!customerId && req.supabaseUser) {
         const { data: profile } = await supabaseAdmin

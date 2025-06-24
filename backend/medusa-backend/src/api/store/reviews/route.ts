@@ -76,8 +76,8 @@ export const GET = [
         
         // Check if current user voted
         let userVote = null
-        if (req.customer_id) {
-          const vote = votes.find((v: any) => v.customer_id === req.customer_id)
+        if ((req as any).customer_id) {
+          const vote = votes.find((v: any) => v.customer_id === (req as any).customer_id)
           if (vote) {
             userVote = (vote as any).is_helpful ? 'helpful' : 'not_helpful'
           }
@@ -110,7 +110,7 @@ export const POST = [
   authenticateSupabaseUser,
   async (req: MedusaRequest, res: MedusaResponse) => {
     try {
-      const { product_id, rating, title, content } = req.body
+      const { product_id, rating, title, content } = req.body as any
 
       // Validate input
       if (!product_id || !rating || !title || !content) {
@@ -124,7 +124,7 @@ export const POST = [
       }
 
       // Get or create customer profile
-      let customerId = req.customer_id
+      let customerId = (req as any).customer_id
       
       if (!customerId && req.supabaseUser) {
         // Try to find existing profile
@@ -139,7 +139,7 @@ export const POST = [
         } else if (req.supabaseUser.email) {
           // Create new Medusa customer
           const customerService = req.scope.resolve("customer")
-          const newCustomer = await customerService.create({
+          const newCustomer = await (customerService as any).create({
             email: req.supabaseUser.email,
             first_name: req.supabaseUser.user_metadata?.first_name,
             last_name: req.supabaseUser.user_metadata?.last_name
@@ -177,7 +177,7 @@ export const POST = [
 
       // Check if this is a verified purchase
       const orderService = req.scope.resolve("order")
-      const orders = await orderService.list({
+      const orders = await (orderService as any).list({
         customer_id: customerId,
         status: ['completed']
       })

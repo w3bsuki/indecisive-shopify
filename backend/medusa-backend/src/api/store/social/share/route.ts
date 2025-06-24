@@ -43,7 +43,7 @@ export const POST = [
   optionalSupabaseAuth,
   async (req: MedusaRequest, res: MedusaResponse) => {
     try {
-      const { product_id, platform } = req.body
+      const { product_id, platform } = req.body as any
 
       if (!product_id || !platform) {
         return res.status(400).json({ 
@@ -60,7 +60,7 @@ export const POST = [
       }
 
       // Get customer ID if authenticated
-      let customerId = req.customer_id
+      let customerId = (req as any).customer_id
       
       if (!customerId && req.supabaseUser) {
         const { data: profile } = await supabaseAdmin
@@ -76,7 +76,7 @@ export const POST = [
 
       // Get product details
       const productService = req.scope.resolve("product")
-      const product = await productService.retrieve(product_id, {
+      const product = await (productService as any).retrieve(product_id, {
         relations: ["images", "variants"]
       })
 
@@ -139,7 +139,7 @@ export const GET = [
 
       // Get product details
       const productService = req.scope.resolve("product")
-      const product = await productService.retrieve(product_id as string, {
+      const product = await (productService as any).retrieve(product_id as string, {
         relations: ["images"]
       })
 
