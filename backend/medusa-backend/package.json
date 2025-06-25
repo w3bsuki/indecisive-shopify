@@ -13,7 +13,7 @@
     "medusa"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "build": "medusa build",
