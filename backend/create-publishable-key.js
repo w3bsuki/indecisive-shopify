@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// Use native fetch (available in Node.js 18+)
 
 async function createPublishableKey() {
   try {
