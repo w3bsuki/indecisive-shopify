@@ -1,5 +1,4 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { WebhookEvent } from "@medusajs/payment-stripe"
 
 export const POST = async (
   req: MedusaRequest,
