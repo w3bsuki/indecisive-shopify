@@ -9,12 +9,16 @@ echo "NPM version: $(npm --version)"
 echo "📦 Installing dependencies..."
 npm ci || npm install
 
-# Run database migrations
-echo "🗄️ Running database migrations..."
-npm run medusa db:migrate || true
-
 # Build the project
 echo "🔨 Building project..."
 npm run build
+
+# List build output
+echo "📁 Build output:"
+ls -la .medusa/server || true
+
+# Run database migrations
+echo "🗄️ Running database migrations..."
+npx medusa db:migrate || true
 
 echo "✅ Build completed successfully!"
