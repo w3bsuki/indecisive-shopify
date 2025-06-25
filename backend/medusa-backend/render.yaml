@@ -4,8 +4,8 @@ services:
     runtime: node
     repo: https://github.com/YOUR_GITHUB_USERNAME/indecisive-wear-store
     rootDir: backend/medusa-backend
-    buildCommand: pnpm install
-    startCommand: pnpm run start:render
+    buildCommand: npm install -g pnpm && pnpm install && pnpm run build
+    startCommand: pnpm run start
     envVars:
       - key: NODE_ENV
         value: production
