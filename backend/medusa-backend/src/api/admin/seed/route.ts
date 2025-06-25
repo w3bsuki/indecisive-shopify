@@ -3,12 +3,6 @@ import seedDemoData from "../../../scripts/seed"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
-    // Check for a secret key to prevent abuse
-    const secret = req.query.secret as string
-    if (secret !== "run-seed-now") {
-      return res.status(401).json({ error: "Invalid secret" })
-    }
-
     // Run the seed
     await seedDemoData({ container: req.scope })
     
@@ -16,7 +10,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const query = req.scope.resolve("query")
     const { data: keys } = await query.graph({
       entity: "api_key",
-      fields: ["id", "title", "type"],
+      fields: ["id", "title", "type", "token"],
       filters: {
         type: "publishable"
       }
@@ -25,7 +19,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     res.json({ 
       message: "Seed completed successfully",
       publishable_key: keys[0]?.id,
-      usage: `Add to frontend .env: NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${keys[0]?.id}`
+      frontend_env: {
+        NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: keys[0]?.id,
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: "https://indecisive-wear-backend.onrender.com"
+      }
     })
   } catch (error) {
     res.status(500).json({ error: error.message })
