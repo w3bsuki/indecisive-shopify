@@ -9,13 +9,23 @@ echo "NPM version: $(npm --version)"
 echo "📦 Installing dependencies..."
 npm ci || npm install
 
+# Clean previous build
+echo "🧹 Cleaning previous build..."
+rm -rf .medusa/server
+
 # Build the project
 echo "🔨 Building project..."
 npm run build
 
-# List build output
-echo "📁 Build output:"
-ls -la .medusa/server || true
+# Verify build output
+echo "📁 Verifying build output..."
+if [ ! -d ".medusa/server" ]; then
+  echo "❌ Build failed - no output directory"
+  exit 1
+fi
+
+echo "📂 API routes:"
+find .medusa/server/src/api -name "*.js" -type f || echo "No API routes found"
 
 # Run database migrations
 echo "🗄️ Running database migrations..."
