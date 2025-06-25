@@ -19,7 +19,7 @@
     "build": "medusa build",
     "build:admin": "medusa build --admin-only",
     "seed": "medusa exec ./src/scripts/seed.ts",
-    "start": "medusa build && medusa start",
+    "start": "NODE_OPTIONS='--max-old-space-size=512' medusa build && NODE_OPTIONS='--max-old-space-size=512' medusa start",
     "start:prod": "NODE_ENV=production medusa build && medusa start",
     "start:render": "medusa build && medusa start",
     "dev": "medusa develop",
