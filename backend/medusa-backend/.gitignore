@@ -1,3 +1,4 @@
+# Build output needed for deployment
 /dist
 .env
 .DS_Store
