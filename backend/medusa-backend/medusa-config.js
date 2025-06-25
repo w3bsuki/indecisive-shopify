@@ -16,7 +16,7 @@ module.exports = defineConfig({
     }
   },
   admin: {
-    disable: process.env.DISABLE_ADMIN === "true",
+    disable: false,
   },
   modules: {
     // Stripe payment provider
