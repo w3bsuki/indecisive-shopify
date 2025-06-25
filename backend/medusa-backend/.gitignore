@@ -24,4 +24,5 @@ build
 !.yarn/sdks
 !.yarn/versions
 
-# .medusa - commented out to include admin build in git
+# .medusa - build folder needed for deployment
+# .medusa
