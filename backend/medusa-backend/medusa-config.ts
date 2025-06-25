@@ -15,7 +15,7 @@ export default defineConfig({
     }
   },
   admin: {
-    disable: false,
+    disable: true,
   },
   modules: {
     // Stripe payment provider
