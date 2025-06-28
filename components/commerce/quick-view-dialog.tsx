@@ -8,23 +8,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Heart, Plus, Minus, X } from "lucide-react"
-import { ReviewSummary } from "@/components/review-summary"
-
-interface Product {
-  id: number
-  name: string
-  price: number
-  originalPrice?: number
-  image: string
-  category: string
-  isNew?: boolean
-  isBestSeller?: boolean
-  rating: number
-  reviews: number
-  description?: string
-  sizes?: string[]
-  colors?: string[]
-}
+import { ReviewSummary } from "@/components/shared/review-summary"
+import type { Product } from '@/app/data/products'
 
 interface QuickViewDialogProps {
   product: Product
@@ -38,8 +23,8 @@ export function QuickViewDialog({ product, isDark = false, children }: QuickView
   const [quantity, setQuantity] = useState(1)
   const [isOpen, setIsOpen] = useState(false)
 
-  const sizes = product.sizes || ["XS", "S", "M", "L", "XL", "XXL"]
-  const colors = product.colors || ["Black", "White", "Gray"]
+  const sizes: string[] = (product as any).sizes || ["XS", "S", "M", "L", "XL", "XXL"]
+  const colors: string[] = (product as any).colors || ["Black", "White", "Gray"]
 
   const handleAddToCart = () => {
     console.log("Added to cart:", { product, selectedSize, selectedColor, quantity })

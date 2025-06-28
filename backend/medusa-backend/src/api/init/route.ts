@@ -27,6 +27,8 @@ NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${keys[0]?.id}
 NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://indecisive-wear-backend.onrender.com`
     })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({ 
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    })
   }
 }

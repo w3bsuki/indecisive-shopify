@@ -6,8 +6,8 @@ import { Menu, X, Search, ShoppingBag, Heart, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { MobileCartSheet } from "@/components/mobile-cart-sheet"
-import { MobileSearchSheet } from "@/components/mobile-search-sheet"
+import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
+import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 
 interface MobileNavigationProps {
   cartCount: number
@@ -109,7 +109,7 @@ export function MobileNavigation({ cartCount }: MobileNavigationProps) {
                         {menuItems.map((item) => (
                           <Link
                             key={item.name}
-                            href={item.href}
+                            href={item.href as any}
                             className="flex items-center justify-between py-3 text-sm font-medium hover:text-black/60 transition-colors group"
                             onClick={() => setIsMenuOpen(false)}
                           >
@@ -133,7 +133,7 @@ export function MobileNavigation({ cartCount }: MobileNavigationProps) {
                           return (
                             <Link
                               key={item.name}
-                              href={item.href}
+                              href={item.href as any}
                               className="flex items-center space-x-3 py-2 text-sm font-medium hover:text-black/60 transition-colors"
                               onClick={() => setIsMenuOpen(false)}
                             >
@@ -148,13 +148,13 @@ export function MobileNavigation({ cartCount }: MobileNavigationProps) {
                     {/* Footer */}
                     <div className="border-t border-black/5 px-4 py-4">
                       <div className="flex space-x-4 text-xs text-black/60">
-                        <Link href="/help" className="hover:text-black transition-colors">
+                        <Link href={"/help" as any} className="hover:text-black transition-colors">
                           HELP
                         </Link>
-                        <Link href="/contact" className="hover:text-black transition-colors">
+                        <Link href={"/contact" as any} className="hover:text-black transition-colors">
                           CONTACT
                         </Link>
-                        <Link href="/about" className="hover:text-black transition-colors">
+                        <Link href={"/about" as any} className="hover:text-black transition-colors">
                           ABOUT
                         </Link>
                       </div>
@@ -183,14 +183,14 @@ export function MobileNavigation({ cartCount }: MobileNavigationProps) {
               {["NEW ARRIVALS", "ESSENTIALS", "STREETWEAR", "LOOKBOOK"].map((item) => (
                 <Link
                   key={item}
-                  href={item === "LOOKBOOK" ? "/lookbook" : "#"}
+                  href={(item === "LOOKBOOK" ? "/lookbook" : "#") as any}
                   className="text-sm font-mono font-medium hover:text-black/60 transition-colors"
                 >
                   {item}
                 </Link>
               ))}
               <Link
-                href="/admin/social-automation"
+                href={"/admin/social-automation" as any}
                 className="text-sm font-mono font-medium hover:text-black/60 transition-colors"
               >
                 ADMIN

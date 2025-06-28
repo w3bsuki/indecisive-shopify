@@ -1,4 +1,4 @@
-import { fetchProducts, fetchCategories, transformMedusaProduct } from '@/lib/medusa-client'
+import { fetchProducts, fetchCategories, transformMedusaProduct } from '@/lib/services/medusa-client'
 
 export interface Product {
   id: string

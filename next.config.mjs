@@ -2,7 +2,6 @@
 const nextConfig = {
   // Production-ready configuration
   reactStrictMode: true,
-  swcMinify: true,
   
   // TypeScript and ESLint - fail builds on errors in production
   eslint: {
@@ -17,8 +16,10 @@ const nextConfig = {
     // Enable when on canary version
     // ppr: true, // Partial Prerendering
     typedRoutes: true, // Type-safe routing
-    serverComponentsExternalPackages: ['@medusajs/medusa'],
   },
+  
+  // External packages for server components
+  serverExternalPackages: ['@medusajs/medusa'],
   
   // Image optimization for e-commerce
   images: {

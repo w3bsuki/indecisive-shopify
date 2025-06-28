@@ -1,4 +1,4 @@
-import { HeroSlider } from '@/components/hero-slider'
+import { HeroSlider } from '@/components/layout/hero-slider'
 
 export function HeroSection() {
   return <HeroSlider />

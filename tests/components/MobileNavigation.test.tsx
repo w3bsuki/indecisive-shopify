@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { MobileNavigation } from '@/components/mobile-navigation'
+import { MobileNavigation } from '@/components/layout/mobile-navigation'
 import { useMobile } from '@/hooks/use-mobile'
 
 // Mock the mobile detection hook

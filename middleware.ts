@@ -54,8 +54,7 @@ function getRateLimitKey(request: NextRequest, config?: RateLimitConfig): string
   }
   
   // Get client IP address
-  const ip = request.ip || 
-             request.headers.get('x-forwarded-for')?.split(',')[0] ||
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
              request.headers.get('x-real-ip') ||
              'anonymous'
   
@@ -216,7 +215,7 @@ export function middleware(request: NextRequest) {
   // Log rate limit violations for monitoring
   if (!rateLimitResult.allowed) {
     console.warn(`Rate limit exceeded for ${key} on ${pathname}`, {
-      ip: request.ip,
+      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
       userAgent: request.headers.get('user-agent'),
       timestamp: new Date().toISOString(),
       endpoint: pathname

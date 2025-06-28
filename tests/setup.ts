@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom'
 import { cleanup } from '@testing-library/react'
 import { TextEncoder, TextDecoder } from 'util'
+import React from 'react'
 
 // Polyfill for Node.js environment
 global.TextEncoder = TextEncoder
@@ -72,7 +73,7 @@ jest.mock('next/image', () => ({
   __esModule: true,
   default: ({ src, alt, ...props }: any) => {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} {...props} />
+    return React.createElement('img', { src, alt, ...props })
   },
 }))
 

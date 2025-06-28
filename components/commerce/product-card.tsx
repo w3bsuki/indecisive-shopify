@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
-import { ReviewSummary } from '@/components/review-summary'
-import { ProductCardActions } from '@/components/product-card-actions'
+import { ReviewSummary } from '@/components/shared/review-summary'
+import { ProductCardActions } from '@/components/commerce/product-card-actions'
 import type { Product } from '@/app/data/products'
 
 interface ProductCardProps {

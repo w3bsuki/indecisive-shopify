@@ -18,7 +18,8 @@ export interface Cart {
 
 // Get cart from cookies
 export async function getCart(): Promise<Cart> {
-  const cartData = cookies().get('cart')?.value
+  const cookieStore = await cookies()
+  const cartData = cookieStore.get('cart')?.value
   
   if (!cartData) {
     return { items: [], total: 0, count: 0 }
@@ -54,7 +55,8 @@ export async function addToCart(productId: string, productData: { name: string; 
   cart.count = cart.items.reduce((sum, item) => sum + item.quantity, 0)
   
   // Save to cookie
-  cookies().set('cart', JSON.stringify(cart), {
+  const cookieStore = await cookies()
+  cookieStore.set('cart', JSON.stringify(cart), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -77,7 +79,8 @@ export async function removeFromCart(productId: string) {
   cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   cart.count = cart.items.reduce((sum, item) => sum + item.quantity, 0)
   
-  cookies().set('cart', JSON.stringify(cart), {
+  const cookieStore = await cookies()
+  cookieStore.set('cart', JSON.stringify(cart), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -105,7 +108,8 @@ export async function updateCartItemQuantity(productId: string, quantity: number
     cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
     cart.count = cart.items.reduce((sum, item) => sum + item.quantity, 0)
     
-    cookies().set('cart', JSON.stringify(cart), {
+    const cookieStore = await cookies()
+    cookieStore.set('cart', JSON.stringify(cart), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -120,7 +124,8 @@ export async function updateCartItemQuantity(productId: string, quantity: number
 
 // Clear entire cart
 export async function clearCart() {
-  cookies().delete('cart')
+  const cookieStore = await cookies()
+  cookieStore.delete('cart')
   revalidateTag('cart')
   revalidatePath('/')
   revalidatePath('/checkout')

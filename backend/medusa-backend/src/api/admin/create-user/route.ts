@@ -29,7 +29,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     // Create admin user
     const admin = await userModule.createUsers({
       email: adminEmail,
-      password: adminPassword,
       first_name: "Admin",
       last_name: "User"
     })
@@ -42,6 +41,8 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       login_url: `${process.env.MEDUSA_ADMIN_BACKEND_URL || req.headers.host}/admin`
     })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({ 
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    })
   }
 }

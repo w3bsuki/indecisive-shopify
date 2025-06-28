@@ -25,6 +25,8 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       }
     })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({ 
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    })
   }
 }

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ProductCard } from '@/components/product-card'
+import { ProductCard } from '@/components/commerce/product-card'
 import type { Product } from '@/app/data/products'
 
 interface ProductSectionProps {

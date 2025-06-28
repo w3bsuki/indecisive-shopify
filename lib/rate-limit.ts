@@ -78,8 +78,7 @@ export type RateLimitConfigType = keyof typeof RATE_LIMIT_CONFIGS
  */
 export function getClientId(request: NextRequest): string {
   // Try to get IP address from various headers
-  const ip = request.ip ||
-             request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
              request.headers.get('x-real-ip') ||
              request.headers.get('cf-connecting-ip') || // Cloudflare
              request.headers.get('x-client-ip') ||

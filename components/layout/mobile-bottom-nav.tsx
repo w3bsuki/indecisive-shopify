@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Heart, ShoppingBag, Filter, Search, Home } from "lucide-react"
-import { MobileCartSheet } from "@/components/mobile-cart-sheet"
-import { MobileSearchSheet } from "@/components/mobile-search-sheet"
+import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
+import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 
 interface MobileBottomNavProps {
   cartCount: number

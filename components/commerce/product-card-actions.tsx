@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { Heart, Plus, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { QuickViewDialog } from '@/components/quick-view-dialog'
+import { QuickViewDialog } from '@/components/commerce/quick-view-dialog'
 import type { Product } from '@/app/data/products'
 
 interface ProductCardActionsProps {

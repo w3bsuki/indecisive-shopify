@@ -855,4 +855,37 @@ export default async function seedDemoData({ container }: ExecArgs) {
   });
 
   logger.info("Finished seeding inventory levels data.");
+
+  // Create admin user
+  logger.info("Creating admin user...");
+  const userModule = container.resolve(Modules.USER);
+  
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@indecisive-wear.com";
+  const adminPassword = process.env.ADMIN_PASSWORD || "supersecret123";
+  
+  try {
+    // Check if admin already exists
+    const existingUsers = await userModule.listUsers({
+      email: adminEmail
+    });
+    
+    if (existingUsers.length === 0) {
+      // Create admin user
+      const admin = await userModule.createUsers({
+        email: adminEmail,
+        first_name: "Admin",
+        last_name: "User"
+      });
+      
+      logger.info(`Admin user created: ${adminEmail}`);
+      logger.info(`Password: ${adminPassword}`);
+      logger.info("IMPORTANT: Change this password after first login!");
+    } else {
+      logger.info(`Admin user already exists: ${adminEmail}`);
+    }
+  } catch (error) {
+    logger.error("Failed to create admin user:", error);
+  }
+  
+  logger.info("Finished seeding admin user data.");
 }

@@ -8,8 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, Heart, Star, Plus, Minus, Share2, Truck, RotateCcw, Shield } from "lucide-react"
-import { ReviewsSection } from "@/components/reviews-section"
-import { CustomerPhotoGallery } from "@/components/customer-photo-gallery"
+import { ReviewsSection } from "@/components/shared/reviews-section"
 
 // This would normally come from your database/API
 const getProduct = (id: string) => {
@@ -48,8 +47,9 @@ const getProduct = (id: string) => {
   return products[id as keyof typeof products] || null
 }
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = getProduct(params.id)
+export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const product = getProduct(id)
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedSize, setSelectedSize] = useState("")
   const [selectedColor, setSelectedColor] = useState("")
@@ -275,7 +275,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         {/* Customer Photos Section */}
         <div className="mt-16 md:mt-24">
-          <CustomerPhotoGallery productId={product.id} />
+          {/* Customer Photos - Coming Soon */}
+          <div className="text-center py-8">
+            <p className="text-gray-500">Customer photos coming soon</p>
+          </div>
         </div>
 
         {/* Product Details Tabs */}
@@ -324,7 +327,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </TabsContent>
 
             <TabsContent value="photos" className="mt-8">
-              <CustomerPhotoGallery productId={product.id} title="All Customer Photos" />
+              {/* Customer Photos - Coming Soon */}
+              <div className="text-center py-12">
+                <p className="text-gray-500">Customer photos coming soon</p>
+              </div>
             </TabsContent>
 
             <TabsContent value="shipping" className="mt-8">

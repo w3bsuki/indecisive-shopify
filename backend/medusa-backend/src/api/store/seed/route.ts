@@ -28,6 +28,8 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       usage: `Add to frontend .env: NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${keys[0]?.id}`
     })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({ 
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    })
   }
 }

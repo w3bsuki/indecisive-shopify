@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     message: 'Rate limiting test endpoint',
     timestamp: new Date().toISOString(),
-    clientIP: request.ip || 'unknown',
+    clientIP: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
     userAgent: request.headers.get('user-agent') || 'unknown',
     rateLimitInfo: {
       endpoint: '/api/test/rate-limit',

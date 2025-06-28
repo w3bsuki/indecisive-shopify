@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/framework/utils"
 
-export default async function createAdminUser({ container }) {
+export default async function createAdminUser({ container }: { container: any }) {
   const userModule = container.resolve(Modules.USER)
   
   const adminEmail = process.env.ADMIN_EMAIL || "admin@indecisive-wear.com"

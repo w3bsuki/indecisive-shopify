@@ -11,8 +11,6 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Star, ThumbsUp, ThumbsDown, Filter, Upload, X, Camera, Share2, Check } from "lucide-react"
-import { SocialShare } from "@/components/social-share"
-import { socialAutomationService } from "@/lib/social-automation-service"
 
 interface Review {
   id: number
@@ -383,26 +381,6 @@ function ReviewCard({ review, onHelpful }: { review: Review; onHelpful: (id: num
           </div>
         </div>
 
-        {/* Social Share Button */}
-        {review.images && review.images.length > 0 && (
-          <SocialShare
-            image={review.images[0]}
-            productName="Essential White Tee" // This would come from props in real implementation
-            customerName={review.customerName}
-            rating={review.rating}
-            reviewTitle={review.title}
-            size={review.size}
-          >
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-xs font-mono text-black/60 hover:text-black flex items-center gap-1"
-            >
-              <Share2 className="h-3 w-3" />
-              Share
-            </Button>
-          </SocialShare>
-        )}
       </div>
 
       {/* Image Modal */}
@@ -510,20 +488,6 @@ function WriteReviewDialog({
       images: uploadedImages.length > 0 ? uploadedImages : undefined,
     }
 
-    // Process review for social automation
-    await socialAutomationService.processReview({
-      id: newReview.id,
-      customerName: newReview.customerName,
-      rating: newReview.rating,
-      title: newReview.title,
-      content: newReview.content,
-      productName: productName,
-      productCategory: "Essentials", // This would come from product data in real implementation
-      size: newReview.size,
-      images: newReview.images,
-      verified: newReview.verified,
-      date: newReview.date,
-    })
 
     onReviewSubmit(newReview)
 
@@ -733,24 +697,6 @@ function WriteReviewDialog({
                   Thank you for sharing your experience. Your review helps other customers make better decisions.
                 </p>
 
-                {uploadedImages.length > 0 && (
-                  <div className="space-y-3">
-                    <p className="text-sm font-bold">Want to share your photos?</p>
-                    <SocialShare
-                      image={uploadedImages[0]}
-                      productName={productName}
-                      customerName={customerName}
-                      rating={rating}
-                      reviewTitle={title}
-                      size={size}
-                    >
-                      <Button className="w-full bg-blue-600 text-white hover:bg-blue-700 font-mono flex items-center gap-2">
-                        <Share2 className="h-4 w-4" />
-                        SHARE TO SOCIAL MEDIA
-                      </Button>
-                    </SocialShare>
-                  </div>
-                )}
 
                 <Button
                   onClick={() => setShowSuccessDialog(false)}
