@@ -9,14 +9,14 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     }
 
     // Run the seed
-    await seedDemoData({ container: req.scope })
+    await seedDemoData({ container: req.scope, args: [] })
     
     // Get the publishable key
     const query = req.scope.resolve("query")
     const { data: keys } = await query.graph({
       entity: "api_key", 
       fields: ["id", "title", "type"],
-      filters: { type: "publishable" }
+      filters: { type: "publishable" as any }
     })
     
     res.json({ 

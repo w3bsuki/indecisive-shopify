@@ -7,7 +7,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     const { data: keys } = await query.graph({
       entity: "api_key", 
       fields: ["id", "title", "type", "created_at"],
-      filters: { type: "publishable" }
+      filters: { type: "publishable" as any }
     })
     
     if (keys.length === 0) {
