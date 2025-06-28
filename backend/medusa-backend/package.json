@@ -16,7 +16,8 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "medusa build",
+    "build": "medusa build --admin-only",
+    "build:all": "medusa build",
     "build:admin": "medusa build --admin-only",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "NODE_OPTIONS='--max-old-space-size=512' medusa start",

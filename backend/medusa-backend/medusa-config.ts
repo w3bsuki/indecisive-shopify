@@ -7,15 +7,16 @@ export default defineConfig({
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     http: {
-      storeCors: process.env.STORE_CORS!,
-      adminCors: process.env.ADMIN_CORS!,
-      authCors: process.env.AUTH_CORS!,
+      storeCors: process.env.STORE_CORS || "https://medusa-starter-default-production-3201.up.railway.app,http://localhost:3000",
+      adminCors: process.env.ADMIN_CORS || "https://medusa-starter-default-production-3201.up.railway.app,http://localhost:9000",
+      authCors: process.env.AUTH_CORS || "https://medusa-starter-default-production-3201.up.railway.app,http://localhost:9000",
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     }
   },
   admin: {
-    disable: false,
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    backendUrl: process.env.MEDUSA_ADMIN_BACKEND_URL || "https://medusa-starter-default-production-3201.up.railway.app",
   },
   modules: {
     // Stripe payment provider
