@@ -20,6 +20,7 @@
     "build:all": "medusa build",
     "build:admin": "medusa build --admin-only",
     "seed": "medusa exec ./src/scripts/seed.ts",
+    "fix-admin": "medusa exec ./src/scripts/fix-admin-auth.ts",
     "start": "NODE_OPTIONS='--max-old-space-size=512' medusa start",
     "start:prod": "NODE_ENV=production medusa start",
     "start:render": "medusa build && medusa start",

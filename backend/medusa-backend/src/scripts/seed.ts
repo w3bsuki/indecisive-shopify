@@ -856,9 +856,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   logger.info("Finished seeding inventory levels data.");
 
-  // Create admin user
+  // Create admin user with authentication
   logger.info("Creating admin user...");
   const userModule = container.resolve(Modules.USER);
+  const authModule = container.resolve(Modules.AUTH);
   
   const adminEmail = process.env.ADMIN_EMAIL || "admin@indecisive-wear.com";
   const adminPassword = process.env.ADMIN_PASSWORD || "supersecret123";
@@ -875,6 +876,16 @@ export default async function seedDemoData({ container }: ExecArgs) {
         email: adminEmail,
         first_name: "Admin",
         last_name: "User"
+      });
+      
+      // Create auth identity for the user
+      await authModule.createAuthIdentities({
+        provider_id: "emailpass",
+        entity_id: admin.id,
+        provider_metadata: {
+          email: adminEmail,
+          password: adminPassword
+        }
       });
       
       logger.info(`Admin user created: ${adminEmail}`);
