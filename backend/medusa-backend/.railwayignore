@@ -1,0 +1,26 @@
+# Ignore test files
+**/*.test.ts
+**/*.test.js
+**/*.spec.ts
+**/*.spec.js
+integration-tests/
+jest.config.js
+
+# Ignore development files
+.env.local
+.env.development
+*.log
+.DS_Store
+
+# Ignore build artifacts that will be regenerated
+.next/
+dist/
+build/
+
+# Ignore documentation
+*.md
+docs/
+
+# Ignore frontend files (if any in backend)
+*.css
+*.scss
