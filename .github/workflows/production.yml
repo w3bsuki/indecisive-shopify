@@ -9,6 +9,7 @@ on:
 env:
   NODE_VERSION: 20
   PNPM_VERSION: 9
+  YARN_VERSION: 1.22.19
 
 jobs:
   quality-checks:

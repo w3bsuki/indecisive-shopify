@@ -33,10 +33,26 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Medusa
-# .medusa - commented out to include admin build
+# Medusa build artifacts (prevent bloat)
+.medusa/
+backend/.medusa/
+backend/medusa-backend/.medusa/
 uploads/
-# backend/medusa-backend/.medusa/ - commented out to include admin build
+
+# Zone.Identifier files (Windows bloat)
+*.Zone.Identifier
+
+# Documentation bloat prevention
+**/DRAFT_*.md
+**/WIP_*.md
+**/TEMP_*.md
+**/TODO_*.md
+PRODUCTION_*.md
+RAILWAY_*.md
+ULTRATHINK_*.md
+
+# Package lock conflicts
+package-lock.json
 
 # IDE
 .vscode/
