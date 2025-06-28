@@ -1,0 +1,21 @@
+{
+  "id": "production-readiness-checklist",
+  "name": "Production Readiness Checklist",
+  "description": "Essential practices that must be implemented before deploying to production. Covers performance, type safety, error handling, and code quality standards for our e-commerce platform.",
+  "practice_ids": [
+    "nextjs-app-router-optimization",
+    "react-19-concurrent-patterns",
+    "typescript-strict-mode-patterns"
+  ],
+  "created_at": "2025-06-28T12:00:00Z",
+  "updated_at": "2025-06-28T12:00:00Z",
+  "author": "Development Team",
+  "is_public": true,
+  "tags": [
+    "production",
+    "checklist",
+    "critical",
+    "deployment",
+    "quality-assurance"
+  ]
+}

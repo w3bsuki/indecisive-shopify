@@ -1,0 +1,108 @@
+{
+  "id": "react-19-concurrent-patterns",
+  "title": "React 19 Concurrent Features and Patterns",
+  "description": "Best practices for leveraging React 19's concurrent features including automatic batching, transitions, Suspense patterns, and the new use() hook for optimal user experience.",
+  "technology": "react",
+  "category": "performance",
+  "priority": "high",
+  "status": "implemented",
+  "problem": "React applications can suffer from blocking updates, poor user experience during loading states, and inefficient state updates. Without proper use of concurrent features, apps may feel sluggish and unresponsive, especially during data fetching or heavy computations.",
+  "solution": "Leverage React 19's concurrent features including automatic batching, startTransition for non-urgent updates, Suspense for loading states, and the new use() hook for data fetching. This creates a more responsive user experience with better perceived performance.",
+  "rationale": "React 19's concurrent features enable better user experiences by keeping the UI responsive during updates and providing better loading states. These features help prioritize urgent updates (like user input) over less urgent ones (like data fetching), leading to smoother interactions.",
+  "code_examples": [
+    {
+      "title": "Using startTransition for Non-Urgent Updates",
+      "description": "Prioritize user input over expensive filtering operations",
+      "language": "typescript",
+      "filename": "components/product-search.tsx",
+      "code": "'use client';\n\nimport { useState, useDeferredValue, startTransition } from 'react';\nimport { Product } from '@/types';\n\ninterface ProductSearchProps {\n  products: Product[];\n}\n\nexport function ProductSearch({ products }: ProductSearchProps) {\n  const [query, setQuery] = useState('');\n  const [filteredProducts, setFilteredProducts] = useState(products);\n  \n  // Defer expensive filtering operation\n  const deferredQuery = useDeferredValue(query);\n  \n  const handleSearch = (value: string) => {\n    // Update input immediately (urgent)\n    setQuery(value);\n    \n    // Filter products in transition (non-urgent)\n    startTransition(() => {\n      const filtered = products.filter(product => \n        product.name.toLowerCase().includes(value.toLowerCase()) ||\n        product.description.toLowerCase().includes(value.toLowerCase())\n      );\n      setFilteredProducts(filtered);\n    });\n  };\n  \n  return (\n    <div>\n      <input\n        type=\"text\"\n        value={query}\n        onChange={(e) => handleSearch(e.target.value)}\n        placeholder=\"Search products...\"\n        className=\"w-full p-2 border rounded-lg\"\n      />\n      \n      {/* Show loading state during transition */}\n      <div className=\"mt-4\">\n        {deferredQuery !== query && (\n          <p className=\"text-gray-500\">Searching...</p>\n        )}\n        \n        <div className=\"grid grid-cols-1 md:grid-cols-3 gap-4\">\n          {filteredProducts.map(product => (\n            <ProductCard key={product.id} product={product} />\n          ))}\n        </div>\n      </div>\n    </div>\n  );\n}",
+      "highlight_lines": [3, 14, 20, 21, 26, 41, 42]
+    },
+    {
+      "title": "Using the new use() Hook for Data Fetching",
+      "description": "Simplified data fetching with React 19's use() hook",
+      "language": "typescript",
+      "filename": "components/product-details.tsx",
+      "code": "'use client';\n\nimport { use, Suspense } from 'react';\nimport { Product } from '@/types';\n\ninterface ProductDetailsProps {\n  productPromise: Promise<Product>;\n}\n\nfunction ProductDetailsContent({ productPromise }: ProductDetailsProps) {\n  // use() hook unwraps the promise\n  const product = use(productPromise);\n  \n  return (\n    <div className=\"bg-white rounded-lg shadow-lg p-6\">\n      <img \n        src={product.image} \n        alt={product.name}\n        className=\"w-full h-64 object-cover rounded-lg mb-4\"\n      />\n      <h1 className=\"text-2xl font-bold mb-2\">{product.name}</h1>\n      <p className=\"text-gray-600 mb-4\">{product.description}</p>\n      <p className=\"text-3xl font-bold text-green-600\">${product.price}</p>\n      \n      <button className=\"mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600\">\n        Add to Cart\n      </button>\n    </div>\n  );\n}\n\nexport function ProductDetails({ productPromise }: ProductDetailsProps) {\n  return (\n    <Suspense fallback={\n      <div className=\"bg-white rounded-lg shadow-lg p-6 animate-pulse\">\n        <div className=\"w-full h-64 bg-gray-200 rounded-lg mb-4\"></div>\n        <div className=\"h-8 bg-gray-200 rounded mb-2\"></div>\n        <div className=\"h-4 bg-gray-200 rounded mb-4\"></div>\n        <div className=\"h-8 bg-gray-200 rounded w-24\"></div>\n      </div>\n    }>\n      <ProductDetailsContent productPromise={productPromise} />\n    </Suspense>\n  );\n}",
+      "highlight_lines": [3, 11, 33, 40]
+    },
+    {
+      "title": "Optimistic Updates Pattern",
+      "description": "Implement optimistic updates for better perceived performance",
+      "language": "typescript",
+      "filename": "hooks/use-cart.tsx",
+      "code": "'use client';\n\nimport { useState, useOptimistic } from 'react';\nimport { CartItem, Product } from '@/types';\n\ntype CartAction = \n  | { type: 'add'; product: Product; quantity: number }\n  | { type: 'remove'; productId: string }\n  | { type: 'update'; productId: string; quantity: number };\n\nfunction cartReducer(cart: CartItem[], action: CartAction): CartItem[] {\n  switch (action.type) {\n    case 'add':\n      const existingItem = cart.find(item => item.product.id === action.product.id);\n      if (existingItem) {\n        return cart.map(item => \n          item.product.id === action.product.id \n            ? { ...item, quantity: item.quantity + action.quantity }\n            : item\n        );\n      }\n      return [...cart, { product: action.product, quantity: action.quantity }];\n    \n    case 'remove':\n      return cart.filter(item => item.product.id !== action.productId);\n    \n    case 'update':\n      return cart.map(item => \n        item.product.id === action.productId \n          ? { ...item, quantity: action.quantity }\n          : item\n      );\n    \n    default:\n      return cart;\n  }\n}\n\nexport function useCart() {\n  const [cart, setCart] = useState<CartItem[]>([]);\n  const [optimisticCart, addOptimisticUpdate] = useOptimistic(\n    cart,\n    cartReducer\n  );\n  \n  const addToCart = async (product: Product, quantity: number = 1) => {\n    // Optimistically update UI immediately\n    addOptimisticUpdate({ type: 'add', product, quantity });\n    \n    try {\n      // Perform actual API call\n      const response = await fetch('/api/cart/add', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ productId: product.id, quantity })\n      });\n      \n      if (response.ok) {\n        // Update real state on success\n        setCart(prev => cartReducer(prev, { type: 'add', product, quantity }));\n      } else {\n        // Revert optimistic update on failure\n        throw new Error('Failed to add to cart');\n      }\n    } catch (error) {\n      console.error('Cart error:', error);\n      // The optimistic update will be reverted automatically\n    }\n  };\n  \n  return {\n    cart: optimisticCart,\n    addToCart,\n    // ... other cart methods\n  };\n}",
+      "highlight_lines": [2, 40, 41, 42, 46, 56]
+    }
+  ],
+  "resources": [
+    {
+      "title": "React 19 Release Notes",
+      "url": "https://react.dev/blog/2024/12/05/react-19",
+      "type": "documentation",
+      "description": "Official React 19 release announcement and features",
+      "is_official": true
+    },
+    {
+      "title": "React Concurrent Features",
+      "url": "https://react.dev/reference/react/startTransition",
+      "type": "documentation", 
+      "description": "Official documentation for concurrent features",
+      "is_official": true
+    },
+    {
+      "title": "React use() Hook",
+      "url": "https://react.dev/reference/react/use",
+      "type": "documentation",
+      "description": "Official documentation for the use() hook",
+      "is_official": true
+    }
+  ],
+  "version_info": {
+    "technology_version": "19.0.0",
+    "compatibility_notes": "These features are specific to React 19. Some patterns like use() hook are not available in earlier versions.",
+    "breaking_changes": [
+      "use() hook is new in React 19",
+      "useOptimistic behavior may differ from React 18 concurrent features"
+    ]
+  },
+  "tags": [
+    "concurrent-features",
+    "transitions",
+    "suspense",
+    "use-hook",
+    "optimistic-updates",
+    "performance",
+    "user-experience"
+  ],
+  "related_practices": [
+    "nextjs-app-router-optimization",
+    "typescript-strict-mode-patterns"
+  ],
+  "created_at": "2025-06-28T12:00:00Z",
+  "updated_at": "2025-06-28T12:00:00Z", 
+  "author": "Development Team",
+  "reviewed_by": ["React Specialist", "Senior Frontend Developer"],
+  "implementation_complexity": "medium",
+  "estimated_time": "3-5 hours",
+  "prerequisites": [
+    "React 19+",
+    "Understanding of concurrent rendering concepts",
+    "Basic knowledge of Promises and async patterns"
+  ],
+  "validation_criteria": [
+    "User input remains responsive during heavy operations",
+    "Loading states are properly displayed",
+    "Optimistic updates work correctly with error handling",
+    "No unnecessary re-renders during transitions"
+  ],
+  "test_examples": [
+    {
+      "title": "Testing Concurrent Features",
+      "description": "Test concurrent behavior with React Testing Library",
+      "language": "typescript",
+      "filename": "__tests__/product-search.test.tsx",
+      "code": "import { render, screen, userEvent } from '@testing-library/react';\nimport { act } from 'react';\nimport { ProductSearch } from '../components/product-search';\n\nconst mockProducts = [\n  { id: '1', name: 'Product 1', description: 'Description 1' },\n  { id: '2', name: 'Product 2', description: 'Description 2' }\n];\n\ntest('search input remains responsive during filtering', async () => {\n  const user = userEvent.setup();\n  render(<ProductSearch products={mockProducts} />);\n  \n  const searchInput = screen.getByPlaceholderText('Search products...');\n  \n  // Type quickly to test responsiveness\n  await user.type(searchInput, 'Product');\n  \n  // Input should update immediately\n  expect(searchInput).toHaveValue('Product');\n  \n  // Wait for transition to complete\n  await act(async () => {\n    await new Promise(resolve => setTimeout(resolve, 100));\n  });\n  \n  // Results should be filtered\n  expect(screen.getAllByText(/Product/)).toHaveLength(2);\n});"
+    }
+  ]
+}

@@ -35,134 +35,137 @@ export function MobileNavigation({ cartCount }: MobileNavigationProps) {
 
   return (
     <>
-      {/* Newsletter Banner */}
-      <div className="bg-black text-white py-2 px-4 text-center md:hidden">
-        <p className="text-xs font-mono">
-          <strong>BECOME AN AFFILIATE</strong> - Earn 15% commission
-        </p>
-      </div>
+      {/* Mobile Navigation Stack */}
+      <div className="fixed top-0 w-full z-50 md:hidden">
+        {/* Newsletter Banner */}
+        <div className="bg-black text-white py-3 px-4 text-center">
+          <p className="text-sm font-mono">
+            <strong>BECOME AN AFFILIATE</strong> - Earn 15% commission
+          </p>
+        </div>
 
-      {/* Mobile Navigation Bar */}
-      <nav className="fixed top-8 w-full bg-white/95 backdrop-blur-md border-b border-black/10 z-50 md:hidden">
-        <div className="px-3 h-12 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-1">
-            <div className="flex items-center space-x-0.5">
-              <div className="w-3 h-3 bg-black"></div>
-              <div className="w-3 h-3 bg-white border border-black"></div>
-            </div>
-            <span className="font-mono font-bold text-xs tracking-tight">INDECISIVE</span>
-          </Link>
+        {/* Mobile Navigation Bar */}
+        <nav className="bg-white/95 backdrop-blur-md border-b border-black/10">
+          <div className="px-3 h-16 flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-1">
+              <div className="flex items-center space-x-0.5">
+                <div className="w-3 h-3 bg-black"></div>
+                <div className="w-3 h-3 bg-white border border-black"></div>
+              </div>
+              <span className="font-mono font-bold text-xs tracking-tight">INDECISIVE</span>
+            </Link>
 
-          {/* Right Actions */}
-          <div className="flex items-center space-x-1">
-            <MobileSearchSheet>
-              <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-black/5">
-                <Search className="h-4 w-4" />
-              </Button>
-            </MobileSearchSheet>
-
-            <MobileCartSheet cartCount={cartCount}>
-              <Button variant="ghost" size="icon" className="relative h-8 w-8 hover:bg-black/5">
-                <ShoppingBag className="h-4 w-4" />
-                {cartCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-3 w-3 p-0 flex items-center justify-center text-[8px] bg-black text-white border-0">
-                    {cartCount}
-                  </Badge>
-                )}
-              </Button>
-            </MobileCartSheet>
-
-            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger asChild>
+            {/* Right Actions */}
+            <div className="flex items-center space-x-1">
+              <MobileSearchSheet>
                 <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-black/5">
-                  <Menu className="h-4 w-4" />
+                  <Search className="h-4 w-4" />
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full p-0 font-mono border-0">
-                {/* Menu Header */}
-                <div className="flex items-center justify-between p-4 border-b border-black/5">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex items-center space-x-1">
-                      <div className="w-4 h-4 bg-black"></div>
-                      <div className="w-4 h-4 bg-white border border-black"></div>
-                    </div>
-                    <span className="font-mono font-bold text-sm">INDECISIVE WEAR</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="h-8 w-8 hover:bg-black/5"
-                  >
-                    <X className="h-4 w-4" />
+              </MobileSearchSheet>
+
+              <MobileCartSheet cartCount={cartCount}>
+                <Button variant="ghost" size="icon" className="relative h-8 w-8 hover:bg-black/5">
+                  <ShoppingBag className="h-4 w-4" />
+                  {cartCount > 0 && (
+                    <Badge className="absolute -top-1 -right-1 h-3 w-3 p-0 flex items-center justify-center text-[8px] bg-black text-white border-0">
+                      {cartCount}
+                    </Badge>
+                  )}
+                </Button>
+              </MobileCartSheet>
+
+              <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-black/5">
+                    <Menu className="h-4 w-4" />
                   </Button>
-                </div>
-
-                {/* Menu Content */}
-                <div className="flex flex-col h-full">
-                  {/* Main Navigation */}
-                  <div className="flex-1 px-4 py-6">
-                    <div className="space-y-1">
-                      {menuItems.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="flex items-center justify-between py-3 text-sm font-medium hover:text-black/60 transition-colors group"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          <span className="group-hover:translate-x-1 transition-transform duration-200">
-                            {item.name}
-                          </span>
-                          {item.badge && (
-                            <Badge className="bg-red-500 text-white text-xs px-2 py-1 border-0">{item.badge}</Badge>
-                          )}
-                        </Link>
-                      ))}
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full p-0 font-mono border-0">
+                  {/* Menu Header */}
+                  <div className="flex items-center justify-between p-4 border-b border-black/5">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1">
+                        <div className="w-4 h-4 bg-black"></div>
+                        <div className="w-4 h-4 bg-white border border-black"></div>
+                      </div>
+                      <span className="font-mono font-bold text-sm">INDECISIVE WEAR</span>
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="h-8 w-8 hover:bg-black/5"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
                   </div>
 
-                  {/* Account Section */}
-                  <div className="border-t border-black/5 px-4 py-4">
-                    <h3 className="text-xs font-bold uppercase tracking-wider mb-3 text-black/60">ACCOUNT</h3>
-                    <div className="space-y-1">
-                      {accountItems.map((item) => {
-                        const Icon = item.icon
-                        return (
+                  {/* Menu Content */}
+                  <div className="flex flex-col h-full">
+                    {/* Main Navigation */}
+                    <div className="flex-1 px-4 py-6">
+                      <div className="space-y-1">
+                        {menuItems.map((item) => (
                           <Link
                             key={item.name}
                             href={item.href}
-                            className="flex items-center space-x-3 py-2 text-sm font-medium hover:text-black/60 transition-colors"
+                            className="flex items-center justify-between py-3 text-sm font-medium hover:text-black/60 transition-colors group"
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <Icon className="h-4 w-4" />
-                            <span>{item.name}</span>
+                            <span className="group-hover:translate-x-1 transition-transform duration-200">
+                              {item.name}
+                            </span>
+                            {item.badge && (
+                              <Badge className="bg-red-500 text-white text-xs px-2 py-1 border-0">{item.badge}</Badge>
+                            )}
                           </Link>
-                        )
-                      })}
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Footer */}
-                  <div className="border-t border-black/5 px-4 py-4">
-                    <div className="flex space-x-4 text-xs text-black/60">
-                      <Link href="/help" className="hover:text-black transition-colors">
-                        HELP
-                      </Link>
-                      <Link href="/contact" className="hover:text-black transition-colors">
-                        CONTACT
-                      </Link>
-                      <Link href="/about" className="hover:text-black transition-colors">
-                        ABOUT
-                      </Link>
+                    {/* Account Section */}
+                    <div className="border-t border-black/5 px-4 py-4">
+                      <h3 className="text-xs font-bold uppercase tracking-wider mb-3 text-black/60">ACCOUNT</h3>
+                      <div className="space-y-1">
+                        {accountItems.map((item) => {
+                          const Icon = item.icon
+                          return (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className="flex items-center space-x-3 py-2 text-sm font-medium hover:text-black/60 transition-colors"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              <Icon className="h-4 w-4" />
+                              <span>{item.name}</span>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="border-t border-black/5 px-4 py-4">
+                      <div className="flex space-x-4 text-xs text-black/60">
+                        <Link href="/help" className="hover:text-black transition-colors">
+                          HELP
+                        </Link>
+                        <Link href="/contact" className="hover:text-black transition-colors">
+                          CONTACT
+                        </Link>
+                        <Link href="/about" className="hover:text-black transition-colors">
+                          ABOUT
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
 
       {/* Desktop Navigation */}
       <nav className="hidden md:block fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-black/10 z-50">

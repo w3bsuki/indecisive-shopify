@@ -1,0 +1,321 @@
+[
+  {
+    "id": "comprehensive-strict-mode-config",
+    "title": "Comprehensive Strict Mode Configuration for E-commerce",
+    "technology": "typescript",
+    "category": "configuration",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Enable all strict mode flags with granular control for maximum type safety in e-commerce applications, particularly crucial for payment processing and cart management",
+    "problem": "Basic TypeScript configuration allows unsafe patterns that can lead to runtime errors in payment flows, null/undefined access, and type mismatches in cart operations.",
+    "solution": "Configure tsconfig.json with all strict flags enabled and additional safety features like noUncheckedIndexedAccess and exactOptionalPropertyTypes.",
+    "rationale": "Comprehensive strict mode prevents 90% of common runtime errors and provides compile-time safety for critical e-commerce operations like payment processing.",
+    "codeExample": {
+      "before": "// tsconfig.json - Basic configuration\n{\n  \"compilerOptions\": {\n    \"strict\": false,\n    \"target\": \"es2022\"\n  }\n}",
+      "after": "// tsconfig.json - Production e-commerce configuration\n{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"strictNullChecks\": true,\n    \"strictFunctionTypes\": true,\n    \"strictBindCallApply\": true,\n    \"strictPropertyInitialization\": true,\n    \"noImplicitAny\": true,\n    \"noImplicitReturns\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"exactOptionalPropertyTypes\": true,\n    \"alwaysStrict\": true,\n    \"target\": \"es2022\",\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\"\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.typescriptlang.org/tsconfig/",
+        "title": "TypeScript TSConfig Reference",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+        "title": "TypeScript Handbook - Strict Mode",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["typescript", "strict-mode", "configuration", "type-safety"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-4 hours config + 1-2 days fixes",
+    "prerequisites": ["TypeScript project setup", "Understanding of type system"],
+    "validation": {
+      "criteria": "Zero TypeScript compilation errors with strict mode enabled, all strict flags pass",
+      "testExample": "tsc --noEmit verifies all files compile with strict mode"
+    }
+  },
+  {
+    "id": "branded-types-domain-safety",
+    "title": "Branded Types for E-commerce Domain Safety",
+    "technology": "typescript",
+    "category": "type-safety",
+    "priority": "high",
+    "status": "planned",
+    "description": "Use branded types to create distinct type identities for currencies, product IDs, and user IDs, preventing dangerous type mixing in e-commerce operations",
+    "problem": "Primitive types like string and number can be accidentally mixed (e.g., USD with EUR, product IDs with user IDs) leading to critical bugs in payment and inventory systems.",
+    "solution": "Implement branded types with unique symbols to create distinct identities for domain-specific values, enforced at compile time.",
+    "rationale": "Branded types eliminate entire classes of mixing errors and provide domain-specific type safety without runtime overhead.",
+    "codeExample": {
+      "before": "// Dangerous primitive mixing\nfunction calculateTotal(price: number, tax: number): number {\n  return price + tax; // Could mix USD with EUR accidentally\n}\n\nfunction getProductForUser(prodId: string, userId: string) {\n  // Easy to mix up parameter order\n  return api.getProduct(userId, prodId); // Bug!\n}",
+      "after": "// Type-safe branded types\ntype USD = number & { readonly __brand: \"USD\" };\ntype EUR = number & { readonly __brand: \"EUR\" };\ntype ProductId = string & { readonly __brand: \"ProductId\" };\ntype UserId = string & { readonly __brand: \"UserId\" };\n\n// Smart constructors\nconst usd = (amount: number): USD => amount as USD;\nconst productId = (id: string): ProductId => id as ProductId;\nconst userId = (id: string): UserId => id as UserId;\n\n// Type-safe operations\nfunction calculateTotal(price: USD, tax: USD): USD {\n  return usd(price + tax); // Only USD + USD allowed\n}\n\nfunction getProductForUser(prodId: ProductId, user: UserId): Promise<Product> {\n  // Type system prevents mixing up IDs\n  return api.getProduct(prodId, user);\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.learningtypescript.com/articles/branded-types",
+        "title": "Learning TypeScript - Branded Types",
+        "type": "tutorial"
+      },
+      {
+        "url": "https://www.typescriptlang.org/docs/handbook/advanced-types.html",
+        "title": "TypeScript Advanced Types Documentation",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["branded-types", "domain-safety", "type-safety", "currency"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium-high",
+    "timeToImplement": "1-2 days setup + 3-5 days migration",
+    "prerequisites": ["Advanced TypeScript knowledge", "Domain modeling understanding"],
+    "validation": {
+      "criteria": "Compile-time errors when mixing different branded types, type-safe currency operations",
+      "testExample": "Attempt to pass EUR to USD function should fail compilation"
+    }
+  },
+  {
+    "id": "discriminated-unions-cart-state",
+    "title": "Discriminated Unions for Cart State Management",
+    "technology": "typescript",
+    "category": "state-management",
+    "priority": "high",
+    "status": "planned",
+    "description": "Model shopping cart states as discriminated unions to ensure type-safe state transitions and eliminate impossible states in checkout flows",
+    "problem": "Traditional state management allows invalid combinations (e.g., completed cart with no order ID) and requires runtime checks for state-dependent properties.",
+    "solution": "Use discriminated unions to model cart states as mutually exclusive types with state-specific properties guaranteed by the type system.",
+    "rationale": "Discriminated unions eliminate impossible states at compile time and ensure exhaustive state handling, reducing bugs in critical checkout flows.",
+    "codeExample": {
+      "before": "// Unsafe state management\ninterface Cart {\n  items: CartItem[];\n  status: \"empty\" | \"active\" | \"checking_out\" | \"completed\";\n  paymentMethod?: string; // Could be undefined when needed\n  orderId?: string; // Could be undefined when status is completed\n}",
+      "after": "// Type-safe discriminated unions\ntype CartState = \n  | { status: \"empty\" }\n  | { status: \"active\"; items: CartItem[]; userId: UserId }\n  | { \n      status: \"checking_out\"; \n      items: CartItem[]; \n      userId: UserId;\n      paymentMethod: PaymentMethod;\n      shippingAddress: Address;\n    }\n  | { \n      status: \"completed\"; \n      orderId: OrderId;\n      completedAt: Date;\n    };\n\n// Type-safe state transitions\nfunction processCart(cart: CartState): CartState {\n  switch (cart.status) {\n    case \"empty\":\n      return cart;\n    case \"active\":\n      if (cart.items.length === 0) {\n        return { status: \"empty\" };\n      }\n      return cart;\n    case \"checking_out\":\n      return {\n        status: \"completed\",\n        orderId: generateOrderId(),\n        completedAt: new Date()\n      };\n    case \"completed\":\n      return cart;\n    default:\n      const _exhaustive: never = cart;\n      throw new Error(`Unhandled cart state: ${_exhaustive}`);\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html",
+        "title": "TypeScript Handbook - Discriminated Unions",
+        "type": "documentation"
+      },
+      {
+        "url": "https://dev.to/tonystpierre/7-advanced-typescript-patterns-for-safer-smarter-code-design-54n7",
+        "title": "Advanced TypeScript Patterns",
+        "type": "blog"
+      }
+    ],
+    "tags": ["discriminated-unions", "state-management", "cart", "type-safety"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 days for cart state refactoring",
+    "prerequisites": ["TypeScript union types", "State machine concepts"],
+    "validation": {
+      "criteria": "All cart state transitions compile without errors, exhaustive pattern matching enforced",
+      "testExample": "Cart state tests verify all transitions and impossible states are prevented"
+    }
+  },
+  {
+    "id": "zod-runtime-validation",
+    "title": "Zod Integration for Runtime Validation",
+    "technology": "typescript",
+    "category": "validation",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Integrate Zod schemas with TypeScript for runtime validation of payment data, user inputs, and API responses while maintaining strict type safety",
+    "problem": "TypeScript provides compile-time safety but cannot validate runtime data from external sources (APIs, user inputs), creating security vulnerabilities in payment processing.",
+    "solution": "Use Zod schemas for runtime validation with automatic TypeScript type inference, providing both compile-time and runtime safety.",
+    "rationale": "Runtime validation prevents malformed payment data and API attacks while maintaining type safety through automatic type inference from schemas.",
+    "codeExample": {
+      "before": "// No runtime validation - dangerous for payments!\ninterface PaymentRequest {\n  amount: number;\n  currency: string;\n  paymentMethodId: string;\n}\n\nasync function processPayment(data: PaymentRequest): Promise<void> {\n  // No validation - could process invalid amounts!\n  await stripe.createPaymentIntent(data);\n}",
+      "after": "// Zod runtime validation with TypeScript inference\nimport { z } from 'zod';\n\nconst PaymentRequestSchema = z.object({\n  amount: z.number().positive().max(1000000), // Max $10k\n  currency: z.enum(['USD', 'EUR', 'GBP']),\n  paymentMethodId: z.string().min(1),\n  customerId: z.string().uuid(),\n});\n\n// TypeScript type automatically inferred\ntype PaymentRequest = z.infer<typeof PaymentRequestSchema>;\n\nasync function processPayment(data: unknown): Promise<PaymentResult> {\n  const result = PaymentRequestSchema.safeParse(data);\n  \n  if (!result.success) {\n    throw new PaymentValidationError(\n      'Invalid payment data',\n      result.error.issues\n    );\n  }\n  \n  // result.data is now type-safe PaymentRequest\n  return await stripe.createPaymentIntent({\n    amount: result.data.amount,\n    currency: result.data.currency,\n    payment_method: result.data.paymentMethodId,\n    customer: result.data.customerId,\n  });\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://zod.dev/",
+        "title": "Zod Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://blog.logrocket.com/schema-validation-typescript-zod/",
+        "title": "Schema Validation in TypeScript with Zod",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["zod", "runtime-validation", "type-safety", "payments"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "3-5 days for comprehensive validation setup",
+    "prerequisites": ["Zod library", "Schema design principles"],
+    "validation": {
+      "criteria": "All payment operations validate input data, runtime validation catches malformed API responses",
+      "testExample": "Test payment validation with invalid data to verify proper error handling"
+    }
+  },
+  {
+    "id": "nextjs-react-strict-integration",
+    "title": "Next.js 15 + React 19 Strict Mode Integration",
+    "technology": "typescript",
+    "category": "framework-integration",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Optimize TypeScript configuration for Next.js 15 with React 19, leveraging strict mode for improved development experience and runtime safety",
+    "problem": "Suboptimal TypeScript configuration can lead to development issues, slow builds, and missed type errors in Next.js applications.",
+    "solution": "Configure Next.js with TypeScript strict mode, typed routes, and React 19 optimizations for maximum type safety and performance.",
+    "rationale": "Proper framework integration ensures type safety across the entire stack and catches development issues early with React Strict Mode.",
+    "codeExample": {
+      "before": "// next.config.ts - Basic configuration\nconst nextConfig = {\n  reactStrictMode: true,\n};\n\nexport default nextConfig;",
+      "after": "// next.config.ts - Optimized for e-commerce\nimport type { NextConfig } from 'next';\n\nconst nextConfig: NextConfig = {\n  reactStrictMode: true,\n  \n  typescript: {\n    ignoreBuildErrors: false, // Fail build on TypeScript errors\n  },\n  \n  experimental: {\n    typedRoutes: true, // Type-safe routing\n    serverComponentsExternalPackages: ['@stripe/stripe-js'],\n  },\n  \n  async headers() {\n    return [{\n      source: '/api/payments/:path*',\n      headers: [\n        { key: 'X-Content-Type-Options', value: 'nosniff' },\n        { key: 'X-Frame-Options', value: 'DENY' },\n      ],\n    }];\n  },\n};\n\nexport default nextConfig;\n\n// Type-safe API routes\nimport { NextRequest, NextResponse } from 'next/server';\nimport { z } from 'zod';\n\nconst CreateOrderSchema = z.object({\n  items: z.array(z.object({\n    productId: z.string(),\n    quantity: z.number().int().positive(),\n  })),\n});\n\nexport async function POST(request: NextRequest) {\n  try {\n    const body = await request.json();\n    const validated = CreateOrderSchema.parse(body);\n    const order = await createOrder(validated);\n    return NextResponse.json(order);\n  } catch (error) {\n    if (error instanceof z.ZodError) {\n      return NextResponse.json(\n        { error: 'Invalid request data', details: error.issues },\n        { status: 400 }\n      );\n    }\n    return NextResponse.json(\n      { error: 'Internal server error' },\n      { status: 500 }\n    );\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/blog/next-15",
+        "title": "Next.js 15 Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://react.dev/blog/2024/04/25/react-19-upgrade-guide",
+        "title": "React 19 Upgrade Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://nextjs.org/docs/app/api-reference/config/typescript",
+        "title": "Next.js TypeScript Configuration",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["nextjs-15", "react-19", "framework-integration", "type-safety"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "low-medium",
+    "timeToImplement": "1-2 days for configuration setup",
+    "prerequisites": ["Next.js 15", "React 19", "TypeScript"],
+    "validation": {
+      "criteria": "Next.js builds without TypeScript errors, React Strict Mode catches development issues",
+      "testExample": "Build process completes successfully with strict TypeScript checking"
+    }
+  },
+  {
+    "id": "advanced-error-handling",
+    "title": "Advanced Error Handling Patterns",
+    "technology": "typescript",
+    "category": "error-handling",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement sophisticated error handling using Result types, custom error classes, and exhaustive error checking for robust e-commerce operations",
+    "problem": "Basic try-catch error handling provides poor error information and doesn't enforce handling of all error cases, leading to unhandled exceptions in critical payment flows.",
+    "solution": "Use Result types, custom error classes with structured information, and exhaustive error checking to ensure all error cases are handled explicitly.",
+    "rationale": "Advanced error handling eliminates uncaught exceptions and provides structured error information for debugging and user experience.",
+    "codeExample": {
+      "before": "// Basic error handling\nasync function processOrder(orderId: string): Promise<Order> {\n  try {\n    const response = await fetch(`/api/orders/${orderId}`);\n    return await response.json();\n  } catch (error) {\n    throw error; // Generic error handling\n  }\n}",
+      "after": "// Advanced Result type pattern\ntype Result<T, E = Error> = \n  | { success: true; data: T }\n  | { success: false; error: E };\n\n// Custom error types\nclass PaymentError extends Error {\n  constructor(\n    message: string,\n    public code: string,\n    public retryable: boolean = false\n  ) {\n    super(message);\n    this.name = 'PaymentError';\n  }\n}\n\nclass InventoryError extends Error {\n  constructor(\n    message: string,\n    public productId: string,\n    public requestedQuantity: number,\n    public availableQuantity: number\n  ) {\n    super(message);\n    this.name = 'InventoryError';\n  }\n}\n\n// Type-safe error handling\nasync function processOrder(orderId: string): Promise<Result<Order, OrderError>> {\n  try {\n    const inventoryResult = await checkInventory(orderId);\n    if (!inventoryResult.success) {\n      return { success: false, error: inventoryResult.error };\n    }\n    \n    const paymentResult = await processPayment(orderId);\n    if (!paymentResult.success) {\n      return { success: false, error: paymentResult.error };\n    }\n    \n    const order = await createOrder(orderId, paymentResult.data);\n    return { success: true, data: order };\n    \n  } catch (error) {\n    return { \n      success: false, \n      error: new OrderError('Unexpected error during order processing', error) \n    };\n  }\n}\n\n// Exhaustive error handling\nfunction handleOrderResult(result: Result<Order, OrderError>): void {\n  if (result.success) {\n    console.log('Order created:', result.data.id);\n    return;\n  }\n  \n  switch (result.error.constructor) {\n    case PaymentError:\n      const paymentError = result.error as PaymentError;\n      if (paymentError.retryable) {\n        scheduleRetry(paymentError);\n      } else {\n        notifyCustomerPaymentFailed(paymentError);\n      }\n      break;\n      \n    case InventoryError:\n      const inventoryError = result.error as InventoryError;\n      notifyCustomerOutOfStock(inventoryError);\n      break;\n      \n    default:\n      logUnexpectedError(result.error);\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://github.com/microsoft/TypeScript/wiki/Coding-guidelines",
+        "title": "TypeScript Error Handling Best Practices",
+        "type": "documentation"
+      },
+      {
+        "url": "https://dev.to/tonystpierre/7-advanced-typescript-patterns-for-safer-smarter-code-design-54n7",
+        "title": "Functional Error Handling in TypeScript",
+        "type": "blog"
+      }
+    ],
+    "tags": ["error-handling", "result-types", "custom-errors", "type-safety"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "4-6 days for comprehensive error handling refactor",
+    "prerequisites": ["Advanced TypeScript", "Error handling patterns"],
+    "validation": {
+      "criteria": "All async operations return Result types, custom error classes provide structured information",
+      "testExample": "Error handling tests verify all error cases are handled and provide proper information"
+    }
+  },
+  {
+    "id": "performance-optimized-testing",
+    "title": "Performance-Optimized Testing Patterns",
+    "technology": "typescript",
+    "category": "testing",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Implement TypeScript-first testing with Jest and Playwright, focusing on type safety and performance for e-commerce critical paths",
+    "problem": "Testing without proper TypeScript integration leads to runtime errors in tests, poor performance, and tests that don't reflect actual production types.",
+    "solution": "Configure Jest and Playwright with optimized TypeScript settings, type-safe test patterns, and performance-focused test architecture.",
+    "rationale": "Type-safe testing catches errors in test code before runtime and ensures tests accurately reflect production behavior.",
+    "codeExample": {
+      "before": "// Basic Jest test without types\nit('should process payment', async () => {\n  const result = await processPayment({ amount: 100 });\n  expect(result.status).toBe('succeeded');\n});",
+      "after": "// jest.config.ts - Optimized for TypeScript\nimport type { Config } from '@jest/types';\n\nconst config: Config.InitialOptions = {\n  preset: 'ts-jest',\n  testEnvironment: 'jsdom',\n  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],\n  \n  moduleNameMapping: {\n    '^@/(.*)$': '<rootDir>/src/$1',\n  },\n  \n  transform: {\n    '^.+\\\\.(ts|tsx)$': ['ts-jest', {\n      tsconfig: {\n        jsx: 'react-jsx',\n        esModuleInterop: true,\n        allowSyntheticDefaultImports: true,\n      }\n    }],\n  },\n  \n  coverageThreshold: {\n    global: {\n      branches: 90,\n      functions: 90,\n      lines: 90,\n      statements: 90,\n    },\n  },\n};\n\nexport default config;\n\n// Type-safe testing\nimport { render, screen, fireEvent, waitFor } from '@testing-library/react';\nimport type { PaymentMethod, ShippingAddress } from '@/types/checkout';\n\nconst mockPaymentMethod: PaymentMethod = {\n  id: 'pm_test123',\n  type: 'card',\n  last4: '4242',\n};\n\ndescribe('CheckoutForm', () => {\n  it('should handle form submission with valid data', async () => {\n    const onSubmit = jest.fn<void, [CheckoutFormData]>();\n    \n    render(\n      <CheckoutForm\n        paymentMethod={mockPaymentMethod}\n        onSubmit={onSubmit}\n      />\n    );\n    \n    const submitButton = screen.getByRole('button', { name: /place order/i });\n    fireEvent.click(submitButton);\n    \n    await waitFor(() => {\n      expect(onSubmit).toHaveBeenCalledWith({\n        paymentMethod: mockPaymentMethod,\n      });\n    });\n  });\n});\n\n// Type-safe E2E testing with Playwright\nimport { test, expect, Page } from '@playwright/test';\n\nclass CheckoutPage {\n  constructor(private page: Page) {}\n  \n  async fillShippingAddress(address: ShippingAddress): Promise<void> {\n    await this.page.fill('[data-testid=\"street\"]', address.street);\n    await this.page.fill('[data-testid=\"city\"]', address.city);\n  }\n  \n  async getOrderConfirmation(): Promise<string> {\n    const element = await this.page.waitForSelector('[data-testid=\"order-id\"]');\n    return await element.textContent() ?? '';\n  }\n}\n\ntest('complete checkout flow', async ({ page }) => {\n  const checkoutPage = new CheckoutPage(page);\n  \n  await page.goto('/checkout');\n  await checkoutPage.fillShippingAddress(mockShippingAddress);\n  \n  const orderId = await checkoutPage.getOrderConfirmation();\n  expect(orderId).toMatch(/^order_[a-zA-Z0-9]+$/);\n});"
+    },
+    "externalResources": [
+      {
+        "url": "https://jestjs.io/docs/getting-started#using-typescript",
+        "title": "Jest TypeScript Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://playwright.dev/docs/test-typescript",
+        "title": "Playwright TypeScript Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.webdevtutor.net/blog/typescript-testing-framework-2024",
+        "title": "Testing TypeScript Applications",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["testing", "jest", "playwright", "type-safety", "performance"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium-high",
+    "timeToImplement": "3-5 days for comprehensive test setup",
+    "prerequisites": ["Jest", "Playwright", "Testing Library"],
+    "validation": {
+      "criteria": "All tests are type-safe and compile without errors, test coverage meets quality thresholds",
+      "testExample": "Test suite runs successfully with TypeScript strict mode enabled"
+    }
+  },
+  {
+    "id": "type-safe-api-integration",
+    "title": "Type-Safe API Integration Patterns",
+    "technology": "typescript",
+    "category": "api-integration",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement comprehensive type safety for API communications, including request/response types, error handling, and client-server contract validation",
+    "problem": "API contract mismatches between frontend and backend lead to runtime errors, serialization issues, and inconsistent error handling across the application.",
+    "solution": "Create shared schemas between client and server, implement type-safe API client with runtime validation, and ensure consistent error handling.",
+    "rationale": "Type-safe API integration prevents contract mismatches, catches serialization errors at compile time, and ensures consistent error handling.",
+    "codeExample": {
+      "before": "// Untyped API calls\nasync function getProduct(id: string): Promise<any> {\n  const response = await fetch(`/api/products/${id}`);\n  return response.json();\n}",
+      "after": "// Comprehensive type-safe API layer\nimport { z } from 'zod';\n\nexport const ProductSchema = z.object({\n  id: z.string().uuid(),\n  name: z.string().min(1),\n  price: z.number().positive(),\n  currency: z.enum(['USD', 'EUR', 'GBP']),\n  inventory: z.object({\n    quantity: z.number().int().nonnegative(),\n    reserved: z.number().int().nonnegative(),\n  }),\n  createdAt: z.string().datetime(),\n});\n\nexport const ApiErrorSchema = z.object({\n  error: z.string(),\n  code: z.string(),\n  details: z.record(z.unknown()).optional(),\n});\n\nexport type Product = z.infer<typeof ProductSchema>;\nexport type ApiError = z.infer<typeof ApiErrorSchema>;\n\n// Type-safe API client\nclass ApiClient {\n  private async request<T>(\n    endpoint: string,\n    options: RequestInit = {},\n    schema: z.ZodSchema<T>\n  ): Promise<Result<T, ApiError>> {\n    try {\n      const response = await fetch(`/api${endpoint}`, {\n        headers: { 'Content-Type': 'application/json', ...options.headers },\n        ...options,\n      });\n      \n      const data = await response.json();\n      \n      if (!response.ok) {\n        const errorResult = ApiErrorSchema.safeParse(data);\n        if (errorResult.success) {\n          return { success: false, error: errorResult.data };\n        }\n        return { \n          success: false, \n          error: { error: 'Unknown API error', code: 'UNKNOWN' } \n        };\n      }\n      \n      const result = schema.safeParse(data);\n      if (result.success) {\n        return { success: true, data: result.data };\n      }\n      \n      return { \n        success: false, \n        error: { \n          error: 'Invalid response format', \n          code: 'VALIDATION_ERROR',\n          details: result.error.issues \n        } \n      };\n    } catch (error) {\n      return { \n        success: false, \n        error: { \n          error: error instanceof Error ? error.message : 'Network error',\n          code: 'NETWORK_ERROR' \n        } \n      };\n    }\n  }\n  \n  async getProduct(id: string): Promise<Result<Product, ApiError>> {\n    return this.request(`/products/${id}`, {}, ProductSchema);\n  }\n}\n\n// Server-side API route with matching types\nimport { NextRequest, NextResponse } from 'next/server';\n\nexport async function GET(\n  request: NextRequest,\n  { params }: { params: { id: string } }\n): Promise<NextResponse<Product | ApiError>> {\n  try {\n    const product = await getProductFromDatabase(params.id);\n    \n    if (!product) {\n      return NextResponse.json(\n        { error: 'Product not found', code: 'NOT_FOUND' },\n        { status: 404 }\n      );\n    }\n    \n    const validatedProduct = ProductSchema.parse(product);\n    return NextResponse.json(validatedProduct);\n    \n  } catch (error) {\n    if (error instanceof z.ZodError) {\n      return NextResponse.json(\n        { \n          error: 'Invalid product data', \n          code: 'VALIDATION_ERROR',\n          details: error.issues \n        },\n        { status: 500 }\n      );\n    }\n    \n    return NextResponse.json(\n      { error: 'Internal server error', code: 'INTERNAL_ERROR' },\n      { status: 500 }\n    );\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html",
+        "title": "TypeScript API Design Best Practices",
+        "type": "documentation"
+      },
+      {
+        "url": "https://zod.dev/",
+        "title": "Zod API Validation Patterns",
+        "type": "documentation"
+      },
+      {
+        "url": "https://nextjs.org/docs/app/api-reference/config/typescript",
+        "title": "Next.js API Routes with TypeScript",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["api-integration", "type-safety", "validation", "client-server"],
+    "version": "5.6.2",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "5-7 days for comprehensive API type safety",
+    "prerequisites": ["Zod schemas", "API design patterns", "Client-server architecture"],
+    "validation": {
+      "criteria": "All API calls are type-safe with proper error handling, client-server contracts validated at runtime",
+      "testExample": "API integration tests verify type safety and proper error handling"
+    }
+  }
+]

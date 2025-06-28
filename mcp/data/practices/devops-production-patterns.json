@@ -1,0 +1,316 @@
+[
+  {
+    "id": "multi-stage-cicd-pipeline",
+    "title": "Multi-Stage CI/CD Pipeline with Environment Parity",
+    "technology": "devops",
+    "category": "deployment",
+    "priority": "critical",
+    "status": "implemented",
+    "description": "Implement separated CI/CD workflows for frontend (Next.js) and backend (Medusa v2) with environment-specific configurations and automated testing gates",
+    "problem": "E-commerce applications require different deployment requirements for storefront vs. backend services, with zero-downtime deployments critical for sales continuity and revenue protection.",
+    "solution": "Create dedicated GitHub Actions workflows for frontend and backend with proper environment isolation, automated testing, and platform-specific deployment strategies.",
+    "rationale": "Separated pipelines enable independent scaling, reduce deployment risks, ensure environment parity, and provide rollback capabilities for mission-critical e-commerce operations.",
+    "codeExample": {
+      "before": "# Single deployment workflow\nname: Deploy All\non:\n  push:\n    branches: [main]\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Deploy everything\n        run: echo 'Deploying all services together'",
+      "after": "# .github/workflows/frontend-deploy.yml\nname: Frontend Deploy\non:\n  push:\n    branches: [main]\n    paths: ['app/**', 'components/**', 'hooks/**']\n\njobs:\n  test-and-deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Setup Node.js 18\n        uses: actions/setup-node@v4\n        with:\n          node-version: '18'\n          cache: 'pnpm'\n      \n      - name: Install dependencies\n        run: pnpm install --frozen-lockfile\n      \n      - name: Run tests\n        run: pnpm test\n      \n      - name: Build application\n        run: pnpm build\n        env:\n          NEXT_PUBLIC_MEDUSA_BACKEND_URL: ${{ secrets.MEDUSA_BACKEND_URL }}\n          NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}\n      \n      - name: Deploy to Vercel\n        uses: vercel/action@v1\n        with:\n          vercel-token: ${{ secrets.VERCEL_TOKEN }}\n          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}\n\n# .github/workflows/backend-deploy.yml\nname: Backend Deploy\non:\n  push:\n    branches: [main]\n    paths: ['backend/**']\n\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Deploy to Railway\n        run: |\n          curl -f -X POST \\\n            -H \"Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}\" \\\n            -H \"Content-Type: application/json\" \\\n            https://backboard.railway.app/graphql/v2"
+    },
+    "externalResources": [
+      {
+        "url": "https://vercel.com/docs/deployments/git",
+        "title": "Vercel CI/CD Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.railway.com/deploy/deployments",
+        "title": "Railway Deploy Docs",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/learn/deployment/general",
+        "title": "Medusa Deployment Guide",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["cicd", "github-actions", "vercel", "railway", "automation"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 weeks",
+    "prerequisites": ["GitHub Actions", "Vercel/Railway accounts", "Testing framework"],
+    "validation": {
+      "criteria": "Automated tests pass in all environments, zero failed deployments over 30 days, environment parity verified",
+      "testExample": "Deploy both frontend and backend changes simultaneously to verify independent deployment success"
+    }
+  },
+  {
+    "id": "container-orchestration-docker",
+    "title": "Container Orchestration with Multi-Service Docker Compose",
+    "technology": "devops",
+    "category": "containerization",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Implement production-ready Docker containerization with service isolation, health checks, and resource limits for the complete e-commerce stack",
+    "problem": "E-commerce applications need consistent environments, easy scaling, and service isolation between frontend, backend, database, and cache layers to ensure reliability and performance.",
+    "solution": "Use Docker Compose with multi-service configuration, health checks, resource limits, and proper networking for development and production environments.",
+    "rationale": "Container orchestration provides consistent environments, enables easy scaling, ensures service isolation, and simplifies deployment across different environments.",
+    "codeExample": {
+      "before": "# Basic docker setup\nversion: '3.8'\nservices:\n  app:\n    build: .\n    ports:\n      - \"3000:3000\"",
+      "after": "# docker-compose.prod.yml\nversion: '3.8'\n\nservices:\n  postgres:\n    image: postgres:15-alpine\n    restart: always\n    environment:\n      POSTGRES_DB: medusa_db\n      POSTGRES_USER: medusa_user\n      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U medusa_user -d medusa_db\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n          cpus: '0.5'\n\n  redis:\n    image: redis:7-alpine\n    restart: always\n    command: redis-server --appendonly yes\n    volumes:\n      - redis_data:/data\n    healthcheck:\n      test: [\"CMD\", \"redis-cli\", \"ping\"]\n      interval: 10s\n      timeout: 3s\n      retries: 5\n    deploy:\n      resources:\n        limits:\n          memory: 256M\n          cpus: '0.25'\n\n  medusa-backend:\n    build:\n      context: ./backend\n      dockerfile: Dockerfile.prod\n    restart: always\n    depends_on:\n      postgres:\n        condition: service_healthy\n      redis:\n        condition: service_healthy\n    environment:\n      NODE_ENV: production\n      DATABASE_URL: postgres://medusa_user:${POSTGRES_PASSWORD}@postgres:5432/medusa_db\n      REDIS_URL: redis://redis:6379\n      JWT_SECRET: ${JWT_SECRET}\n      COOKIE_SECRET: ${COOKIE_SECRET}\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:9000/health\"]\n      interval: 30s\n      timeout: 10s\n      retries: 3\n    deploy:\n      replicas: 2\n      resources:\n        limits:\n          memory: 1G\n          cpus: '1.0'\n\nvolumes:\n  postgres_data:\n  redis_data:"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.docker.com/compose/production/",
+        "title": "Docker Compose Production Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://github.com/medusajs/docker-medusa",
+        "title": "Medusa Docker Setup",
+        "type": "repository"
+      }
+    ],
+    "tags": ["docker", "containerization", "compose", "health-checks", "scaling"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-4 weeks",
+    "prerequisites": ["Docker knowledge", "Container orchestration understanding"],
+    "validation": {
+      "criteria": "All services pass health checks, zero-downtime deployments with rolling updates, resource utilization within limits",
+      "testExample": "Deploy stack and verify all health checks pass, test rolling updates without service interruption"
+    }
+  },
+  {
+    "id": "secrets-management-encryption",
+    "title": "Secrets Management with Environment-Specific Encryption",
+    "technology": "devops",
+    "category": "security",
+    "priority": "critical",
+    "status": "implemented",
+    "description": "Implement secure secrets management using platform-native solutions with rotation policies and audit trails",
+    "problem": "E-commerce applications handle sensitive data (payment keys, database credentials, API tokens) that must be secured across multiple environments with proper rotation and audit capabilities.",
+    "solution": "Use platform-native secret management (Vercel Environment Variables, Railway Variables) with validation scripts and automated rotation policies.",
+    "rationale": "Proper secrets management prevents security breaches, ensures compliance, enables audit trails, and provides secure access to sensitive configuration data.",
+    "codeExample": {
+      "before": "# Insecure environment setup\n# .env file committed to git\nSTRIPE_SECRET_KEY=sk_live_1234567890\nJWT_SECRET=simple_secret\nDATABASE_URL=postgres://user:pass@localhost/db",
+      "after": "# Environment validation script\n#!/bin/bash\n# scripts/validate-env.sh\nset -e\n\nREQUIRED_VARS=(\n  \"DATABASE_URL\"\n  \"REDIS_URL\"\n  \"JWT_SECRET\"\n  \"COOKIE_SECRET\"\n  \"STRIPE_API_KEY\"\n  \"STRIPE_WEBHOOK_SECRET\"\n)\n\nfor var in \"${REQUIRED_VARS[@]}\"; do\n  if [ -z \"${!var}\" ]; then\n    echo \"ERROR: $var is not set\"\n    exit 1\n  fi\ndone\n\n# Validate secret strength\nif [ ${#JWT_SECRET} -lt 32 ]; then\n  echo \"ERROR: JWT_SECRET must be at least 32 characters\"\n  exit 1\nfi\n\necho \"All environment variables validated successfully\"\n\n# lib/config.ts - Environment validation\nimport { z } from 'zod'\n\nconst envSchema = z.object({\n  DATABASE_URL: z.string().url(),\n  REDIS_URL: z.string().url(),\n  JWT_SECRET: z.string().min(32),\n  COOKIE_SECRET: z.string().min(32),\n  STRIPE_API_KEY: z.string().startsWith('sk_'),\n  STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),\n  NODE_ENV: z.enum(['development', 'staging', 'production']),\n})\n\nexport const env = envSchema.parse(process.env)\n\n# Secure deployment commands\n# Vercel Environment Setup\nvercel env add STRIPE_SECRET_KEY production\nvercel env add JWT_SECRET production\n\n# Railway Environment Setup\nrailway variables set STRIPE_SECRET_KEY=sk_live_...\nrailway variables set JWT_SECRET=$(openssl rand -base64 32)"
+    },
+    "externalResources": [
+      {
+        "url": "https://vercel.com/docs/projects/environment-variables",
+        "title": "Vercel Environment Variables",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.railway.com/develop/variables",
+        "title": "Railway Environment Management",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["secrets", "environment-variables", "security", "validation", "encryption"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "low",
+    "timeToImplement": "1-2 weeks",
+    "prerequisites": ["Platform account setup", "Security understanding"],
+    "validation": {
+      "criteria": "All secrets properly encrypted at rest, no secrets in git history, automated secret rotation implemented",
+      "testExample": "Audit git history for secrets, verify environment validation script catches invalid configurations"
+    }
+  },
+  {
+    "id": "database-migration-backup-strategy",
+    "title": "Database Migration & Backup Strategy with Point-in-Time Recovery",
+    "technology": "devops",
+    "category": "data-management",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement automated PostgreSQL backups with point-in-time recovery, migration rollback capabilities, and environment-specific data seeding",
+    "problem": "E-commerce databases contain critical order, customer, and inventory data requiring guaranteed recovery and safe migration processes to prevent data loss and business disruption.",
+    "solution": "Implement automated backup systems with point-in-time recovery, safe migration scripts with rollback capabilities, and comprehensive data verification processes.",
+    "rationale": "Database reliability is critical for e-commerce operations. Proper backup and migration strategies ensure data integrity, business continuity, and rapid recovery capabilities.",
+    "codeExample": {
+      "before": "# Basic migration without safety\nnpm run migrate\n# No backup, no rollback, no verification",
+      "after": "#!/bin/bash\n# scripts/backup-db.sh\nset -e\n\nBACKUP_DIR=\"/backups\"\nTIMESTAMP=$(date +%Y%m%d_%H%M%S)\nBACKUP_FILE=\"medusa_backup_${TIMESTAMP}.sql\"\n\n# Create compressed backup with schema and data\npg_dump $DATABASE_URL \\\n  --verbose \\\n  --format=custom \\\n  --compress=9 \\\n  --file=\"${BACKUP_DIR}/${BACKUP_FILE}\"\n\n# Upload to cloud storage (AWS S3 example)\naws s3 cp \"${BACKUP_DIR}/${BACKUP_FILE}\" \\\n  \"s3://your-backup-bucket/database-backups/${BACKUP_FILE}\"\n\n# Cleanup local backups older than 7 days\nfind $BACKUP_DIR -name \"medusa_backup_*.sql\" -mtime +7 -delete\n\necho \"Backup completed: ${BACKUP_FILE}\"\n\n# backend/src/scripts/migrate-safe.ts\nimport { DataSource } from \"typeorm\"\nimport { MedusaAppLoader } from \"@medusajs/medusa\"\n\nexport async function safeMigration() {\n  const loader = new MedusaAppLoader()\n  const { container } = await loader.load()\n  \n  const dataSource = container.resolve<DataSource>(\"dataSource\")\n  \n  try {\n    // Create backup before migration\n    console.log(\"Creating pre-migration backup...\")\n    await execSync(`./scripts/backup-db.sh`)\n    \n    // Run migrations\n    console.log(\"Running migrations...\")\n    await dataSource.runMigrations()\n    \n    // Verify data integrity\n    console.log(\"Verifying migration...\")\n    await verifyDataIntegrity(dataSource)\n    \n    console.log(\"Migration completed successfully\")\n  } catch (error) {\n    console.error(\"Migration failed:\", error)\n    console.log(\"Initiating rollback...\")\n    await rollbackMigration(dataSource)\n    throw error\n  }\n}\n\nasync function verifyDataIntegrity(dataSource: DataSource) {\n  const productCount = await dataSource.query(\"SELECT COUNT(*) FROM product\")\n  if (productCount[0].count === 0) {\n    throw new Error(\"Product table appears to be empty after migration\")\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/backup.html",
+        "title": "PostgreSQL Backup Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/development/entities/migrations/create",
+        "title": "Medusa Migrations",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["database", "backup", "migration", "recovery", "data-integrity"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "3-4 weeks",
+    "prerequisites": ["PostgreSQL expertise", "Backup strategy design", "Migration planning"],
+    "validation": {
+      "criteria": "Automated daily backups with verification, migration rollback tested successfully, RTO < 1 hour",
+      "testExample": "Test backup restoration process, verify migration rollback functionality with sample data"
+    }
+  },
+  {
+    "id": "realtime-monitoring-ecommerce-kpis",
+    "title": "Real-Time Monitoring with E-commerce KPI Alerting",
+    "technology": "devops",
+    "category": "monitoring",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Implement comprehensive monitoring using Sentry for errors, performance tracking for Core Web Vitals, and custom e-commerce metrics alerting",
+    "problem": "E-commerce requires real-time visibility into cart abandonment, conversion rates, performance bottlenecks, and error rates that directly impact revenue and customer experience.",
+    "solution": "Use Sentry for error tracking, implement custom e-commerce metrics monitoring, and set up automated alerting for business-critical KPIs.",
+    "rationale": "Real-time monitoring enables rapid response to issues affecting revenue, provides insights into customer behavior, and ensures optimal performance during critical business periods.",
+    "codeExample": {
+      "before": "// Basic console logging\nconsole.log('User added item to cart');\nconsole.error('Payment failed');\n// No structured monitoring or alerting",
+      "after": "// lib/monitoring.ts\nimport * as Sentry from \"@sentry/nextjs\"\nimport { Analytics } from '@segment/analytics-node'\n\n// Initialize Sentry with performance monitoring\nSentry.init({\n  dsn: process.env.SENTRY_DSN,\n  environment: process.env.NODE_ENV,\n  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,\n  beforeSend(event) {\n    // Filter sensitive data\n    if (event.request?.headers?.authorization) {\n      delete event.request.headers.authorization\n    }\n    return event\n  },\n})\n\n// E-commerce specific metrics\nexport class EcommerceMonitoring {\n  private analytics = new Analytics({\n    writeKey: process.env.SEGMENT_WRITE_KEY!\n  })\n\n  trackCartAbandonment(userId: string, cartValue: number) {\n    this.analytics.track({\n      userId,\n      event: 'Cart Abandoned',\n      properties: { value: cartValue }\n    })\n    \n    // Alert if cart value > $100\n    if (cartValue > 100) {\n      Sentry.addBreadcrumb({\n        message: 'High-value cart abandoned',\n        level: 'warning',\n        data: { userId, cartValue }\n      })\n    }\n  }\n\n  trackConversionRate(rate: number) {\n    if (rate < 0.02) { // Alert if conversion < 2%\n      Sentry.captureMessage('Low conversion rate detected', {\n        level: 'warning',\n        extra: { conversionRate: rate }\n      })\n    }\n  }\n\n  trackPagePerformance(metrics: {\n    lcp: number // Largest Contentful Paint\n    fid: number // First Input Delay\n    cls: number // Cumulative Layout Shift\n  }) {\n    if (metrics.lcp > 2500) {\n      Sentry.captureMessage('Poor LCP performance', {\n        level: 'warning',\n        extra: metrics\n      })\n    }\n  }\n}\n\n// middleware.ts - Performance monitoring\nimport { NextResponse } from 'next/server'\nimport type { NextRequest } from 'next/server'\n\nexport function middleware(request: NextRequest) {\n  const start = Date.now()\n  \n  const response = NextResponse.next()\n  \n  // Add performance headers\n  response.headers.set('X-Response-Time', `${Date.now() - start}ms`)\n  \n  // Monitor slow responses\n  const responseTime = Date.now() - start\n  if (responseTime > 1000) {\n    console.warn(`Slow response: ${request.url} took ${responseTime}ms`)\n  }\n  \n  return response\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.sentry.io/platforms/javascript/guides/nextjs/",
+        "title": "Sentry Next.js Integration",
+        "type": "documentation"
+      },
+      {
+        "url": "https://nextjs.org/docs/advanced-features/measuring-performance",
+        "title": "Web Vitals Monitoring",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["monitoring", "sentry", "performance", "kpis", "alerting"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 weeks",
+    "prerequisites": ["Sentry account", "Analytics setup", "Performance monitoring understanding"],
+    "validation": {
+      "criteria": "Error rate < 0.1% in production, Core Web Vitals within Google thresholds, alert response time < 5 minutes",
+      "testExample": "Generate test errors and performance issues to verify monitoring and alerting systems respond correctly"
+    }
+  },
+  {
+    "id": "security-scanning-vulnerability-management",
+    "title": "Security Scanning with Container Vulnerability Management",
+    "technology": "devops",
+    "category": "security",
+    "priority": "critical",
+    "status": "implemented",
+    "description": "Implement automated security scanning for dependencies, containers, and secrets with integration into CI/CD pipeline",
+    "problem": "E-commerce applications handle sensitive customer data and payments, requiring continuous security monitoring and vulnerability management to prevent breaches and maintain compliance.",
+    "solution": "Integrate automated security scanning tools (Trivy, TruffleHog) into CI/CD pipeline with automated vulnerability detection and remediation workflows.",
+    "rationale": "Continuous security scanning prevents vulnerabilities from reaching production, ensures compliance with security standards, and protects sensitive customer and payment data.",
+    "codeExample": {
+      "before": "# No security scanning\nname: Deploy\non: [push]\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Deploy\n        run: npm run deploy",
+      "after": "# .github/workflows/security-scan.yml\nname: Security Scan\non:\n  schedule:\n    - cron: '0 2 * * *' # Daily at 2 AM\n  push:\n    branches: [main]\n\njobs:\n  security-scan:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Run Trivy vulnerability scanner\n        uses: aquasecurity/trivy-action@master\n        with:\n          scan-type: 'fs'\n          scan-ref: '.'\n          format: 'sarif'\n          output: 'trivy-results.sarif'\n          severity: 'CRITICAL,HIGH'\n      \n      - name: Upload Trivy scan results\n        uses: github/codeql-action/upload-sarif@v2\n        with:\n          sarif_file: 'trivy-results.sarif'\n      \n      - name: Container Security Scan\n        run: |\n          docker build -t temp-scan .\n          trivy image --severity HIGH,CRITICAL temp-scan\n      \n      - name: Secret Scanning\n        uses: trufflesecurity/trufflehog@main\n        with:\n          path: ./\n          base: main\n          head: HEAD\n          extra_args: --debug --only-verified\n\n# Dockerfile.security - Multi-stage with security hardening\nFROM node:18-alpine AS base\nRUN addgroup --system --gid 1001 nodejs\nRUN adduser --system --uid 1001 nextjs\n\nFROM base AS deps\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\n\nFROM base AS runner\nWORKDIR /app\nENV NODE_ENV production\n\n# Copy with proper ownership\nCOPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules\nCOPY --chown=nextjs:nodejs . .\n\nUSER nextjs\nEXPOSE 3000\nENV PORT 3000\n\nHEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \\\n  CMD curl -f http://localhost:3000/api/health || exit 1\n\nCMD [\"npm\", \"start\"]"
+    },
+    "externalResources": [
+      {
+        "url": "https://trivy.dev/",
+        "title": "Trivy Security Scanner",
+        "type": "tool"
+      },
+      {
+        "url": "https://owasp.org/www-project-devsecops-guideline/latest/02f-Container-Vulnerability-Scanning",
+        "title": "OWASP Container Security",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["security", "vulnerability-scanning", "trivy", "secrets", "containers"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 weeks",
+    "prerequisites": ["Security scanning tools", "CI/CD pipeline", "Container knowledge"],
+    "validation": {
+      "criteria": "Zero critical vulnerabilities in production, security scans integrated in CI/CD, automated dependency updates",
+      "testExample": "Introduce test vulnerabilities to verify scanning detects and alerts on security issues"
+    }
+  },
+  {
+    "id": "blue-green-deployment-rollback",
+    "title": "Blue-Green Deployment with Automated Rollback",
+    "technology": "devops",
+    "category": "deployment",
+    "priority": "high",
+    "status": "planned",
+    "description": "Implement blue-green deployment strategy with automated health checks and instant rollback capabilities for zero-downtime e-commerce operations",
+    "problem": "E-commerce sites cannot afford downtime during deployments, especially during peak shopping periods, requiring instant rollback capabilities on failure detection.",
+    "solution": "Implement blue-green deployment with automated health checks, gradual traffic shifting, and instant rollback mechanisms for mission-critical deployments.",
+    "rationale": "Blue-green deployments ensure zero downtime, enable instant rollback on issues, provide safe deployment testing, and maintain customer experience during updates.",
+    "codeExample": {
+      "before": "// Basic deployment without rollback\nasync function deploy() {\n  await buildApplication();\n  await deployToProduction();\n  // No health checks, no rollback capability\n}",
+      "after": "// scripts/blue-green-deploy.ts\ninterface DeploymentConfig {\n  blueUrl: string\n  greenUrl: string\n  healthCheckPath: string\n  trafficSplitDuration: number\n}\n\nexport class BlueGreenDeployment {\n  constructor(private config: DeploymentConfig) {}\n\n  async deploy(newVersion: string): Promise<boolean> {\n    const inactiveEnvironment = await this.getInactiveEnvironment()\n    \n    try {\n      // Deploy to inactive environment\n      console.log(`Deploying ${newVersion} to ${inactiveEnvironment}`)\n      await this.deployToEnvironment(inactiveEnvironment, newVersion)\n      \n      // Health check new deployment\n      await this.healthCheck(inactiveEnvironment)\n      \n      // Gradual traffic shift\n      await this.gradualTrafficShift(inactiveEnvironment)\n      \n      // Monitor for errors\n      const success = await this.monitorDeployment(300) // 5 minutes\n      \n      if (success) {\n        await this.completeSwitch(inactiveEnvironment)\n        return true\n      } else {\n        await this.rollback()\n        return false\n      }\n    } catch (error) {\n      console.error('Deployment failed:', error)\n      await this.rollback()\n      return false\n    }\n  }\n\n  private async healthCheck(environment: string): Promise<void> {\n    const maxRetries = 10\n    const retryDelay = 5000\n\n    for (let i = 0; i < maxRetries; i++) {\n      try {\n        const response = await fetch(`${environment}${this.config.healthCheckPath}`)\n        if (response.ok) {\n          console.log(`Health check passed for ${environment}`)\n          return\n        }\n      } catch (error) {\n        console.log(`Health check attempt ${i + 1} failed, retrying...`)\n      }\n      \n      await new Promise(resolve => setTimeout(resolve, retryDelay))\n    }\n    \n    throw new Error(`Health check failed for ${environment}`)\n  }\n\n  private async gradualTrafficShift(newEnvironment: string): Promise<void> {\n    const steps = [10, 25, 50, 75, 100]\n    \n    for (const percentage of steps) {\n      await this.updateTrafficSplit(newEnvironment, percentage)\n      await this.monitorMetrics(60) // Monitor for 1 minute\n      console.log(`Traffic shifted to ${percentage}% for ${newEnvironment}`)\n    }\n  }\n\n  private async monitorMetrics(durationSeconds: number): Promise<boolean> {\n    // Monitor error rates, response times, and business metrics\n    const startTime = Date.now()\n    \n    while (Date.now() - startTime < durationSeconds * 1000) {\n      const metrics = await this.getCurrentMetrics()\n      \n      if (metrics.errorRate > 0.01 || metrics.avgResponseTime > 1000) {\n        return false\n      }\n      \n      await new Promise(resolve => setTimeout(resolve, 5000))\n    }\n    \n    return true\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://vercel.com/blog/releasing-safe-and-cost-efficient-blue-green-deployments",
+        "title": "Vercel Blue-Green Deployments",
+        "type": "blog"
+      },
+      {
+        "url": "https://docs.aws.amazon.com/whitepapers/latest/blue-green-deployments/welcome.html",
+        "title": "Blue-Green Deployment Patterns",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["blue-green", "deployment", "rollback", "zero-downtime", "health-checks"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "4-6 weeks",
+    "prerequisites": ["Load balancer setup", "Health check implementation", "Traffic management"],
+    "validation": {
+      "criteria": "Zero-downtime deployments verified, automatic rollback triggers within 30 seconds, deployment success rate > 99%",
+      "testExample": "Deploy with intentional errors to verify automated rollback functionality and timing"
+    }
+  },
+  {
+    "id": "infrastructure-as-code-terraform",
+    "title": "Infrastructure as Code with Terraform & Helm",
+    "technology": "devops",
+    "category": "infrastructure",
+    "priority": "high",
+    "status": "planned",
+    "description": "Implement complete infrastructure automation using Terraform for cloud resources and Helm charts for Kubernetes application deployment",
+    "problem": "E-commerce infrastructure requires consistent, repeatable deployments across environments with version-controlled infrastructure changes and disaster recovery capabilities.",
+    "solution": "Use Terraform for infrastructure provisioning and Helm for application deployment with version control, state management, and environment consistency.",
+    "rationale": "Infrastructure as Code ensures consistent environments, enables version control of infrastructure, provides disaster recovery capabilities, and reduces manual configuration errors.",
+    "codeExample": {
+      "before": "# Manual infrastructure setup\n# - Manually create database in cloud console\n# - Manually configure networking\n# - Manually deploy applications\n# No version control, no consistency",
+      "after": "# terraform/main.tf\nterraform {\n  required_providers {\n    kubernetes = {\n      source  = \"hashicorp/kubernetes\"\n      version = \"~> 2.23\"\n    }\n    helm = {\n      source  = \"hashicorp/helm\"\n      version = \"~> 2.11\"\n    }\n  }\n}\n\n# EKS Cluster\nresource \"aws_eks_cluster\" \"medusa_cluster\" {\n  name     = var.cluster_name\n  role_arn = aws_iam_role.eks_cluster.arn\n  version  = \"1.28\"\n\n  vpc_config {\n    subnet_ids              = aws_subnet.private[*].id\n    endpoint_private_access = true\n    endpoint_public_access  = true\n  }\n\n  depends_on = [\n    aws_iam_role_policy_attachment.eks_cluster_policy,\n  ]\n}\n\n# RDS PostgreSQL\nresource \"aws_db_instance\" \"postgres\" {\n  identifier             = \"medusa-postgres\"\n  engine                 = \"postgres\"\n  engine_version         = \"15.4\"\n  instance_class         = var.db_instance_class\n  allocated_storage      = 100\n  storage_encrypted      = true\n  \n  db_name  = \"medusa\"\n  username = var.db_username\n  password = var.db_password\n  \n  backup_retention_period = 7\n  backup_window          = \"03:00-04:00\"\n  maintenance_window     = \"sun:04:00-sun:05:00\"\n  \n  skip_final_snapshot = false\n  final_snapshot_identifier = \"medusa-final-snapshot\"\n  \n  tags = var.common_tags\n}\n\n# ElastiCache Redis\nresource \"aws_elasticache_replication_group\" \"redis\" {\n  replication_group_id       = \"medusa-redis\"\n  description                = \"Redis cluster for Medusa\"\n  \n  node_type                  = var.redis_node_type\n  port                       = 6379\n  parameter_group_name       = \"default.redis7\"\n  \n  num_cache_clusters         = 2\n  automatic_failover_enabled = true\n  multi_az_enabled          = true\n  \n  subnet_group_name = aws_elasticache_subnet_group.redis.name\n  security_group_ids = [aws_security_group.redis.id]\n  \n  at_rest_encryption_enabled = true\n  transit_encryption_enabled = true\n  \n  tags = var.common_tags\n}\n\n# helm/medusa/values.yaml\nmedusa:\n  image:\n    repository: your-registry/medusa\n    tag: latest\n    pullPolicy: IfNotPresent\n  \n  replicaCount: 3\n  \n  env:\n    NODE_ENV: production\n    MEDUSA_WORKER_MODE: server\n  \n  envFrom:\n    - secretRef:\n        name: medusa-secrets\n  \n  resources:\n    limits:\n      cpu: 1000m\n      memory: 2Gi\n    requests:\n      cpu: 500m\n      memory: 1Gi\n  \n  autoscaling:\n    enabled: true\n    minReplicas: 3\n    maxReplicas: 10\n    targetCPUUtilizationPercentage: 70\n\npostgresql:\n  enabled: false  # Using external RDS\n  \nredis:\n  enabled: false  # Using external ElastiCache\n\ningress:\n  enabled: true\n  className: nginx\n  annotations:\n    cert-manager.io/cluster-issuer: letsencrypt-prod\n    nginx.ingress.kubernetes.io/rate-limit: \"100\"\n  hosts:\n    - host: api.yourstore.com\n      paths:\n        - path: /\n          pathType: Prefix\n  tls:\n    - secretName: medusa-tls\n      hosts:\n        - api.yourstore.com"
+    },
+    "externalResources": [
+      {
+        "url": "https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest",
+        "title": "Terraform EKS Module",
+        "type": "documentation"
+      },
+      {
+        "url": "https://helm.sh/docs/chart_best_practices/",
+        "title": "Helm Chart Best Practices",
+        "type": "documentation"
+      },
+      {
+        "url": "https://registry.terraform.io/providers/hashicorp/helm/latest/docs",
+        "title": "Terraform Helm Provider",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["terraform", "helm", "infrastructure-as-code", "kubernetes", "automation"],
+    "version": "1.0.0",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "6-8 weeks",
+    "prerequisites": ["Terraform knowledge", "Kubernetes understanding", "Helm experience", "Cloud provider familiarity"],
+    "validation": {
+      "criteria": "Infrastructure deployed consistently across environments, all resources tagged and cost-tracked, disaster recovery tested",
+      "testExample": "Deploy infrastructure to test environment, verify all components work, test disaster recovery procedures"
+    }
+  }
+]

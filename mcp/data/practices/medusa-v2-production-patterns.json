@@ -1,0 +1,306 @@
+[
+  {
+    "id": "modular-workflow-architecture",
+    "title": "Modular Workflow Architecture Pattern",
+    "technology": "medusa",
+    "category": "architecture",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement business logic through decoupled modules orchestrated via workflows for data consistency and error handling across the entire commerce stack",
+    "problem": "Cross-domain dependencies between commerce modules create tight coupling, data consistency issues, and difficulty in error recovery during complex business operations.",
+    "solution": "Use Medusa v2's module system with workflow orchestration to create loosely coupled, transaction-safe business logic with automatic compensation patterns.",
+    "rationale": "Modular workflows eliminate dependencies, ensure data consistency across systems, provide automatic error rollback, and enable incremental adoption without large migrations.",
+    "codeExample": {
+      "before": "// Tightly coupled service logic\nclass OrderService {\n  async createOrder(orderData) {\n    const inventory = await this.inventoryService.reserve(orderData.items);\n    const payment = await this.paymentService.charge(orderData.payment);\n    const order = await this.orderRepository.create({ ...orderData, inventory, payment });\n    // No error compensation - partial failures leave inconsistent state\n    return order;\n  }\n}",
+      "after": "// Modular workflow with compensation\n@Module(\"brandModuleService\", {\n  service: BrandModuleService,\n})\nexport class BrandModule {\n  static definition = {\n    key: \"brandModuleService\",\n    defaultPackage: \"@your-company/brand-module\",\n  }\n}\n\nconst createBrandStep = createStep(\n  \"create-brand-step\",\n  async (input: CreateBrandInput, { container }) => {\n    const brandService = container.resolve(\"brandModuleService\")\n    const brand = await brandService.createBrands(input)\n    return brand\n  },\n  // Compensation function for error handling\n  async (brand, { container }) => {\n    const brandService = container.resolve(\"brandModuleService\")\n    await brandService.deleteBrands(brand.id)\n  }\n)\n\nconst createBrandWorkflow = createWorkflow(\n  \"create-brand-workflow\",\n  (input: WorkflowData<CreateBrandInput>) => {\n    return createBrandStep(input)\n  }\n)"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/learn/fundamentals/modules",
+        "title": "Medusa v2 Modules Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/learn/fundamentals/workflows",
+        "title": "Workflows Guide",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["modules", "workflows", "architecture", "compensation", "medusa-v2"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "3-5 days",
+    "prerequisites": ["Medusa v2", "Dependency injection understanding", "Workflow patterns"],
+    "validation": {
+      "criteria": "All cross-module operations use workflows, compensation functions implemented, proper error rollback",
+      "testExample": "Test workflow execution with intentional failures to verify compensation logic"
+    }
+  },
+  {
+    "id": "production-worker-separation",
+    "title": "Production Deployment with Worker Separation",
+    "technology": "medusa",
+    "category": "deployment",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Deploy Medusa v2 with separate server and worker instances to optimize resource utilization and handle background tasks efficiently in production environments",
+    "problem": "Monolithic deployments where background tasks block API requests, leading to poor performance, inability to scale components independently, and resource contention.",
+    "solution": "Deploy separate server instances for API handling and worker instances for background processing, with proper environment configuration and resource allocation.",
+    "rationale": "Worker separation prevents API blocking, enables horizontal scaling, improves performance, and allows different resource allocation strategies per instance type.",
+    "codeExample": {
+      "before": "// Single instance handling both API and background tasks\nconst medusaConfig = {\n  projectConfig: {\n    // Single instance configuration\n    workerMode: \"shared\",\n  },\n};\n\n// All tasks run on same instance - blocking potential",
+      "after": "// medusa-config.ts - Optimized deployment\nimport { defineConfig } from \"@medusajs/medusa\"\n\nexport default defineConfig({\n  projectConfig: {\n    workerMode: process.env.MEDUSA_WORKER_MODE as \"shared\" | \"worker\" | \"server\",\n    admin: {\n      disable: process.env.DISABLE_MEDUSA_ADMIN === \"true\",\n    },\n    http: {\n      jwtSecret: process.env.JWT_SECRET,\n      cookieSecret: process.env.COOKIE_SECRET,\n    },\n  },\n  modules: {\n    // Module configurations\n  },\n})\n\n// Docker deployment\n// Server instance\n// ENV MEDUSA_WORKER_MODE=server\n// ENV DISABLE_MEDUSA_ADMIN=false\n\n// Worker instance  \n// ENV MEDUSA_WORKER_MODE=worker\n// ENV DISABLE_MEDUSA_ADMIN=true"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/learn/deployment/general",
+        "title": "Medusa Deployment Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/learn/deployment",
+        "title": "Worker Mode Configuration",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["deployment", "workers", "scaling", "performance", "production"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "5-7 days",
+    "prerequisites": ["Docker", "Infrastructure setup", "Deployment orchestration"],
+    "validation": {
+      "criteria": "Separate deployments working, background jobs processed by workers only, API not blocked",
+      "testExample": "Load test API while running heavy background tasks to verify separation"
+    }
+  },
+  {
+    "id": "mikroorm-database-optimization",
+    "title": "Database Optimization with MikroORM v6",
+    "technology": "medusa",
+    "category": "performance",
+    "priority": "high",
+    "status": "planned",
+    "description": "Leverage MikroORM v6's performance optimizations with proper transaction management, query optimization, and connection pooling for high-traffic e-commerce operations",
+    "problem": "Poor database performance due to inefficient queries, improper transaction handling, and inadequate connection pooling leading to slow response times and resource waste.",
+    "solution": "Implement optimized database operations using MikroORM v6 features including proper transactions, query optimization, and production-grade connection pooling.",
+    "rationale": "Database optimization improves query performance, ensures data consistency, optimizes resource utilization, and provides better scalability for high-traffic scenarios.",
+    "codeExample": {
+      "before": "// Basic database operations without optimization\nclass ProductService {\n  async createProducts(productsData) {\n    const products = [];\n    for (const data of productsData) {\n      // Individual database calls - inefficient\n      const product = await this.productRepository.create(data);\n      products.push(product);\n    }\n    return products;\n  }\n\n  async getProducts() {\n    // N+1 query problem\n    const products = await this.productRepository.findAll();\n    for (const product of products) {\n      product.variants = await this.variantRepository.find({ productId: product.id });\n    }\n    return products;\n  }\n}",
+      "after": "@Injectable()\nexport class OptimizedProductService {\n  constructor(\n    @InjectManager(\"baseRepository\") \n    private baseRepository: DAL.RepositoryService\n  ) {}\n\n  @InjectManager()\n  async createProductsWithTransaction(\n    productsData: CreateProductInput[],\n    @MedusaContext() sharedContext: Context = {}\n  ): Promise<Product[]> {\n    return await this.baseRepository.transaction(\n      async (transactionManager) => {\n        const products = []\n        for (const productData of productsData) {\n          const product = await this.createProduct(productData, {\n            ...sharedContext,\n            manager: transactionManager,\n          })\n          products.push(product)\n        }\n        return products\n      },\n      {\n        isolationLevel: \"READ_COMMITTED\",\n        enableNestedTransactions: true,\n      }\n    )\n  }\n\n  // Optimized query with proper joins\n  async getProductsWithVariants(filters: FilterQuery<Product>) {\n    return await this.baseRepository.find(Product, filters, {\n      populate: [\"variants\", \"variants.prices\"],\n      strategy: \"select-in\", // Optimize for large datasets\n      limit: 50,\n      offset: 0,\n    })\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/learn/fundamentals/modules/db-operations",
+        "title": "Medusa Database Operations",
+        "type": "documentation"
+      },
+      {
+        "url": "https://mikro-orm.github.io/docs",
+        "title": "MikroORM v6 Documentation",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["database", "mikroorm", "performance", "transactions", "optimization"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-4 days",
+    "prerequisites": ["MikroORM knowledge", "Database optimization understanding"],
+    "validation": {
+      "criteria": "Proper transaction management, optimized queries, connection pooling configured",
+      "testExample": "Database performance benchmarks show improved query times and proper connection usage"
+    }
+  },
+  {
+    "id": "comprehensive-testing-strategy",
+    "title": "Comprehensive Testing Strategy with Jest Integration",
+    "technology": "medusa",
+    "category": "testing",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Implement a multi-layered testing approach using Medusa's testing framework with Jest for unit tests, module integration tests, and API route testing",
+    "problem": "Insufficient testing coverage leads to production bugs, regression issues during refactoring, and lack of confidence in code changes for critical e-commerce operations.",
+    "solution": "Use Medusa's built-in testing utilities with Jest to create comprehensive test suites covering units, modules, and API endpoints with proper test isolation.",
+    "rationale": "Comprehensive testing ensures code quality, provides confidence during development, catches regressions early, and documents expected behavior through specifications.",
+    "codeExample": {
+      "before": "// Basic manual testing without framework\nconst testCreateProduct = async () => {\n  const product = await productService.create({ name: 'Test' });\n  console.log('Product created:', product.id);\n  // No assertions, no isolation, no cleanup\n};\n\ntestCreateProduct();",
+      "after": "// Module integration test\nimport { moduleIntegrationTestRunner, ModuleJoinerConfig } from \"@medusajs/test-utils\"\n\nmoduleIntegrationTestRunner({\n  moduleName: \"brandModuleService\",\n  testSuite: ({ service }) => {\n    describe(\"Brand Module Service\", () => {\n      it(\"should create and retrieve a brand\", async () => {\n        const brandData = {\n          name: \"Test Brand\",\n          handle: \"test-brand\",\n        }\n\n        const brand = await service.createBrands(brandData)\n        expect(brand).toEqual(\n          expect.objectContaining({\n            id: expect.any(String),\n            name: \"Test Brand\",\n            handle: \"test-brand\",\n          })\n        )\n\n        const retrievedBrand = await service.retrieveBrand(brand.id)\n        expect(retrievedBrand).toEqual(brand)\n      })\n    })\n  },\n})\n\n// API route integration test\nimport { medusaIntegrationTestRunner } from \"@medusajs/test-utils\"\n\nmedusaIntegrationTestRunner({\n  testSuite: ({ getContainer, api }) => {\n    describe(\"POST /admin/brands\", () => {\n      it(\"should create a brand successfully\", async () => {\n        const response = await api.post(\"/admin/brands\", {\n          name: \"New Brand\",\n          handle: \"new-brand\",\n        })\n\n        expect(response.status).toEqual(200)\n        expect(response.data.brand).toEqual(\n          expect.objectContaining({\n            name: \"New Brand\",\n            handle: \"new-brand\",\n          })\n        )\n      })\n    })\n  },\n})"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/learn/debugging-and-testing/testing-tools",
+        "title": "Medusa Testing Tools",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/modules-tests",
+        "title": "Module Testing Guide",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["testing", "jest", "integration-tests", "quality-assurance"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "3-5 days",
+    "prerequisites": ["Jest", "Medusa testing utilities", "Testing patterns"],
+    "validation": {
+      "criteria": "Unit tests cover all service methods, integration tests validate API endpoints, test coverage above 80%",
+      "testExample": "Run full test suite with coverage reporting to verify comprehensive coverage"
+    }
+  },
+  {
+    "id": "multi-layer-authentication-security",
+    "title": "Multi-Layer Authentication and Security Patterns",
+    "technology": "medusa",
+    "category": "security",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement robust authentication using JWT tokens, API keys, and session management with proper security headers, CORS configuration, and rate limiting",
+    "problem": "Inadequate authentication and security measures expose e-commerce applications to unauthorized access, API abuse, brute force attacks, and data breaches.",
+    "solution": "Implement comprehensive security with JWT authentication, API keys, rate limiting, proper CORS configuration, and security headers for production deployment.",
+    "rationale": "Multi-layer security protects against unauthorized access, prevents API abuse, stops brute force attacks, and ensures secure client-server communication.",
+    "codeExample": {
+      "before": "// Basic unsecured configuration\nexport default defineConfig({\n  projectConfig: {\n    http: {\n      // Missing security configuration\n      authCors: \"*\", // Overly permissive\n    },\n  },\n});",
+      "after": "// medusa-config.ts security configuration\nexport default defineConfig({\n  projectConfig: {\n    http: {\n      jwtSecret: process.env.JWT_SECRET, // Required in production\n      cookieSecret: process.env.COOKIE_SECRET,\n      authCors: process.env.AUTH_CORS || \"http://localhost:3000,http://localhost:7001\",\n      adminCors: process.env.ADMIN_CORS || \"http://localhost:7001\",\n      storeCors: process.env.STORE_CORS || \"http://localhost:3000\",\n    },\n  },\n  modules: [\n    // Rate limiting plugin\n    {\n      resolve: \"@perseidesjs/medusa-plugin-rate-limit\",\n      options: {\n        limit: 100, // requests per window\n        window: 60, // seconds\n        skipSuccessfulRequests: false,\n        keyGenerator: (req) => req.ip, // Rate limit by IP\n      },\n    },\n  ],\n})\n\n// Custom authentication middleware\nexport const authenticateCustomer = (req, res, next) => {\n  const token = req.headers.authorization?.replace(\"Bearer \", \"\")\n  \n  if (!token) {\n    return res.status(401).json({ message: \"Authentication required\" })\n  }\n\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET)\n    req.user = decoded\n    next()\n  } catch (error) {\n    return res.status(401).json({ message: \"Invalid token\" })\n  }\n}\n\n// API key validation\nconst validateApiKey = async (apiKey: string): Promise<boolean> => {\n  const hashedKey = Buffer.from(apiKey, \"base64\").toString()\n  return await apiKeyService.validateKey(hashedKey)\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/api/admin#section/Authentication",
+        "title": "Medusa Authentication Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/learn/configurations/medusa-config",
+        "title": "Security Best Practices",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["authentication", "security", "jwt", "rate-limiting", "cors"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "4-6 days",
+    "prerequisites": ["Security expertise", "JWT understanding", "Authentication patterns"],
+    "validation": {
+      "criteria": "JWT secrets configured, rate limiting active, CORS properly configured, API key authentication working",
+      "testExample": "Security audit shows proper authentication and protection against common attacks"
+    }
+  },
+  {
+    "id": "stripe-payment-integration",
+    "title": "Stripe Payment Integration with Multi-Method Support",
+    "technology": "medusa",
+    "category": "payments",
+    "priority": "critical",
+    "status": "implemented",
+    "description": "Implement comprehensive Stripe payment processing with support for multiple payment methods, proper webhook handling, and error management for global e-commerce operations",
+    "problem": "Limited payment method support, inadequate webhook handling, and poor error management in payment processing leading to lost sales and customer frustration.",
+    "solution": "Configure Stripe with multiple payment methods, proper webhook endpoints, error handling, and global payment support through Medusa's Stripe integration.",
+    "rationale": "Comprehensive payment integration provides secure processing, supports global customers with multiple methods, ensures payment state consistency, and handles edge cases gracefully.",
+    "codeExample": {
+      "before": "// Basic Stripe configuration\nexport default defineConfig({\n  modules: [\n    {\n      resolve: \"@medusajs/medusa/payment-stripe\",\n      options: {\n        apiKey: process.env.STRIPE_API_KEY,\n        // Basic configuration without webhook handling\n      },\n    },\n  ],\n});",
+      "after": "// Comprehensive Stripe configuration\nexport default defineConfig({\n  modules: [\n    {\n      resolve: \"@medusajs/medusa/payment\",\n      options: {\n        providers: [\n          {\n            resolve: \"@medusajs/medusa/payment-stripe\",\n            id: \"stripe\",\n            options: {\n              apiKey: process.env.STRIPE_API_KEY,\n              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,\n              capture: true, // Auto-capture or manual capture\n              automatic_payment_methods: {\n                enabled: true,\n                allow_redirects: \"always\",\n              },\n            },\n          },\n        ],\n      },\n    },\n  ],\n})\n\n// Payment method configuration\nconst paymentInfoMap = {\n  card: {\n    title: \"Credit/Debit Card\",\n    icon: \"credit-card\",\n  },\n  paypal: {\n    title: \"PayPal\",\n    icon: \"paypal\",\n  },\n  ideal: {\n    title: \"iDEAL\",\n    icon: \"ideal\",\n  },\n}\n\n// Error handling in payment flow\nconst handlePaymentSubmission = async (stripe, elements) => {\n  try {\n    if (!stripe || !elements) {\n      throw new Error(\"Payment processing not ready\")\n    }\n\n    await elements.submit()\n\n    const { error } = await stripe.confirmPayment({\n      elements,\n      confirmParams: {\n        return_url: `${window.location.origin}/order/confirmed`,\n      },\n    })\n\n    if (error) {\n      throw new Error(error.message)\n    }\n  } catch (err) {\n    console.error(\"Payment failed:\", err.message)\n    // Handle error appropriately\n  }\n}\n\n// Webhook endpoint configuration\n// URL: {server_url}/hooks/payment/stripe\n// Events: payment_intent.succeeded, payment_intent.payment_failed, \n//         payment_intent.canceled, payment_intent.requires_action"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe",
+        "title": "Medusa Stripe Integration",
+        "type": "documentation"
+      },
+      {
+        "url": "https://medusajs.com/blog/stripe-payment-element-guide/",
+        "title": "Stripe Payment Element Guide",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["payments", "stripe", "webhooks", "multi-method", "global"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "3-4 days",
+    "prerequisites": ["Stripe account", "Payment processing knowledge", "Webhook handling"],
+    "validation": {
+      "criteria": "Multiple payment methods working, webhook endpoints configured, payment failures handled gracefully",
+      "testExample": "Test payments with different methods and verify webhook processing in Stripe dashboard"
+    }
+  },
+  {
+    "id": "inventory-multi-location-management",
+    "title": "Inventory Management with Multi-Location Support",
+    "technology": "medusa",
+    "category": "inventory",
+    "priority": "high",
+    "status": "planned",
+    "description": "Implement real-time inventory tracking across multiple locations with reservation system, overselling prevention, and optimized fulfillment strategies",
+    "problem": "Single-location inventory management leads to overselling, suboptimal fulfillment, inaccurate stock levels, and inefficient inventory allocation across multiple warehouses.",
+    "solution": "Use Medusa's inventory module with multi-location support, reservation systems, real-time tracking, and intelligent fulfillment optimization based on customer proximity.",
+    "rationale": "Multi-location inventory prevents overselling, optimizes fulfillment costs, provides accurate stock levels, and enables efficient allocation across warehouses.",
+    "codeExample": {
+      "before": "// Simple single-location inventory\nclass InventoryService {\n  async checkStock(productId, quantity) {\n    const product = await this.productRepository.findOne(productId);\n    return product.stock >= quantity;\n  }\n\n  async reserveStock(productId, quantity) {\n    // Basic stock reduction without location awareness\n    await this.productRepository.update(productId, {\n      stock: product.stock - quantity\n    });\n  }\n}",
+      "after": "// Multi-location inventory service\n@Injectable()\nexport class InventoryLocationService {\n  constructor(\n    @Inject(\"inventoryModuleService\") \n    private inventoryService: IInventoryModuleService\n  ) {}\n\n  async checkInventoryAvailability(\n    variantId: string,\n    quantity: number,\n    locationId?: string\n  ): Promise<boolean> {\n    const inventoryItems = await this.inventoryService.listInventoryItems({\n      sku: variantId,\n    })\n\n    if (!inventoryItems.length) return false\n\n    const levels = await this.inventoryService.listInventoryLevels({\n      inventory_item_id: inventoryItems[0].id,\n      location_id: locationId,\n    })\n\n    const totalAvailable = levels.reduce(\n      (sum, level) => sum + (level.stocked_quantity - level.reserved_quantity), \n      0\n    )\n\n    return totalAvailable >= quantity\n  }\n\n  async reserveInventory(\n    variantId: string,\n    quantity: number,\n    locationId: string,\n    reservationId: string\n  ): Promise<void> {\n    await this.inventoryService.createReservationItems([\n      {\n        inventory_item_id: variantId,\n        location_id: locationId,\n        quantity,\n        external_id: reservationId,\n      },\n    ])\n  }\n\n  async optimizeFulfillment(\n    items: CartItem[],\n    customerLocation: { lat: number; lng: number }\n  ): Promise<FulfillmentPlan> {\n    const fulfillmentPlan = new Map()\n\n    for (const item of items) {\n      const availableLocations = await this.getAvailableLocations(\n        item.variant_id,\n        item.quantity\n      )\n\n      // Find closest location with sufficient stock\n      const optimalLocation = this.findClosestLocation(\n        availableLocations,\n        customerLocation\n      )\n\n      fulfillmentPlan.set(item.id, {\n        location_id: optimalLocation.id,\n        quantity: item.quantity,\n      })\n    }\n\n    return fulfillmentPlan\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/inventory",
+        "title": "Medusa Inventory Module",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/product/variant-inventory",
+        "title": "Product Variant Inventory",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["inventory", "multi-location", "fulfillment", "reservation", "optimization"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "5-7 days",
+    "prerequisites": ["Inventory module understanding", "Location management", "Fulfillment optimization"],
+    "validation": {
+      "criteria": "Real-time inventory tracking, reservation system prevents overselling, fulfillment optimization working",
+      "testExample": "Test concurrent order placement to verify reservation system prevents overselling"
+    }
+  },
+  {
+    "id": "performance-optimization-high-traffic",
+    "title": "Performance Optimization for High-Traffic Operations",
+    "technology": "medusa",
+    "category": "performance",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement caching strategies, query optimization, and resource management patterns to handle high-traffic e-commerce scenarios with optimal performance",
+    "problem": "Poor performance under heavy load due to lack of caching, unoptimized queries, and inadequate resource management leading to slow response times and poor user experience.",
+    "solution": "Implement comprehensive caching layers, optimize database queries, configure proper connection pooling, and use performance patterns for high-traffic scenarios.",
+    "rationale": "Performance optimization reduces response times, optimizes resource utilization, improves user experience during traffic spikes, and enables horizontal scaling.",
+    "codeExample": {
+      "before": "// Basic service without optimization\nclass ProductService {\n  async getProduct(productId) {\n    // No caching - always hits database\n    return await this.productRepository.findOne(productId, {\n      relations: ['variants', 'variants.prices', 'images']\n    });\n  }\n\n  async getProductsCatalog(filters) {\n    // No pagination, no caching\n    return await this.productRepository.find(filters);\n  }\n}",
+      "after": "// Performance-optimized service\n@Injectable()\nexport class CachedProductService {\n  constructor(\n    private productService: ProductModuleService,\n    private cacheService: ICacheService\n  ) {}\n\n  async getProductWithCache(productId: string): Promise<Product> {\n    const cacheKey = `product:${productId}`\n    \n    // Try cache first\n    let product = await this.cacheService.get(cacheKey)\n    \n    if (!product) {\n      // Cache miss - fetch from database\n      product = await this.productService.retrieveProduct(productId, {\n        relations: [\"variants\", \"variants.prices\", \"images\"],\n      })\n      \n      // Cache for 1 hour\n      await this.cacheService.set(cacheKey, product, 3600)\n    }\n    \n    return product\n  }\n\n  // Bulk operations with pagination\n  async getProductsCatalog(\n    filters: FilterableProductProps,\n    page = 1,\n    pageSize = 50\n  ): Promise<{ products: Product[]; totalCount: number }> {\n    const cacheKey = `catalog:${JSON.stringify(filters)}:${page}:${pageSize}`\n    \n    let result = await this.cacheService.get(cacheKey)\n    \n    if (!result) {\n      const [products, totalCount] = await this.productService.listAndCountProducts(\n        filters,\n        {\n          skip: (page - 1) * pageSize,\n          take: pageSize,\n          relations: [\"variants\"],\n          order: { created_at: \"DESC\" },\n        }\n      )\n      \n      result = { products, totalCount }\n      await this.cacheService.set(cacheKey, result, 1800) // 30 minutes\n    }\n    \n    return result\n  }\n}\n\n// Database optimization patterns\nexport class OptimizedQueryService {\n  // Use select-in strategy for large datasets\n  async getProductsWithVariantsOptimized(productIds: string[]) {\n    return await this.productRepository.find(\n      { id: { $in: productIds } },\n      {\n        populate: [\"variants\", \"variants.prices\"],\n        strategy: \"select-in\", // Prevents N+1 queries\n        orderBy: { created_at: \"DESC\" },\n        limit: 100,\n      }\n    )\n  }\n}\n\n// Connection pooling configuration\n// medusa-config.ts\nexport default defineConfig({\n  projectConfig: {\n    database: {\n      clientUrl: process.env.DATABASE_URL,\n      pool: {\n        min: 10,\n        max: 50,\n        acquireTimeoutMillis: 60000,\n        createTimeoutMillis: 30000,\n        destroyTimeoutMillis: 5000,\n        idleTimeoutMillis: 30000,\n        reapIntervalMillis: 1000,\n        createRetryIntervalMillis: 200,\n      },\n    },\n  },\n})"
+    },
+    "externalResources": [
+      {
+        "url": "https://docs.medusajs.com/v2-overview/",
+        "title": "Medusa Performance Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://mikro-orm.github.io/docs/performance",
+        "title": "MikroORM Performance Tips",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["performance", "caching", "optimization", "high-traffic", "scalability"],
+    "version": "2.8.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "6-8 days",
+    "prerequisites": ["Performance engineering", "Caching strategies", "Database optimization"],
+    "validation": {
+      "criteria": "Response times under 200ms for cached content, proper connection pooling, optimized queries",
+      "testExample": "Load testing shows improved performance under high traffic with proper caching"
+    }
+  }
+]

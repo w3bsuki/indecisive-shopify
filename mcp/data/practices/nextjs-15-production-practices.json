@@ -1,0 +1,268 @@
+[
+  {
+    "id": "async-request-apis",
+    "title": "Migrate to Async Request APIs for Better Performance",
+    "technology": "nextjs",
+    "category": "performance",
+    "priority": "high",
+    "status": "researching",
+    "description": "Next.js 15 introduces async request APIs (cookies(), headers(), draftMode()) that enable better server-side rendering preparation and performance optimization.",
+    "problem": "Synchronous request APIs in previous versions could block server rendering and reduce performance in complex e-commerce applications with multiple data dependencies.",
+    "solution": "Migrate all server components to use async request APIs and implement proper error handling with try-catch blocks for server-side data fetching.",
+    "rationale": "Async APIs allow the server to prepare content before request arrival, reducing Time to First Byte (TTFB) and improving user experience in fashion e-commerce store.",
+    "codeExample": {
+      "before": "export default function ProductPage({ params }) {\n  const cookieStore = cookies();\n  const userPrefs = cookieStore.get('preferences');\n  return <ProductDetails preferences={userPrefs} />;\n}",
+      "after": "export default async function ProductPage({ params }) {\n  try {\n    const cookieStore = await cookies();\n    const userPrefs = cookieStore.get('preferences');\n    return <ProductDetails preferences={userPrefs} />;\n  } catch (error) {\n    return <ErrorBoundary error={error} />;\n  }\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/guides/upgrading/version-15",
+        "title": "Next.js 15 Upgrade Guide",
+        "type": "documentation"
+      },
+      {
+        "url": "https://nextjs.org/blog/next-15",
+        "title": "Next.js 15 Blog Announcement",
+        "type": "blog"
+      }
+    ],
+    "tags": ["nextjs-15", "async", "performance", "ssr", "ecommerce"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-4 hours",
+    "prerequisites": ["Next.js 15+", "Server Components knowledge"],
+    "validation": {
+      "criteria": "TTFB reduced by 20-30%, no async/await errors in server components",
+      "testExample": "Test server component rendering with async cookies() call"
+    }
+  },
+  {
+    "id": "server-components-optimization",
+    "title": "Optimize Server Components for E-commerce Performance",
+    "technology": "nextjs",
+    "category": "performance",
+    "priority": "critical",
+    "status": "implemented",
+    "description": "Leverage React Server Components to reduce client-side JavaScript and improve initial page load times for product catalogs and checkout flows.",
+    "problem": "Heavy JavaScript bundles from client-side rendering can slow down product page loads and impact conversion rates in e-commerce applications.",
+    "solution": "Use Server Components by default for data fetching, product listings, and static content. Only use Client Components for interactive features like cart functionality and user interactions.",
+    "rationale": "Server Components reduce JavaScript bundle size by up to 70% and provide direct database access for secure product data fetching without exposing API keys to clients.",
+    "codeExample": {
+      "before": "// Client Component - loads heavy product data on client\n'use client';\nexport default function ProductGrid() {\n  const [products, setProducts] = useState([]);\n  useEffect(() => {\n    fetch('/api/products').then(res => setProducts(res.data));\n  }, []);\n  return <ProductList products={products} />;\n}",
+      "after": "// Server Component - fetches data on server\nexport default async function ProductGrid() {\n  const products = await getProducts(); // Direct DB access\n  return (\n    <div className=\"grid grid-cols-1 md:grid-cols-3 gap-6\">\n      {products.map(product => (\n        <ProductCard key={product.id} product={product} />\n      ))}\n    </div>\n  );\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+        "title": "Server and Client Components",
+        "type": "documentation"
+      },
+      {
+        "url": "https://vercel.com/blog/understanding-react-server-components",
+        "title": "Understanding React Server Components",
+        "type": "blog"
+      }
+    ],
+    "tags": ["server-components", "performance", "bundle-size", "ecommerce"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "1-2 days",
+    "prerequisites": ["React Server Components", "Next.js App Router"],
+    "validation": {
+      "criteria": "Bundle size reduced by 40%+, improved LCP scores",
+      "testExample": "Lighthouse audit showing improved performance metrics"
+    }
+  },
+  {
+    "id": "caching-strategy-optimization",
+    "title": "Implement Strategic Caching for Next.js 15 Default Changes",
+    "technology": "nextjs",
+    "category": "performance",
+    "priority": "high",
+    "status": "planned",
+    "description": "Adapt to Next.js 15's new default caching behavior where fetch requests and GET Route Handlers are no longer cached by default.",
+    "problem": "Next.js 15 changed default caching behavior, potentially causing performance regression in e-commerce applications that relied on automatic caching.",
+    "solution": "Implement explicit caching strategies using fetch cache options, revalidateTag, and time-based revalidation for product data, user sessions, and inventory.",
+    "rationale": "Explicit caching control provides better performance predictability and allows fine-tuned cache strategies for different types of e-commerce data (products, inventory, user preferences).",
+    "codeExample": {
+      "before": "// Previously cached by default\nconst products = await fetch('/api/products');\nconst inventory = await fetch('/api/inventory');",
+      "after": "// Explicit caching strategy\nconst products = await fetch('/api/products', {\n  cache: 'force-cache',\n  next: { revalidate: 3600 } // Cache for 1 hour\n});\n\nconst inventory = await fetch('/api/inventory', {\n  cache: 'no-store' // Always fresh for real-time stock\n});\n\n// Use revalidateTag for targeted updates\nrevalidateTag('products');"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/building-your-application/data-fetching/fetching",
+        "title": "Data Fetching in Next.js",
+        "type": "documentation"
+      },
+      {
+        "url": "https://nextjs.org/docs/app/api-reference/functions/revalidateTag",
+        "title": "revalidateTag API Reference",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["caching", "nextjs-15", "performance", "data-fetching"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "4-6 hours",
+    "prerequisites": ["Understanding of Next.js caching", "App Router"],
+    "validation": {
+      "criteria": "Appropriate cache hit rates, reduced API calls for static data",
+      "testExample": "Monitor cache metrics and response times"
+    }
+  },
+  {
+    "id": "streaming-suspense-pattern",
+    "title": "Implement Streaming with Suspense for Progressive Loading",
+    "technology": "nextjs",
+    "category": "performance",
+    "priority": "high",
+    "status": "planned",
+    "description": "Use streaming and Suspense to progressively render e-commerce pages, showing static content immediately while dynamic content loads.",
+    "problem": "Users have to wait for entire product pages to load before they can interact with any content, leading to poor perceived performance.",
+    "solution": "Wrap dynamic components (reviews, recommendations, inventory status) in Suspense boundaries while showing static content (product details, images) immediately.",
+    "rationale": "Streaming reduces perceived load time by up to 60% and allows users to start interacting with product information while personalized content loads in background.",
+    "codeExample": {
+      "before": "export default async function ProductPage({ params }) {\n  const product = await getProduct(params.id);\n  const reviews = await getReviews(params.id);\n  const recommendations = await getRecommendations(params.id);\n  \n  return (\n    <div>\n      <ProductDetails product={product} />\n      <Reviews reviews={reviews} />\n      <Recommendations items={recommendations} />\n    </div>\n  );\n}",
+      "after": "export default async function ProductPage({ params }) {\n  const product = await getProduct(params.id);\n  \n  return (\n    <div>\n      <ProductDetails product={product} />\n      <Suspense fallback={<ReviewsSkeleton />}>\n        <ReviewsAsync productId={params.id} />\n      </Suspense>\n      <Suspense fallback={<RecommendationsSkeleton />}>\n        <RecommendationsAsync productId={params.id} />\n      </Suspense>\n    </div>\n  );\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming",
+        "title": "Loading UI and Streaming",
+        "type": "documentation"
+      },
+      {
+        "url": "https://react.dev/reference/react/Suspense",
+        "title": "React Suspense Reference",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["streaming", "suspense", "loading", "user-experience"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "6-8 hours",
+    "prerequisites": ["React Suspense", "Server Components"],
+    "validation": {
+      "criteria": "Faster perceived load times, improved user engagement metrics",
+      "testExample": "Measure time to first interaction on product pages"
+    }
+  },
+  {
+    "id": "security-headers-enhancement",
+    "title": "Enhance Security Headers for E-commerce Protection",
+    "technology": "nextjs",
+    "category": "security",
+    "priority": "critical",
+    "status": "implemented",
+    "description": "Implement comprehensive security headers including CSP, HSTS, and frame protection specifically for e-commerce payment and user data protection.",
+    "problem": "E-commerce applications are prime targets for XSS, clickjacking, and payment fraud attacks that can compromise customer data and business reputation.",
+    "solution": "Configure strict Content Security Policy, implement HSTS, and add payment-specific security headers in next.config.mjs.",
+    "rationale": "Proper security headers reduce security vulnerabilities by up to 90% and are essential for PCI DSS compliance in e-commerce applications handling payments.",
+    "codeExample": {
+      "before": "// Basic security headers\nasync headers() {\n  return [{\n    source: '/:path*',\n    headers: [\n      { key: 'X-Frame-Options', value: 'DENY' },\n      { key: 'X-Content-Type-Options', value: 'nosniff' }\n    ]\n  }];\n}",
+      "after": "// Comprehensive e-commerce security\nasync headers() {\n  return [{\n    source: '/:path*',\n    headers: [\n      {\n        key: 'Content-Security-Policy',\n        value: \"default-src 'self'; script-src 'self' 'unsafe-eval' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.stripe.com;\"\n      },\n      {\n        key: 'Strict-Transport-Security',\n        value: 'max-age=31536000; includeSubDomains; preload'\n      },\n      {\n        key: 'X-Frame-Options',\n        value: 'DENY'\n      },\n      {\n        key: 'Permissions-Policy',\n        value: 'camera=(), microphone=(), geolocation=(), payment=()'\n      }\n    ]\n  }];\n}"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/headers",
+        "title": "Next.js Headers Configuration",
+        "type": "documentation"
+      },
+      {
+        "url": "https://owasp.org/www-project-secure-headers/",
+        "title": "OWASP Secure Headers Project",
+        "type": "security-guide"
+      }
+    ],
+    "tags": ["security", "headers", "csp", "ecommerce", "pci-dss"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 hours",
+    "prerequisites": ["Understanding of CSP", "Payment processing knowledge"],
+    "validation": {
+      "criteria": "Security headers audit passes, no CSP violations",
+      "testExample": "Security scanner shows A+ rating"
+    }
+  },
+  {
+    "id": "testing-async-components",
+    "title": "Implement E2E Testing Strategy for Async Server Components",
+    "technology": "nextjs",
+    "category": "testing",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Use Playwright for comprehensive E2E testing since Jest doesn't support async Server Components, focusing on complete user journeys.",
+    "problem": "Traditional unit testing approaches fail with async Server Components, leaving critical e-commerce flows like checkout untested.",
+    "solution": "Implement Playwright E2E tests for complete user journeys (product browsing, cart management, checkout) while using Jest for Client Components only.",
+    "rationale": "E2E testing provides 95% confidence in critical e-commerce flows and catches integration issues between Server and Client Components that unit tests miss.",
+    "codeExample": {
+      "before": "// Problematic Jest test for async Server Component\nit('renders product page', async () => {\n  const component = render(<ProductPage params={{ id: '1' }} />);\n  expect(component).toBeInTheDocument(); // Fails with async\n});",
+      "after": "// Playwright E2E test for complete flow\nimport { test, expect } from '@playwright/test';\n\ntest('complete purchase flow', async ({ page }) => {\n  await page.goto('/product/1');\n  await expect(page.locator('[data-testid=\"product-title\"]')).toBeVisible();\n  \n  await page.click('[data-testid=\"add-to-cart\"]');\n  await page.click('[data-testid=\"cart-icon\"]');\n  await expect(page.locator('[data-testid=\"cart-item\"]')).toBeVisible();\n  \n  await page.click('[data-testid=\"checkout-button\"]');\n  await expect(page).toHaveURL(/.*checkout/);\n});"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/guides/testing",
+        "title": "Testing Next.js Applications",
+        "type": "documentation"
+      },
+      {
+        "url": "https://playwright.dev/docs/test-configuration",
+        "title": "Playwright Test Configuration",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["testing", "playwright", "e2e", "server-components"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "1-2 days",
+    "prerequisites": ["Playwright setup", "Understanding of Server Components"],
+    "validation": {
+      "criteria": "95%+ test coverage for critical user journeys",
+      "testExample": "Complete checkout flow test passes consistently"
+    }
+  },
+  {
+    "id": "image-optimization-avif",
+    "title": "Optimize Images with AVIF and WebP for E-commerce Performance",
+    "technology": "nextjs",
+    "category": "performance",
+    "priority": "high",
+    "status": "implemented",
+    "description": "Configure Next.js Image component with AVIF and WebP formats to reduce product image sizes by up to 50% while maintaining quality.",
+    "problem": "High-resolution product images are essential for e-commerce but can significantly slow down page load times and increase bandwidth costs.",
+    "solution": "Configure next.config.mjs to use AVIF and WebP formats with proper sizing, lazy loading, and CDN integration for product images.",
+    "rationale": "Modern image formats reduce bandwidth usage by 40-60%, improve Core Web Vitals scores, and enhance user experience especially on mobile devices.",
+    "codeExample": {
+      "before": "// Basic image configuration\nimages: {\n  domains: ['example.com'],\n},\n\n// Usage\n<img src={product.image} alt={product.name} />",
+      "after": "// Optimized image configuration\nimages: {\n  remotePatterns: [\n    {\n      protocol: 'https',\n      hostname: '*.supabase.co',\n    },\n    {\n      protocol: 'https', \n      hostname: 'res.cloudinary.com',\n    }\n  ],\n  formats: ['image/avif', 'image/webp'],\n  deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],\n  imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],\n},\n\n// Usage with optimization\n<Image\n  src={product.image}\n  alt={product.name}\n  width={400}\n  height={400}\n  sizes=\"(max-width: 768px) 100vw, 400px\"\n  priority={index < 4} // Priority for above-fold images\n  placeholder=\"blur\"\n  blurDataURL=\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...\"\n/>"
+    },
+    "externalResources": [
+      {
+        "url": "https://nextjs.org/docs/app/api-reference/components/image",
+        "title": "Next.js Image Component",
+        "type": "documentation"
+      },
+      {
+        "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/images",
+        "title": "Image Configuration",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["images", "optimization", "avif", "webp", "performance"],
+    "version": "15.2.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "low",
+    "timeToImplement": "2-3 hours",
+    "prerequisites": ["Next.js Image component", "CDN setup"],
+    "validation": {
+      "criteria": "Image sizes reduced by 40-60%, improved LCP scores",
+      "testExample": "Lighthouse audit showing improved image metrics"
+    }
+  }
+]

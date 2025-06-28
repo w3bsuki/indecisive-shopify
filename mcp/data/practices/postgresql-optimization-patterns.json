@@ -1,0 +1,316 @@
+[
+  {
+    "id": "strategic-indexing-product-catalogs",
+    "title": "Strategic B-Tree and Composite Indexing for Product Catalogs",
+    "technology": "postgresql",
+    "category": "indexing",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement strategic B-tree and composite indexing patterns optimized for product catalog queries, category filtering, and search operations typical in e-commerce applications",
+    "problem": "Sequential scans on product tables during search operations cause slow performance, inefficient JOINs between products/categories/inventory, and poor response times for complex filtering operations.",
+    "solution": "Create strategic composite indexes for common e-commerce query patterns, implement GIN indexes for full-text search, and use BRIN indexes for time-series data.",
+    "rationale": "Strategic indexing eliminates slow sequential scans, optimizes JOIN performance, reduces query execution time by 80-90%, and handles high-frequency product lookups efficiently.",
+    "codeExample": {
+      "before": "-- Basic single-column indexes\nCREATE INDEX idx_products_category ON products (category_id);\nCREATE INDEX idx_products_price ON products (price);\n-- Results in multiple index scans and poor performance",
+      "after": "-- Product catalog composite indexes\nCREATE INDEX CONCURRENTLY idx_products_category_price_status \nON products (category_id, price, status) \nWHERE status = 'active';\n\n-- Multi-column index for search and filtering\nCREATE INDEX CONCURRENTLY idx_products_search_composite \nON products (category_id, price, created_at DESC) \nINCLUDE (name, description);\n\n-- GIN index for full-text search\nCREATE INDEX CONCURRENTLY idx_products_fulltext \nON products USING GIN (to_tsvector('english', name || ' ' || description));\n\n-- Foreign key optimization for joins\nCREATE INDEX CONCURRENTLY idx_order_items_product_id \nON order_items (product_id, order_id);\n\n-- BRIN index for time-series data\nCREATE INDEX CONCURRENTLY idx_orders_created_brin \nON orders USING BRIN (created_at);"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/indexes.html",
+        "title": "PostgreSQL Index Best Practices",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.percona.com/blog/a-practical-guide-to-postgresql-indexes/",
+        "title": "Advanced Indexing Strategies",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["indexing", "performance", "product-catalog", "search", "composite-indexes"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 days",
+    "prerequisites": ["PostgreSQL query analysis", "Index strategy understanding"],
+    "validation": {
+      "criteria": "Query execution time reduction of 80-90% for product searches, index usage ratio >95%",
+      "testExample": "EXPLAIN ANALYZE product search queries to verify index usage and performance improvement"
+    }
+  },
+  {
+    "id": "connection-pooling-pgbouncer",
+    "title": "Connection Pooling with PgBouncer for High Traffic Management",
+    "technology": "postgresql",
+    "category": "connection-management",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement PgBouncer with transaction pooling mode to handle thousands of concurrent connections during peak e-commerce traffic periods",
+    "problem": "Database connection exhaustion during traffic spikes, high connection overhead and memory usage, inconsistent response times during peak shopping periods, and max_connections limits preventing horizontal scaling.",
+    "solution": "Deploy PgBouncer with transaction-level pooling, configure connection limits and performance tuning, implement monitoring and alerting for pool utilization.",
+    "rationale": "Connection pooling prevents connection exhaustion, reduces memory overhead, maintains consistent response times, and enables horizontal scaling without hitting database limits.",
+    "codeExample": {
+      "before": "// Direct database connections\nconst client = new Pool({\n  host: 'localhost',\n  port: 5432,\n  database: 'ecommerce',\n  max: 20, // Limited connections\n});\n// Each application instance creates its own connections",
+      "after": "# pgbouncer.ini configuration\n[databases]\necommerce_db = host=localhost port=5432 dbname=ecommerce_production\n\n[pgbouncer]\npool_mode = transaction\nlisten_port = 6432\nlisten_addr = *\nauth_type = md5\nauth_file = /etc/pgbouncer/userlist.txt\n\n# Connection limits\nmax_client_conn = 1000\ndefault_pool_size = 25\nmin_pool_size = 10\nreserve_pool_size = 5\n\n# Performance tuning\nserver_round_robin = 1\nignore_startup_parameters = extra_float_digits\n\n# Application connection string\n// postgresql://user:password@pgbouncer-host:6432/ecommerce_db\n\n# Monitor connection pool performance\nSELECT * FROM pgbouncer.pools;\nSELECT * FROM pgbouncer.stats;"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.pgbouncer.org/config.html",
+        "title": "PgBouncer Official Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.percona.com/blog/pgbouncer-for-postgresql-how-connection-pooling-solves-enterprise-slowdowns/",
+        "title": "Connection Pooling Best Practices",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["pgbouncer", "connection-pooling", "high-traffic", "scalability"],
+    "version": "1.18",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 days",
+    "prerequisites": ["PgBouncer setup", "Connection pooling understanding"],
+    "validation": {
+      "criteria": "50% reduction in response times during peak traffic, connection pool utilization 70-85%, zero timeout errors",
+      "testExample": "Load test with concurrent connections to verify pool efficiency and response time improvements"
+    }
+  },
+  {
+    "id": "time-based-table-partitioning",
+    "title": "Time-Based Table Partitioning for Orders and Analytics",
+    "technology": "postgresql",
+    "category": "partitioning",
+    "priority": "high",
+    "status": "planned",
+    "description": "Implement time-based table partitioning for orders, transactions, and analytics data to improve query performance and enable efficient data lifecycle management",
+    "problem": "Full table scans on large historical order data, inefficient data archival and purging, slow backup and maintenance operations, and poor analytics query performance on recent data.",
+    "solution": "Implement monthly range partitioning for orders and transactions, create automated partition creation functions, optimize indexes on partitions for query patterns.",
+    "rationale": "Table partitioning eliminates full table scans, enables efficient archival, improves maintenance performance, and supports fast analytics queries on recent data.",
+    "codeExample": {
+      "before": "-- Single large orders table\nCREATE TABLE orders (\n    order_id BIGSERIAL PRIMARY KEY,\n    customer_id INTEGER NOT NULL,\n    order_date TIMESTAMP NOT NULL,\n    total_amount DECIMAL(10,2)\n);\n-- All data in one table, slow queries on historical data",
+      "after": "-- Create partitioned orders table\nCREATE TABLE orders (\n    order_id BIGSERIAL,\n    customer_id INTEGER NOT NULL,\n    order_date TIMESTAMP NOT NULL DEFAULT NOW(),\n    total_amount DECIMAL(10,2),\n    status VARCHAR(20),\n    created_at TIMESTAMP DEFAULT NOW()\n) PARTITION BY RANGE (order_date);\n\n-- Create monthly partitions\nCREATE TABLE orders_2024_01 PARTITION OF orders \n    FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');\n\nCREATE TABLE orders_2024_02 PARTITION OF orders \n    FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');\n\n-- Automated partition creation function\nCREATE OR REPLACE FUNCTION create_monthly_partition(table_name TEXT, start_date DATE)\nRETURNS VOID AS $$\nDECLARE\n    partition_name TEXT;\n    end_date DATE;\nBEGIN\n    partition_name := table_name || '_' || to_char(start_date, 'YYYY_MM');\n    end_date := start_date + INTERVAL '1 month';\n    \n    EXECUTE format('CREATE TABLE %I PARTITION OF %I \n                    FOR VALUES FROM (%L) TO (%L)',\n                   partition_name, table_name, start_date, end_date);\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Create indexes on partitions\nCREATE INDEX CONCURRENTLY ON orders_2024_01 (customer_id, order_date);\nCREATE INDEX CONCURRENTLY ON orders_2024_01 (status) WHERE status IN ('pending', 'processing');\n\n-- Partition pruning example query\nEXPLAIN (ANALYZE, BUFFERS) \nSELECT customer_id, SUM(total_amount) \nFROM orders \nWHERE order_date >= '2024-01-01' AND order_date < '2024-02-01'\nGROUP BY customer_id;"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/ddl-partitioning.html",
+        "title": "PostgreSQL Table Partitioning Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.percona.com/blog/postgresql-partitioning-best-practices/",
+        "title": "Partitioning Best Practices",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["partitioning", "time-series", "orders", "analytics", "performance"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "3-5 days",
+    "prerequisites": ["Table partitioning understanding", "Data lifecycle planning"],
+    "validation": {
+      "criteria": "Query performance improvement of 5-10x for date range queries, partition pruning confirmed in EXPLAIN plans",
+      "testExample": "Query historical orders and verify partition pruning in execution plans"
+    }
+  },
+  {
+    "id": "mvcc-inventory-concurrency",
+    "title": "MVCC-Optimized Inventory Concurrency Management",
+    "technology": "postgresql",
+    "category": "concurrency",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Leverage PostgreSQL's MVCC architecture with advisory locks and optimized transaction isolation levels for high-concurrency inventory operations",
+    "problem": "Inventory overselling during concurrent order processing, data consistency issues without blocking reads, race conditions in stock level updates, and poor performance for high-frequency inventory checks.",
+    "solution": "Use optimistic locking with version control, implement advisory locks for critical operations, optimize transaction isolation levels for inventory operations.",
+    "rationale": "MVCC optimization prevents overselling, maintains data consistency without blocking reads, handles race conditions safely, and optimizes performance for high-frequency operations.",
+    "codeExample": {
+      "before": "-- Basic inventory update without concurrency control\nUPDATE inventory \nSET quantity = quantity - 5 \nWHERE product_id = 123;\n-- No protection against race conditions or overselling",
+      "after": "-- Inventory table with MVCC optimization\nCREATE TABLE inventory (\n    product_id INTEGER PRIMARY KEY,\n    quantity INTEGER NOT NULL CHECK (quantity >= 0),\n    reserved_quantity INTEGER DEFAULT 0,\n    last_updated TIMESTAMP DEFAULT NOW(),\n    version INTEGER DEFAULT 1\n);\n\n-- Optimistic locking with version control\nCREATE OR REPLACE FUNCTION update_inventory_optimistic(\n    p_product_id INTEGER,\n    p_quantity_change INTEGER,\n    p_expected_version INTEGER\n) RETURNS BOOLEAN AS $$\nDECLARE\n    rows_affected INTEGER;\nBEGIN\n    UPDATE inventory \n    SET quantity = quantity + p_quantity_change,\n        version = version + 1,\n        last_updated = NOW()\n    WHERE product_id = p_product_id \n      AND version = p_expected_version\n      AND quantity + p_quantity_change >= 0;\n    \n    GET DIAGNOSTICS rows_affected = ROW_COUNT;\n    RETURN rows_affected > 0;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Advisory locking for critical operations\nCREATE OR REPLACE FUNCTION reserve_inventory(\n    p_product_id INTEGER,\n    p_quantity INTEGER\n) RETURNS BOOLEAN AS $$\nDECLARE\n    lock_key BIGINT;\n    current_stock INTEGER;\n    success BOOLEAN := FALSE;\nBEGIN\n    lock_key := p_product_id::BIGINT;\n    \n    -- Acquire advisory lock\n    IF pg_try_advisory_lock(lock_key) THEN\n        BEGIN\n            SELECT quantity INTO current_stock \n            FROM inventory \n            WHERE product_id = p_product_id;\n            \n            IF current_stock >= p_quantity THEN\n                UPDATE inventory \n                SET reserved_quantity = reserved_quantity + p_quantity\n                WHERE product_id = p_product_id;\n                success := TRUE;\n            END IF;\n            \n            -- Release lock\n            PERFORM pg_advisory_unlock(lock_key);\n        EXCEPTION WHEN OTHERS THEN\n            PERFORM pg_advisory_unlock(lock_key);\n            RAISE;\n        END;\n    END IF;\n    \n    RETURN success;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Transaction isolation for inventory operations\nBEGIN ISOLATION LEVEL READ COMMITTED;\n-- Inventory operations here\nCOMMIT;"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/mvcc.html",
+        "title": "PostgreSQL MVCC Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS",
+        "title": "Advisory Locks Guide",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["mvcc", "concurrency", "inventory", "advisory-locks", "optimistic-locking"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "4-5 days",
+    "prerequisites": ["MVCC understanding", "Concurrency control patterns", "PostgreSQL locking"],
+    "validation": {
+      "criteria": "Zero overselling incidents under concurrent load, inventory operations maintain ACID properties, response time <100ms",
+      "testExample": "Concurrent inventory operations test to verify no overselling occurs"
+    }
+  },
+  {
+    "id": "wal-streaming-replication",
+    "title": "WAL Streaming Replication for High Availability",
+    "technology": "postgresql",
+    "category": "high-availability",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement PostgreSQL streaming replication with WAL archiving for 99.9% uptime and disaster recovery in e-commerce environments",
+    "problem": "Single points of failure in database infrastructure, inability to handle server outages gracefully, lack of read scaling capabilities, and business disruption during maintenance windows.",
+    "solution": "Implement streaming replication with WAL archiving, configure automated failover mechanisms, set up read replicas for scaling, and establish disaster recovery procedures.",
+    "rationale": "Streaming replication eliminates single points of failure, provides sub-second failover, enables read scaling, and ensures business continuity during maintenance.",
+    "codeExample": {
+      "before": "-- Single PostgreSQL instance\n# No replication, single point of failure\nmax_connections = 100\n# Basic configuration without HA",
+      "after": "-- Primary server configuration (postgresql.conf)\nwal_level = replica\nmax_wal_senders = 10\nmax_replication_slots = 10\nwal_keep_size = 1GB\nsynchronous_commit = on\nsynchronous_standby_names = 'standby1,standby2'\n\n-- Archive configuration\narchive_mode = on\narchive_command = 'cp %p /archive/path/%f'\narchive_timeout = 300\n\n-- Replication slot creation\nSELECT pg_create_physical_replication_slot('standby1_slot');\nSELECT pg_create_physical_replication_slot('standby2_slot');\n\n-- Standby server recovery.conf\nstandby_mode = 'on'\nprimary_conninfo = 'host=primary-server port=5432 user=replicator application_name=standby1'\nprimary_slot_name = 'standby1_slot'\nrestore_command = 'cp /archive/path/%f %p'\nrecovery_target_timeline = 'latest'\n\n-- Monitoring replication lag\nSELECT \n    client_addr,\n    application_name,\n    state,\n    pg_wal_lsn_diff(pg_current_wal_lsn(), flush_lsn) as lag_bytes,\n    extract(epoch from (now() - backend_start)) as connection_duration\nFROM pg_stat_replication;\n\n-- Automated failover script\nCREATE OR REPLACE FUNCTION promote_standby()\nRETURNS BOOLEAN AS $$\nBEGIN\n    PERFORM pg_promote();\n    RETURN TRUE;\nEXCEPTION WHEN OTHERS THEN\n    RETURN FALSE;\nEND;\n$$ LANGUAGE plpgsql;"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/warm-standby.html#STREAMING-REPLICATION",
+        "title": "PostgreSQL Streaming Replication",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.percona.com/blog/setting-up-streaming-replication-postgresql/",
+        "title": "High Availability Best Practices",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["replication", "high-availability", "wal", "failover", "disaster-recovery"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "5-7 days",
+    "prerequisites": ["Replication understanding", "High availability concepts", "WAL archiving"],
+    "validation": {
+      "criteria": "Replication lag <100ms under normal load, failover time <30 seconds, zero data loss during planned failovers",
+      "testExample": "Test failover procedures and verify replication lag monitoring"
+    }
+  },
+  {
+    "id": "query-performance-monitoring",
+    "title": "Advanced Query Performance Monitoring with pg_stat_statements",
+    "technology": "postgresql",
+    "category": "monitoring",
+    "priority": "high",
+    "status": "planned",
+    "description": "Implement automated query performance monitoring using pg_stat_statements with custom alerting for e-commerce workload optimization",
+    "problem": "Inability to identify slow queries before they impact customers, lack of data-driven insights for optimization, no visibility into resource utilization patterns, and reactive rather than proactive performance tuning.",
+    "solution": "Enable pg_stat_statements extension, create performance monitoring views, implement automated alerting functions, and establish performance baselines.",
+    "rationale": "Performance monitoring enables rapid response to issues, provides optimization insights, monitors utilization patterns, and enables proactive tuning before customer impact.",
+    "codeExample": {
+      "before": "-- No query performance monitoring\n-- Queries run without visibility into performance\n-- No historical data for optimization\n-- Reactive troubleshooting only",
+      "after": "-- Enable pg_stat_statements\n-- Add to postgresql.conf:\nshared_preload_libraries = 'pg_stat_statements'\npg_stat_statements.max = 10000\npg_stat_statements.track = all\npg_stat_statements.track_utility = on\npg_stat_statements.save = on\n\n-- Query analysis functions\nCREATE OR REPLACE VIEW slow_queries AS\nSELECT \n    query,\n    calls,\n    total_exec_time,\n    mean_exec_time,\n    stddev_exec_time,\n    rows,\n    100.0 * shared_blks_hit / nullif(shared_blks_hit + shared_blks_read, 0) AS hit_percent\nFROM pg_stat_statements \nWHERE mean_exec_time > 100  -- queries taking >100ms on average\nORDER BY mean_exec_time DESC;\n\n-- Top resource consumers\nCREATE OR REPLACE VIEW top_resource_queries AS\nSELECT \n    substring(query, 1, 50) as short_query,\n    calls,\n    total_exec_time,\n    total_exec_time/calls as avg_time,\n    (shared_blks_hit + shared_blks_read) * 8192 as total_io_bytes\nFROM pg_stat_statements \nORDER BY total_exec_time DESC\nLIMIT 20;\n\n-- Index usage analysis\nCREATE OR REPLACE VIEW index_usage_stats AS\nSELECT \n    schemaname,\n    tablename,\n    indexname,\n    idx_tup_read,\n    idx_tup_fetch,\n    idx_scan,\n    idx_tup_read::float / NULLIF(idx_scan, 0) as avg_tuples_per_scan\nFROM pg_stat_user_indexes\nORDER BY idx_scan DESC;\n\n-- Automated performance alert function\nCREATE OR REPLACE FUNCTION check_performance_alerts()\nRETURNS TABLE(alert_type TEXT, details TEXT) AS $$\nBEGIN\n    -- Alert on slow queries\n    RETURN QUERY\n    SELECT 'SLOW_QUERY'::TEXT, \n           'Query taking ' || mean_exec_time::TEXT || 'ms: ' || \n           substring(query, 1, 100)\n    FROM pg_stat_statements \n    WHERE mean_exec_time > 1000 AND calls > 10;\n    \n    -- Alert on high I/O queries\n    RETURN QUERY\n    SELECT 'HIGH_IO'::TEXT,\n           'High I/O query: ' || substring(query, 1, 100)\n    FROM pg_stat_statements \n    WHERE (shared_blks_hit + shared_blks_read) > 10000 AND calls > 5;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Reset statistics for fresh analysis period\nSELECT pg_stat_statements_reset();"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/pgstatstatements.html",
+        "title": "pg_stat_statements Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://www.percona.com/blog/postgresql-query-optimization-performance-tuning-with-explain-analyze/",
+        "title": "Query Performance Analysis Guide",
+        "type": "tutorial"
+      }
+    ],
+    "tags": ["monitoring", "pg_stat_statements", "performance", "query-analysis", "alerting"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 days",
+    "prerequisites": ["pg_stat_statements extension", "Performance monitoring concepts"],
+    "validation": {
+      "criteria": "All queries >1 second identified and logged, query performance baselines established, automated alerts working",
+      "testExample": "Generate slow queries and verify monitoring system detects and alerts properly"
+    }
+  },
+  {
+    "id": "postgresql-medusa-optimization",
+    "title": "PostgreSQL Configuration Optimization for Medusa v2 + MikroORM",
+    "technology": "postgresql",
+    "category": "configuration",
+    "priority": "high",
+    "status": "planned",
+    "description": "Optimize PostgreSQL configuration parameters specifically for Medusa v2 with MikroORM v6, focusing on memory management, I/O performance, and connection handling",
+    "problem": "Default PostgreSQL configuration not optimized for e-commerce workloads, poor memory allocation for Medusa access patterns, frequent checkpoints causing I/O bottlenecks, and suboptimal query planner decisions.",
+    "solution": "Configure PostgreSQL parameters for e-commerce workloads, optimize memory settings for Medusa patterns, tune checkpoint and WAL settings, and create Medusa-specific indexes.",
+    "rationale": "Optimized configuration maximizes performance for Medusa workloads, improves memory utilization, reduces I/O bottlenecks, and enhances query planning for typical e-commerce queries.",
+    "codeExample": {
+      "before": "# Default PostgreSQL configuration\nshared_buffers = 128MB\neffective_cache_size = 4GB\nwork_mem = 4MB\n# Generic settings not optimized for e-commerce",
+      "after": "-- postgresql.conf optimizations for e-commerce\n# Memory Configuration\nshared_buffers = 8GB                    # 25% of RAM for dedicated server\neffective_cache_size = 24GB             # 75% of RAM\nwork_mem = 64MB                         # For sorting operations\nmaintenance_work_mem = 2GB              # For VACUUM, CREATE INDEX\ntemp_buffers = 32MB                     # Temporary table buffer\n\n# Checkpoint Configuration\ncheckpoint_timeout = 15min\ncheckpoint_completion_target = 0.9\nwal_buffers = 64MB\nwal_compression = on\n\n# Query Planning\nrandom_page_cost = 1.5                  # For SSD storage\neffective_io_concurrency = 200          # For SSD storage\nseq_page_cost = 1.0\n\n# Connection Configuration\nmax_connections = 200\nsuperuser_reserved_connections = 3\n\n# Logging for Performance Analysis\nlog_statement = 'mod'                   # Log modifications\nlog_duration = on\nlog_min_duration_statement = 1000       # Log queries >1s\nlog_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '\nlog_checkpoints = on\nlog_lock_waits = on\n\n# Autovacuum Tuning\nautovacuum = on\nautovacuum_max_workers = 4\nautovacuum_naptime = 30s\nautovacuum_vacuum_threshold = 50\nautovacuum_analyze_threshold = 50\nautovacuum_vacuum_scale_factor = 0.1\nautovacuum_analyze_scale_factor = 0.05\n\n-- Medusa-specific database optimizations\n-- Index on common Medusa query patterns\nCREATE INDEX CONCURRENTLY idx_products_medusa_search \nON products (status, deleted_at) \nWHERE deleted_at IS NULL;\n\n-- Optimize for MikroORM entity loading\nCREATE INDEX CONCURRENTLY idx_orders_customer_created \nON orders (customer_id, created_at DESC) \nWHERE deleted_at IS NULL;\n\n-- Configuration validation queries\nSELECT name, setting, unit, context \nFROM pg_settings \nWHERE name IN ('shared_buffers', 'effective_cache_size', 'work_mem');\n\n-- Monitor configuration effectiveness\nSELECT \n    checkpoints_timed,\n    checkpoints_req,\n    checkpoint_write_time,\n    checkpoint_sync_time\nFROM pg_stat_bgwriter;"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/runtime-config.html",
+        "title": "PostgreSQL Configuration Tuning",
+        "type": "documentation"
+      },
+      {
+        "url": "https://docs.medusajs.com/learn/deployment/general",
+        "title": "Medusa v2 Documentation",
+        "type": "documentation"
+      },
+      {
+        "url": "https://mikro-orm.io/docs/usage-with-sql/",
+        "title": "MikroORM PostgreSQL Guide",
+        "type": "documentation"
+      }
+    ],
+    "tags": ["configuration", "medusa", "mikroorm", "memory-optimization", "performance"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "medium",
+    "timeToImplement": "2-3 days",
+    "prerequisites": ["PostgreSQL configuration knowledge", "Medusa v2 understanding", "Performance tuning"],
+    "validation": {
+      "criteria": "Memory hit ratio >99%, optimal checkpoint frequency, query response time improvement of 20-30%",
+      "testExample": "Monitor PostgreSQL metrics and Medusa application performance after configuration changes"
+    }
+  },
+  {
+    "id": "automated-backup-pitr",
+    "title": "Automated Backup Strategy with Point-in-Time Recovery",
+    "technology": "postgresql",
+    "category": "backup-recovery",
+    "priority": "critical",
+    "status": "planned",
+    "description": "Implement comprehensive backup strategy using pg_basebackup, WAL archiving, and automated point-in-time recovery capabilities for business continuity",
+    "problem": "Risk of data loss from corruption or accidental deletion, lack of multiple recovery options, long recovery times during disasters, and non-compliance with data retention requirements.",
+    "solution": "Implement automated backup systems with pg_basebackup, configure WAL archiving to cloud storage, create point-in-time recovery procedures, and establish comprehensive testing protocols.",
+    "rationale": "Comprehensive backup strategy ensures rapid recovery, provides multiple recovery options, minimizes data loss (RPO <5 minutes), and enables compliance with retention requirements.",
+    "codeExample": {
+      "before": "#!/bin/bash\n# Basic pg_dump backup\npg_dump mydatabase > backup.sql\n# No automation, no PITR, no testing",
+      "after": "#!/bin/bash\n# Automated backup script for e-commerce PostgreSQL\n\n# Configuration\nBACKUP_DIR=\"/backups/postgresql\"\nARCHIVE_DIR=\"/archives/wal\"\nS3_BUCKET=\"ecommerce-db-backups\"\nRETENTION_DAYS=30\n\n# Daily full backup\npg_basebackup -D \"$BACKUP_DIR/base_$(date +%Y%m%d)\" \\\n              -Ft -z -P -v \\\n              -h localhost -p 5432 -U backup_user\n\n# Compress and upload to S3\ntar -czf \"$BACKUP_DIR/base_$(date +%Y%m%d).tar.gz\" \\\n         \"$BACKUP_DIR/base_$(date +%Y%m%d)\"\n\naws s3 cp \"$BACKUP_DIR/base_$(date +%Y%m%d).tar.gz\" \\\n          \"s3://$S3_BUCKET/basebackups/\"\n\n# Clean old backups\nfind $BACKUP_DIR -name \"base_*\" -mtime +$RETENTION_DAYS -delete\n\n# WAL archiving configuration (postgresql.conf)\narchive_mode = on\narchive_command = 'test ! -f /archives/wal/%f && cp %p /archives/wal/%f && aws s3 cp /archives/wal/%f s3://ecommerce-db-backups/wal/'\narchive_timeout = 300\n\n-- Point-in-time recovery procedures\n-- Create restore point before major operations\nSELECT pg_create_restore_point('before_major_update');\n\n-- Recovery configuration (recovery.conf for standby/recovery)\nrestore_command = 'aws s3 cp s3://ecommerce-db-backups/wal/%f %p'\nrecovery_target_time = '2024-01-15 14:30:00'\nrecovery_target_action = 'promote'\n\n-- Backup monitoring and validation\nCREATE OR REPLACE FUNCTION validate_backup_integrity()\nRETURNS TABLE(backup_date DATE, status TEXT, size_gb NUMERIC) AS $$\nBEGIN\n    -- Check backup file integrity and sizes\n    RETURN QUERY\n    SELECT \n        CURRENT_DATE as backup_date,\n        CASE \n            WHEN pg_is_in_recovery() THEN 'STANDBY_OK'\n            ELSE 'PRIMARY_OK'\n        END as status,\n        ROUND(pg_database_size(current_database())::NUMERIC / (1024^3), 2) as size_gb;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Automated recovery testing\nCREATE OR REPLACE FUNCTION test_recovery_procedure()\nRETURNS BOOLEAN AS $$\nDECLARE\n    test_result BOOLEAN := FALSE;\nBEGIN\n    -- Create test restore point\n    PERFORM pg_create_restore_point('automated_test_' || extract(epoch from now()));\n    \n    -- Verify WAL archiving is working\n    PERFORM pg_switch_wal();\n    \n    -- Check if archive command succeeded\n    IF pg_is_wal_replay_paused() IS NULL THEN\n        test_result := TRUE;\n    END IF;\n    \n    RETURN test_result;\nEND;\n$$ LANGUAGE plpgsql;"
+    },
+    "externalResources": [
+      {
+        "url": "https://www.postgresql.org/docs/current/backup.html",
+        "title": "PostgreSQL Backup and Recovery",
+        "type": "documentation"
+      },
+      {
+        "url": "https://pgbackrest.org/user-guide.html",
+        "title": "pgBackRest Documentation",
+        "type": "tool"
+      },
+      {
+        "url": "https://docs.pgbarman.org/",
+        "title": "Barman Backup Tool",
+        "type": "tool"
+      }
+    ],
+    "tags": ["backup", "recovery", "pitr", "wal-archiving", "business-continuity"],
+    "version": "15.4",
+    "dateAdded": "2025-06-28",
+    "complexity": "high",
+    "timeToImplement": "4-5 days",
+    "prerequisites": ["Backup strategy design", "Cloud storage setup", "Recovery testing"],
+    "validation": {
+      "criteria": "Successful automated daily backups, PITR recovery tested monthly, RTO <4 hours, RPO <5 minutes",
+      "testExample": "Test backup restoration and point-in-time recovery procedures with sample data"
+    }
+  }
+]
