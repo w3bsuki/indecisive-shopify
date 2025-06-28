@@ -15,8 +15,7 @@ export default defineConfig({
     }
   },
   admin: {
-    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
-    backendUrl: process.env.MEDUSA_ADMIN_BACKEND_URL || "https://medusa-starter-default-production-3201.up.railway.app",
+    disable: false,
   },
   modules: {
     // Stripe payment provider
