@@ -6,7 +6,8 @@ export default defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
-    workerMode: "shared",
+    // Worker mode configuration for container dependency resolution
+    workerMode: process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server" || "shared",
     http: {
       storeCors: process.env.STORE_CORS || "*",
       adminCors: process.env.ADMIN_CORS || "*",
@@ -20,7 +21,7 @@ export default defineConfig({
     backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
   },
   modules: {
-    // Redis modules for production
+    // Redis modules for production scaling - only enable when Redis is available
     ...(process.env.REDIS_URL && {
       cacheService: {
         resolve: "@medusajs/cache-redis",
@@ -34,15 +35,20 @@ export default defineConfig({
           redisUrl: process.env.REDIS_URL,
         },
       },
-      workflowEngine: {
-        resolve: "@medusajs/workflow-engine-redis",
-        options: {
-          redis: {
-            url: process.env.REDIS_URL,
+      // Workflow engine: only enable in production to avoid sharedContainer dependency issues in development
+      // This resolves the "AwilixResolutionError: Could not resolve 'sharedContainer'" error
+      ...(process.env.NODE_ENV === 'production' && {
+        workflowEngine: {
+          resolve: "@medusajs/workflow-engine-redis",
+          options: {
+            redis: {
+              url: process.env.REDIS_URL,
+            },
           },
         },
-      },
+      }),
     }),
+    
     // Stripe payment provider
     ...(process.env.STRIPE_API_KEY && process.env.STRIPE_WEBHOOK_SECRET && {
       payment: {
