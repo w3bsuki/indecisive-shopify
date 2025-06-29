@@ -1,8 +1,13 @@
 [build]
-builder = "nixpacks"
+builder = "NIXPACKS"
+
+[build.nixpacksPlan.phases.setup]
+nixPkgs = ["nodejs", "yarn"]
+
+[build.nixpacksPlan.phases.install]
+cmds = ["yarn install"]
 
 [deploy]
-rootDirectory = "backend"
 startCommand = "yarn db:migrate && yarn start"
 healthcheckPath = "/health"
 healthcheckTimeout = 300

@@ -21,6 +21,7 @@
     "build:admin": "medusa build --admin-only",
     "db:migrate": "medusa db:migrate",
     "predeploy": "medusa db:migrate",
+    "postinstall": "medusa db:migrate",
     "start": "medusa start",
     "start:prod": "NODE_ENV=production medusa start",
     "start:render": "medusa build && medusa start",
