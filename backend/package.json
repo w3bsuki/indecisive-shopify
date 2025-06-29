@@ -20,7 +20,7 @@
     "build:all": "medusa build",
     "build:admin": "medusa build --admin-only",
     "db:migrate": "medusa db:migrate",
-    "start": "medusa db:migrate && medusa start",
+    "start": "cd .medusa/server && medusa start",
     "start:prod": "NODE_ENV=production medusa start",
     "start:render": "medusa build && medusa start",
     "dev": "medusa develop",
