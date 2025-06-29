@@ -1,5 +1,6 @@
 [build]
 builder = "NIXPACKS"
+buildCommand = "yarn install && yarn build"
 
 [deploy]
 startCommand = "yarn predeploy && yarn start"
