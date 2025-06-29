@@ -3,7 +3,7 @@ builder = "nixpacks"
 
 [deploy]
 rootDirectory = "backend"
-startCommand = "yarn start"
+startCommand = "yarn db:migrate && yarn start"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on-failure"
