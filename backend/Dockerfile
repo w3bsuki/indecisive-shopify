@@ -14,8 +14,11 @@ COPY . .
 # Build backend and admin panel
 RUN yarn build
 
+# Make start script executable
+RUN chmod +x start.sh
+
 # Railway provides PORT env var at runtime
 ENV NODE_ENV=production
 
-# Start the application
-CMD ["yarn", "start"]
+# Use start script to handle PORT
+CMD ["./start.sh"]
