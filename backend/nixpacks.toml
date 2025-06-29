@@ -7,7 +7,7 @@ cmds = ["yarn install"]
 
 [phases.build]
 dependsOn = ["install"]
-cmds = ["yarn build"]
+cmds = ["yarn build:all"]
 
 [start]
 cmd = "yarn db:migrate && yarn start"
