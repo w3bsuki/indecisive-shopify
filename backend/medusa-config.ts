@@ -15,8 +15,8 @@ export default defineConfig({
     }
   },
   admin: {
-    disable: false,
-    path: "/dashboard",
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    path: "/app",
     backendUrl: process.env.MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000",
   },
   modules: {

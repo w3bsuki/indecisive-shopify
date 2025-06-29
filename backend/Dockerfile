@@ -12,15 +12,18 @@ RUN yarn install --frozen-lockfile --production=false
 COPY . .
 
 # Build backend and admin panel
-RUN yarn build && \
-    ls -la .medusa/server/public/admin/ && \
-    echo "Admin build completed"
+RUN yarn build
 
-# Make start script executable
-RUN chmod +x start.sh
+# The build output is in .medusa/server
+# We need to install dependencies there and run from there
+WORKDIR /app/.medusa/server
+
+# Install production dependencies in the build output directory
+RUN yarn install --production
 
 # Railway provides PORT env var at runtime
 ENV NODE_ENV=production
+ENV DISABLE_MEDUSA_ADMIN=false
 
-# Use start script to handle PORT
-CMD ["./start.sh"]
+# Start from the .medusa/server directory
+CMD ["yarn", "start"]
