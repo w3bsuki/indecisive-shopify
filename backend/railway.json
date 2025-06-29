@@ -2,7 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "yarn install && yarn build"
+    "buildCommand": "yarn install && yarn build && ls -la .medusa/server/public/"
   },
   "deploy": {
     "startCommand": "cd .medusa/server && yarn install && yarn predeploy && MEDUSA_BACKEND_HOST=0.0.0.0 yarn run start",
