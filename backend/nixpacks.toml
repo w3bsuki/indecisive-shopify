@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs-20_x", "yarn"]
+
+[phases.install]
+cmds = ["yarn install"]
+
+[phases.build]
+cmds = ["yarn build"]
+
+[start]
+cmd = "NODE_OPTIONS='--max-old-space-size=512' yarn start"
