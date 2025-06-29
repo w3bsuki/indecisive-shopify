@@ -2,6 +2,13 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
+// Log critical environment variables for debugging
+console.log('🔍 Medusa Config Loading...')
+console.log('NODE_ENV:', process.env.NODE_ENV)
+console.log('PORT:', process.env.PORT || 'Not set (will default to 9000)')
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'Set' : 'NOT SET!')
+console.log('REDIS_URL:', process.env.REDIS_URL ? 'Set' : 'Not set')
+
 export default defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -35,9 +42,9 @@ export default defineConfig({
           redisUrl: process.env.REDIS_URL,
         },
       },
-      // Workflow engine: only enable in production to avoid sharedContainer dependency issues in development
+      // Workflow engine: only enable when Redis is available and in production
       // This resolves the "AwilixResolutionError: Could not resolve 'sharedContainer'" error
-      ...(process.env.NODE_ENV === 'production' && {
+      ...(process.env.NODE_ENV === 'production' && process.env.REDIS_URL && {
         workflowEngine: {
           resolve: "@medusajs/workflow-engine-redis",
           options: {
