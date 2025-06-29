@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Starting build process..."
-pnpm install
+yarn install
 echo "Building Medusa admin..."
-pnpm run build
+yarn build
 echo "Build complete!"

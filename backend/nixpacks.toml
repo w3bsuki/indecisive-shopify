@@ -5,7 +5,7 @@ nixPkgs = ["nodejs-20_x", "yarn", "postgresql"]
 cmds = ["yarn install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["yarn build"]
+cmds = ["yarn build:all"]
 
 [start]
 cmd = "yarn start"
