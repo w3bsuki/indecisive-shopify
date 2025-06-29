@@ -5,14 +5,16 @@ WORKDIR /app
 # Copy package files
 COPY package.json yarn.lock ./
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
+# Install all dependencies including devDependencies for build
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy all source files
 COPY . .
 
 # Build backend and admin panel
-RUN yarn build
+RUN yarn build && \
+    ls -la .medusa/server/public/admin/ && \
+    echo "Admin build completed"
 
 # Make start script executable
 RUN chmod +x start.sh
