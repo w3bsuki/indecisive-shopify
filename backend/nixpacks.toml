@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs-20_x", "yarn", "postgresql", "bash"]
+nixPkgs = ["nodejs-20_x", "yarn", "postgresql"]
 
 [phases.install]
 cmds = ["yarn install --frozen-lockfile"]
@@ -8,7 +8,7 @@ cmds = ["yarn install --frozen-lockfile"]
 cmds = ["yarn build:all"]
 
 [start]
-cmd = "./start.sh"
+cmd = "yarn start"
 
 [variables]
 NODE_ENV = "production"
