@@ -1,1 +1,1 @@
-web: yarn db:migrate && yarn start
+web: ./start-medusa.sh
