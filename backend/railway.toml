@@ -14,11 +14,12 @@ cmds = ["yarn build"]
 NODE_ENV = "production"
 
 [deploy]
-startCommand = "./debug-start.sh"
+startCommand = "yarn start"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
+port = "PORT"
 
 [env]
 PORT = "$PORT"
