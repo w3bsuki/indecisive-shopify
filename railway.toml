@@ -3,7 +3,7 @@ builder = "NIXPACKS"
 
 [deploy]
 rootDirectory = "backend"
-startCommand = "./minimal-test.sh"
+startCommand = "sh ./minimal-test.sh"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"

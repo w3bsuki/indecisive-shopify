@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 echo "🔍 MINIMAL TEST: Starting basic HTTP server to test Railway connectivity..."
