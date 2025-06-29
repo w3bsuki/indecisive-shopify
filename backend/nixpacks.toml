@@ -1,0 +1,9 @@
+# nixpacks.toml
+[phases.setup]
+nixPkgs = ['nodejs_18']
+
+[phases.build]
+cmds = ['echo "No build needed for test server"']
+
+[start]
+cmd = 'node test-server.js'
