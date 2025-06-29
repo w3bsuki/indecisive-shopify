@@ -2,11 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files ONLY
 COPY package.json yarn.lock ./
 
-# Install dependencies without check-cache bullshit
-RUN yarn install --frozen-lockfile
+# Install dependencies
+RUN yarn install
 
 # Copy source code
 COPY . .
@@ -14,5 +14,5 @@ COPY . .
 # Build the app
 RUN yarn build:all
 
-# Run migrations and start
-CMD ["sh", "-c", "yarn db:migrate && yarn start"]
+# Start the app
+CMD ["yarn", "start"]
