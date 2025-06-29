@@ -2,170 +2,193 @@
 
 import type React from "react"
 
-import { useState } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ShoppingBag, Plus, Minus, X, CreditCard } from "lucide-react"
+import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2 } from "lucide-react"
 import Image from "next/image"
+import { useCart } from "@/hooks/use-cart"
+import { formatPrice } from "@/lib/shopify"
 
-interface CartItem {
-  id: number
-  name: string
-  price: number
-  image: string
-  size: string
-  color: string
-  quantity: number
-}
+export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
+  const { cart, isLoading, updateItem, removeItem, totalItems } = useCart()
 
-interface MobileCartSheetProps {
-  cartCount: number
-  children?: React.ReactNode
-}
+  const subtotal = cart?.cost.subtotalAmount
+  const total = cart?.cost.totalAmount
 
-export function MobileCartSheet({ cartCount, children }: MobileCartSheetProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: "Essential White Tee",
-      price: 45,
-      image: "/placeholder.svg?height=200&width=200",
-      size: "M",
-      color: "White",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Shadow Bomber",
-      price: 120,
-      image: "/placeholder.svg?height=200&width=200",
-      size: "L",
-      color: "Black",
-      quantity: 1,
-    },
-  ])
-
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity === 0) {
-      setCartItems((prev) => prev.filter((item) => item.id !== id))
-    } else {
-      setCartItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)))
+  const handleCheckout = () => {
+    if (cart?.checkoutUrl) {
+      window.location.href = cart.checkoutUrl
     }
   }
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = subtotal > 50 ? 0 : 10
-  const total = subtotal + shipping
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         {children || (
-          <Button variant="ghost" size="icon" className="relative hover:bg-black/5 h-11 w-11 sharp-active">
+          <Button variant="ghost" size="icon" className="relative">
             <ShoppingBag className="h-5 w-5" />
-            {cartCount > 0 && (
-              <Badge className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-black text-white">
-                {cartCount}
+            {totalItems > 0 && (
+              <Badge
+                variant="secondary"
+                className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+              >
+                {totalItems}
               </Badge>
             )}
           </Button>
         )}
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-sm font-mono p-0 flex flex-col">
-        <SheetHeader className="p-6 border-b border-black/10">
-          <SheetTitle className="text-xl font-bold uppercase tracking-wider">CART ({cartItems.length})</SheetTitle>
+      <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
+        <SheetHeader className="px-6 py-4 border-b">
+          <SheetTitle className="flex items-center justify-between">
+            <span>SHOPPING CART</span>
+            <Badge variant="secondary">{totalItems} items</Badge>
+          </SheetTitle>
         </SheetHeader>
 
-        {cartItems.length === 0 ? (
-          <div className="flex-1 flex items-center justify-center p-6">
-            <div className="text-center">
-              <ShoppingBag className="h-12 w-12 mx-auto mb-4 text-black/30" />
-              <p className="text-black/60 font-mono">Your cart is empty</p>
+        {/* Cart Items */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          {!cart || cart.lines.edges.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <ShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
+              <p className="text-lg font-medium mb-2">Your cart is empty</p>
+              <p className="text-sm text-gray-600 mb-6">Add some items to get started</p>
+              <Button variant="outline" className="w-full max-w-xs">
+                Continue Shopping
+              </Button>
             </div>
-          </div>
-        ) : (
-          <>
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex gap-4 pb-4 border-b border-black/10">
-                  <div className="w-20 h-20 relative flex-shrink-0">
-                    <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+          ) : (
+            <div className="space-y-4">
+              {cart.lines.edges.map(({ node: item }) => (
+                <div key={item.id} className="flex gap-4 border-b pb-4">
+                  <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
+                    {item.merchandise.product.featuredImage ? (
+                      <Image
+                        src={item.merchandise.product.featuredImage.url}
+                        alt={item.merchandise.product.featuredImage.altText || item.merchandise.product.title}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No image
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex-1 space-y-2">
-                    <div>
-                      <h4 className="font-mono font-bold text-sm">{item.name}</h4>
-                      <p className="text-xs text-black/60">
-                        {item.color} • {item.size}
-                      </p>
-                      <p className="font-mono font-bold text-sm">${item.price}</p>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-medium text-sm line-clamp-1">
+                          {item.merchandise.product.title}
+                        </h4>
+                        {item.merchandise.title !== 'Default Title' && (
+                          <p className="text-xs text-gray-600">{item.merchandise.title}</p>
+                        )}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 -mr-2"
+                        onClick={() => removeItem(item.id)}
+                        disabled={isLoading}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center border border-black/20">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-2 hover:bg-black/5 min-h-[36px] min-w-[36px]"
+                      <div className="flex items-center gap-2 border rounded-lg">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => updateItem(item.id, item.quantity - 1)}
+                          disabled={isLoading || item.quantity === 1}
                         >
                           <Minus className="h-3 w-3" />
-                        </button>
-                        <span className="px-3 py-2 font-mono text-sm min-w-[40px] text-center">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-2 hover:bg-black/5 min-h-[36px] min-w-[36px]"
+                        </Button>
+                        <span className="w-8 text-center text-sm">{item.quantity}</span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => updateItem(item.id, item.quantity + 1)}
+                          disabled={isLoading}
                         >
                           <Plus className="h-3 w-3" />
-                        </button>
+                        </Button>
                       </div>
-
-                      <button
-                        onClick={() => updateQuantity(item.id, 0)}
-                        className="p-2 text-red-500 hover:bg-red-50 min-h-[36px] min-w-[36px]"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
+                      <span className="font-medium text-sm">
+                        {formatPrice(item.cost.totalAmount.amount, item.cost.totalAmount.currencyCode)}
+                      </span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+          )}
+        </div>
 
-            {/* Cart Summary & Checkout */}
-            <div className="border-t border-black/10 p-6 space-y-4">
-              <div className="space-y-2 text-sm font-mono">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
-                </div>
-                {shipping > 0 && (
-                  <p className="text-xs text-black/60">Add ${(50 - subtotal).toFixed(2)} more for free shipping</p>
-                )}
-                <div className="flex justify-between font-bold text-base border-t border-black/10 pt-2">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
-                </div>
+        {/* Cart Footer */}
+        {cart && cart.lines.edges.length > 0 && (
+          <div className="border-t px-6 py-4 space-y-4">
+            {/* Promo Code */}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Enter promo code"
+                className="flex-1 px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              />
+              <Button variant="outline" size="sm">
+                Apply
+              </Button>
+            </div>
+
+            {/* Totals */}
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>{subtotal && formatPrice(subtotal.amount, subtotal.currencyCode)}</span>
               </div>
-
-              <div className="space-y-3">
-                <Button className="w-full bg-black text-white hover:bg-black/80 font-mono py-4 text-base min-h-[56px]">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  CHECKOUT
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full border-2 border-black hover:bg-black hover:text-white font-mono py-4 text-base min-h-[56px]"
-                >
-                  VIEW CART
-                </Button>
+              {cart.cost.totalTaxAmount && parseFloat(cart.cost.totalTaxAmount.amount) > 0 && (
+                <div className="flex justify-between">
+                  <span>Tax</span>
+                  <span>{formatPrice(cart.cost.totalTaxAmount.amount, cart.cost.totalTaxAmount.currencyCode)}</span>
+                </div>
+              )}
+              <div className="flex justify-between font-medium text-base pt-2 border-t">
+                <span>Total</span>
+                <span>{total && formatPrice(total.amount, total.currencyCode)}</span>
               </div>
             </div>
-          </>
+
+            {/* Checkout Button */}
+            <Button
+              className="w-full"
+              size="lg"
+              onClick={handleCheckout}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Checkout
+                </>
+              )}
+            </Button>
+
+            {/* Security Notice */}
+            <p className="text-xs text-center text-gray-600">
+              Secure checkout powered by Shopify
+            </p>
+          </div>
         )}
       </SheetContent>
     </Sheet>
