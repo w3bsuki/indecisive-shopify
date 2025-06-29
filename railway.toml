@@ -1,10 +1,5 @@
-[build]
-builder = "nixpacks"
-buildCommand = "echo 'No build needed for test server'"
-
 [deploy]
 rootDirectory = "backend"
-startCommand = "node debug-server.js"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 healthcheckPath = "/health"
