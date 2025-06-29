@@ -20,6 +20,29 @@ export default defineConfig({
     backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
   },
   modules: {
+    // Redis modules for production
+    ...(process.env.REDIS_URL && {
+      cacheService: {
+        resolve: "@medusajs/cache-redis",
+        options: {
+          redisUrl: process.env.REDIS_URL,
+        },
+      },
+      eventBus: {
+        resolve: "@medusajs/event-bus-redis",
+        options: {
+          redisUrl: process.env.REDIS_URL,
+        },
+      },
+      workflowEngine: {
+        resolve: "@medusajs/workflow-engine-redis",
+        options: {
+          redis: {
+            url: process.env.REDIS_URL,
+          },
+        },
+      },
+    }),
     // Stripe payment provider
     ...(process.env.STRIPE_API_KEY && process.env.STRIPE_WEBHOOK_SECRET && {
       payment: {
