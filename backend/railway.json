@@ -5,7 +5,7 @@
     "buildCommand": "yarn install && yarn build"
   },
   "deploy": {
-    "startCommand": "cd .medusa/server && yarn install && yarn predeploy && yarn run start",
+    "startCommand": "cd .medusa/server && yarn install && yarn predeploy && MEDUSA_BACKEND_HOST=0.0.0.0 yarn run start",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
