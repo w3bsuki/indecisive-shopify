@@ -12,13 +12,14 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build backend and admin panel
-RUN yarn build:all
+RUN yarn build:all && \
+    # Verify admin build files exist
+    ls -la .medusa/server/public/admin/ || echo "Admin build directory not found" && \
+    # List all .medusa contents
+    find .medusa -name "index.html" || echo "No index.html found in .medusa"
 
-# The admin panel build output is in .medusa/server/public/admin
-# We need to ensure this directory persists
+# Railway provides PORT env var
+ENV PORT=9000
 
-# Use the PORT environment variable from Railway
-ENV PORT=${PORT:-9000}
-
-# Start command includes migrations
+# Start directly with yarn start
 CMD ["yarn", "start"]
