@@ -21,7 +21,7 @@
     "build:admin": "medusa build --admin-only",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "fix-admin": "medusa exec ./src/scripts/fix-admin-auth.ts",
-    "start": "medusa db:migrate && medusa start",
+    "start": "medusa db:migrate && medusa build && medusa start",
     "start:prod": "NODE_ENV=production medusa start",
     "start:render": "medusa build && medusa start",
     "dev": "medusa develop",
