@@ -4,7 +4,7 @@
     "builder": "nixpacks"
   },
   "deploy": {
-    "startCommand": "medusa db:migrate && medusa start",
+    "startCommand": "medusa start",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 300
   }
