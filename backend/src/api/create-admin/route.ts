@@ -10,7 +10,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       email: "admin@indecisive-wear.com",
       first_name: "Admin",
       last_name: "User",
-      password: "supersecret123",
     })
     
     res.json({ 

@@ -20,7 +20,6 @@ export default async function createAdminUser({ container }: { container: any })
     // Create admin user
     const admin = await userModule.createUsers({
       email: adminEmail,
-      password: adminPassword,
       first_name: "Admin",
       last_name: "User"
     })
