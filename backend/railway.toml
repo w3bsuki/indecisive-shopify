@@ -1,0 +1,20 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "medusa migrations run && npm run build:admin && npm run start"
+restartPolicyType = "always"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+
+[nixpacks]
+providers = ["node"]
+
+[nixpacks.setup]
+nixPkgs = ["nodejs_20", "yarn"]
+
+[nixpacks.build]
+cmd = "yarn install --frozen-lockfile && yarn build"
+
+[nixpacks.start]
+cmd = "yarn start"
