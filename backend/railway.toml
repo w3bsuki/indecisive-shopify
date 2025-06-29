@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "yarn start"
+startCommand = "./start.sh"
 restartPolicyType = "always"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
@@ -14,7 +14,7 @@ providers = ["node"]
 nixPkgs = ["nodejs_20", "yarn"]
 
 [nixpacks.build]
-cmds = ["yarn install --frozen-lockfile", "yarn build", "yarn db:migrate"]
+cmds = ["yarn install --frozen-lockfile", "yarn build"]
 
 [nixpacks.start]
 cmd = "yarn start"
