@@ -7,17 +7,15 @@ export default defineConfig({
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     http: {
-      storeCors: process.env.STORE_CORS || "http://localhost:3000",
-      adminCors: process.env.ADMIN_CORS || "http://localhost:9000",
-      authCors: process.env.AUTH_CORS || "http://localhost:9000",
+      storeCors: process.env.STORE_CORS || "*",
+      adminCors: process.env.ADMIN_CORS || "*",
+      authCors: process.env.AUTH_CORS || "*",
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     }
   },
   admin: {
-    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
-    path: "/app",
-    backendUrl: process.env.MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000",
+    disable: false,
   },
   modules: {
     // Stripe payment provider

@@ -2,20 +2,23 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json yarn.lock ./
-
-# Install dependencies
-RUN yarn install --frozen-lockfile
-
-# Copy all source files
+# Copy everything
 COPY . .
 
-# Build backend and admin panel
+# Install dependencies
+RUN yarn install
+
+# Build the application (creates .medusa directory)
 RUN yarn build
 
-# Railway provides PORT env var at runtime
+# The app expects to run from .medusa/server
+WORKDIR /app/.medusa/server
+
+# Install production dependencies in the server directory
+RUN yarn install --production
+
+# Use Railway's PORT
 ENV NODE_ENV=production
 
-# Start command - it will cd to .medusa/server automatically
+# Start from the server directory
 CMD ["yarn", "start"]
