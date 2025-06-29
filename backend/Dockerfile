@@ -12,4 +12,4 @@ RUN npm install --production
 
 ENV NODE_ENV=production
 
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "npm run predeploy && npm run start"]
