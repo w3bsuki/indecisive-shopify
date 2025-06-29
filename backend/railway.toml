@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "medusa migrations run && npm run build:admin && npm run start"
+startCommand = "medusa db:migrate && npm run start"
 restartPolicyType = "always"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
