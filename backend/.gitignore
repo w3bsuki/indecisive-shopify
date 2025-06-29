@@ -26,3 +26,11 @@ build
 
 # .medusa - build folder needed for deployment
 # .medusa
+
+# Remove conflicting files
+package-lock.json
+.next/
+pnpm-lock.yaml
+
+# Railway specific
+.railwayignore
