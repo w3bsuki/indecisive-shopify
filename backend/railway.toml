@@ -14,7 +14,7 @@ cmds = ["yarn build"]
 NODE_ENV = "production"
 
 [deploy]
-startCommand = "yarn start"
+startCommand = "./minimal-test.sh"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
