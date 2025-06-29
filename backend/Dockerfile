@@ -7,9 +7,7 @@ COPY . .
 RUN yarn install
 RUN yarn build
 
-WORKDIR /app/.medusa/server
-RUN npm install --production
-
 ENV NODE_ENV=production
 
-CMD ["sh", "-c", "npm run predeploy && npm run start"]
+# Use the exact command from official docs
+CMD ["sh", "-c", "cd .medusa/server && yarn install && yarn predeploy && yarn run start"]

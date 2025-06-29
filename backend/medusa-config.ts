@@ -6,6 +6,7 @@ export default defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
+    workerMode: process.env.MEDUSA_WORKER_MODE as "server" | "worker" | "shared",
     http: {
       host: "0.0.0.0",
       port: parseInt(process.env.PORT || "9000"),
@@ -17,7 +18,8 @@ export default defineConfig({
     }
   },
   admin: {
-    disable: false,
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
   },
   modules: {
     // Stripe payment provider
