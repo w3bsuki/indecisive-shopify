@@ -1,7 +1,7 @@
 FROM node:20-alpine
 
 # Install dependencies
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat bash
 
 WORKDIR /app
 
@@ -15,10 +15,13 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build the application
-RUN yarn build
+RUN yarn build:all
 
-# Expose port
-EXPOSE 9000
+# Make start script executable
+RUN chmod +x start.sh
 
-# Start the application
-CMD ["yarn", "start"]
+# Railway sets PORT dynamically
+EXPOSE ${PORT:-9000}
+
+# Start the application using our startup script
+CMD ["./start.sh"]
