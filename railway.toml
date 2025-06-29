@@ -1,9 +1,9 @@
 [build]
-builder = "nixpacks"
+builder = "NIXPACKS"
 
 [deploy]
 rootDirectory = "backend"
-startCommand = "yarn db:migrate && yarn start"
+startCommand = "./minimal-test.sh"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
