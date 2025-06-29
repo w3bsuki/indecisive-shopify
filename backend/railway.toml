@@ -2,10 +2,16 @@
 builder = "NIXPACKS"
 
 [build.nixpacksPlan.phases.setup]
-nixPkgs = ["nodejs", "yarn"]
+nixPkgs = ["nodejs_20", "yarn"]
 
 [build.nixpacksPlan.phases.install]
 cmds = ["yarn install"]
+
+[build.nixpacksPlan.phases.build]
+cmds = ["yarn build"]
+
+[build.nixpacksPlan.variables]
+NODE_ENV = "production"
 
 [deploy]
 startCommand = "yarn db:migrate && yarn start"
