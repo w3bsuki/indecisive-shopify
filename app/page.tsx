@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { getProducts, getCollections } from '@/lib/shopify'
-import { HeroSection } from '@/components/layout/hero-section'
+// import { HeroSection } from '@/components/layout/hero-section'
+import { Hero2 } from '@/components/layout/hero-2'
 import { ProductGrid } from '@/components/commerce/product-grid'
 import { NewsletterSection } from '@/components/layout/newsletter-section'
 import { Footer } from '@/components/layout/footer'
@@ -33,7 +34,8 @@ export default async function HomePage() {
       <MobileBottomNav />
 
       {/* Hero Section - no margin needed, hero handles its own positioning */}
-      <HeroSection />
+      {/* <HeroSection /> */}
+      <Hero2 />
 
       {/* Categories */}
       <section className="py-8 md:py-12">
