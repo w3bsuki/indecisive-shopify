@@ -74,25 +74,21 @@
   "env": {
     "NODE_ENV": "production",
     "NEXT_PUBLIC_APP_URL": "@app_url",
-    "NEXT_PUBLIC_MEDUSA_BACKEND_URL": "@medusa_backend_url",
+    "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN": "@shopify_store_domain",
+    "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN": "@shopify_storefront_access_token",
+    "NEXT_PUBLIC_SHOPIFY_API_VERSION": "@shopify_api_version",
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
-    "NEXT_PUBLIC_SENTRY_DSN": "@sentry_dsn",
     "REVALIDATE_SECRET": "@revalidate_secret"
   },
   "build": {
     "env": {
       "NODE_ENV": "production",
       "NEXT_PUBLIC_APP_URL": "@app_url",
-      "NEXT_PUBLIC_MEDUSA_BACKEND_URL": "@medusa_backend_url", 
+      "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN": "@shopify_store_domain",
+      "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN": "@shopify_storefront_access_token",
+      "NEXT_PUBLIC_SHOPIFY_API_VERSION": "@shopify_api_version",
       "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
-      "NEXT_PUBLIC_SENTRY_DSN": "@sentry_dsn",
       "REVALIDATE_SECRET": "@revalidate_secret"
     }
-  },
-  "crons": [
-    {
-      "path": "/api/cron/health-check",
-      "schedule": "0 */5 * * * *"
-    }
-  ]
+  }
 }

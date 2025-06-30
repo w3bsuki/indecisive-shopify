@@ -120,7 +120,7 @@ const HeroSplitHandle = React.forwardRef<HTMLDivElement, HeroSplitHandleProps>(
       <div
         ref={ref}
         className={cn(
-          "absolute top-0 bottom-16 z-20 cursor-col-resize group",
+          "absolute top-0 bottom-12 z-20 cursor-col-resize group",
           className
         )}
         style={{ left: `${position}%` }}

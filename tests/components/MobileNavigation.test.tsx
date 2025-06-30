@@ -1,10 +1,11 @@
+import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MobileNavigation } from '@/components/layout/mobile-navigation'
-import { useMobile } from '@/hooks/use-mobile'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 // Mock the mobile detection hook
 jest.mock('@/hooks/use-mobile', () => ({
-  useMobile: jest.fn(),
+  useIsMobile: jest.fn(),
 }))
 
 // Mock next/link
@@ -15,7 +16,7 @@ jest.mock('next/link', () => {
 describe('MobileNavigation', () => {
   beforeEach(() => {
     // Default to mobile view
-    (useMobile as jest.Mock).mockReturnValue(true)
+    (useIsMobile as jest.Mock).mockReturnValue(true)
   })
 
   it('renders mobile navigation on mobile devices', () => {
@@ -26,7 +27,7 @@ describe('MobileNavigation', () => {
   })
 
   it('does not render on desktop', () => {
-    (useMobile as jest.Mock).mockReturnValue(false)
+    (useIsMobile as jest.Mock).mockReturnValue(false)
     
     const { container } = render(<MobileNavigation />)
     expect(container.firstChild).toBeNull()

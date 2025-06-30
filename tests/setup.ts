@@ -78,5 +78,7 @@ jest.mock('next/image', () => ({
 }))
 
 // Mock environment variables
-process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL = 'http://localhost:9000'
+process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN = 'test-store.myshopify.com'
+process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN = 'test-token'
+process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION = '2025-04'
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = 'pk_test_mock'

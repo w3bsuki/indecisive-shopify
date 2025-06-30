@@ -1,8 +1,9 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import { Sora } from 'next/font/google'
 import './globals.css'
-import { CartProvider } from '@/hooks/use-cart'
-import { Toaster } from '@/components/ui/toaster'
+import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
+import { Toaster } from '@/components/ui/sonner'
 
 const sora = Sora({
   subsets: ['latin'],
@@ -23,10 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-        <CartProvider>
+        <HydrogenProvider>
           {children}
           <Toaster />
-        </CartProvider>
+        </HydrogenProvider>
       </body>
     </html>
   )

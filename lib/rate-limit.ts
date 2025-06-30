@@ -286,13 +286,21 @@ export class RateLimitError extends Error {
   }
 }
 
+interface RateLimitDetails {
+  allowed: boolean
+  limit: number
+  remaining: number
+  resetTime: number
+  retryAfter?: number
+}
+
 /**
  * Send rate limit alert (integrate with your monitoring service)
  */
 export async function sendRateLimitAlert(
   key: string,
   endpoint: string,
-  details: any
+  details: RateLimitDetails
 ): Promise<void> {
   // This is where you would integrate with your alerting system
   // For example: Slack, PagerDuty, email, etc.

@@ -1,77 +1,98 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { Heart, Plus, Eye } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { QuickViewDialog } from '@/components/commerce/quick-view-dialog'
-import type { Product } from '@/app/data/products'
+import { lazy, Suspense } from 'react'
+import { cn } from '@/lib/utils'
+import type { ShopifyProduct } from '@/lib/shopify/types'
+
+// Lazy load QuickViewDialog - only loads when user clicks quick view
+const QuickViewDialog = lazy(() => import('./quick-view-dialog').then(mod => ({ default: mod.QuickViewDialog })))
 
 interface ProductCardActionsProps {
-  product: Product
-  isDark?: boolean
-  addToCartAction: (productId: string, productData: { name: string; price: number }) => Promise<void>
+  product: ShopifyProduct
+  isLoading: boolean
+  cartReady: boolean
+  onAddToCart: (e: React.MouseEvent) => void
 }
 
-export function ProductCardActions({ product, isDark = false, addToCartAction }: ProductCardActionsProps) {
-  const [isPending, startTransition] = useTransition()
-  const [isWishlisted, setIsWishlisted] = useState(false)
-  
-  const handleAddToCart = () => {
-    startTransition(async () => {
-      await addToCartAction(product.id, {
-        name: product.name,
-        price: product.price
-      })
-    })
-  }
+export function ProductCardActions({
+  product,
+  isLoading,
+  cartReady,
+  onAddToCart
+}: ProductCardActionsProps) {
+  const firstVariant = product.variants.edges[0]?.node
   
   return (
-    <>
-      {/* Mobile action buttons */}
-      <div className="absolute bottom-2 left-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 md:opacity-100">
-        <Button
-          onClick={handleAddToCart}
-          disabled={isPending}
-          size="sm"
-          className={`flex-1 font-mono text-xs py-3 min-h-[44px] ${
-            isDark ? "bg-white text-black hover:bg-white/90" : "bg-black text-white hover:bg-black/90"
-          }`}
-          aria-label={`Add ${product.name} to cart`}
-        >
-          {isPending ? (
-            'ADDING...'
-          ) : (
-            <>
-              <Plus className="h-2 w-2 mr-1" />
-              ADD
-            </>
-          )}
-        </Button>
-        <QuickViewDialog product={product} isDark={isDark}>
-          <Button
-            size="sm"
-            className={`font-mono text-xs px-3 py-3 min-h-[44px] min-w-[44px] ${
-              isDark ? "bg-white text-black hover:bg-white/90" : "bg-black text-white hover:bg-black/90"
-            }`}
-            aria-label={`Quick view ${product.name}`}
+    <div className="flex items-center gap-1">
+        {/* Quick View */}
+        <Suspense fallback={
+          <button
+            type="button"
+            className="w-7 h-7 flex items-center justify-center bg-white border border-gray-200 hover:border-black transition-all duration-200"
+            aria-label="Quick view"
+            disabled
           >
-            <Eye className="h-4 w-4" />
-          </Button>
-        </QuickViewDialog>
-      </div>
+            <svg 
+              className="w-3.5 h-3.5 text-gray-600" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        }>
+          <QuickViewDialog product={product}>
+            <button
+              type="button"
+              className="w-7 h-7 flex items-center justify-center bg-white border border-gray-200 hover:border-black transition-all duration-200"
+              aria-label="Quick view"
+            >
+              <svg 
+                className="w-3.5 h-3.5 text-gray-600 hover:text-black transition-colors" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </QuickViewDialog>
+        </Suspense>
 
-      {/* Wishlist button */}
-      <Button
-        onClick={() => setIsWishlisted(!isWishlisted)}
-        size="sm"
-        className={`absolute top-2 right-2 min-h-[44px] min-w-[44px] p-0 opacity-0 group-hover:opacity-100 md:opacity-100 ${
-          isDark ? "bg-white text-black hover:bg-white/90" : "bg-black text-white hover:bg-black/90"
-        }`}
-        aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-        aria-pressed={isWishlisted}
-      >
-        <Heart className={`h-5 w-5 ${isWishlisted ? 'fill-current' : ''}`} />
-      </Button>
-    </>
+        {/* Add to Cart */}
+        {firstVariant && (
+          <button
+            type="button"
+            onClick={onAddToCart}
+            disabled={isLoading || !firstVariant.availableForSale || !cartReady}
+            className={cn(
+              "w-7 h-7 flex items-center justify-center transition-all duration-200",
+              "bg-black text-white hover:bg-gray-800 border border-black",
+              "disabled:bg-gray-300 disabled:cursor-not-allowed disabled:border-gray-300"
+            )}
+            aria-label={isLoading ? "Adding to cart" : "Add to cart"}
+          >
+            {isLoading ? (
+              <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin" />
+            ) : !firstVariant.availableForSale ? (
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg 
+                className="w-3.5 h-3.5" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 7H6L5 9z" />
+              </svg>
+            )}
+          </button>
+        )}
+    </div>
   )
 }

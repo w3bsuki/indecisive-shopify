@@ -2,17 +2,14 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X, Search, ShoppingBag, Heart, User } from "lucide-react"
+import { Menu, X, ShoppingBag, Heart, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
-import { useCart } from "@/hooks/use-cart"
 
 export function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { totalItems } = useCart()
 
   const menuItems = [
     { name: "NEW ARRIVALS", href: "/new", badge: "HOT" },
@@ -25,11 +22,6 @@ export function MobileNavigation() {
     { name: "SALE", href: "/sale", badge: "50% OFF" },
   ]
 
-  const accountItems = [
-    { name: "MY ACCOUNT", href: "/account", icon: User },
-    { name: "WISHLIST", href: "/wishlist", icon: Heart },
-    { name: "ORDER HISTORY", href: "/orders", icon: ShoppingBag },
-  ]
 
   return (
     <>
@@ -65,57 +57,99 @@ export function MobileNavigation() {
                     {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:w-[400px] p-0">
+                <SheetContent side="right" className="w-full sm:w-[400px] p-0 border-2 border-black bg-white">
                   <div className="flex flex-col h-full">
-                    {/* Menu Header */}
-                    <div className="px-6 py-4 border-b">
-                      <h2 className="text-lg font-bold">MENU</h2>
-                    </div>
-
-                    {/* Menu Items */}
-                    <div className="flex-1 overflow-y-auto px-6 py-6">
-                      <nav className="space-y-1">
-                        {menuItems.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className="flex items-center justify-between py-3 text-base font-medium hover:text-gray-600 transition-colors"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            <span>{item.name}</span>
-                            {item.badge && (
-                              <Badge variant="secondary" className="text-xs">
-                                {item.badge}
-                              </Badge>
-                            )}
-                          </Link>
-                        ))}
-                      </nav>
-
-                      {/* Account Section */}
-                      <div className="mt-8 pt-8 border-t">
-                        <h3 className="text-sm font-bold text-gray-600 mb-4">ACCOUNT</h3>
-                        <nav className="space-y-1">
-                          {accountItems.map((item) => (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              className="flex items-center gap-3 py-3 text-base hover:text-gray-600 transition-colors"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <item.icon className="h-5 w-5" />
-                              <span>{item.name}</span>
-                            </Link>
-                          ))}
-                        </nav>
+                    {/* Menu Header - Logo + Icons Row */}
+                    <div className="px-6 py-6 border-b-2 border-black">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center">
+                          <span className="text-xl font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
+                        </div>
+                        
+                        {/* Close Button */}
+                        <button
+                          onClick={() => setIsMenuOpen(false)}
+                          className="w-10 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-colors duration-200 border-none focus:outline-none focus:ring-0"
+                          aria-label="Close menu"
+                        >
+                          <X className="h-5 w-5" />
+                        </button>
+                      </div>
+                      
+                      {/* Account + Wishlist + Cart Icons Row */}
+                      <div className="flex items-center gap-2">
+                        {/* Account */}
+                        <Link
+                          href="/account"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex-1 h-12 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-all duration-200 font-mono text-sm font-medium"
+                        >
+                          <User className="h-4 w-4 mr-2" />
+                          ACCOUNT
+                        </Link>
+                        
+                        {/* Wishlist */}
+                        <Link
+                          href="/wishlist"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex-1 h-12 flex items-center justify-center bg-white text-black border-2 border-black hover:bg-gray-50 transition-all duration-200 font-mono text-sm font-medium"
+                        >
+                          <Heart className="h-4 w-4 mr-2" />
+                          WISHLIST
+                        </Link>
+                        
+                        {/* Cart */}
+                        <Link
+                          href="/cart"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex-1 h-12 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-all duration-200 font-mono text-sm font-medium"
+                        >
+                          <ShoppingBag className="h-4 w-4 mr-2" />
+                          CART
+                        </Link>
                       </div>
                     </div>
 
+                    {/* Navigation Categories */}
+                    <div className="flex-1 overflow-y-auto">
+                      <nav className="px-6 py-6">
+                        <h3 className="font-mono text-xs font-bold text-gray-600 mb-4 tracking-wider">CATEGORIES</h3>
+                        <div className="space-y-0">
+                          {menuItems.map((item) => (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className="flex items-center justify-between py-4 text-lg font-medium hover:text-gray-600 transition-colors border-b border-gray-100 last:border-b-0"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              <span className="font-mono tracking-wide">{item.name}</span>
+                              {item.badge && (
+                                <span className="text-xs font-mono font-bold px-2 py-1 bg-black text-white">
+                                  {item.badge}
+                                </span>
+                              )}
+                              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </Link>
+                          ))}
+                        </div>
+                      </nav>
+                    </div>
+
                     {/* Menu Footer */}
-                    <div className="border-t px-6 py-4">
-                      <p className="text-sm text-gray-600">
-                        Need help? <Link href="/contact" className="font-medium underline">Contact us</Link>
-                      </p>
+                    <div className="border-t-2 border-black px-6 py-6 bg-gray-50">
+                      <div className="space-y-3">
+                        <Link href="/support" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors">
+                          CUSTOMER SUPPORT
+                        </Link>
+                        <Link href="/size-guide" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors">
+                          SIZE GUIDE
+                        </Link>
+                        <Link href="/shipping" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors">
+                          SHIPPING & RETURNS
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </SheetContent>

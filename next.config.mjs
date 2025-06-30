@@ -15,11 +15,9 @@ const nextConfig = {
   experimental: {
     // Enable when on canary version
     // ppr: true, // Partial Prerendering
-    typedRoutes: true, // Type-safe routing
+    typedRoutes: false, // Type-safe routing
   },
   
-  // External packages for server components
-  serverExternalPackages: ['@medusajs/medusa'],
   
   // Image optimization for e-commerce
   images: {
@@ -35,6 +33,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
       },
     ],
     formats: ['image/avif', 'image/webp'],

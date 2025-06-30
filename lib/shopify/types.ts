@@ -3,14 +3,16 @@ export interface ShopifyProduct {
   title: string;
   handle: string;
   description: string;
-  availableForSale: boolean;
+  availableForSale?: boolean;
   priceRange: {
     minVariantPrice: Money;
+    maxVariantPrice: Money;
   };
   compareAtPriceRange?: {
     minVariantPrice: Money;
+    maxVariantPrice: Money;
   };
-  images: {
+  images?: {
     edges: Array<{
       node: ShopifyImage;
     }>;
@@ -20,7 +22,7 @@ export interface ShopifyProduct {
       node: ShopifyProductVariant;
     }>;
   };
-  options?: Array<{
+  options: Array<{
     id: string;
     name: string;
     values: string[];
@@ -29,6 +31,8 @@ export interface ShopifyProduct {
     title?: string;
     description?: string;
   };
+  tags?: string[];
+  featuredImage?: ShopifyImage;
 }
 
 export interface ShopifyProductVariant {
@@ -37,7 +41,7 @@ export interface ShopifyProductVariant {
   availableForSale: boolean;
   price: Money;
   compareAtPrice?: Money;
-  selectedOptions?: Array<{
+  selectedOptions: Array<{
     name: string;
     value: string;
   }>;
