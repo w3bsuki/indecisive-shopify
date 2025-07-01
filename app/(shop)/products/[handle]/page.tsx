@@ -15,7 +15,17 @@ interface ProductPageProps {
   params: Promise<{ handle: string }>
 }
 
-// Dynamic rendering - no static generation for now
+// Generate static paths for all products at build time
+export async function generateStaticParams() {
+  const products = await getProducts(100) // Fetch up to 100 products
+  
+  return products.edges.map(({ node }) => ({
+    handle: node.handle,
+  }))
+}
+
+// Revalidate product pages every hour to keep them fresh
+export const revalidate = 3600 // 1 hour
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params
