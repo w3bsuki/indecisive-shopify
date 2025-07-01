@@ -1,9 +1,9 @@
 'use client'
 
-import { useCart } from '@/hooks/use-cart'
-
 // Force dynamic rendering for cart page (can't prerender due to client context)
 export const dynamic = 'force-dynamic'
+
+import { useCart } from '@/hooks/use-cart'
 import { formatPrice } from '@/lib/shopify/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

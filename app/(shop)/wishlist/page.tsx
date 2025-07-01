@@ -1,5 +1,8 @@
 'use client'
 
+// Force dynamic rendering for wishlist page (can't prerender due to client context)
+export const dynamic = 'force-dynamic'
+
 import { useWishlist } from '@/hooks/use-wishlist'
 import { ProductCard } from '@/components/commerce/product-card'
 import { Button } from '@/components/ui/button'
