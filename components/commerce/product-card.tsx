@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { formatPrice } from '@/lib/shopify/api'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
+import { useWishlist } from '@/hooks/use-wishlist'
 import { ProductCardImage } from './product-card-image'
 import { cn } from '@/lib/utils'
 import { QuickViewDialog } from './quick-view-dialog'
@@ -14,27 +15,30 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addItem, status, cartReady } = useCart()
+  const { addItem, cartReady } = useCart()
+  const { toggleItem, isInWishlist } = useWishlist()
   const [isLoading, setIsLoading] = useState(false)
-  const [isWishlisted, setIsWishlisted] = useState(false)
-
-  const isCartLoading = status === 'updating' || status === 'creating' || status === 'fetching'
-  const isCurrentLoading = isLoading || isCartLoading
+  const isWishlisted = isInWishlist(product.id)
 
   const handleAddToCart = (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
     
     const firstVariant = product.variants.edges[0]?.node
-    if (!firstVariant || !firstVariant.availableForSale || !cartReady) {
+    if (!firstVariant || !firstVariant.availableForSale || !cartReady || isLoading) {
       return
     }
 
     setIsLoading(true)
     
     try {
+      // addItem is synchronous but triggers async cart update
       addItem(firstVariant.id, 1)
-      setTimeout(() => setIsLoading(false), 2000)
+      
+      // Simple timeout for loading state
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1000)
     } catch (error) {
       console.error('Add to cart failed:', error)
       setIsLoading(false)
@@ -44,7 +48,13 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleWishlist = (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
-    setIsWishlisted(!isWishlisted)
+    toggleItem({
+      id: product.id,
+      handle: product.handle,
+      title: product.title,
+      image: product.featuredImage?.url,
+      price: product.priceRange.minVariantPrice.amount
+    })
   }
 
   const price = formatPrice(
@@ -119,18 +129,18 @@ export function ProductCard({ product }: ProductCardProps) {
                 {/* Right - Add to Cart */}
                 <button
                   onClick={handleAddToCart}
-                  disabled={isCurrentLoading || !product.variants.edges[0]?.node.availableForSale || !cartReady}
+                  disabled={isLoading || !product.variants.edges[0]?.node.availableForSale || !cartReady}
                   className={cn(
                     "w-12 sm:w-10 h-full flex items-center justify-center transition-all duration-200",
-                    isCurrentLoading
+                    isLoading
                       ? "bg-gray-400"
                       : !product.variants.edges[0]?.node.availableForSale || !cartReady
                       ? "bg-gray-400"
                       : "bg-black group-hover:bg-gray-800"
                   )}
-                  aria-label={isCurrentLoading ? "Adding to cart" : "Add to cart"}
+                  aria-label={isLoading ? "Adding to cart" : "Add to cart"}
                 >
-                  {isCurrentLoading ? (
+                  {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : !product.variants.edges[0]?.node.availableForSale ? (
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

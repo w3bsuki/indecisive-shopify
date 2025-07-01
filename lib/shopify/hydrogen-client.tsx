@@ -25,19 +25,6 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
     ? storeDomain 
     : `${storeDomain}.myshopify.com`;
 
-  console.log('ShopifyProvider configuration:', {
-    originalDomain: storeDomain,
-    fullDomain,
-    hasToken: !!storefrontToken,
-    apiVersion,
-    fullConfig: {
-      storeDomain: fullDomain,
-      storefrontToken: storefrontToken?.substring(0, 10) + '...',
-      storefrontApiVersion: apiVersion,
-      countryIsoCode: 'US',
-      languageIsoCode: 'EN'
-    }
-  });
 
   return (
     <ShopifyProvider

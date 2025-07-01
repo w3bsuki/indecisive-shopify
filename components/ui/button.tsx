@@ -45,20 +45,24 @@ const buttonVariants = cva(
         "sale": "bg-sale-price text-text-inverse hover:bg-red-600 active:bg-red-700 border-2 border-transparent font-bold tracking-wider",
       },
       size: {
-        sm: "h-button-sm px-3 text-xs font-medium",
-        default: "h-button-md px-4 text-sm font-medium",
-        lg: "h-button-lg px-6 text-base font-semibold",
-        icon: "h-button-md w-button-md p-0",
+        sm: "h-button-sm px-3 text-xs font-medium min-w-touch-target",
+        default: "h-button-touch px-4 text-sm font-medium min-w-touch-target", // Now uses 44px touch target by default
+        lg: "h-button-lg px-6 text-base font-semibold min-w-touch-target",
+        icon: "h-button-touch w-button-touch p-0", // Icons also get touch-safe size
         
-        // Touch-optimized sizes
+        // Legacy sizes (kept for compatibility but should migrate to touch sizes)
+        compact: "h-button-md px-4 text-sm font-medium", // 40px for space-constrained areas
+        "compact-sm": "h-button-sm px-3 text-xs font-medium", // 36px for very tight spaces
+        
+        // Touch-optimized sizes (explicit touch variants)
         touch: "h-button-touch px-4 text-sm font-medium min-w-touch-target",
         "touch-sm": "h-button-touch px-3 text-xs font-medium min-w-touch-target",
-        "touch-lg": "h-button-touch px-6 text-base font-semibold min-w-touch-target",
+        "touch-lg": "h-button-lg px-6 text-base font-semibold min-w-touch-target",
         
         // Full width variants
-        full: "w-full h-button-md px-4 text-sm font-medium",
+        full: "w-full h-button-touch px-4 text-sm font-medium",
         "full-lg": "w-full h-button-lg px-6 text-base font-semibold",
-        "full-touch": "w-full h-button-touch px-4 text-sm font-medium",
+        "full-compact": "w-full h-button-md px-4 text-sm font-medium",
       },
       
       // New dimension for emphasis
@@ -122,7 +126,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Adjust size for full width
     const adjustedSize = fullWidth ? 
       (size === "lg" ? "full-lg" : 
-       size === "touch" || size === "touch-lg" || size === "touch-sm" ? "full-touch" : 
+       size === "compact" || size === "compact-sm" ? "full-compact" :
        "full") : 
       size
 

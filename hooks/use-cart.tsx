@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { useCart as useHydrogenCart } from '@shopify/hydrogen-react';
 import { toast } from 'sonner';
 
@@ -28,42 +28,88 @@ export function useCart() {
     error
   } = useHydrogenCart();
   
-  // Computed values
-  const totalItems = totalQuantity || 0;
-  const isLoading = status === 'updating' || status === 'creating' || status === 'fetching';
-  const isEmpty = !lines || lines.length === 0;
+  // Handle cart errors
+  useEffect(() => {
+    if (error) {
+      console.error('[useCart] Cart error:', error);
+      toast.error('Cart error occurred', {
+        id: 'cart-error',
+        description: 'Please refresh and try again',
+      });
+    }
+  }, [error]);
+  
+  // Memoized computed values to prevent unnecessary recalculations
+  const totalItems = useMemo(() => totalQuantity || 0, [totalQuantity]);
+  const isLoading = useMemo(
+    () => status === 'updating' || status === 'creating' || status === 'fetching',
+    [status]
+  );
+  const isEmpty = useMemo(() => !lines || lines.length === 0, [lines]);
+  
 
-  // Add item to cart - Hydrogen React pattern
+  // Add item to cart - Hydrogen React pattern with smart quantity handling
   const addItem = useCallback((merchandiseId: string, quantity: number = 1) => {
     if (!merchandiseId) {
       console.error('[useCart] No merchandise ID provided');
-      toast.error('Invalid product variant');
+      toast.error('Invalid product variant', { id: 'cart-error' });
       return;
     }
 
-    if (!linesAdd) {
-      console.error('[useCart] linesAdd function not available');
-      toast.error('Cart not properly initialized');
+    if (!linesAdd || !linesUpdate) {
+      console.error('[useCart] Cart functions not available');
+      toast.error('Cart not properly initialized', { id: 'cart-error' });
+      return;
+    }
+
+    if (!cartReady) {
+      console.warn('[useCart] Cart not ready yet');
+      toast.error('Cart is loading, please try again', { id: 'cart-error' });
       return;
     }
 
     try {
-      // IMPORTANT: linesAdd is NOT async in Hydrogen React
-      // It updates the cart optimistically and returns immediately
-      linesAdd([{ merchandiseId, quantity }]);
+      // Check if item already exists in cart
+      const existingLine = lines?.find(
+        (line) => line?.merchandise?.id === merchandiseId
+      );
       
-      // Toast is handled by CartProvider callbacks in use-hydrogen-cart.tsx
-      console.log('[useCart] Added to cart:', { merchandiseId, quantity });
+      if (existingLine && existingLine.id) {
+        // Update existing line quantity
+        const newQuantity = (existingLine.quantity || 0) + quantity;
+        linesUpdate([{ id: existingLine.id, quantity: newQuantity }]);
+        
+        toast.success('Updated quantity', {
+          id: 'cart-add-success',
+          description: `Now ${newQuantity} in cart`,
+          duration: 3000,
+        });
+      } else {
+        // Add new line
+        linesAdd([{ merchandiseId, quantity }]);
+        
+        toast.success('Added to cart', {
+          id: 'cart-add-success',
+          description: `${quantity} item${quantity > 1 ? 's' : ''} added`,
+          duration: 3000,
+        });
+      }
     } catch (error) {
       console.error('[useCart] Error adding to cart:', error);
-      toast.error('Failed to add item to cart');
+      toast.error('Failed to add item to cart', { id: 'cart-error' });
     }
-  }, [linesAdd]);
+  }, [linesAdd, linesUpdate, lines, cartReady]);
 
   // Update cart item quantity
   const updateItem = useCallback((lineId: string, quantity: number) => {
     if (!lineId) {
       console.error('[useCart] No line ID provided for update');
+      return;
+    }
+
+    if (!cartReady) {
+      console.warn('[useCart] Cart not ready for updates');
+      toast.error('Cart is loading, please try again', { id: 'cart-error' });
       return;
     }
 
@@ -77,9 +123,9 @@ export function useCart() {
       }
     } catch (error) {
       console.error('[useCart] Error updating cart:', error);
-      toast.error('Failed to update cart');
+      toast.error('Failed to update cart', { id: 'cart-error' });
     }
-  }, [linesUpdate, linesRemove]);
+  }, [linesUpdate, linesRemove, cartReady]);
 
   // Remove item from cart
   const removeItem = useCallback((lineId: string) => {
@@ -90,9 +136,10 @@ export function useCart() {
 
     try {
       linesRemove([lineId]);
+      toast.success('Removed from cart', { id: 'cart-update-success' });
     } catch (error) {
       console.error('[useCart] Error removing from cart:', error);
-      toast.error('Failed to remove item');
+      toast.error('Failed to remove item', { id: 'cart-error' });
     }
   }, [linesRemove]);
 
@@ -105,7 +152,7 @@ export function useCart() {
       linesRemove(lineIds);
     } catch (error) {
       console.error('[useCart] Error clearing cart:', error);
-      toast.error('Failed to clear cart');
+      toast.error('Failed to clear cart', { id: 'cart-error' });
     }
   }, [lines, linesRemove]);
 

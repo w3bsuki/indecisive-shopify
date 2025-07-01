@@ -47,6 +47,43 @@
   --radius-md: 0;
   --radius-lg: 0;
   --radius-full: 9999px;
+  
+  /* Button Sizes - Ensuring 44px minimum touch targets */
+  --height-button-sm: 2.25rem; /* 36px */
+  --height-button-md: 2.5rem;  /* 40px */
+  --height-button-lg: 3rem;    /* 48px */
+  --height-button-touch: 2.75rem; /* 44px - Minimum WCAG touch target */
+  
+  /* Touch Target Sizes */
+  --min-width-touch-target: 2.75rem; /* 44px minimum */
+  
+  /* Interactive States */
+  --color-interactive-primary: var(--color-gray-950);
+  --color-interactive-primary-hover: var(--color-gray-800);
+  --color-interactive-primary-active: var(--color-gray-900);
+  --color-interactive-primary-disabled: var(--color-gray-400);
+  
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-950);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-inverse: var(--color-gray-0);
+  
+  /* Border Colors */
+  --color-border-strong: var(--color-gray-300);
+  
+  /* Sale/Special Colors */
+  --color-sale-price: hsl(0 84.2% 60.2%);
+  --color-wishlist: hsl(0 84.2% 60.2%);
+  
+  /* Shadows */
+  --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-strong: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
 }
 
 @layer base {
@@ -114,4 +151,18 @@
   --color-border: var(--color-gray-800);
   --color-input: var(--color-gray-800);
   --color-ring: var(--color-gray-0);
+  
+  /* Dark mode interactive states */
+  --color-interactive-primary: var(--color-gray-0);
+  --color-interactive-primary-hover: var(--color-gray-200);
+  --color-interactive-primary-active: var(--color-gray-100);
+  --color-interactive-primary-disabled: var(--color-gray-600);
+  
+  /* Dark mode text colors */
+  --color-text-primary: var(--color-gray-0);
+  --color-text-secondary: var(--color-gray-400);
+  --color-text-inverse: var(--color-gray-950);
+  
+  /* Dark mode border colors */
+  --color-border-strong: var(--color-gray-700);
 }

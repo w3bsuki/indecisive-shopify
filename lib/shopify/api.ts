@@ -144,7 +144,6 @@ const PRODUCT_QUERY = `
 // Product APIs
 export async function getProducts(first: number = 12, query?: string) {
   try {
-    console.log('Fetching products with:', { first, query });
     const data = await storefront<{
       products: {
         edges: Array<{ node: Product }>;
@@ -152,7 +151,6 @@ export async function getProducts(first: number = 12, query?: string) {
       };
     }>(PRODUCTS_QUERY, { first, query });
 
-    console.log('Products fetched successfully:', data.products.edges.length);
     return data.products;
   } catch (error) {
     console.error('Failed to fetch products:', error);
@@ -178,14 +176,12 @@ export async function getProduct(handle: string) {
 // Collection APIs
 export async function getCollections(first: number = 10) {
   try {
-    console.log('Fetching collections with:', { first });
     const data = await storefront<{
       collections: {
         edges: Array<{ node: Collection }>;
       };
     }>(COLLECTIONS_QUERY, { first });
 
-    console.log('Collections fetched successfully:', data.collections.edges.length);
     return data.collections;
   } catch (error) {
     console.error('Failed to fetch collections:', error);

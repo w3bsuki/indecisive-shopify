@@ -26,13 +26,6 @@ export async function storefront<T = unknown>(
     throw new Error(`Missing Shopify configuration. Domain: ${!!SHOPIFY_DOMAIN}, Token: ${!!STOREFRONT_ACCESS_TOKEN}`);
   }
   
-  console.log('Shopify API Request:', {
-    endpoint,
-    domain: SHOPIFY_DOMAIN,
-    hasToken: !!STOREFRONT_ACCESS_TOKEN,
-    apiVersion: API_VERSION
-  });
-  
   try {
     const response = await fetch(endpoint, {
       method: 'POST',

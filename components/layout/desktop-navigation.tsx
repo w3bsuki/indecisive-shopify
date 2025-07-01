@@ -9,6 +9,7 @@ import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { SearchBar } from "@/components/layout/search-bar"
 import { useCart } from "@/hooks/use-cart"
+import { useWishlist } from "@/hooks/use-wishlist"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,6 +21,7 @@ import {
 
 export function DesktopNavigation() {
   const { totalItems } = useCart()
+  const { totalItems: wishlistCount } = useWishlist()
   const [showSearchBar, setShowSearchBar] = useState(false)
 
   const categories = [
@@ -63,7 +65,7 @@ export function DesktopNavigation() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="bg-white border-b">
+      <nav className="bg-white border-b-2 border-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -144,8 +146,16 @@ export function DesktopNavigation() {
               </Button>
 
               {/* Wishlist */}
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="relative">
                 <Heart className="h-5 w-5" />
+                {wishlistCount > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+                  >
+                    {wishlistCount}
+                  </Badge>
+                )}
               </Button>
 
               {/* Cart */}

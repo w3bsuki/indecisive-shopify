@@ -1,9 +1,18 @@
-"use client"
-
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Lookbook | Indecisive Wear - Style Inspiration",
+  description: "Discover style inspiration for every mood and moment. Explore our curated lookbook featuring versatile streetwear pieces for the indecisive dresser.",
+  openGraph: {
+    title: "Lookbook | Indecisive Wear",
+    description: "Style inspiration for the indecisive dresser",
+    type: "website",
+  },
+}
 
 export default function LookbookPage() {
   const lookbookItems = [

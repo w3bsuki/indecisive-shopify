@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
+import { useWishlist } from "@/hooks/use-wishlist"
 
 export function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { totalItems: wishlistCount } = useWishlist()
 
   const menuItems = [
     { name: "NEW ARRIVALS", href: "/new", badge: "HOT" },
@@ -35,7 +37,7 @@ export function MobileNavigation() {
         </div>
 
         {/* Mobile Navigation Bar */}
-        <nav className="bg-white/95 backdrop-blur-md border-b border-black/10">
+        <nav className="bg-white/95 backdrop-blur-md border-b-2 border-primary">
           <div className="px-3 h-16 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center">
@@ -66,10 +68,10 @@ export function MobileNavigation() {
                           <span className="text-xl font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
                         </div>
                         
-                        {/* Close Button */}
+                        {/* Close Button - Touch-optimized */}
                         <button
                           onClick={() => setIsMenuOpen(false)}
-                          className="w-10 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-colors duration-200 border-none focus:outline-none focus:ring-0"
+                          className="w-11 h-11 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-colors duration-200 border-none focus:outline-none focus:ring-2 focus:ring-white/50"
                           aria-label="Close menu"
                         >
                           <X className="h-5 w-5" />
@@ -92,10 +94,15 @@ export function MobileNavigation() {
                         <Link
                           href="/wishlist"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex-1 h-12 flex items-center justify-center bg-white text-black border-2 border-black hover:bg-gray-50 transition-all duration-200 font-mono text-sm font-medium"
+                          className="flex-1 h-12 flex items-center justify-center bg-white text-black border-2 border-black hover:bg-gray-50 transition-all duration-200 font-mono text-sm font-medium relative"
                         >
                           <Heart className="h-4 w-4 mr-2" />
                           WISHLIST
+                          {wishlistCount > 0 && (
+                            <span className="ml-1 text-xs bg-black text-white px-1.5 py-0.5 rounded-full">
+                              {wishlistCount}
+                            </span>
+                          )}
                         </Link>
                         
                         {/* Cart */}
@@ -139,14 +146,14 @@ export function MobileNavigation() {
 
                     {/* Menu Footer */}
                     <div className="border-t-2 border-black px-6 py-6 bg-gray-50">
-                      <div className="space-y-3">
-                        <Link href="/support" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors">
+                      <div className="space-y-2">
+                        <Link href="/support" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
                           CUSTOMER SUPPORT
                         </Link>
-                        <Link href="/size-guide" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors">
+                        <Link href="/size-guide" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
                           SIZE GUIDE
                         </Link>
-                        <Link href="/shipping" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors">
+                        <Link href="/shipping" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
                           SHIPPING & RETURNS
                         </Link>
                       </div>

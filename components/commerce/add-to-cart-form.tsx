@@ -17,7 +17,7 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   const [selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant | undefined>()
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
-  const { addItem, cartReady, status } = useCart()
+  const { addItem, cartReady } = useCart()
 
   // Initialize selected variant for single variant products
   useEffect(() => {
@@ -31,23 +31,25 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   }
 
   const handleAddToCart = async () => {
-    if (!selectedVariant || !selectedVariant.availableForSale || !cartReady) return
+    if (!selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding) return
 
     setIsAdding(true)
     try {
+      // addItem is synchronous but triggers async cart update
       addItem(selectedVariant.id, quantity)
-      // Reset quantity after adding
+      
+      // Reset after successful add
       setTimeout(() => {
         setQuantity(1)
         setIsAdding(false)
-      }, 1500)
+      }, 1000)
     } catch (error) {
       console.error('Failed to add to cart:', error)
       setIsAdding(false)
     }
   }
 
-  const isDisabled = !selectedVariant || !selectedVariant.availableForSale || !cartReady || status === 'updating'
+  const isDisabled = !selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding
 
   return (
     <div className="space-y-6">
@@ -103,7 +105,7 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
           size="lg"
           className="flex-1"
         >
-          {isAdding || status === 'updating' ? (
+          {isAdding ? (
             <>
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
               Adding to cart...
