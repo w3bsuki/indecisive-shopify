@@ -138,29 +138,23 @@ const nextConfig = {
     ]
   },
   
-  // Environment-specific configuration
-  ...(process.env.NODE_ENV === 'production' && {
-    // Production-only optimizations
-    output: 'standalone',
-    
-    // Webpack optimizations for production
-    webpack: (config, { isServer }) => {
-      if (!isServer) {
-        // Reduce bundle size by splitting vendor chunks
-        config.optimization.splitChunks = {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
+  // Webpack optimizations for production
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Reduce bundle size by splitting vendor chunks
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
           },
-        }
+        },
       }
-      return config
-    },
-  }),
+    }
+    return config
+  },
 }
 
 export default nextConfig
