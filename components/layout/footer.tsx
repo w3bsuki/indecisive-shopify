@@ -11,7 +11,7 @@ export function Footer() {
             <div className="flex items-center space-x-2 mb-4 md:mb-8">
               <div className="flex items-center space-x-1">
                 <div className="w-4 h-4 bg-black"></div>
-                <div className="w-4 h-4 bg-white border-2 border-black"></div>
+                <div className="w-4 h-4 bg-white border border-gray-950"></div>
               </div>
               <span className="font-mono font-bold text-sm">INDECISIVE WEAR</span>
             </div>

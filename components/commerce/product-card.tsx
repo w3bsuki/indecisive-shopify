@@ -90,7 +90,7 @@ export function ProductCard({ product }: ProductCardProps) {
           
           {/* Triple Split Button: Wishlist + Price + Add to Cart */}
           {product.variants.edges[0]?.node ? (
-            <div className="w-full border-2 border-black hover:shadow-sm transition-all duration-200 group">
+            <div className="w-full border border-gray-950 hover:shadow-md transition-all duration-200 group">
               <div className="flex items-center h-12 sm:h-10">
                 {/* Left - Wishlist */}
                 <button
@@ -140,7 +140,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   aria-label={isLoading ? "Adding to cart" : "Add to cart"}
                 >
                   {isLoading ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin" />
                   ) : !product.variants.edges[0]?.node.availableForSale ? (
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -159,7 +159,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
             </div>
           ) : (
-            <div className="w-full border-2 border-black">
+            <div className="w-full border border-gray-950">
               <div className="flex items-center h-12 sm:h-10">
                 {/* Wishlist - disabled state */}
                 <div className="w-12 sm:w-10 h-full flex items-center justify-center bg-gray-100 border-r border-gray-300">

@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { OptimizedImage } from './optimized-image'
 import type { ShopifyImage } from '@/lib/shopify/types'
 
 interface ProductImageGalleryProps {
@@ -44,13 +45,13 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
     <div className="space-y-4">
       {/* Main Image */}
       <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group">
-        <Image
+        <OptimizedImage
           src={selectedImage.url}
           alt={selectedImage.altText || productTitle}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          aspectRatio="1:1"
           priority={selectedIndex === 0}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="rounded-lg"
         />
         
         {/* Navigation Arrows */}
@@ -115,15 +116,14 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               key={index}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                "relative aspect-square bg-gray-100 rounded overflow-hidden border-2 transition-colors",
+                "relative aspect-square bg-gray-100 rounded overflow-hidden border transition-colors",
                 selectedIndex === index ? "border-black" : "border-transparent hover:border-gray-300"
               )}
             >
-              <Image
+              <OptimizedImage
                 src={image.url}
                 alt={image.altText || `${productTitle} ${index + 1}`}
-                fill
-                className="object-cover"
+                aspectRatio="1:1"
                 sizes="(max-width: 768px) 25vw, 10vw"
               />
             </button>

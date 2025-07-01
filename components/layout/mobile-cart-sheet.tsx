@@ -10,7 +10,7 @@ import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
 import { formatPrice } from "@/lib/shopify/api"
 
-export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
+export function MobileCartSheet({ children, isBottomNav = false }: { children?: React.ReactNode; isBottomNav?: boolean }) {
   // OFFICIAL HYDROGEN REACT CART PATTERN
   const { lines, cost, checkoutUrl, totalQuantity, status, updateItem, removeItem } = useCart()
 
@@ -25,22 +25,41 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
     }
   }
 
+  const defaultTrigger = isBottomNav ? (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] relative text-gray-600"
+    >
+      <ShoppingBag className="h-5 w-5" />
+      <span className="text-xs font-mono">CART</span>
+      {totalItems > 0 && (
+        <Badge
+          variant="secondary"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+        >
+          {totalItems}
+        </Badge>
+      )}
+    </Button>
+  ) : (
+    <Button variant="ghost" size="icon" className="relative">
+      <ShoppingBag className="h-5 w-5" />
+      {totalItems > 0 && (
+        <Badge
+          variant="secondary"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+        >
+          {totalItems}
+        </Badge>
+      )}
+    </Button>
+  )
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        {children || (
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingBag className="h-5 w-5" />
-            {totalItems > 0 && (
-              <Badge
-                variant="secondary"
-                className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
-              >
-                {totalItems}
-              </Badge>
-            )}
-          </Button>
-        )}
+        {children || defaultTrigger}
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="px-6 py-4 border-b">

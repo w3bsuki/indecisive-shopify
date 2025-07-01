@@ -14,13 +14,8 @@ export function MobileNavigation() {
   const { totalItems: wishlistCount } = useWishlist()
 
   const menuItems = [
-    { name: "NEW ARRIVALS", href: "/new", badge: "HOT" },
-    { name: "ESSENTIALS", href: "/essentials", badge: null },
-    { name: "STREETWEAR", href: "/streetwear", badge: null },
-    { name: "OUTERWEAR", href: "/outerwear", badge: null },
-    { name: "BOTTOMS", href: "/bottoms", badge: null },
-    { name: "ACCESSORIES", href: "/accessories", badge: null },
-    { name: "LOOKBOOK", href: "/lookbook", badge: null },
+    { name: "NEW", href: "/new", badge: "DROP 1" },
+    { name: "COMING SOON", href: "/coming-soon", badge: null },
     { name: "SALE", href: "/sale", badge: "50% OFF" },
   ]
 
@@ -37,7 +32,7 @@ export function MobileNavigation() {
         </div>
 
         {/* Mobile Navigation Bar */}
-        <nav className="bg-white/95 backdrop-blur-md border-b-2 border-primary">
+        <nav className="bg-white/95 backdrop-blur-md border-b border-gray-950">
           <div className="px-3 h-16 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center">
@@ -59,10 +54,10 @@ export function MobileNavigation() {
                     {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:w-[400px] p-0 border-2 border-black bg-white">
+                <SheetContent side="right" className="w-full sm:w-[400px] p-0 border border-gray-950 bg-white">
                   <div className="flex flex-col h-full">
                     {/* Menu Header - Logo + Icons Row */}
-                    <div className="px-6 py-6 border-b-2 border-black">
+                    <div className="px-6 py-6 border-b border-gray-950">
                       <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center">
                           <span className="text-xl font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
@@ -94,7 +89,7 @@ export function MobileNavigation() {
                         <Link
                           href="/wishlist"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex-1 h-12 flex items-center justify-center bg-white text-black border-2 border-black hover:bg-gray-50 transition-all duration-200 font-mono text-sm font-medium relative"
+                          className="flex-1 h-12 flex items-center justify-center bg-white text-black border border-gray-950 hover:bg-gray-50 hover:shadow-md transition-all duration-200 font-mono text-sm font-medium relative"
                         >
                           <Heart className="h-4 w-4 mr-2" />
                           WISHLIST
@@ -145,7 +140,7 @@ export function MobileNavigation() {
                     </div>
 
                     {/* Menu Footer */}
-                    <div className="border-t-2 border-black px-6 py-6 bg-gray-50">
+                    <div className="border-t border-gray-950 px-6 py-6 bg-gray-50">
                       <div className="space-y-2">
                         <Link href="/support" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
                           CUSTOMER SUPPORT

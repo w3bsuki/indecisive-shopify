@@ -1,20 +1,16 @@
+'use client'
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
-import { Metadata } from "next"
+import { useIndecisive } from "@/components/providers/indecisive-provider"
 
-export const metadata: Metadata = {
-  title: "Lookbook | Indecisive Wear - Style Inspiration",
-  description: "Discover style inspiration for every mood and moment. Explore our curated lookbook featuring versatile streetwear pieces for the indecisive dresser.",
-  openGraph: {
-    title: "Lookbook | Indecisive Wear",
-    description: "Style inspiration for the indecisive dresser",
-    type: "website",
-  },
-}
+// Metadata must be in a separate server component or page.tsx file
 
 export default function LookbookPage() {
+  const { openStyleQuiz } = useIndecisive()
+  
   const lookbookItems = [
     {
       id: 1,
@@ -149,10 +145,16 @@ export default function LookbookPage() {
             Let our style experts help you curate the perfect wardrobe for your dual personality.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-white text-black hover:bg-white/90 font-mono px-8 py-3">BOOK STYLING SESSION</Button>
+            <Button 
+              className="bg-white text-black hover:bg-white/90 font-mono px-8 py-3"
+              onClick={() => alert('Styling session booking coming soon!')}
+            >
+              BOOK STYLING SESSION
+            </Button>
             <Button
               variant="outline"
               className="border-2 border-white text-white hover:bg-white hover:text-black font-mono px-8 py-3"
+              onClick={openStyleQuiz}
             >
               TAKE STYLE QUIZ
             </Button>

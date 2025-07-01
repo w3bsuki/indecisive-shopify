@@ -13,36 +13,36 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // Primary - Bold black button
-        default: "bg-interactive-primary text-text-inverse hover:bg-interactive-primary-hover active:bg-interactive-primary-active disabled:bg-interactive-primary-disabled border-2 border-transparent",
+        default: "bg-interactive-primary text-text-inverse hover:bg-interactive-primary-hover active:bg-interactive-primary-active disabled:bg-interactive-primary-disabled border border-transparent",
         
         // Destructive - Red accent for dangerous actions
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive border-2 border-transparent",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive border border-transparent",
         
         // Outline - Sharp bordered button
-        outline: "border-2 border-border-strong bg-transparent text-text-primary hover:bg-gray-950 hover:text-text-inverse active:bg-gray-900 active:text-text-inverse",
+        outline: "border border-gray-950 bg-transparent text-text-primary hover:bg-gray-950 hover:text-text-inverse active:bg-gray-900 active:text-text-inverse",
         
         // Secondary - Subtle gray button
-        secondary: "bg-gray-100 text-text-primary hover:bg-gray-200 active:bg-gray-300 border-2 border-transparent",
+        secondary: "bg-gray-100 text-text-primary hover:bg-gray-200 active:bg-gray-300 border border-transparent",
         
         // Ghost - Minimal hover state
-        ghost: "bg-transparent text-text-primary hover:bg-gray-100 active:bg-gray-200 border-2 border-transparent",
+        ghost: "bg-transparent text-text-primary hover:bg-gray-100 active:bg-gray-200 border border-transparent",
         
         // Link - Text-only button
-        link: "text-text-primary underline-offset-4 hover:underline active:no-underline border-2 border-transparent bg-transparent",
+        link: "text-text-primary underline-offset-4 hover:underline active:no-underline border border-transparent bg-transparent",
         
         // Sharp variants for e-commerce
-        "primary-sharp": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border-2 border-gray-950 hover:border-gray-800 active:border-gray-900",
+        "primary-sharp": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border border-gray-950 hover:border-gray-800 active:border-gray-900",
         
-        "outline-sharp": "border-2 border-gray-950 bg-transparent text-gray-950 hover:bg-gray-950 hover:text-text-inverse active:bg-gray-800 active:border-gray-800",
+        "outline-sharp": "border border-gray-950 bg-transparent text-gray-950 hover:bg-gray-950 hover:text-text-inverse active:bg-gray-800 active:border-gray-800",
         
-        "white-sharp": "bg-gray-0 text-gray-950 hover:bg-gray-50 active:bg-gray-100 border-2 border-gray-200 hover:border-gray-300",
+        "white-sharp": "bg-gray-0 text-gray-950 hover:bg-gray-50 active:bg-gray-100 border border-gray-300 hover:border-gray-400",
         
         // E-commerce specific variants
-        "add-to-cart": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border-2 border-gray-950 font-semibold tracking-wide",
+        "add-to-cart": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border border-gray-950 font-semibold tracking-wide",
         
-        "wishlist": "bg-transparent text-gray-600 hover:text-wishlist hover:bg-gray-50 active:bg-gray-100 border-2 border-gray-200 hover:border-wishlist/20",
+        "wishlist": "bg-transparent text-gray-600 hover:text-wishlist hover:bg-gray-50 active:bg-gray-100 border border-gray-300 hover:border-wishlist/30",
         
-        "sale": "bg-sale-price text-text-inverse hover:bg-red-600 active:bg-red-700 border-2 border-transparent font-bold tracking-wider",
+        "sale": "bg-sale-price text-text-inverse hover:bg-red-600 active:bg-red-700 border border-transparent font-bold tracking-wider",
       },
       size: {
         sm: "h-button-sm px-3 text-xs font-medium min-w-touch-target",

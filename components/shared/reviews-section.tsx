@@ -580,7 +580,7 @@ function WriteReviewDialog({
 
             {/* Upload Area */}
             <div
-              className={`border-2 border-dashed p-6 text-center transition-colors ${
+              className={`border border-dashed p-6 text-center transition-colors ${
                 isDragging ? "border-black bg-black/5" : "border-black/30 hover:border-black/50"
               }`}
               onDragOver={handleDragOver}
@@ -709,7 +709,7 @@ function WriteReviewDialog({
                 <Button
                   onClick={() => setShowSuccessDialog(false)}
                   variant="outline"
-                  className="w-full border-2 border-black hover:bg-black hover:text-white font-mono"
+                  className="w-full border border-gray-950 hover:bg-gray-950 hover:text-white hover:shadow-md font-mono"
                 >
                   CLOSE
                 </Button>

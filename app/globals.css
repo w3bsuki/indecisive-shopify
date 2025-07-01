@@ -38,6 +38,12 @@
   --color-input: var(--color-gray-200);
   --color-ring: var(--color-gray-950);
   
+  /* Refined Border System */
+  --color-border-subtle: var(--color-gray-100);
+  --color-border-default: var(--color-gray-200);
+  --color-border-hover: var(--color-gray-400);
+  --color-border-focus: var(--color-gray-950);
+  
   /* Typography - Next.js fonts provide --font-sans and --font-mono variables */
   
   /* Radius */
@@ -73,15 +79,39 @@
   --color-sale-price: hsl(0 84.2% 60.2%);
   --color-wishlist: hsl(0 84.2% 60.2%);
   
-  /* Shadows */
+  /* Shadows - Refined for minimal aesthetic */
   --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-strong: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-dropdown: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   
   /* Animation Durations */
   --duration-fast: 150ms;
   --duration-normal: 200ms;
   --duration-slow: 300ms;
+  
+  /* Modern Button Elevation System */
+  --elevation-0: none;
+  --elevation-1: 0 2px 4px rgb(0 0 0 / 0.08);
+  --elevation-2: 0 4px 8px rgb(0 0 0 / 0.12);
+  --elevation-3: 0 8px 16px rgb(0 0 0 / 0.16);
+  --elevation-hover: 0 4px 12px rgb(0 0 0 / 0.15);
+  
+  /* Button Color System */
+  --button-primary-bg: var(--color-gray-950);
+  --button-primary-hover: var(--color-gray-800);
+  --button-secondary-bg: var(--color-gray-0);
+  --button-secondary-hover: var(--color-gray-50);
+  --button-danger-bg: hsl(0 84.2% 60.2%);
+  --button-danger-hover: hsl(0 84.2% 50.2%);
+  --button-accent-gradient: linear-gradient(135deg, var(--color-gray-950) 0%, var(--color-gray-800) 100%);
+  
+  /* Glassmorphism Effects */
+  --glass-bg: rgb(255 255 255 / 0.7);
+  --glass-border: rgb(255 255 255 / 0.18);
+  --glass-blur: blur(10px);
 }
 
 @layer base {
@@ -95,6 +125,48 @@
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-mono tracking-tight;
+  }
+}
+
+/* Typography Classes */
+@layer utilities {
+  .text-price {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    @apply text-base md:text-lg;
+  }
+  
+  .text-product-name {
+    @apply font-sans text-sm md:text-base font-medium leading-snug;
+  }
+  
+  .text-product-brand {
+    @apply font-sans text-xs uppercase tracking-wider text-muted-foreground;
+  }
+  
+  /* Modern Button Styles */
+  .btn-modern {
+    box-shadow: var(--elevation-1);
+    border: none;
+    transition: all var(--duration-normal) ease;
+  }
+  
+  .btn-modern:hover {
+    box-shadow: var(--elevation-hover);
+    transform: translateY(-2px);
+  }
+  
+  .btn-modern:active {
+    box-shadow: var(--elevation-2);
+    transform: translateY(-1px);
+  }
+  
+  .btn-glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
   }
 }
 

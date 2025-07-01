@@ -78,7 +78,7 @@ export function SearchBar() {
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={handleFocus}
           placeholder="Search products..."
-          className="pl-10 pr-10 h-10 font-mono text-sm border-2 border-black/20 focus:border-black"
+          className="pl-10 pr-10 h-10 font-mono text-sm border border-gray-300 focus:border-gray-950 hover:border-gray-600"
         />
         {isLoading && (
           <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin" />
@@ -97,7 +97,7 @@ export function SearchBar() {
 
       {/* Search Results Dropdown */}
       {isOpen && (query || suggestions.length > 0) && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-black shadow-lg z-50 max-h-[400px] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-950 shadow-lg z-50 max-h-[400px] overflow-y-auto">
           {error && (
             <div className="p-3 bg-red-50 border-b border-red-200 text-red-600 text-sm">
               {error}

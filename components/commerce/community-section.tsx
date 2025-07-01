@@ -41,7 +41,7 @@ export function CommunitySection() {
         {/* Sharp Design System Tabs - Mobile Optimized */}
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'instagram' | 'tiktok')} className="w-full">
           <div className="flex justify-center mb-8">
-            <TabsList className="grid grid-cols-2 w-80 h-12 sm:h-14 bg-white border-2 border-black p-0">
+            <TabsList className="grid grid-cols-2 w-80 h-12 sm:h-14 bg-white border border-gray-950 p-0">
               <TabsTrigger 
                 value="instagram"
                 className="h-full font-mono font-medium text-sm border-none data-[state=active]:bg-black data-[state=active]:text-white data-[state=inactive]:bg-white data-[state=inactive]:text-black transition-all duration-200 border-r border-black min-h-[44px] touch-manipulation"
@@ -86,7 +86,7 @@ function InstagramFeed({ posts }: { posts: SocialPost[] }) {
             className="group relative flex-shrink-0 w-48 snap-start"
           >
             {/* Clean Instagram Card - Product Card Style */}
-            <div className="bg-white border-2 border-black hover:border-gray-600 transition-all duration-200">
+            <div className="bg-white border border-gray-950 hover:border-gray-600 hover:shadow-md transition-all duration-200">
               {/* Image */}
               <div className="aspect-square bg-gray-100 relative overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
@@ -106,14 +106,14 @@ function InstagramFeed({ posts }: { posts: SocialPost[] }) {
 
                 {/* Hover View Button */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <button className="bg-white border-2 border-black px-3 py-1 font-mono text-xs font-medium hover:bg-gray-100 transition-colors">
+                  <button className="bg-white border border-gray-950 px-3 py-1 font-mono text-xs font-medium hover:bg-gray-100 transition-colors">
                     VIEW POST
                   </button>
                 </div>
               </div>
 
               {/* Card Info */}
-              <div className="p-3 border-t-2 border-black">
+              <div className="p-3 border-t border-gray-950">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-mono font-medium text-xs">{post.username}</p>
                   <div className="flex items-center gap-1">
@@ -128,7 +128,7 @@ function InstagramFeed({ posts }: { posts: SocialPost[] }) {
                   {post.caption}
                 </p>
                 
-                <div className="w-full border-2 border-black">
+                <div className="w-full border border-gray-950">
                   <button className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation">
                     VIEW ON INSTAGRAM
                   </button>
@@ -155,7 +155,7 @@ function TikTokFeed({ posts }: { posts: SocialPost[] }) {
             className="group relative flex-shrink-0 w-48 snap-start"
           >
             {/* Clean TikTok Card - Product Card Style */}
-            <div className="bg-white border-2 border-black hover:border-gray-600 transition-all duration-200">
+            <div className="bg-white border border-gray-950 hover:border-gray-600 hover:shadow-md transition-all duration-200">
               {/* Video Container - Vertical aspect ratio for TikTok */}
               <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-b from-gray-200 to-gray-300 flex items-center justify-center">
@@ -175,7 +175,7 @@ function TikTokFeed({ posts }: { posts: SocialPost[] }) {
 
                 {/* Hover Play Button */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <button className="bg-white border-2 border-black px-3 py-1 font-mono text-xs font-medium hover:bg-gray-100 transition-colors flex items-center gap-1">
+                  <button className="bg-white border border-gray-950 px-3 py-1 font-mono text-xs font-medium hover:bg-gray-100 transition-colors flex items-center gap-1">
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z"/>
                     </svg>
@@ -185,7 +185,7 @@ function TikTokFeed({ posts }: { posts: SocialPost[] }) {
               </div>
 
               {/* Card Info */}
-              <div className="p-3 border-t-2 border-black">
+              <div className="p-3 border-t border-gray-950">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-mono font-medium text-xs">{post.username}</p>
                   <div className="flex items-center gap-1">
@@ -200,7 +200,7 @@ function TikTokFeed({ posts }: { posts: SocialPost[] }) {
                   {post.caption}
                 </p>
                 
-                <div className="w-full border-2 border-black">
+                <div className="w-full border border-gray-950">
                   <button className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation">
                     VIEW ON TIKTOK
                   </button>
@@ -220,7 +220,7 @@ function TikTokFeed({ posts }: { posts: SocialPost[] }) {
 function CallToActionCard() {
   return (
     <div className="flex-shrink-0 w-48 snap-start">
-      <div className="bg-white border-2 border-dashed border-black hover:border-solid hover:border-gray-600 transition-all duration-200 group">
+      <div className="bg-white border border-dashed border-gray-950 hover:border-solid hover:border-gray-600 hover:shadow-md transition-all duration-200 group">
         {/* Image area */}
         <div className="aspect-square bg-gray-50 relative overflow-hidden flex flex-col items-center justify-center p-4">
           <svg className="w-12 h-12 text-gray-400 group-hover:text-black transition-colors mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +235,7 @@ function CallToActionCard() {
         </div>
         
         {/* Card Info - matching other cards */}
-        <div className="p-3 border-t-2 border-black">
+        <div className="p-3 border-t border-gray-950">
           <div className="flex items-center justify-between mb-2">
             <p className="font-mono font-medium text-xs">@indecisivewear</p>
             <div className="flex items-center gap-1">
@@ -250,7 +250,7 @@ function CallToActionCard() {
             Get featured in our community
           </p>
           
-          <div className="w-full border-2 border-black">
+          <div className="w-full border border-gray-950">
             <button className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation">
               GET FEATURED
             </button>

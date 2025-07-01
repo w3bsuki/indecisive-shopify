@@ -1,10 +1,10 @@
 import { getProducts } from '@/lib/shopify/api'
-import { ProductCard } from '@/components/commerce/product-card'
+import { ProductCardUnified } from '@/components/commerce/product-card-unified'
 import { SearchFilters } from '@/app/(shop)/search/search-filters'
 
 export const metadata = {
-  title: 'New Arrivals | Indecisive Wear',
-  description: 'Discover the latest fashion arrivals at Indecisive Wear. Shop new clothing, accessories, and more.',
+  title: 'DROP 1: ХУЛИГАНКА | Indecisive Wear',
+  description: 'Shop our first drop - limited edition bucket hats for the indecisive. ХУЛИГАНКА collection available now.',
 }
 
 export default async function NewArrivalsPage() {
@@ -15,9 +15,19 @@ export default async function NewArrivalsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-mono mb-2">NEW ARRIVALS</h1>
-        <p className="text-gray-600">Fresh drops, latest styles</p>
+      <div className="mb-8 text-center lg:text-left">
+        <div className="inline-block bg-black text-white px-4 py-1 font-mono text-sm mb-4">FIRST DROP</div>
+        <h1 className="text-4xl lg:text-5xl font-bold font-mono mb-2">DROP 1: ХУЛИГАНКА</h1>
+        <p className="text-gray-600 text-lg">Limited edition bucket hats for the indecisive</p>
+        <div className="mt-4 flex flex-wrap gap-4 justify-center lg:justify-start">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span className="font-mono text-sm">AVAILABLE NOW</span>
+          </div>
+          <div className="font-mono text-sm text-gray-600">
+            LIMITED QUANTITIES
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -29,15 +39,19 @@ export default async function NewArrivalsPage() {
         {/* Products Grid */}
         <main className="lg:col-span-3">
           {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3 lg:gap-4">
+              {products.map((product, index) => (
+                <ProductCardUnified 
+                  key={product.id} 
+                  product={product} 
+                  priority={index < 6} // Priority for first 6 products
+                />
               ))}
             </div>
           ) : (
             <div className="text-center py-16">
-              <h2 className="text-2xl font-mono mb-4">No new arrivals yet</h2>
-              <p className="text-gray-600">Check back soon for fresh drops!</p>
+              <h2 className="text-2xl font-mono mb-4">DROP SOLD OUT</h2>
+              <p className="text-gray-600">Subscribe to be notified about restocks</p>
             </div>
           )}
         </main>

@@ -1,8 +1,9 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Sora, JetBrains_Mono } from 'next/font/google'
+import { Sora, Courier_Prime } from 'next/font/google'
 import './globals.css'
 import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
+import { IndecisiveProvider } from '@/components/providers/indecisive-provider'
 import { Toaster } from '@/components/ui/sonner'
 
 const sora = Sora({
@@ -11,7 +12,8 @@ const sora = Sora({
   variable: '--font-sans',
 })
 
-const jetBrainsMono = JetBrains_Mono({
+const courierPrime = Courier_Prime({
+  weight: ['400', '700'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-mono',
@@ -29,11 +31,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${jetBrainsMono.variable}`}>
+    <html lang="en" className={`${sora.variable} ${courierPrime.variable}`}>
       <body className={sora.className}>
         <HydrogenProvider>
-          {children}
-          <Toaster />
+          <IndecisiveProvider>
+            {children}
+            <Toaster />
+          </IndecisiveProvider>
         </HydrogenProvider>
       </body>
     </html>

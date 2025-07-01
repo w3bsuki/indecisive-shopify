@@ -62,7 +62,7 @@ export function MobileSearchSheet({ children }: MobileSearchSheetProps) {
                 value={query}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products..."
-                className="font-mono text-base h-12 border-2 border-black focus:ring-0 focus:border-black pr-10"
+                className="font-mono text-base h-12 border border-gray-950 focus:ring-0 focus:border-gray-950 pr-10"
                 autoFocus
               />
               {isLoading && (

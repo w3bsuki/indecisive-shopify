@@ -67,7 +67,7 @@ export function Hero2() {
         }}
       >
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
+          <div className="w-8 h-8 border border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
           <p className="text-muted-foreground font-mono text-sm tracking-wide">Loading...</p>
         </div>
       </section>
@@ -76,7 +76,7 @@ export function Hero2() {
 
   return (
     <section 
-      className="relative bg-background w-full border-l-2 border-r-2 border-primary"
+      className="relative bg-background w-full border-l border-r border-primary"
       style={{
         height: 'calc(100vh - 104px)', // Back to original height
         minHeight: '400px'
@@ -145,7 +145,7 @@ export function Hero2() {
               key={index}
               type="button"
               aria-label={`Go to slide ${index + 1}`}
-              className={`w-3 h-3 border-2 border-primary-foreground transition-all duration-500 cursor-pointer hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-foreground/50 shadow-lg ${
+              className={`w-3 h-3 border border-primary-foreground transition-all duration-500 cursor-pointer hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-foreground/50 shadow-lg ${
                 index === currentSlide ? 'bg-primary-foreground scale-125' : 'bg-transparent hover:bg-primary-foreground/50'
               }`}
               onClick={() => setCurrentSlide(index)}
@@ -155,7 +155,7 @@ export function Hero2() {
         
         {/* Bottom Marquee - Social Media & Brand */}
         <Marquee 
-          className="absolute bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t-2 border-primary-foreground/20"
+          className="absolute bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
           speed="normal"
           pauseOnHover
         >

@@ -98,8 +98,8 @@ export function VariantSelector({ options, variants, onVariantChange }: VariantS
                       onClick={() => isAvailable && handleOptionChange(option.name, value)}
                       disabled={!isAvailable}
                       className={cn(
-                        "relative w-10 h-10 rounded-full border-2 transition-all",
-                        isSelected ? "border-black scale-110" : "border-gray-300",
+                        "relative w-10 h-10 rounded-full border transition-all",
+                        isSelected ? "border-gray-950 scale-110 shadow-md" : "border-gray-300",
                         !isAvailable && "opacity-50 cursor-not-allowed"
                       )}
                       title={value}
@@ -140,8 +140,8 @@ export function VariantSelector({ options, variants, onVariantChange }: VariantS
                       <Label
                         htmlFor={`${option.name}-${value}`}
                         className={cn(
-                          "flex items-center justify-center px-4 py-2 border-2 cursor-pointer transition-all min-w-[60px]",
-                          "peer-checked:border-black peer-checked:bg-black peer-checked:text-white",
+                          "flex items-center justify-center px-4 py-2 border cursor-pointer transition-all min-w-[60px]",
+                          "peer-checked:border-gray-950 peer-checked:bg-gray-950 peer-checked:text-white peer-checked:shadow-md",
                           "hover:border-gray-400",
                           !isAvailable && "opacity-50 cursor-not-allowed line-through"
                         )}

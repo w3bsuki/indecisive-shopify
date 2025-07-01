@@ -64,7 +64,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="w-[calc(100%-1rem)] md:max-w-2xl max-h-[90vh] md:h-auto border-2 border-black rounded-none mx-2 md:mx-auto">
+      <DialogContent className="w-[calc(100%-1rem)] md:max-w-2xl max-h-[90vh] md:h-auto border border-black rounded-none mx-2 md:mx-auto">
         <DialogHeader>
           <DialogTitle className="text-lg md:text-xl font-bold">{product.title}</DialogTitle>
         </DialogHeader>
@@ -78,7 +78,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
             </div>
             
             {/* Compact Image */}
-            <div className="aspect-[3/2] bg-gray-100 overflow-hidden relative border-2 border-gray-200">
+            <div className="aspect-[3/2] bg-gray-100 overflow-hidden relative border border-gray-200">
               {selectedImage ? (
                 <Image
                   src={selectedImage.url}
@@ -114,11 +114,11 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
               <Button
                 onClick={handleAddToCart}
                 disabled={isAdding || !selectedVariant || !selectedVariant.availableForSale || !cartReady || status === 'updating'}
-                className="w-full min-h-[48px] text-base font-medium bg-black hover:bg-gray-900 border-2 border-black"
+                className="w-full min-h-[48px] text-base font-medium bg-black hover:bg-gray-900 border border-black"
               >
                 {isAdding || status === 'updating' ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                    <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin mr-2" />
                     Adding...
                   </>
                 ) : !selectedVariant ? (
@@ -135,7 +135,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
               
               <Button 
                 variant="outline" 
-                className="w-full min-h-[44px] text-sm border-2 border-gray-200 hover:border-black" 
+                className="w-full min-h-[44px] text-sm border border-gray-200 hover:border-black" 
                 asChild
               >
                 <Link href={`/products/${product.handle}`}>
@@ -152,7 +152,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
           <div className="grid grid-cols-2 gap-6">
             {/* Product Images */}
             <div className="space-y-4">
-              <div className="aspect-square bg-gray-100 overflow-hidden relative border-2 border-gray-200">
+              <div className="aspect-square bg-gray-100 overflow-hidden relative border border-gray-200">
                 {selectedImage ? (
                   <Image
                     src={selectedImage.url}
@@ -180,7 +180,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
                       className={cn(
-                        "relative w-16 h-16 flex-shrink-0 overflow-hidden border-2 transition-colors",
+                        "relative w-16 h-16 flex-shrink-0 overflow-hidden border transition-colors",
                         selectedImageIndex === index ? 'border-black' : 'border-gray-200'
                       )}
                     >
@@ -227,12 +227,12 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
                 <Button
                   onClick={handleAddToCart}
                   disabled={isAdding || !selectedVariant || !selectedVariant.availableForSale || !cartReady || status === 'updating'}
-                  className="w-full min-h-[48px] text-base font-medium bg-black hover:bg-gray-900 border-2 border-black hover:border-gray-900"
+                  className="w-full min-h-[48px] text-base font-medium bg-black hover:bg-gray-900 border border-black hover:border-gray-900"
                   size="lg"
                 >
                   {isAdding || status === 'updating' ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin mr-2" />
                       Adding to cart...
                     </>
                   ) : !selectedVariant ? (
@@ -249,7 +249,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
                 
                 <Button 
                   variant="outline" 
-                  className="w-full min-h-[48px] text-base border-2 border-gray-200 hover:border-black" 
+                  className="w-full min-h-[48px] text-base border border-gray-200 hover:border-black" 
                   asChild
                 >
                   <Link href={`/products/${product.handle}`}>

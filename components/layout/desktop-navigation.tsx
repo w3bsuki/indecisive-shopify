@@ -12,11 +12,9 @@ import { useCart } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 
 export function DesktopNavigation() {
@@ -26,34 +24,14 @@ export function DesktopNavigation() {
 
   const categories = [
     {
-      title: "NEW ARRIVALS",
+      title: "NEW",
       href: "/new",
-      items: [
-        { name: "View All", href: "/new" },
-        { name: "This Week", href: "/new/this-week" },
-        { name: "Best Sellers", href: "/new/best-sellers" },
-        { name: "Editor's Picks", href: "/new/editors-picks" },
-      ],
+      isSimple: true, // No dropdown for NEW
     },
     {
-      title: "ESSENTIALS",
-      href: "/essentials",
-      items: [
-        { name: "View All", href: "/essentials" },
-        { name: "T-Shirts", href: "/essentials/t-shirts" },
-        { name: "Hoodies", href: "/essentials/hoodies" },
-        { name: "Basics", href: "/essentials/basics" },
-      ],
-    },
-    {
-      title: "STREETWEAR",
-      href: "/streetwear",
-      items: [
-        { name: "View All", href: "/streetwear" },
-        { name: "Graphic Tees", href: "/streetwear/graphic-tees" },
-        { name: "Cargo Pants", href: "/streetwear/cargo-pants" },
-        { name: "Accessories", href: "/streetwear/accessories" },
-      ],
+      title: "COMING SOON",
+      href: "/coming-soon",
+      isSimple: true, // No dropdown for COMING SOON
     },
   ]
 
@@ -85,27 +63,11 @@ export function DesktopNavigation() {
                 <NavigationMenuList>
                   {categories.map((category) => (
                     <NavigationMenuItem key={category.title}>
-                      <NavigationMenuTrigger className="font-medium text-sm">
-                        {category.title}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-6">
-                          {category.items.map((item) => (
-                            <li key={item.name}>
-                              <NavigationMenuLink asChild>
-                                <Link
-                                  href={item.href}
-                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                >
-                                  <div className="text-sm font-medium leading-none">
-                                    {item.name}
-                                  </div>
-                                </Link>
-                              </NavigationMenuLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
+                      <Link href={category.href} legacyBehavior passHref>
+                        <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                          {category.title}
+                        </NavigationMenuLink>
+                      </Link>
                     </NavigationMenuItem>
                   ))}
                   

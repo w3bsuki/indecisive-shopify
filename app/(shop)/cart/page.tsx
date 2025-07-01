@@ -35,15 +35,15 @@ export default function CartPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
-          {lines?.map((line) => line ? (
+          {lines?.map((line) => line && line.merchandise && line.merchandise.product ? (
             <div key={line.id} className="border-2 border-black p-4">
               <div className="flex gap-4">
                 {/* Product Image */}
                 <div className="w-24 h-24 bg-gray-100 relative">
-                  {line.merchandise.product.featuredImage ? (
+                  {line.merchandise.product.featuredImage?.url ? (
                     <Image
                       src={line.merchandise.product.featuredImage.url}
-                      alt={line.merchandise.product.title}
+                      alt={line.merchandise.product.title || 'Product image'}
                       fill
                       className="object-cover"
                     />
@@ -68,7 +68,7 @@ export default function CartPage() {
                       )}
                     </div>
                     <button
-                      onClick={() => removeItem(line.id)}
+                      onClick={() => line.id && removeItem(line.id)}
                       className="p-1 hover:bg-gray-100 transition-colors"
                       aria-label="Remove item"
                     >
@@ -80,15 +80,15 @@ export default function CartPage() {
                     {/* Quantity Selector */}
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => updateItem(line.id, Math.max(1, line.quantity - 1))}
-                        disabled={line.quantity <= 1 || isLoading}
+                        onClick={() => line.id && line.quantity && updateItem(line.id, Math.max(1, line.quantity - 1))}
+                        disabled={!line.quantity || line.quantity <= 1 || isLoading}
                         className="w-8 h-8 border-2 border-black flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
-                      <span className="w-12 text-center font-mono">{line.quantity}</span>
+                      <span className="w-12 text-center font-mono">{line.quantity || 0}</span>
                       <button
-                        onClick={() => updateItem(line.id, line.quantity + 1)}
+                        onClick={() => line.id && line.quantity && updateItem(line.id, line.quantity + 1)}
                         disabled={isLoading}
                         className="w-8 h-8 border-2 border-black flex items-center justify-center hover:bg-gray-100 disabled:opacity-50"
                       >
@@ -98,7 +98,10 @@ export default function CartPage() {
 
                     {/* Line Total */}
                     <p className="font-mono font-medium">
-                      {formatPrice(line.cost.totalAmount.amount, line.cost.totalAmount.currencyCode)}
+                      {line.cost?.totalAmount?.amount && line.cost?.totalAmount?.currencyCode 
+                        ? formatPrice(line.cost.totalAmount.amount, line.cost.totalAmount.currencyCode)
+                        : '$0.00'
+                      }
                     </p>
                   </div>
                 </div>
@@ -128,7 +131,7 @@ export default function CartPage() {
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <span className="font-mono">
-                  {cost?.subtotalAmount 
+                  {cost?.subtotalAmount?.amount && cost?.subtotalAmount?.currencyCode
                     ? formatPrice(cost.subtotalAmount.amount, cost.subtotalAmount.currencyCode)
                     : '$0.00'
                   }
@@ -148,7 +151,7 @@ export default function CartPage() {
               <div className="flex justify-between items-center mb-6">
                 <span className="text-lg font-bold">Total</span>
                 <span className="text-lg font-bold font-mono">
-                  {cost?.totalAmount 
+                  {cost?.totalAmount?.amount && cost?.totalAmount?.currencyCode
                     ? formatPrice(cost.totalAmount.amount, cost.totalAmount.currencyCode)
                     : '$0.00'
                   }
