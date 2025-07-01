@@ -2,6 +2,7 @@
   "name": "indecisive-wear-store",
   "description": "Modern Shopify headless storefront with Next.js 15",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "keywords": [
     "nextjs",
