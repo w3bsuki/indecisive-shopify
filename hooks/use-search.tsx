@@ -58,7 +58,7 @@ export function useSearch() {
           .slice(0, 5)
       )]
       setSuggestions(uniqueSuggestions)
-    } catch (error) {
+    } catch (_error) {
       setState(prev => ({
         ...prev,
         isLoading: false,

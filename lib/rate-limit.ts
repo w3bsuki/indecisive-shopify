@@ -298,9 +298,9 @@ interface RateLimitDetails {
  * Send rate limit alert (integrate with your monitoring service)
  */
 export async function sendRateLimitAlert(
-  key: string,
-  endpoint: string,
-  details: RateLimitDetails
+  _key: string,
+  _endpoint: string,
+  _details: RateLimitDetails
 ): Promise<void> {
   // This is where you would integrate with your alerting system
   // For example: Slack, PagerDuty, email, etc.

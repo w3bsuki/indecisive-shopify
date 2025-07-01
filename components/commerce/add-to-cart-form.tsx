@@ -43,7 +43,7 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
         setQuantity(1)
         setIsAdding(false)
       }, 1000)
-    } catch (error) {
+    } catch (_error) {
       setIsAdding(false)
     }
   }

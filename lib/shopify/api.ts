@@ -152,7 +152,7 @@ export async function getProducts(first: number = 12, query?: string) {
     }>(PRODUCTS_QUERY, { first, query });
 
     return data.products;
-  } catch (error) {
+  } catch (_error) {
     // Return empty structure to prevent crashes
     return { edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } };
   }
@@ -166,7 +166,7 @@ export async function getProduct(handle: string) {
     );
 
     return data.product;
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }
@@ -181,7 +181,7 @@ export async function getCollections(first: number = 10) {
     }>(COLLECTIONS_QUERY, { first });
 
     return data.collections;
-  } catch (error) {
+  } catch (_error) {
     // Return empty structure to prevent crashes
     return { edges: [] };
   }
@@ -240,7 +240,7 @@ export async function getCollection(handle: string, productsFirst: number = 24) 
     }>(COLLECTION_QUERY, { handle, productsFirst });
 
     return data.collection;
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }

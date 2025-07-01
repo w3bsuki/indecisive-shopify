@@ -104,7 +104,7 @@ export function useAdvancedSearch() {
         isLoading: false,
         error: null
       })
-    } catch (error) {
+    } catch (_error) {
       setResults(prev => ({
         ...prev,
         isLoading: false,

@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
       setTimeout(() => {
         setIsLoading(false)
       }, 1000)
-    } catch (error) {
+    } catch (_error) {
       setIsLoading(false)
     }
   }

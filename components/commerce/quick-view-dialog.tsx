@@ -54,7 +54,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
         setIsOpen(false)
         setIsAdding(false)
       }, 1500)
-    } catch (error) {
+    } catch (_error) {
       setIsAdding(false)
     }
   }

@@ -22,7 +22,7 @@ export function useWishlist() {
       if (saved) {
         setItems(JSON.parse(saved));
       }
-    } catch (error) {
+    } catch (_error) {
       // Silently fail if localStorage is not available
     }
     setIsLoading(false);

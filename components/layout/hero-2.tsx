@@ -19,7 +19,7 @@ export function Hero2() {
         const heroSlides = await getHeroSlides(5);
         setSlides(heroSlides);
         // Hero slides loaded successfully
-      } catch (error) {
+      } catch (_error) {
         // Fallback slides if everything fails
         setSlides([
           {

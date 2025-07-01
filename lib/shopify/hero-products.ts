@@ -76,7 +76,7 @@ export async function getHeroSlides(maxSlides: number = 5): Promise<HeroSlide[]>
       return FALLBACK_HERO_IMAGES.slice(0, maxSlides);
     }
     
-  } catch (error) {
+  } catch (_error) {
     // Failed to fetch products, using fallback images
     return FALLBACK_HERO_IMAGES.slice(0, maxSlides);
   }
@@ -111,7 +111,7 @@ export async function getFeaturedProductImages(): Promise<string[]> {
     
     return imageUrls.slice(0, 20); // Return up to 20 unique images
     
-  } catch (error) {
+  } catch (_error) {
     // Failed to fetch product images
     return [];
   }

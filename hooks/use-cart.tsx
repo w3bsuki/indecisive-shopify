@@ -91,7 +91,7 @@ export function useCart() {
           duration: 3000,
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to add item to cart', { id: 'cart-error' });
     }
   }, [linesAdd, linesUpdate, lines, cartReady]);
@@ -115,7 +115,7 @@ export function useCart() {
         // Update quantity
         linesUpdate([{ id: lineId, quantity }]);
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to update cart', { id: 'cart-error' });
     }
   }, [linesUpdate, linesRemove, cartReady]);
@@ -129,7 +129,7 @@ export function useCart() {
     try {
       linesRemove([lineId]);
       toast.success('Removed from cart', { id: 'cart-update-success' });
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to remove item', { id: 'cart-error' });
     }
   }, [linesRemove]);
@@ -141,7 +141,7 @@ export function useCart() {
     try {
       const lineIds = lines.map((line) => line?.id).filter((id): id is string => !!id);
       linesRemove(lineIds);
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to clear cart', { id: 'cart-error' });
     }
   }, [lines, linesRemove]);

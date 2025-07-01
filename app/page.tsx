@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { getProducts, getCollections } from '@/lib/shopify'
 // import { HeroSection } from '@/components/layout/hero-section'
 import { Hero2 } from '@/components/layout/hero-2'
@@ -99,7 +100,7 @@ export default async function HomePage() {
               ))}
               
               {/* View All Categories Card */}
-              <a
+              <Link
                 href="/collections"
                 className="group relative flex-shrink-0 w-48 md:w-56 aspect-[4/5] border-2 border-dashed border-gray-300 hover:border-black transition-all duration-300 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 snap-start"
               >
@@ -116,7 +117,7 @@ export default async function HomePage() {
                     Explore everything
                   </p>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
           
@@ -152,7 +153,7 @@ export default async function HomePage() {
       <Footer />
     </div>
   )
-  } catch (error) {
+  } catch (_error) {
     // Fallback UI when data fetching fails
     return (
       <div className="min-h-screen bg-white font-mono">
