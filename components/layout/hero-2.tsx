@@ -20,7 +20,6 @@ export function Hero2() {
         setSlides(heroSlides);
         // Hero slides loaded successfully
       } catch (error) {
-        console.error('Failed to load hero slides:', error);
         // Fallback slides if everything fails
         setSlides([
           {

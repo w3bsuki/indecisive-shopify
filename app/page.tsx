@@ -153,8 +153,6 @@ export default async function HomePage() {
     </div>
   )
   } catch (error) {
-    console.error('❌ HomePage: Data fetch failed:', error)
-    
     // Fallback UI when data fetching fails
     return (
       <div className="min-h-screen bg-white font-mono">

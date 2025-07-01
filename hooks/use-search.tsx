@@ -59,7 +59,6 @@ export function useSearch() {
       )]
       setSuggestions(uniqueSuggestions)
     } catch (error) {
-      console.error('Search error:', error)
       setState(prev => ({
         ...prev,
         isLoading: false,

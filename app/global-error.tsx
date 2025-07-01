@@ -11,8 +11,7 @@ export default function GlobalError({
   reset: () => void
 }) {
   useEffect(() => {
-    // Log the error to error reporting service
-    console.error('Global error caught:', error)
+    // TODO: Log the error to error reporting service (e.g., Sentry)
   }, [error])
 
   return (

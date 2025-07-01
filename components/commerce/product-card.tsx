@@ -40,7 +40,6 @@ export function ProductCard({ product }: ProductCardProps) {
         setIsLoading(false)
       }, 1000)
     } catch (error) {
-      console.error('Add to cart failed:', error)
       setIsLoading(false)
     }
   }

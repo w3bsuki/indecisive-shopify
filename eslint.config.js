@@ -18,6 +18,7 @@ const eslintConfig = [
   
   // Extend Next.js configurations using FlatCompat
   ...compat.extends(
+    "next",
     "next/core-web-vitals",
     "next/typescript"
   ),

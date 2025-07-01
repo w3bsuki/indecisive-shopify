@@ -56,7 +56,7 @@ export async function getHeroSlides(maxSlides: number = 5): Promise<HeroSlide[]>
     
     if (productsWithImages.length >= 3) {
       // We have enough products with images, use them
-      console.log(`Using ${productsWithImages.length} product images for hero carousel`);
+      // Using product images for hero carousel
       
       return productsWithImages.slice(0, maxSlides).map((product: Product) => ({
         id: product.id,
@@ -72,13 +72,12 @@ export async function getHeroSlides(maxSlides: number = 5): Promise<HeroSlide[]>
       }));
     } else {
       // Not enough product images available, use fallbacks
-      console.log('Not enough product images available, using fallback images for hero carousel');
+      // Not enough product images available, using fallback images
       return FALLBACK_HERO_IMAGES.slice(0, maxSlides);
     }
     
   } catch (error) {
-    console.error('Failed to fetch products for hero carousel:', error);
-    console.log('Using fallback images for hero carousel');
+    // Failed to fetch products, using fallback images
     return FALLBACK_HERO_IMAGES.slice(0, maxSlides);
   }
 }
@@ -113,7 +112,7 @@ export async function getFeaturedProductImages(): Promise<string[]> {
     return imageUrls.slice(0, 20); // Return up to 20 unique images
     
   } catch (error) {
-    console.error('Failed to fetch product images:', error);
+    // Failed to fetch product images
     return [];
   }
 }

@@ -23,7 +23,7 @@ export function useWishlist() {
         setItems(JSON.parse(saved));
       }
     } catch (error) {
-      console.error('Failed to load wishlist:', error);
+      // Silently fail if localStorage is not available
     }
     setIsLoading(false);
   }, []);
@@ -34,7 +34,7 @@ export function useWishlist() {
       try {
         localStorage.setItem('wishlist', JSON.stringify(items));
       } catch (error) {
-        console.error('Failed to save wishlist:', error);
+        // Silently fail if localStorage is not available
       }
     }
   }, [items, isLoading]);

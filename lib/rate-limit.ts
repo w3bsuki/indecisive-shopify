@@ -305,12 +305,8 @@ export async function sendRateLimitAlert(
   // This is where you would integrate with your alerting system
   // For example: Slack, PagerDuty, email, etc.
   
-  console.warn('Rate limit alert:', {
-    key,
-    endpoint,
-    details,
-    timestamp: new Date().toISOString()
-  })
+  // TODO: Integrate with alerting system (Slack, PagerDuty, email, etc.)
+  // Rate limit alert triggered for key: ${key}, endpoint: ${endpoint}
   
   // Example integration with external service:
   // await sendSlackNotification({

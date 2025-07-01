@@ -12,7 +12,7 @@ export default function ProductError({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('Product page error:', error)
+    // TODO: Log to error reporting service
   }, [error])
 
   return (

@@ -105,7 +105,6 @@ export function useAdvancedSearch() {
         error: null
       })
     } catch (error) {
-      console.error('Advanced search error:', error)
       setResults(prev => ({
         ...prev,
         isLoading: false,

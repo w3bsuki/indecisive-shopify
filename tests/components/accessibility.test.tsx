@@ -128,10 +128,10 @@ describe('Component Accessibility Tests', () => {
         <Button>Touch Me</Button>
       )
       const button = container.querySelector('button')
-      const styles = window.getComputedStyle(button!)
       
-      // Default button should have min-height of at least 44px
-      expect(button).toHaveClass('h-10') // 40px default, but with padding meets 44px
+      // Default button should use touch-optimized height (44px)
+      expect(button).toHaveClass('h-button-touch')
+      expect(button).toHaveClass('min-w-touch-target')
     })
 
     it('icon button meets minimum touch target size', () => {
@@ -141,8 +141,8 @@ describe('Component Accessibility Tests', () => {
         </Button>
       )
       const button = container.querySelector('button')
-      expect(button).toHaveClass('h-10')
-      expect(button).toHaveClass('w-10')
+      expect(button).toHaveClass('h-button-touch')
+      expect(button).toHaveClass('w-button-touch')
     })
   })
 

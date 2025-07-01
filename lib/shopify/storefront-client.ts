@@ -5,10 +5,7 @@ const API_VERSION = process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || '2024-10';
 
 // Validate configuration
 if (!SHOPIFY_DOMAIN || !STOREFRONT_ACCESS_TOKEN) {
-  console.error('Missing required Shopify environment variables:', {
-    domain: !!process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN,
-    token: !!process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
-  });
+  // Environment variables will be validated at runtime
 }
 
 // Helper function for GraphQL queries with proper error handling
@@ -41,7 +38,6 @@ export async function storefront<T = unknown>(
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Shopify API Error Response:', errorText);
       throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
     }
 
@@ -55,7 +51,6 @@ export async function storefront<T = unknown>(
     
     return json.data as T;
   } catch (error) {
-    console.error('Shopify Storefront API Error:', error);
     throw error;
   }
 }

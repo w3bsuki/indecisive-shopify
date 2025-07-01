@@ -11,11 +11,6 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
 
   // Validation according to official docs
   if (!storeDomain || !storefrontToken) {
-    console.warn('Missing required Shopify environment variables - Shopify features disabled:', {
-      storeDomain: !!storeDomain,
-      storefrontToken: !!storefrontToken,
-      apiVersion
-    });
     // Gracefully render children without Shopify provider
     return <>{children}</>;
   }

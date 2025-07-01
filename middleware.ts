@@ -214,14 +214,12 @@ export function middleware(request: NextRequest) {
   
   // Log rate limit violations for monitoring
   if (!rateLimitResult.allowed) {
-    console.warn(`Rate limit exceeded for ${key} on ${pathname}`, {
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
-      userAgent: request.headers.get('user-agent'),
-      timestamp: new Date().toISOString(),
-      endpoint: pathname
-    })
-    
-    // In production, you might want to send this to your monitoring service
+    // TODO: Send rate limit violations to monitoring service
+    // Rate limit exceeded for ${key} on ${pathname}
+    // IP: ${request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'}
+    // User-Agent: ${request.headers.get('user-agent')}
+    // Timestamp: ${new Date().toISOString()}
+    // Endpoint: ${pathname}
     // await sendRateLimitAlert(key, pathname, rateLimitResult)
   }
   

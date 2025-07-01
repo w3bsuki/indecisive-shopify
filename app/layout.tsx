@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Sora } from 'next/font/google'
+import { Sora, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
 import { Toaster } from '@/components/ui/sonner'
@@ -8,6 +8,13 @@ import { Toaster } from '@/components/ui/sonner'
 const sora = Sora({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-sans',
+})
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
 })
 
 export const metadata: Metadata = {
@@ -22,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sora.variable} ${jetBrainsMono.variable}`}>
       <body className={sora.className}>
         <HydrogenProvider>
           {children}

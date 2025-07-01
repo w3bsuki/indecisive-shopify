@@ -55,7 +55,6 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
         setIsAdding(false)
       }, 1500)
     } catch (error) {
-      console.error('Failed to add to cart:', error)
       setIsAdding(false)
     }
   }

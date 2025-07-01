@@ -44,7 +44,6 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
         setIsAdding(false)
       }, 1000)
     } catch (error) {
-      console.error('Failed to add to cart:', error)
       setIsAdding(false)
     }
   }
