@@ -3,13 +3,7 @@ import { getCollection, getCollections } from '@/lib/shopify/api'
 import { ProductCard } from '@/components/commerce/product-card'
 import { SearchFilters } from '@/app/(shop)/search/search-filters'
 
-export async function generateStaticParams() {
-  const collections = await getCollections(20)
-  
-  return collections.edges.map((edge) => ({
-    handle: edge.node.handle,
-  }))
-}
+// Dynamic rendering only for free tier deployment
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params
