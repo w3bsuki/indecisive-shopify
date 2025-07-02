@@ -1,0 +1,140 @@
+{
+  "nav": {
+    "products": "PRODUKTE",
+    "collections": "KOLLEKTIONEN",
+    "about": "ÜBER UNS",
+    "contact": "KONTAKT",
+    "cart": "WARENKORB",
+    "account": "KONTO",
+    "login": "ANMELDEN",
+    "logout": "ABMELDEN"
+  },
+  "home": {
+    "hero": {
+      "title": "MODE FÜR UNENTSCHLOSSENE",
+      "subtitle": "Wenn du dich nicht entscheiden kannst, wähle alles",
+      "cta": "KOLLEKTION ENTDECKEN"
+    },
+    "featured": {
+      "title": "FEATURED PRODUKTE"
+    },
+    "community": {
+      "title": "COMMUNITY STYLE",
+      "subtitle": "Teile deinen Style #IndecisiveWear"
+    },
+    "comingSoon": {
+      "title": "KOMMT BALD"
+    }
+  },
+  "products": {
+    "title": "ALLE PRODUKTE",
+    "addToCart": "IN DEN WARENKORB",
+    "quickView": "SCHNELLANSICHT",
+    "viewAll": "ALLE PRODUKTE ANZEIGEN",
+    "priceFrom": "AB",
+    "soldOut": "AUSVERKAUFT",
+    "available": "VERFÜGBAR"
+  },
+  "cart": {
+    "title": "WARENKORB",
+    "empty": {
+      "title": "IHR WARENKORB IST LEER",
+      "subtitle": "Sie haben noch nichts hinzugefügt.",
+      "cta": "WEITER EINKAUFEN"
+    },
+    "subtotal": "Zwischensumme",
+    "shipping": "Versand",
+    "tax": "Steuer",
+    "total": "Gesamt",
+    "checkout": "ZUR KASSE",
+    "continueShopping": "WEITER EINKAUFEN",
+    "remove": "Entfernen",
+    "clear": "WARENKORB LEEREN",
+    "discountCode": "Rabattcode",
+    "apply": "ANWENDEN",
+    "calculatedAtCheckout": "Wird an der Kasse berechnet"
+  },
+  "auth": {
+    "login": {
+      "title": "ANMELDEN",
+      "subtitle": "Willkommen zurück bei Indecisive Wear",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "ANMELDEN",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "createAccount": "Hier erstellen"
+    },
+    "register": {
+      "title": "KONTO ERSTELLEN",
+      "subtitle": "Werden Sie Teil der Indecisive Wear Community",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "submit": "KONTO ERSTELLEN",
+      "haveAccount": "Bereits ein Konto?",
+      "signIn": "Hier anmelden",
+      "terms": "Mit der Erstellung eines Kontos stimmen Sie unseren Nutzungsbedingungen und Datenschutzrichtlinien zu."
+    }
+  },
+  "account": {
+    "title": "MEIN KONTO",
+    "welcome": "Willkommen zurück",
+    "details": "Kontodetails",
+    "orders": "Letzte Bestellungen",
+    "addresses": "Adressbuch",
+    "editProfile": "Profil bearbeiten",
+    "noOrders": "Noch keine Bestellungen",
+    "noAddresses": "Keine Adressen gespeichert",
+    "addAddress": "Adresse hinzufügen",
+    "logout": "Abmelden"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Vorherige",
+    "search": "Suchen",
+    "filter": "Filter",
+    "sort": "Sortieren",
+    "viewMore": "Mehr anzeigen",
+    "comingSoon": "KOMMT BALD",
+    "soldOut": "AUSVERKAUFT",
+    "new": "NEU",
+    "sale": "SALE"
+  },
+  "footer": {
+    "customerService": "Kundenservice",
+    "aboutUs": "Über uns",
+    "contact": "Kontakt",
+    "shipping": "Versand",
+    "returns": "Rücksendungen",
+    "sizeGuide": "Größentabelle",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "newsletter": {
+      "title": "NEWSLETTER",
+      "subtitle": "Erhalten Sie die neuesten Updates",
+      "placeholder": "Ihre E-Mail",
+      "submit": "ABONNIEREN"
+    },
+    "social": {
+      "follow": "Folgen Sie uns"
+    },
+    "copyright": "© 2025 Indecisive Wear. Alle Rechte vorbehalten."
+  },
+  "messages": {
+    "addedToCart": "Zum Warenkorb hinzugefügt",
+    "removedFromCart": "Aus Warenkorb entfernt",
+    "cartUpdated": "Warenkorb aktualisiert",
+    "loginSuccess": "Anmeldung erfolgreich",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "registerSuccess": "Konto erfolgreich erstellt",
+    "registerFailed": "Registrierung fehlgeschlagen",
+    "logoutSuccess": "Erfolgreich abgemeldet"
+  }
+}

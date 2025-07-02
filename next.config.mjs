@@ -1,155 +1,50 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Production-ready configuration
-  reactStrictMode: true,
-  
-  // TypeScript and ESLint - fail builds on errors in production
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  
-  // Experimental features for Next.js 15
-  experimental: {
-    typedRoutes: false, // Type-safe routing
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-  },
-  
-  // Optimize production builds
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
-  
-  // Image optimization for e-commerce
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.supabase.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
+        hostname: 'cdn.shopify.com',
+        port: '',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.shopify.com',
+        port: '',
+        pathname: '/**',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000, // 1 year
   },
-  
-  // Performance optimizations
-  compress: true,
-  poweredByHeader: false,
-  
-  // Security headers for e-commerce
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), payment=()'
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload'
-          },
-        ],
-      },
-      {
-        source: '/_next/image(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store, no-cache, must-revalidate'
-          },
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow'
-          },
-        ],
-      },
-    ]
+  // Internationalization handled via market context (App Router pattern)
+  // Enable experimental features for performance
+  experimental: {
+    optimizePackageImports: ['@shopify/hydrogen-react'],
   },
-  
   // Redirects for SEO
   async redirects() {
     return [
       {
-        source: '/home',
-        destination: '/',
+        source: '/en/home',
+        destination: '/en',
         permanent: true,
       },
-    ]
-  },
-  
-  // Webpack optimizations for production
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Reduce bundle size by splitting vendor chunks
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-        },
+      {
+        source: '/de/home', 
+        destination: '/de',
+        permanent: true,
+      },
+      {
+        source: '/bg/home',
+        destination: '/bg',
+        permanent: true,
       }
-    }
-    return config
-  },
+    ]
+  }
 }
 
-export default nextConfig
+export default withNextIntl(nextConfig)

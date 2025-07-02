@@ -1,0 +1,140 @@
+{
+  "nav": {
+    "products": "PRODUCTS",
+    "collections": "COLLECTIONS",
+    "about": "ABOUT",
+    "contact": "CONTACT",
+    "cart": "CART",
+    "account": "ACCOUNT",
+    "login": "LOGIN",
+    "logout": "LOGOUT"
+  },
+  "home": {
+    "hero": {
+      "title": "FASHION FOR THE INDECISIVE",
+      "subtitle": "When you can't decide, choose everything",
+      "cta": "EXPLORE COLLECTION"
+    },
+    "featured": {
+      "title": "FEATURED PRODUCTS"
+    },
+    "community": {
+      "title": "COMMUNITY STYLE",
+      "subtitle": "Share your style #IndecisiveWear"
+    },
+    "comingSoon": {
+      "title": "COMING SOON"
+    }
+  },
+  "products": {
+    "title": "ALL PRODUCTS",
+    "addToCart": "ADD TO CART",
+    "quickView": "QUICK VIEW",
+    "viewAll": "VIEW ALL PRODUCTS",
+    "priceFrom": "FROM",
+    "soldOut": "SOLD OUT",
+    "available": "AVAILABLE"
+  },
+  "cart": {
+    "title": "SHOPPING CART",
+    "empty": {
+      "title": "YOUR CART IS EMPTY",
+      "subtitle": "Looks like you haven't added anything yet.",
+      "cta": "CONTINUE SHOPPING"
+    },
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
+    "checkout": "PROCEED TO CHECKOUT",
+    "continueShopping": "CONTINUE SHOPPING",
+    "remove": "Remove",
+    "clear": "CLEAR CART",
+    "discountCode": "Discount code",
+    "apply": "APPLY",
+    "calculatedAtCheckout": "Calculated at checkout"
+  },
+  "auth": {
+    "login": {
+      "title": "SIGN IN",
+      "subtitle": "Welcome back to Indecisive Wear",
+      "email": "Email",
+      "password": "Password",
+      "submit": "SIGN IN",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one here"
+    },
+    "register": {
+      "title": "CREATE ACCOUNT",
+      "subtitle": "Join the Indecisive Wear community",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "CREATE ACCOUNT",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in here",
+      "terms": "By creating an account, you agree to our Terms of Service and Privacy Policy."
+    }
+  },
+  "account": {
+    "title": "MY ACCOUNT",
+    "welcome": "Welcome back",
+    "details": "Account Details",
+    "orders": "Recent Orders",
+    "addresses": "Address Book",
+    "editProfile": "Edit Profile",
+    "noOrders": "No orders yet",
+    "noAddresses": "No addresses saved",
+    "addAddress": "Add Address",
+    "logout": "Logout"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "viewMore": "View More",
+    "comingSoon": "COMING SOON",
+    "soldOut": "SOLD OUT",
+    "new": "NEW",
+    "sale": "SALE"
+  },
+  "footer": {
+    "customerService": "Customer Service",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "shipping": "Shipping",
+    "returns": "Returns",
+    "sizeGuide": "Size Guide",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "newsletter": {
+      "title": "NEWSLETTER",
+      "subtitle": "Get the latest updates",
+      "placeholder": "Your email",
+      "submit": "SUBSCRIBE"
+    },
+    "social": {
+      "follow": "Follow Us"
+    },
+    "copyright": "© 2025 Indecisive Wear. All rights reserved."
+  },
+  "messages": {
+    "addedToCart": "Added to cart",
+    "removedFromCart": "Removed from cart",
+    "cartUpdated": "Cart updated",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "registerSuccess": "Account created successfully",
+    "registerFailed": "Registration failed",
+    "logoutSuccess": "Logged out successfully"
+  }
+}

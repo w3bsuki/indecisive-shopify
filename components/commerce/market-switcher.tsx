@@ -35,8 +35,7 @@ export function MarketSwitcher({ className, variant = 'default' }: MarketSwitche
     const newMarket = SUPPORTED_MARKETS.find(m => m.id === marketId)
     if (newMarket) {
       setMarket(newMarket)
-      // Reload the page to fetch new market prices
-      window.location.reload()
+      // No reload - let React context handle the market update seamlessly
     }
   }
 

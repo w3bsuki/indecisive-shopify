@@ -10,22 +10,13 @@ export interface Market {
 
 export const SUPPORTED_MARKETS: Market[] = [
   {
-    id: 'us',
-    name: 'United States',
-    currencyCode: 'USD',
-    countryCode: 'US',
-    languageCode: 'EN',
-    locale: 'en-US',
-    flag: '🇺🇸'
-  },
-  {
-    id: 'ca',
-    name: 'Canada',
-    currencyCode: 'CAD',
-    countryCode: 'CA',
-    languageCode: 'EN',
-    locale: 'en-CA',
-    flag: '🇨🇦'
+    id: 'bg',
+    name: 'Bulgaria',
+    currencyCode: 'BGN',
+    countryCode: 'BG',
+    languageCode: 'BG',
+    locale: 'bg-BG',
+    flag: '🇧🇬'
   },
   {
     id: 'gb',
@@ -37,44 +28,17 @@ export const SUPPORTED_MARKETS: Market[] = [
     flag: '🇬🇧'
   },
   {
-    id: 'eu',
-    name: 'Europe',
+    id: 'de',
+    name: 'Germany',
     currencyCode: 'EUR',
-    countryCode: 'DE', // Default to Germany for EU
-    languageCode: 'EN',
-    locale: 'en-EU',
-    flag: '🇪🇺'
-  },
-  {
-    id: 'bg',
-    name: 'Bulgaria',
-    currencyCode: 'BGN',
-    countryCode: 'BG',
-    languageCode: 'BG',
-    locale: 'bg-BG',
-    flag: '🇧🇬'
-  },
-  {
-    id: 'au',
-    name: 'Australia',
-    currencyCode: 'AUD',
-    countryCode: 'AU',
-    languageCode: 'EN',
-    locale: 'en-AU',
-    flag: '🇦🇺'
-  },
-  {
-    id: 'jp',
-    name: 'Japan',
-    currencyCode: 'JPY',
-    countryCode: 'JP',
-    languageCode: 'JA',
-    locale: 'ja-JP',
-    flag: '🇯🇵'
+    countryCode: 'DE',
+    languageCode: 'DE',
+    locale: 'de-DE',
+    flag: '🇩🇪'
   }
 ]
 
-export const DEFAULT_MARKET = SUPPORTED_MARKETS[0] // US
+export const DEFAULT_MARKET = SUPPORTED_MARKETS[0] // Bulgaria
 
 export function getMarketByCountryCode(countryCode: string): Market {
   const market = SUPPORTED_MARKETS.find(m => m.countryCode === countryCode)

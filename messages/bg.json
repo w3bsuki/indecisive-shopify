@@ -1,0 +1,140 @@
+{
+  "nav": {
+    "products": "ПРОДУКТИ",
+    "collections": "КОЛЕКЦИИ",
+    "about": "ЗА НАС",
+    "contact": "КОНТАКТ",
+    "cart": "КОШНИЦА",
+    "account": "ПРОФИЛ",
+    "login": "ВХОД",
+    "logout": "ИЗХОД"
+  },
+  "home": {
+    "hero": {
+      "title": "МОДА ЗА НЕРЕШИТЕЛНИТЕ",
+      "subtitle": "Когато не можеш да решиш, избери всичко",
+      "cta": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА"
+    },
+    "featured": {
+      "title": "ИЗБРАНИ ПРОДУКТИ"
+    },
+    "community": {
+      "title": "ОБЩНОСТЕН СТИЛ",
+      "subtitle": "Сподели своя стил #IndecisiveWear"
+    },
+    "comingSoon": {
+      "title": "СКОРО"
+    }
+  },
+  "products": {
+    "title": "ВСИЧКИ ПРОДУКТИ",
+    "addToCart": "ДОБАВИ В КОШНИЦАТА",
+    "quickView": "БЪРЗ ПРЕГЛЕД",
+    "viewAll": "ВСИЧКИ ПРОДУКТИ",
+    "priceFrom": "ОТ",
+    "soldOut": "ИЗЧЕРПАНО",
+    "available": "В НАЛИЧНОСТ"
+  },
+  "cart": {
+    "title": "КОШНИЦА",
+    "empty": {
+      "title": "КОШНИЦАТА Е ПРАЗНА",
+      "subtitle": "Изглежда още не сте добавили нищо.",
+      "cta": "ПРОДЪЛЖИ ПАЗАРУВАНЕТО"
+    },
+    "subtotal": "Междинна сума",
+    "shipping": "Доставка",
+    "tax": "Данък",
+    "total": "Общо",
+    "checkout": "КЪМ ПЛАЩАНЕ",
+    "continueShopping": "ПРОДЪЛЖИ ПАЗАРУВАНЕТО",
+    "remove": "Премахни",
+    "clear": "ИЗЧИСТИ КОШНИЦАТА",
+    "discountCode": "Код за отстъпка",
+    "apply": "ПРИЛОЖИ",
+    "calculatedAtCheckout": "Изчислява се при плащане"
+  },
+  "auth": {
+    "login": {
+      "title": "ВХОД",
+      "subtitle": "Добре дошли обратно в Indecisive Wear",
+      "email": "Имейл",
+      "password": "Парола",
+      "submit": "ВЛЕЗ",
+      "forgotPassword": "Забравена парола?",
+      "noAccount": "Нямате профил?",
+      "createAccount": "Създайте тук"
+    },
+    "register": {
+      "title": "СЪЗДАЙ ПРОФИЛ",
+      "subtitle": "Присъединете се към общността Indecisive Wear",
+      "firstName": "Име",
+      "lastName": "Фамилия",
+      "email": "Имейл",
+      "password": "Парола",
+      "confirmPassword": "Потвърди паролата",
+      "submit": "СЪЗДАЙ ПРОФИЛ",
+      "haveAccount": "Вече имате профил?",
+      "signIn": "Влезте тук",
+      "terms": "Създавайки профил, се съгласявате с нашите Условия за ползване и Политика за поверителност."
+    }
+  },
+  "account": {
+    "title": "МОЯ ПРОФИЛ",
+    "welcome": "Добре дошли обратно",
+    "details": "Детайли на профила",
+    "orders": "Поръчки",
+    "addresses": "Адреси",
+    "editProfile": "Редактирай профила",
+    "noOrders": "Все още няма поръчки",
+    "noAddresses": "Няма запазени адреси",
+    "addAddress": "Добави адрес",
+    "logout": "Изход"
+  },
+  "common": {
+    "loading": "Зарежда...",
+    "error": "Грешка",
+    "success": "Успех",
+    "back": "Назад",
+    "next": "Напред",
+    "previous": "Предишен",
+    "search": "Търсене",
+    "filter": "Филтър",
+    "sort": "Сортиране",
+    "viewMore": "Виж повече",
+    "comingSoon": "СКОРО",
+    "soldOut": "ИЗЧЕРПАНО",
+    "new": "НОВО",
+    "sale": "НАМАЛЕНИЕ"
+  },
+  "footer": {
+    "customerService": "Клиентско обслужване",
+    "aboutUs": "За нас",
+    "contact": "Контакт",
+    "shipping": "Доставка",
+    "returns": "Връщания",
+    "sizeGuide": "Размери",
+    "privacy": "Поверителност",
+    "terms": "Условия",
+    "newsletter": {
+      "title": "БЮЛЕТИН",
+      "subtitle": "Получавайте най-новите новини",
+      "placeholder": "Вашият имейл",
+      "submit": "АБОНИРАЙ СЕ"
+    },
+    "social": {
+      "follow": "Следете ни"
+    },
+    "copyright": "© 2025 Indecisive Wear. Всички права запазени."
+  },
+  "messages": {
+    "addedToCart": "Добавено в кошницата",
+    "removedFromCart": "Премахнато от кошницата",
+    "cartUpdated": "Кошницата е обновена",
+    "loginSuccess": "Успешен вход",
+    "loginFailed": "Неуспешен вход",
+    "registerSuccess": "Профилът е създаден успешно",
+    "registerFailed": "Неуспешно създаване на профил",
+    "logoutSuccess": "Успешен изход"
+  }
+}

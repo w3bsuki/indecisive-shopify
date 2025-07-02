@@ -15,6 +15,29 @@ export default function CartPage() {
   const { lines, cost, totalItems, updateItem, removeItem, clearCart, checkoutUrl, isEmpty, isLoading } = useCart()
   const { formatPrice } = useMarket()
 
+  const handleCheckout = async () => {
+    // Check if user is authenticated
+    try {
+      const response = await fetch('/api/auth/me')
+      
+      if (response.ok) {
+        // User is authenticated, proceed to Shopify checkout
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl
+        }
+      } else {
+        // User not authenticated, redirect to login with return URL
+        const returnUrl = encodeURIComponent('/cart?checkout=true')
+        window.location.href = `/login?returnUrl=${returnUrl}`
+      }
+    } catch (error) {
+      console.error('Authentication check failed:', error)
+      // Fallback to login page
+      const returnUrl = encodeURIComponent('/cart?checkout=true')
+      window.location.href = `/login?returnUrl=${returnUrl}`
+    }
+  }
+
   if (isEmpty) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -176,13 +199,14 @@ export default function CartPage() {
               </div>
 
               {/* Checkout Button */}
-              {checkoutUrl && (
-                <a href={checkoutUrl} className="block">
-                  <Button className="w-full font-mono" size="lg">
-                    PROCEED TO CHECKOUT
-                  </Button>
-                </a>
-              )}
+              <Button 
+                className="w-full font-mono" 
+                size="lg"
+                onClick={handleCheckout}
+                disabled={isLoading}
+              >
+                {isLoading ? 'LOADING...' : 'PROCEED TO CHECKOUT'}
+              </Button>
             </div>
 
             {/* Security Notice */}

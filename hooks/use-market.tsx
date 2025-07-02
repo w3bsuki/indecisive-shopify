@@ -9,11 +9,14 @@ import {
   storeMarket,
   formatPriceForMarket 
 } from '@/lib/shopify/markets'
+import { currencyService } from '@/lib/currency/exchange-rates'
 
 interface MarketContextType {
   market: Market
   setMarket: (market: Market) => void
   formatPrice: (amount: string, currencyCode?: string) => string
+  formatPriceWithConversion: (amount: string, fromCurrency?: string) => string
+  getCurrencyDisclaimer: () => string
   isLoading: boolean
 }
 
@@ -50,6 +53,10 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
   const setMarket = (newMarket: Market) => {
     setMarketState(newMarket)
     storeMarket(newMarket)
+    
+    // Force a page reload to trigger next-intl locale change
+    // This is necessary because next-intl reads locale from cookies on server
+    window.location.reload()
   }
 
   const formatPrice = (amount: string, currencyCode?: string) => {
@@ -88,8 +95,45 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
     return formatPriceForMarket(amount, market)
   }
 
+  // Enhanced price formatting with live currency conversion
+  const formatPriceWithConversion = (amount: string, fromCurrency: string = 'BGN') => {
+    const numericAmount = parseFloat(amount)
+    
+    // If same currency, use standard formatting
+    if (fromCurrency === market.currencyCode) {
+      return currencyService.formatCurrency(numericAmount, market.currencyCode, market.locale)
+    }
+
+    // Use approximate conversion for immediate display
+    const approximateRates: Record<string, Record<string, number>> = {
+      'BGN': {
+        'GBP': 0.42,
+        'EUR': 0.51,
+        'BGN': 1
+      }
+    }
+
+    const rate = approximateRates[fromCurrency]?.[market.currencyCode] || 1
+    const convertedAmount = numericAmount * rate
+    
+    return currencyService.formatCurrency(convertedAmount, market.currencyCode, market.locale)
+  }
+
+  // Get currency conversion disclaimer
+  const getCurrencyDisclaimer = () => {
+    if (market.currencyCode === 'BGN') return ''
+    return currencyService.getConversionDisclaimer('BGN', market.currencyCode)
+  }
+
   return (
-    <MarketContext.Provider value={{ market, setMarket, formatPrice, isLoading }}>
+    <MarketContext.Provider value={{ 
+      market, 
+      setMarket, 
+      formatPrice, 
+      formatPriceWithConversion,
+      getCurrencyDisclaimer,
+      isLoading 
+    }}>
       {children}
     </MarketContext.Provider>
   )
