@@ -8,11 +8,12 @@ import { Badge } from "@/components/ui/badge"
 import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
-import { formatPrice } from "@/lib/shopify/api"
+import { useMarket } from "@/hooks/use-market"
 
 export function MobileCartSheet({ children, isBottomNav = false }: { children?: React.ReactNode; isBottomNav?: boolean }) {
   // OFFICIAL HYDROGEN REACT CART PATTERN
   const { lines, cost, checkoutUrl, totalQuantity, status, updateItem, removeItem } = useCart()
+  const { formatPrice } = useMarket()
 
   const subtotal = cost?.subtotalAmount
   const total = cost?.totalAmount

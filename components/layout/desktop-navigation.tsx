@@ -10,6 +10,7 @@ import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { SearchBar } from "@/components/layout/search-bar"
 import { useCart } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
+import { MarketSwitcher } from "@/components/commerce/market-switcher"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -43,7 +44,7 @@ export function DesktopNavigation() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="bg-white border-b-2 border-primary">
+      <nav className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -63,20 +64,26 @@ export function DesktopNavigation() {
                 <NavigationMenuList>
                   {categories.map((category) => (
                     <NavigationMenuItem key={category.title}>
-                      <Link href={category.href} legacyBehavior passHref>
-                        <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                      <NavigationMenuLink asChild>
+                        <Link 
+                          href={category.href}
+                          className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                        >
                           {category.title}
-                        </NavigationMenuLink>
-                      </Link>
+                        </Link>
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
                   
                   <NavigationMenuItem>
-                    <Link href="/sale" legacyBehavior passHref>
-                      <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                    <NavigationMenuLink asChild>
+                      <Link 
+                        href="/sale"
+                        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                      >
                         <span className="text-red-600">SALE</span>
-                      </NavigationMenuLink>
-                    </Link>
+                      </Link>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
@@ -84,6 +91,9 @@ export function DesktopNavigation() {
 
             {/* Right Actions */}
             <div className="flex items-center gap-4">
+              {/* Market Switcher */}
+              <MarketSwitcher />
+
               {/* Search - Desktop shows inline search, mobile shows sheet */}
               <div className="hidden lg:block">
                 <Button 

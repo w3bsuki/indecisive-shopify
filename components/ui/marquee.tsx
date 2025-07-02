@@ -44,7 +44,13 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
           )}
           aria-hidden="true"
         >
-          {children}
+          {/* Duplicate content for seamless infinite scroll */}
+          <div className="flex whitespace-nowrap">
+            {children}
+          </div>
+          <div className="flex whitespace-nowrap">
+            {children}
+          </div>
         </div>
       </div>
     )

@@ -1,5 +1,5 @@
 import { getProducts } from '@/lib/shopify/api'
-import { ProductCardUnified } from '@/components/commerce/product-card-unified'
+import { ProductCard } from '@/components/commerce/product-card'
 import { SearchFilters } from '@/app/(shop)/search/search-filters'
 
 export const metadata = {
@@ -41,7 +41,7 @@ export default async function NewArrivalsPage() {
           {products.length > 0 ? (
             <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3 lg:gap-4">
               {products.map((product, index) => (
-                <ProductCardUnified 
+                <ProductCard 
                   key={product.id} 
                   product={product} 
                   priority={index < 6} // Priority for first 6 products

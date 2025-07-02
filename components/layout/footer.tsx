@@ -42,8 +42,10 @@ export function Footer() {
 
         <div className="border-t border-black/10 mt-8 md:mt-16 pt-6 text-center text-xs sm:text-base text-black/60">
           <p>
-            &copy; {currentYear} Indecisive Wear. All rights reserved. | Privacy Policy | Terms of
-            Service
+            &copy; {currentYear} Indecisive Wear. All rights reserved. | 
+            <Link href="/privacy-policy" className="hover:text-black mx-1">Privacy Policy</Link> | 
+            <Link href="/cookie-policy" className="hover:text-black mx-1">Cookie Policy</Link> | 
+            <Link href="/terms" className="hover:text-black ml-1">Terms of Service</Link>
           </p>
         </div>
       </div>

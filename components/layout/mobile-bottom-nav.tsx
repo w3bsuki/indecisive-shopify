@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useState, useEffect } from "react"
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -17,9 +18,56 @@ export function MobileBottomNav() {
   const { items } = useWishlist()
   const { openRandomizer } = useIndecisive()
   const wishlistCount = items.length
+  const [isVisible, setIsVisible] = useState(false)
+  const [lastScrollY, setLastScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      // Hide nav when on hero section (top of page)
+      if (currentScrollY < 100) {
+        setIsVisible(false) // Hidden on hero section
+      }
+      // Show nav when scrolled past hero
+      else if (currentScrollY >= 100) {
+        if (currentScrollY > lastScrollY && currentScrollY > 200) {
+          setIsVisible(false) // Hide when scrolling down fast
+        } else {
+          setIsVisible(true) // Show when scrolled past hero or scrolling up
+        }
+      }
+      
+      setLastScrollY(currentScrollY)
+    }
+
+    // Throttle scroll events for better performance
+    let ticking = false
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', throttledHandleScroll)
+    }
+  }, [lastScrollY])
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 md:hidden">
+    <div 
+      className={cn(
+        "fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 md:hidden",
+        "transition-transform duration-300 ease-in-out",
+        isVisible ? "transform translate-y-0" : "transform translate-y-full"
+      )}
+    >
       <div className="flex items-center justify-around py-2 px-4 pb-safe">
         {/* Shop */}
         <Link href="/new">

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatPrice } from '@/lib/shopify/api'
+import { useMarket } from '@/hooks/use-market'
 import { QuickViewDialog } from './quick-view-dialog-v2'
 
 interface IndecisiveActionsProps {
@@ -21,6 +21,7 @@ export function IndecisiveActions({ products, isOpen, onOpenChange }: Indecisive
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null)
   const [isFlipping, setIsFlipping] = useState(false)
   const [showResult, setShowResult] = useState(false)
+  const { formatPrice } = useMarket()
 
   const flipForProduct = useCallback(() => {
     if (products.length === 0 || isFlipping) return

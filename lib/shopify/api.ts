@@ -1,168 +1,65 @@
 import { storefront, type Product, type Collection } from './storefront-client';
+import { PRODUCTS_QUERY, PRODUCT_QUERY, COLLECTIONS_QUERY, COLLECTION_QUERY } from './queries';
+import type { Market } from './markets';
 
-// WORKING GraphQL queries as strings - NO gql tags
-const PRODUCTS_QUERY = `
-  query getProducts($first: Int!, $query: String) {
-    products(first: $first, query: $query) {
-      edges {
-        node {
-          id
-          handle
-          title
-          description
-          availableForSale
-          featuredImage {
-            url
-            altText
-          }
-          priceRange {
-            minVariantPrice {
-              amount
-              currencyCode
-            }
-            maxVariantPrice {
-              amount
-              currencyCode
-            }
-          }
-          options {
-            id
-            name
-            values
-          }
-          variants(first: 5) {
-            edges {
-              node {
-                id
-                availableForSale
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-      }
-    }
-  }
-`;
-
-const COLLECTIONS_QUERY = `
-  query getCollections($first: Int!) {
-    collections(first: $first) {
-      edges {
-        node {
-          id
-          title
-          handle
-          description
-          image {
-            url
-            altText
-          }
-        }
-      }
-    }
-  }
-`;
-
-const PRODUCT_QUERY = `
-  query getProduct($handle: String!) {
-    product(handle: $handle) {
-      id
-      handle
-      title
-      description
-      featuredImage {
-        url
-        altText
-        width
-        height
-      }
-      images(first: 10) {
-        edges {
-          node {
-            url
-            altText
-            width
-            height
-          }
-        }
-      }
-      priceRange {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-        maxVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      options {
-        id
-        name
-        values
-      }
-      variants(first: 100) {
-        edges {
-          node {
-            id
-            title
-            availableForSale
-            price {
-              amount
-              currencyCode
-            }
-            selectedOptions {
-              name
-              value
-            }
-            image {
-              url
-              altText
-              width
-              height
-            }
-          }
-        }
-      }
-      seo {
-        title
-        description
-      }
-      tags
-    }
-  }
-`;
-
-// Product APIs
-export async function getProducts(first: number = 12, query?: string) {
+// Product APIs with market context
+export async function getProducts(
+  first: number = 12, 
+  query?: string,
+  market?: Market
+) {
   try {
+    // Always provide buyer context, use US defaults if no market specified
+    const buyerContext = market ? {
+      country: market.countryCode,
+      language: market.languageCode
+    } : {
+      country: 'US',
+      language: 'EN'
+    };
+
     const data = await storefront<{
       products: {
         edges: Array<{ node: Product }>;
         pageInfo: { hasNextPage: boolean; hasPreviousPage: boolean };
       };
-    }>(PRODUCTS_QUERY, { first, query });
+    }>(
+      PRODUCTS_QUERY, 
+      { 
+        first, 
+        query,
+        country: buyerContext.country,
+        language: buyerContext.language
+      },
+      buyerContext
+    );
 
-    return data.products;
+    return data?.products || { edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } };
   } catch (_error) {
     // Return empty structure to prevent crashes
     return { edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } };
   }
 }
 
-export async function getProduct(handle: string) {
+export async function getProduct(handle: string, market?: Market) {
   try {
+    // Always provide buyer context, use US defaults if no market specified
+    const buyerContext = market ? {
+      country: market.countryCode,
+      language: market.languageCode
+    } : {
+      country: 'US',
+      language: 'EN'
+    };
+
     const data = await storefront<{ product: Product }>(
       PRODUCT_QUERY,
-      { handle }
+      { 
+        handle,
+        country: buyerContext.country,
+        language: buyerContext.language
+      },
+      buyerContext
     );
 
     return data.product;
@@ -171,14 +68,31 @@ export async function getProduct(handle: string) {
   }
 }
 
-// Collection APIs
-export async function getCollections(first: number = 10) {
+// Collection APIs with market context
+export async function getCollections(first: number = 10, market?: Market) {
   try {
+    // Always provide buyer context, use US defaults if no market specified
+    const buyerContext = market ? {
+      country: market.countryCode,
+      language: market.languageCode
+    } : {
+      country: 'US',
+      language: 'EN'
+    };
+
     const data = await storefront<{
       collections: {
         edges: Array<{ node: Collection }>;
       };
-    }>(COLLECTIONS_QUERY, { first });
+    }>(
+      COLLECTIONS_QUERY, 
+      { 
+        first,
+        country: buyerContext.country,
+        language: buyerContext.language
+      },
+      buyerContext
+    );
 
     return data.collections;
   } catch (_error) {
@@ -187,57 +101,37 @@ export async function getCollections(first: number = 10) {
   }
 }
 
-export async function getCollection(handle: string, productsFirst: number = 24) {
-  const COLLECTION_QUERY = `
-    query getCollection($handle: String!, $productsFirst: Int!) {
-      collection(handle: $handle) {
-        id
-        title
-        handle
-        description
-        image {
-          url
-          altText
-        }
-        products(first: $productsFirst) {
-          edges {
-            node {
-              id
-              title
-              handle
-              featuredImage {
-                url
-                altText
-              }
-              priceRange {
-                minVariantPrice {
-                  amount
-                  currencyCode
-                }
-              }
-              variants(first: 5) {
-                edges {
-                  node {
-                    id
-                    availableForSale
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
+export async function getCollection(
+  handle: string, 
+  productsFirst: number = 24,
+  market?: Market
+) {
   try {
+    // Always provide buyer context, use US defaults if no market specified
+    const buyerContext = market ? {
+      country: market.countryCode,
+      language: market.languageCode
+    } : {
+      country: 'US',
+      language: 'EN'
+    };
+
     const data = await storefront<{
       collection: Collection & {
         products: {
           edges: Array<{ node: Product }>;
         };
       };
-    }>(COLLECTION_QUERY, { handle, productsFirst });
+    }>(
+      COLLECTION_QUERY, 
+      { 
+        handle, 
+        productsFirst,
+        country: buyerContext.country,
+        language: buyerContext.language
+      },
+      buyerContext
+    );
 
     return data.collection;
   } catch (_error) {
@@ -249,9 +143,15 @@ export async function getCollection(handle: string, productsFirst: number = 24) 
 // These functions are kept for compatibility but not used directly
 
 // Utility functions
-export function formatPrice(amount: string, currencyCode: string) {
-  return new Intl.NumberFormat('en-US', {
+export function formatPrice(
+  amount: string, 
+  currencyCode: string,
+  locale: string = 'en-US'
+) {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode,
+    minimumFractionDigits: currencyCode === 'JPY' ? 0 : 2,
+    maximumFractionDigits: currencyCode === 'JPY' ? 0 : 2,
   }).format(parseFloat(amount));
 }

@@ -11,7 +11,11 @@ if (!SHOPIFY_DOMAIN || !STOREFRONT_ACCESS_TOKEN) {
 // Helper function for GraphQL queries with proper error handling
 export async function storefront<T = unknown>(
   query: string,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  buyerContext?: {
+    country: string
+    language: string
+  }
 ): Promise<T> {
   if (!SHOPIFY_DOMAIN || !STOREFRONT_ACCESS_TOKEN) {
     throw new Error('Missing required Shopify environment variables. Please check your .env.local file.');
@@ -24,15 +28,22 @@ export async function storefront<T = unknown>(
   }
   
   try {
+    // If buyer context is provided, merge it with variables
+    const requestVariables = buyerContext 
+      ? { ...variables, country: buyerContext.country, language: buyerContext.language }
+      : variables;
+
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Shopify-Storefront-Access-Token': STOREFRONT_ACCESS_TOKEN,
+        // Add buyer IP header if available (for geo-location)
+        ...(buyerContext && { 'Shopify-Storefront-Buyer-IP': '::1' }),
       },
       body: JSON.stringify({
         query,
-        variables,
+        variables: requestVariables,
       }),
     });
 

@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import type { ShopifyProduct } from '@/lib/shopify/types'
-import { ProductCardUnified } from './product-card-unified'
+import { ProductCard } from './product-card'
 import { cn } from '@/lib/utils'
 
 interface VirtualProductGridProps {
@@ -97,7 +97,7 @@ export function VirtualProductGrid({ products, className }: VirtualProductGridPr
                 `grid-cols-${columns}`
               )}>
                 {rowProducts.map((product, colIndex) => (
-                  <ProductCardUnified
+                  <ProductCard
                     key={product.id}
                     product={product}
                     priority={virtualRow.index === 0 && colIndex < 2} // Priority for first 2 visible

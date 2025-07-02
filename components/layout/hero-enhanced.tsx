@@ -6,11 +6,26 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Marquee, MarqueeItem } from "@/components/ui/marquee";
 import { getHeroSlides, type HeroSlide } from '@/lib/shopify/hero-products';
+import { useMarket } from '@/hooks/use-market';
+import { TrendingUp, Users } from 'lucide-react';
 
-export function Hero2() {
+export function HeroEnhanced() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [slides, setSlides] = React.useState<HeroSlide[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const { formatPrice: _formatPrice } = useMarket();
+  
+  // Simple state for social proof
+  const [customerCount, setCustomerCount] = React.useState(4876);
+  
+  // Increment customer count randomly
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCustomerCount(prev => prev + Math.floor(Math.random() * 3));
+    }, 15000); // Every 15 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Fetch hero slides on component mount
   React.useEffect(() => {
@@ -18,9 +33,7 @@ export function Hero2() {
       try {
         const heroSlides = await getHeroSlides(5);
         setSlides(heroSlides);
-        // Hero slides loaded successfully
       } catch (_error) {
-        // Fallback slides if everything fails
         setSlides([
           {
             id: 'fallback-1',
@@ -41,27 +54,20 @@ export function Hero2() {
     loadHeroSlides();
   }, []);
 
-  // Auto-play functionality - only start when slides are loaded
+  // Auto-play functionality
   React.useEffect(() => {
     if (isLoading || slides.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => {
-        const next = (prev + 1) % slides.length;
-        // Auto-advancing to next slide
-        return next;
-      });
-    }, 5000); // 5 seconds per slide for better readability
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [slides.length, isLoading]);
 
-  // Show loading state with design tokens
   if (isLoading) {
     return (
-      <section 
-        className="relative bg-secondary w-full flex items-center justify-center hero-section"
-      >
+      <section className="relative bg-secondary w-full flex items-center justify-center hero-section">
         <div className="text-center">
           <div className="w-8 h-8 border border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
           <p className="text-muted-foreground font-mono text-sm tracking-wide">Loading...</p>
@@ -70,11 +76,26 @@ export function Hero2() {
     );
   }
 
+  const currentProduct = slides[currentSlide];
+  const hasPrice = currentProduct?.price && currentProduct.price !== '$0.00';
+
   return (
-    <section 
-      className="relative bg-background w-full hero-section"
-    >
+    <section className="relative bg-background w-full hero-section">
       <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+        {/* Subtle trust indicator - top left */}
+        <div className="absolute top-4 left-4 z-30 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-sm border border-black/10 hidden md:flex items-center gap-2">
+          <Users className="w-4 h-4" />
+          <span className="text-xs font-mono">{customerCount.toLocaleString()} customers</span>
+        </div>
+        
+        {/* Subtle trending indicator - top right */}
+        {currentProduct?.handle && (
+          <div className="absolute top-4 right-4 z-30 bg-red-500 text-white px-3 py-2 rounded-sm flex items-center gap-2">
+            <TrendingUp className="w-4 h-4" />
+            <span className="text-xs font-mono font-bold">TRENDING</span>
+          </div>
+        )}
+
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -90,47 +111,67 @@ export function Hero2() {
               sizes="100vw"
               priority={index < 2}
               style={{
-                transform: 'scale(0.7)', // Smaller scale to show whole product
+                transform: 'scale(0.7)',
                 objectPosition: 'center center'
               }}
             />
             
-            {/* Remove unnecessary inner border */}
-            
-            {/* Content overlay with design tokens */}
+            {/* Content overlay */}
             <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
               <div className="text-center space-y-4 sm:space-y-6 px-4 relative z-10">
                 <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-primary-foreground tracking-tight leading-tight drop-shadow-lg">
                   {slide.name.toUpperCase()}
                 </h2>
                 
-                {/* Show price if available */}
-                {slide.price && (
-                  <p className="text-xl sm:text-2xl font-mono text-primary-foreground/90 drop-shadow-md">
-                    FROM {slide.price}
-                  </p>
+                {/* Enhanced price display with "From" text */}
+                {hasPrice && (
+                  <div className="space-y-1">
+                    <p className="text-xl sm:text-2xl font-mono text-primary-foreground/90 drop-shadow-md">
+                      FROM {slide.price}
+                    </p>
+                    {/* Subtle free shipping indicator */}
+                    <p className="text-sm font-mono text-primary-foreground/80">
+                      FREE SHIPPING ON ORDERS OVER $100
+                    </p>
+                  </div>
                 )}
                 
-                {/* Dynamic button - links to product page if handle exists */}
-                {slide.handle ? (
-                  <Link href={`/products/${slide.handle}`}>
-                    <Button variant="white-sharp" size="lg" className="shadow-lg">
-                      SHOP NOW
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link href="/products">
-                    <Button variant="white-sharp" size="lg" className="shadow-lg">
-                      SHOP COLLECTION
-                    </Button>
-                  </Link>
+                {/* CTA buttons with slight enhancement */}
+                <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
+                  {slide.handle ? (
+                    <>
+                      <Link href={`/products/${slide.handle}`}>
+                        <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[200px]">
+                          SHOP NOW
+                        </Button>
+                      </Link>
+                      <Link href="/new">
+                        <Button variant="outline" size="lg" className="shadow-lg border-white text-white hover:bg-white hover:text-black min-w-[200px]">
+                          VIEW COLLECTION
+                        </Button>
+                      </Link>
+                    </>
+                  ) : (
+                    <Link href="/products">
+                      <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[200px]">
+                        SHOP COLLECTION
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+                
+                {/* Limited stock indicator - only for products with handle */}
+                {slide.handle && index === 0 && (
+                  <p className="text-sm font-mono text-primary-foreground/90 animate-pulse">
+                    Limited stock available
+                  </p>
                 )}
               </div>
             </div>
           </div>
         ))}
         
-        {/* Progress indicator with design tokens */}
+        {/* Progress indicator */}
         <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-20">
           {slides.map((_, index) => (
             <button
@@ -145,7 +186,7 @@ export function Hero2() {
           ))}
         </div>
         
-        {/* Bottom Marquee - Social Media & Brand */}
+        {/* Enhanced Marquee with offers */}
         <Marquee 
           className="absolute bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
           speed="normal"
@@ -154,10 +195,11 @@ export function Hero2() {
           {[...Array(6)].map((_, i) => (
             <span key={i} className="flex">
               <MarqueeItem className="text-primary-foreground">INDECISIVE WEAR</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">FOLLOW OUR INSTAGRAM</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">FOLLOW US ON TIKTOK</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">STREETWEAR WITH ATTITUDE</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">FREE SHIPPING OVER $100</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">30-DAY RETURNS</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">JOIN {customerCount.toLocaleString()}+ CUSTOMERS</MarqueeItem>
               <MarqueeItem className="text-primary-foreground">@INDECISIVEWEAR</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">NEW ARRIVALS WEEKLY</MarqueeItem>
             </span>
           ))}
         </Marquee>

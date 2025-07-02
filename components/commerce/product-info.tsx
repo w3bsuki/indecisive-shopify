@@ -1,6 +1,8 @@
-import { formatPrice } from '@/lib/shopify/api'
+'use client'
+
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { Badge } from '@/components/ui/badge'
+import { useMarket } from '@/hooks/use-market'
 
 interface ProductInfoProps {
   product: ShopifyProduct
@@ -8,6 +10,7 @@ interface ProductInfoProps {
 }
 
 export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
+  const { formatPrice } = useMarket()
   // Use selected variant price if available, otherwise show price range
   const price = selectedVariant
     ? formatPrice(selectedVariant.price.amount, selectedVariant.price.currencyCode)

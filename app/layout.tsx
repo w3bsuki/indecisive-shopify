@@ -2,9 +2,11 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Sora, Courier_Prime } from 'next/font/google'
 import './globals.css'
+import { MarketProvider } from '@/hooks/use-market'
 import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
 import { IndecisiveProvider } from '@/components/providers/indecisive-provider'
 import { Toaster } from '@/components/ui/sonner'
+import { CookieConsent } from '@/components/layout/cookie-consent'
 
 const sora = Sora({
   subsets: ['latin'],
@@ -33,12 +35,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sora.variable} ${courierPrime.variable}`}>
       <body className={sora.className}>
-        <HydrogenProvider>
-          <IndecisiveProvider>
-            {children}
-            <Toaster />
-          </IndecisiveProvider>
-        </HydrogenProvider>
+        <MarketProvider>
+          <HydrogenProvider>
+            <IndecisiveProvider>
+              {children}
+              <Toaster />
+              <CookieConsent />
+            </IndecisiveProvider>
+          </HydrogenProvider>
+        </MarketProvider>
       </body>
     </html>
   )

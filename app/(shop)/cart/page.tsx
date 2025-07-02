@@ -4,7 +4,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useCart } from '@/hooks/use-cart'
-import { formatPrice } from '@/lib/shopify/api'
+import { useMarket } from '@/hooks/use-market'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Minus, Plus, X, ShoppingBag } from 'lucide-react'
@@ -13,6 +13,7 @@ import Image from 'next/image'
 
 export default function CartPage() {
   const { lines, cost, totalItems, updateItem, removeItem, clearCart, checkoutUrl, isEmpty, isLoading } = useCart()
+  const { formatPrice } = useMarket()
 
   if (isEmpty) {
     return (

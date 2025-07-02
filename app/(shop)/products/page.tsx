@@ -1,6 +1,7 @@
 import { getProducts } from '@/lib/shopify/api'
 import { VirtualProductGrid } from '@/components/commerce/virtual-product-grid'
 import { SearchFilters } from '@/app/(shop)/search/search-filters'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'All Products | Indecisive Wear',
@@ -13,14 +14,26 @@ export default async function ProductsPage() {
   const products = productsData.edges.map(edge => edge.node)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Page Header */}
-      <div className="mb-8 text-center lg:text-left">
-        <h1 className="text-4xl lg:text-5xl font-bold font-mono mb-2">ALL PRODUCTS</h1>
-        <p className="text-gray-600 text-lg">
-          {products.length} items to help you decide (or not)
-        </p>
+    <div className="pt-4 md:pt-8">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <nav className="flex items-center gap-2 text-sm text-gray-600">
+          <Link href="/" className="hover:text-black transition-colors font-medium">
+            Home
+          </Link>
+          <span className="text-gray-400">/</span>
+          <span className="text-black font-medium">All Products</span>
+        </nav>
       </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        {/* Page Header */}
+        <div className="mb-8 text-center lg:text-left">
+          <h1 className="text-4xl lg:text-5xl font-bold font-mono mb-2">ALL PRODUCTS</h1>
+          <p className="text-gray-600 text-lg">
+            {products.length} items to help you decide (or not)
+          </p>
+        </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Filters Sidebar */}
@@ -39,6 +52,7 @@ export default async function ProductsPage() {
             </div>
           )}
         </main>
+      </div>
       </div>
     </div>
   )

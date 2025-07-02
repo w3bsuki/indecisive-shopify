@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { useWishlist } from "@/hooks/use-wishlist"
+import { MarketSwitcher } from "@/components/commerce/market-switcher"
 
 export function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -141,6 +142,11 @@ export function MobileNavigation() {
 
                     {/* Menu Footer */}
                     <div className="border-t border-gray-950 px-6 py-6 bg-gray-50">
+                      {/* Market Switcher */}
+                      <div className="mb-4">
+                        <MarketSwitcher variant="mobile" className="w-full" />
+                      </div>
+                      
                       <div className="space-y-2">
                         <Link href="/support" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
                           CUSTOMER SUPPORT

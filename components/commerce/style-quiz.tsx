@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatPrice } from '@/lib/shopify/api'
+import { useMarket } from '@/hooks/use-market'
 import { QuickViewDialog } from './quick-view-dialog-v2'
 
 interface StyleOption {
@@ -98,6 +98,7 @@ export function StyleQuiz({ products, isOpen, onOpenChange }: StyleQuizProps) {
   const [showResults, setShowResults] = useState(false)
   const [recommendations, setRecommendations] = useState<ShopifyProduct[]>([])
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const { formatPrice } = useMarket()
 
   const question = quizQuestions[currentQuestion]
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100

@@ -1,4 +1,5 @@
 // Product fragment for reusability (embedded in queries as plain string)
+// Updated to include @inContext directive for market-aware pricing
 const PRODUCT_FRAGMENT = `
   id
   handle
@@ -44,9 +45,9 @@ const PRODUCT_FRAGMENT = `
   }
 `;
 
-// Get products query
+// Get products query with @inContext for market-specific data
 export const PRODUCTS_QUERY = `
-  query GetProducts($first: Int!, $query: String) {
+  query GetProducts($first: Int!, $query: String, $country: CountryCode!, $language: LanguageCode!) @inContext(country: $country, language: $language) {
     products(first: $first, query: $query) {
       edges {
         node {
@@ -62,9 +63,9 @@ export const PRODUCTS_QUERY = `
   }
 `;
 
-// Get single product
+// Get single product with @inContext
 export const PRODUCT_QUERY = `
-  query GetProduct($handle: String!) {
+  query GetProduct($handle: String!, $country: CountryCode!, $language: LanguageCode!) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ${PRODUCT_FRAGMENT}
       images(first: 10) {
@@ -81,9 +82,9 @@ export const PRODUCT_QUERY = `
   }
 `;
 
-// Get collections
+// Get collections with @inContext
 export const COLLECTIONS_QUERY = `
-  query GetCollections($first: Int!) {
+  query GetCollections($first: Int!, $country: CountryCode!, $language: LanguageCode!) @inContext(country: $country, language: $language) {
     collections(first: $first) {
       edges {
         node {
@@ -103,9 +104,9 @@ export const COLLECTIONS_QUERY = `
   }
 `;
 
-// Get collection with products
+// Get collection with products with @inContext
 export const COLLECTION_QUERY = `
-  query GetCollection($handle: String!, $productsFirst: Int!) {
+  query GetCollection($handle: String!, $productsFirst: Int!, $country: CountryCode!, $language: LanguageCode!) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
       handle
@@ -121,6 +122,58 @@ export const COLLECTION_QUERY = `
         edges {
           node {
             ${PRODUCT_FRAGMENT}
+          }
+        }
+      }
+    }
+  }
+`;
+
+// Cart query with @inContext for market-specific pricing
+export const CART_QUERY = `
+  query GetCart($cartId: ID!, $country: CountryCode!, $language: LanguageCode!) @inContext(country: $country, language: $language) {
+    cart(id: $cartId) {
+      id
+      checkoutUrl
+      totalQuantity
+      cost {
+        subtotalAmount {
+          amount
+          currencyCode
+        }
+        totalAmount {
+          amount
+          currencyCode
+        }
+        totalTaxAmount {
+          amount
+          currencyCode
+        }
+      }
+      lines(first: 100) {
+        edges {
+          node {
+            id
+            quantity
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+                product {
+                  id
+                  handle
+                  title
+                  featuredImage {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
           }
         }
       }

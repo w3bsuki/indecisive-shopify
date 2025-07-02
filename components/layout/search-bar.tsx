@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearch } from "@/hooks/use-search"
-import { formatPrice } from "@/lib/shopify/api"
+import { useMarket } from "@/hooks/use-market"
 
 export function SearchBar() {
   const [isOpen, setIsOpen] = useState(false)
   const searchRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const { formatPrice } = useMarket()
   
   const {
     query,

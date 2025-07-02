@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart, X, Truck, Shield, Heart } from 'lucide-react'
-import { formatPrice } from '@/lib/shopify/api'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
+import { useMarket } from '@/hooks/use-market'
 import { VariantSelector } from './variant-selector'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -23,6 +23,7 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
   const [selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant | undefined>()
   const { addItem, cartReady, status } = useCart()
   const { toggleItem, isInWishlist } = useWishlist()
+  const { formatPrice } = useMarket()
   const [isAdding, setIsAdding] = useState(false)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
@@ -145,11 +146,11 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
             )}
 
             {/* Variant Selection */}
-            {product.options.length > 0 && (
+            {product.options?.length > 0 && (
               <div className="border-t pt-4">
                 <VariantSelector
                   options={product.options}
-                  variants={product.variants.edges.map(e => e.node)}
+                  variants={product.variants?.edges?.map(e => e.node) || []}
                   onVariantChange={setSelectedVariant}
                 />
               </div>
@@ -299,11 +300,11 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
               )}
 
               {/* Variant Selection */}
-              {product.options.length > 0 && (
+              {product.options?.length > 0 && (
                 <div className="border-t pt-6">
                   <VariantSelector
                     options={product.options}
-                    variants={product.variants.edges.map(e => e.node)}
+                    variants={product.variants?.edges?.map(e => e.node) || []}
                     onVariantChange={setSelectedVariant}
                   />
                 </div>

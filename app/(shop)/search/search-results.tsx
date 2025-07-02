@@ -1,7 +1,11 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { getProducts } from '@/lib/shopify/api'
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatPrice } from '@/lib/shopify/api'
+import { useMarket } from '@/hooks/use-market'
+import type { ShopifyProduct } from '@/lib/shopify/types'
 
 interface SearchResultsProps {
   query?: string
@@ -9,34 +13,62 @@ interface SearchResultsProps {
   category?: string
 }
 
-export async function SearchResults({ query, sort, category }: SearchResultsProps) {
-  // Build search query with filters
-  let searchQuery = query || ''
-  if (category) {
-    searchQuery = `${searchQuery} product_type:${category}`.trim()
+export function SearchResults({ query, sort, category }: SearchResultsProps) {
+  const { formatPrice } = useMarket()
+  const [products, setProducts] = useState<ShopifyProduct[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true)
+      try {
+        // Build search query with filters
+        let searchQuery = query || ''
+        if (category) {
+          searchQuery = `${searchQuery} product_type:${category}`.trim()
+        }
+
+        // Fetch products with search query
+        const productsData = await getProducts(50, searchQuery)
+        const fetchedProducts = productsData.edges.map(edge => edge.node)
+
+        // Sort products based on sort parameter
+        const sortedProducts = [...fetchedProducts]
+        if (sort === 'price-asc') {
+          sortedProducts.sort((a, b) => 
+            parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount)
+          )
+        } else if (sort === 'price-desc') {
+          sortedProducts.sort((a, b) => 
+            parseFloat(b.priceRange.minVariantPrice.amount) - parseFloat(a.priceRange.minVariantPrice.amount)
+          )
+        } else if (sort === 'name-asc') {
+          sortedProducts.sort((a, b) => a.title.localeCompare(b.title))
+        } else if (sort === 'name-desc') {
+          sortedProducts.sort((a, b) => b.title.localeCompare(a.title))
+        }
+
+        setProducts(sortedProducts)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        setProducts([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchProducts()
+  }, [query, sort, category])
+
+  if (isLoading) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-lg text-black/60 font-mono">Loading...</p>
+      </div>
+    )
   }
 
-  // Fetch products with search query
-  const productsData = await getProducts(50, searchQuery)
-  const products = productsData.edges.map(edge => edge.node)
-
-  // Sort products based on sort parameter
-  const sortedProducts = [...products]
-  if (sort === 'price-asc') {
-    sortedProducts.sort((a, b) => 
-      parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount)
-    )
-  } else if (sort === 'price-desc') {
-    sortedProducts.sort((a, b) => 
-      parseFloat(b.priceRange.minVariantPrice.amount) - parseFloat(a.priceRange.minVariantPrice.amount)
-    )
-  } else if (sort === 'name-asc') {
-    sortedProducts.sort((a, b) => a.title.localeCompare(b.title))
-  } else if (sort === 'name-desc') {
-    sortedProducts.sort((a, b) => b.title.localeCompare(a.title))
-  }
-
-  if (sortedProducts.length === 0) {
+  if (products.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-lg text-black/60 font-mono">
@@ -56,12 +88,12 @@ export async function SearchResults({ query, sort, category }: SearchResultsProp
     <>
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-black/60 font-mono">
-          {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'} found
+          {products.length} {products.length === 1 ? 'product' : 'products'} found
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sortedProducts.map((product) => (
+        {products.map((product) => (
           <Link
             key={product.id}
             href={`/products/${product.handle}`}

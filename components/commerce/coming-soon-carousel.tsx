@@ -20,7 +20,7 @@ const upcomingProducts: ComingSoonProduct[] = [
     name: 'SIGNATURE CAPS',
     category: 'HEADWEAR',
     launchDate: 'FEBRUARY 2025',
-    description: 'Premium snapbacks with embroidered logo',
+    description: 'Premium snapbacks with logo',
     notifyCount: 142
   },
   {
@@ -28,7 +28,7 @@ const upcomingProducts: ComingSoonProduct[] = [
     name: 'ESSENTIAL TEES',
     category: 'APPAREL',
     launchDate: 'MARCH 2025',
-    description: 'Oversized cotton tees with custom graphics',
+    description: 'Oversized cotton with graphics',
     notifyCount: 289
   },
   {
@@ -36,15 +36,15 @@ const upcomingProducts: ComingSoonProduct[] = [
     name: 'CREW SOCKS',
     category: 'ACCESSORIES',
     launchDate: 'APRIL 2025',
-    description: 'Premium cotton blend with signature branding',
+    description: 'Cotton blend with branding',
     notifyCount: 67
   },
   {
     id: 'hoodies-001',
-    name: 'HEAVYWEIGHT HOODIES',
+    name: 'HOODIES',
     category: 'APPAREL',
     launchDate: 'MAY 2025',
-    description: 'Premium fleece with embroidered details',
+    description: 'Premium fleece with details',
     notifyCount: 198
   }
 ]
@@ -87,36 +87,38 @@ export function ComingSoonCarousel() {
           </p>
         </div>
         
-        {/* Horizontal Scrolling Carousel */}
-        <div className="overflow-x-auto scrollbar-hide">
-          <div className="flex gap-4 px-4 sm:px-6 lg:px-8 pb-4">
+        {/* Mobile: Horizontal Scroll, Desktop: Grid */}
+        <div className="md:px-4 md:sm:px-6 lg:px-8">
+          {/* Mobile: Horizontal scroll */}
+          <div className="md:hidden overflow-x-auto scrollbar-hide">
+            <div className="flex gap-4 px-4 sm:px-6 pb-4">
             {upcomingProducts.map((product) => (
               <div 
                 key={product.id} 
-                className="group relative flex-shrink-0 w-64 snap-start"
+                className="group relative flex-shrink-0 w-48 snap-start"
               >
-                {/* Product Card */}
-                <div className="bg-white border border-gray-950 hover:border-gray-600 hover:shadow-md transition-all duration-200">
+                {/* Modern Product Card */}
+                <div className="bg-white border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 transform-gpu hover:scale-[1.02]">
                   {/* Preview Image Area */}
                   <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex flex-col items-center justify-center p-6">
-                      {/* Coming Soon Badge */}
-                      <div className="absolute top-4 right-4">
-                        <div className="bg-black text-white px-3 py-1 font-mono text-xs font-medium">
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-6 shine-hover">
+                      {/* Enhanced Coming Soon Badge - Centered */}
+                      <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
+                        <div className="card-glass px-2 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
                           COMING SOON
                         </div>
                       </div>
                       
                       {/* Product Type Icon */}
-                      <div className="w-20 h-20 border border-gray-400 mb-4 flex items-center justify-center">
-                        <span className="text-3xl">
+                      <div className="w-16 h-16 border border-gray-400 mb-3 flex items-center justify-center mt-6">
+                        <span className="text-2xl">
                           {product.category === 'HEADWEAR' && '🧢'}
                           {product.category === 'APPAREL' && '👕'}
                           {product.category === 'ACCESSORIES' && '🧦'}
                         </span>
                       </div>
                       
-                      <h3 className="font-mono font-bold text-lg text-center mb-2">
+                      <h3 className="font-mono font-bold text-base text-center mb-2">
                         {product.name}
                       </h3>
                       
@@ -128,7 +130,7 @@ export function ComingSoonCarousel() {
 
                   {/* Card Info */}
                   <div className="p-4 border-t-2 border-black space-y-3">
-                    <p className="font-mono text-xs text-gray-600 text-center">
+                    <p className="font-mono text-xs text-gray-600 text-center min-h-[2.5rem] flex items-center justify-center">
                       {product.description}
                     </p>
                     
@@ -148,6 +150,8 @@ export function ComingSoonCarousel() {
                         <div className="flex gap-2">
                           <Input
                             type="email"
+                            inputMode="email"
+                            autoComplete="email"
                             placeholder="Enter your email"
                             value={emailInputs[product.id] || ''}
                             onChange={(e) => setEmailInputs(prev => ({
@@ -182,43 +186,122 @@ export function ComingSoonCarousel() {
                 </div>
               </div>
             ))}
-            
-            {/* View All Coming Soon Card */}
-            <div className="flex-shrink-0 w-64 snap-start">
-              <a 
-                href="/coming-soon"
-                className="block h-full"
-              >
-                <div className="bg-white border border-dashed border-gray-950 hover:border-solid hover:border-gray-600 hover:shadow-md transition-all duration-200 group h-full">
-                  <div className="aspect-[4/5] bg-gray-50 relative overflow-hidden flex flex-col items-center justify-center p-6">
-                    <svg className="w-16 h-16 text-gray-400 group-hover:text-black transition-colors mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <h3 className="font-mono font-bold text-lg text-gray-600 group-hover:text-black transition-colors text-center mb-2">
-                      VIEW ALL
-                    </h3>
-                    <p className="font-mono text-xs text-gray-500 text-center">
-                      See everything coming soon
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 border-t-2 border-black">
-                    <Button 
-                      variant="outline"
-                      className="w-full font-mono text-xs group-hover:bg-black group-hover:text-white transition-colors"
-                    >
-                      EXPLORE UPCOMING DROPS
-                    </Button>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
-        </div>
-        
-        {/* Scroll hint */}
-        <div className="text-center mt-4">
-          <p className="text-xs text-gray-500 font-mono">← Scroll to see more →</p>
+          
+          {/* Desktop: Grid Layout */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-4 gap-6">
+            {upcomingProducts.map((product) => (
+              <div 
+                key={product.id} 
+                className="group relative"
+              >
+                {/* Modern Product Card with Glassmorphism */}
+                <div className="bg-white border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 transform-gpu hover:scale-[1.02]">
+                  {/* Preview Image Area */}
+                  <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-6 shine-hover">
+                      {/* Enhanced Coming Soon Badge - Centered */}
+                      <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
+                        <div className="card-glass px-3 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
+                          COMING SOON
+                        </div>
+                      </div>
+                      
+                      {/* Product Type Icon */}
+                      <div className="w-16 h-16 border border-gray-400 mb-3 flex items-center justify-center mt-6">
+                        <span className="text-2xl">
+                          {product.category === 'HEADWEAR' && '🧢'}
+                          {product.category === 'APPAREL' && '👕'}
+                          {product.category === 'ACCESSORIES' && '🧦'}
+                        </span>
+                      </div>
+                      
+                      <h3 className="font-mono font-bold text-base text-center mb-2">
+                        {product.name}
+                      </h3>
+                      
+                      <p className="font-mono text-xs text-gray-600 text-center">
+                        {product.launchDate}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Card Info */}
+                  <div className="p-4 border-t-2 border-black space-y-3">
+                    <p className="font-mono text-xs text-gray-600 text-center min-h-[2.5rem] flex items-center justify-center">
+                      {product.description}
+                    </p>
+                    
+                    {notifiedProducts.has(product.id) ? (
+                      <div className="bg-gray-100 p-3 text-center">
+                        <p className="font-mono text-xs font-medium">
+                          ✓ YOU&apos;RE ON THE LIST
+                        </p>
+                        {product.notifyCount && (
+                          <p className="font-mono text-xs text-gray-600 mt-1">
+                            Join {product.notifyCount} others waiting
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex gap-2">
+                          <Input
+                            type="email"
+                            inputMode="email"
+                            autoComplete="email"
+                            placeholder="Enter your email"
+                            value={emailInputs[product.id] || ''}
+                            onChange={(e) => setEmailInputs(prev => ({
+                              ...prev,
+                              [product.id]: e.target.value
+                            }))}
+                            className="font-mono text-xs"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                handleNotifyMe(product.id)
+                              }
+                            }}
+                          />
+                        </div>
+                        
+                        <Button 
+                          onClick={() => handleNotifyMe(product.id)}
+                          className="w-full font-mono text-xs"
+                          variant="default"
+                        >
+                          NOTIFY ME
+                        </Button>
+                        
+                        {product.notifyCount && (
+                          <p className="font-mono text-xs text-gray-500 text-center">
+                            {product.notifyCount} people waiting
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+            </div>
+          </div>
+          
+          {/* View All Button - Replace the card */}
+          <div className="text-center mt-8">
+            <Button 
+              variant="outline"
+              className="font-mono text-sm"
+              onClick={() => {
+                // For now, just scroll to top - can be expanded later
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+            >
+              VIEW ALL UPCOMING DROPS →
+            </Button>
+          </div>
         </div>
       </div>
     </section>

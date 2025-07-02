@@ -10,7 +10,7 @@ import { Search, TrendingUp, Clock, Loader2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearch, getTrendingSearches } from "@/hooks/use-search"
-import { formatPrice } from "@/lib/shopify/api"
+import { useMarket } from "@/hooks/use-market"
 
 interface MobileSearchSheetProps {
   children?: React.ReactNode
@@ -18,6 +18,7 @@ interface MobileSearchSheetProps {
 
 export function MobileSearchSheet({ children }: MobileSearchSheetProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const { formatPrice } = useMarket()
   const {
     query,
     results,

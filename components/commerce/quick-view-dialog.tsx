@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart, ExternalLink } from 'lucide-react'
-import { formatPrice } from '@/lib/shopify/api'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
+import { useMarket } from '@/hooks/use-market'
 import { VariantSelector } from './variant-selector'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -21,13 +21,14 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant | undefined>()
   const { addItem, cartReady, status } = useCart()
+  const { formatPrice } = useMarket()
   const [isAdding, setIsAdding] = useState(false)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   // Initialize selected variant for single variant products
   useEffect(() => {
-    if (product.variants.edges.length === 1) {
-      setSelectedVariant(product.variants.edges[0].node)
+    if (product.variants?.edges?.length === 1) {
+      setSelectedVariant(product.variants?.edges?.[0]?.node)
     }
   }, [product])
 
@@ -99,11 +100,11 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
             </div>
 
             {/* Variant Selection */}
-            {product.options.length > 0 && (
+            {product.options?.length > 0 && (
               <div>
                 <VariantSelector
                   options={product.options}
-                  variants={product.variants.edges.map(e => e.node)}
+                  variants={product.variants?.edges?.map(e => e.node) || []}
                   onVariantChange={setSelectedVariant}
                 />
               </div>
@@ -212,11 +213,11 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
               )}
 
               {/* Variant Selection */}
-              {product.options.length > 0 && (
+              {product.options?.length > 0 && (
                 <div className="border-t-2 border-gray-200 pt-4">
                   <VariantSelector
                     options={product.options}
-                    variants={product.variants.edges.map(e => e.node)}
+                    variants={product.variants?.edges?.map(e => e.node) || []}
                     onVariantChange={setSelectedVariant}
                   />
                 </div>
