@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import Image from "next/image"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Star, ThumbsUp, ThumbsDown, Filter, Upload, X, Camera, Share2, Check } from "lucide-react"
+import { Star, ThumbsUp, ThumbsDown, Filter, Upload, X, Camera, Check } from "lucide-react"
 
 interface Review {
   id: number
@@ -119,11 +120,10 @@ const mockReviews: Review[] = [
   },
 ]
 
-export function ReviewsSection({ productId, productName, averageRating, totalReviews }: ReviewsSectionProps) {
+export function ReviewsSection({ productName, averageRating, totalReviews }: ReviewsSectionProps) {
   const [reviews, setReviews] = useState<Review[]>(mockReviews)
   const [sortBy, setSortBy] = useState("newest")
   const [filterBy, setFilterBy] = useState("all")
-  const [showWriteReview, setShowWriteReview] = useState(false)
 
   // Calculate rating distribution
   const ratingDistribution = [5, 4, 3, 2, 1].map((rating) => ({
@@ -217,7 +217,6 @@ export function ReviewsSection({ productId, productName, averageRating, totalRev
             productName={productName}
             onReviewSubmit={(newReview) => {
               setReviews((prev) => [newReview, ...prev])
-              setShowWriteReview(false)
             }}
           >
             <Button className="w-full bg-black text-white hover:bg-black/80 font-mono min-h-[44px] sharp-active">
@@ -334,10 +333,12 @@ function ReviewCard({ review, onHelpful }: { review: Review; onHelpful: (id: num
                 onClick={() => setSelectedImage(image)}
                 className="flex-shrink-0 w-20 h-20 relative overflow-hidden border border-black/10 hover:border-black/30 transition-colors"
               >
-                <img
+                <Image
                   src={image || "/placeholder.svg"}
                   alt={`Review photo ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="80px"
                 />
               </button>
             ))}
@@ -388,10 +389,13 @@ function ReviewCard({ review, onHelpful }: { review: Review; onHelpful: (id: num
         <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
           <DialogContent className="max-w-3xl">
             <div className="relative">
-              <img
+              <Image
                 src={selectedImage || "/placeholder.svg"}
                 alt="Review photo"
+                width={800}
+                height={600}
                 className="w-full h-auto max-h-[70vh] object-contain"
+                style={{ width: 'auto', height: 'auto' }}
               />
               <Button
                 variant="ghost"
@@ -576,7 +580,7 @@ function WriteReviewDialog({
 
             {/* Upload Area */}
             <div
-              className={`border-2 border-dashed p-6 text-center transition-colors ${
+              className={`border border-dashed p-6 text-center transition-colors ${
                 isDragging ? "border-black bg-black/5" : "border-black/30 hover:border-black/50"
               }`}
               onDragOver={handleDragOver}
@@ -612,11 +616,15 @@ function WriteReviewDialog({
                 <div className="flex gap-2 flex-wrap">
                   {uploadedImages.map((image, index) => (
                     <div key={index} className="relative group">
-                      <img
-                        src={image || "/placeholder.svg"}
-                        alt={`Upload ${index + 1}`}
-                        className="w-20 h-20 object-cover border"
-                      />
+                      <div className="relative w-20 h-20 border">
+                        <Image
+                          src={image || "/placeholder.svg"}
+                          alt={`Upload ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="80px"
+                        />
+                      </div>
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
@@ -652,7 +660,7 @@ function WriteReviewDialog({
 
             <div>
               <label className="block text-sm font-bold mb-2 uppercase tracking-wider">How does it fit?</label>
-              <Select value={fit} onValueChange={(value: any) => setFit(value)}>
+              <Select value={fit} onValueChange={(value) => setFit(value as "Runs Small" | "True to Size" | "Runs Large")}>
                 <SelectTrigger className="font-mono">
                   <SelectValue />
                 </SelectTrigger>
@@ -701,7 +709,7 @@ function WriteReviewDialog({
                 <Button
                   onClick={() => setShowSuccessDialog(false)}
                   variant="outline"
-                  className="w-full border-2 border-black hover:bg-black hover:text-white font-mono"
+                  className="w-full border border-gray-950 hover:bg-gray-950 hover:text-white hover:shadow-md font-mono"
                 >
                   CLOSE
                 </Button>

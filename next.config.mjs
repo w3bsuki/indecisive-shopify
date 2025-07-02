@@ -13,13 +13,14 @@ const nextConfig = {
   
   // Experimental features for Next.js 15
   experimental: {
-    // Enable when on canary version
-    // ppr: true, // Partial Prerendering
-    typedRoutes: true, // Type-safe routing
+    typedRoutes: false, // Type-safe routing
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   
-  // External packages for server components
-  serverExternalPackages: ['@medusajs/medusa'],
+  // Optimize production builds
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   
   // Image optimization for e-commerce
   images: {
@@ -35,6 +36,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
       },
     ],
     formats: ['image/avif', 'image/webp'],
@@ -84,6 +89,24 @@ const nextConfig = {
         ],
       },
       {
+        source: '/_next/image(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/api/:path*',
         headers: [
           {
@@ -110,29 +133,23 @@ const nextConfig = {
     ]
   },
   
-  // Environment-specific configuration
-  ...(process.env.NODE_ENV === 'production' && {
-    // Production-only optimizations
-    output: 'standalone',
-    
-    // Webpack optimizations for production
-    webpack: (config, { isServer }) => {
-      if (!isServer) {
-        // Reduce bundle size by splitting vendor chunks
-        config.optimization.splitChunks = {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
+  // Webpack optimizations for production
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Reduce bundle size by splitting vendor chunks
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
           },
-        }
+        },
       }
-      return config
-    },
-  }),
+    }
+    return config
+  },
 }
 
 export default nextConfig

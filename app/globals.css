@@ -1,296 +1,294 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0;
-  }
-
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+@theme {
+  /* === INDECISIVE DESIGN TOKENS === */
+  
+  /* Colors - Direct values for v4 */
+  --color-gray-0: hsl(0 0% 100%);
+  --color-gray-50: hsl(0 0% 98%);
+  --color-gray-100: hsl(0 0% 96%);
+  --color-gray-200: hsl(0 0% 90%);
+  --color-gray-300: hsl(0 0% 83%);
+  --color-gray-400: hsl(0 0% 64%);
+  --color-gray-500: hsl(0 0% 45%);
+  --color-gray-600: hsl(0 0% 32%);
+  --color-gray-700: hsl(0 0% 21%);
+  --color-gray-800: hsl(0 0% 13%);
+  --color-gray-900: hsl(0 0% 6%);
+  --color-gray-950: hsl(0 0% 2%);
+  
+  /* Semantic Colors */
+  --color-background: var(--color-gray-0);
+  --color-foreground: var(--color-gray-950);
+  --color-card: var(--color-gray-0);
+  --color-card-foreground: var(--color-gray-950);
+  --color-popover: var(--color-gray-0);
+  --color-popover-foreground: var(--color-gray-950);
+  --color-primary: var(--color-gray-950);
+  --color-primary-foreground: var(--color-gray-0);
+  --color-secondary: var(--color-gray-100);
+  --color-secondary-foreground: var(--color-gray-950);
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-600);
+  --color-accent: var(--color-gray-100);
+  --color-accent-foreground: var(--color-gray-950);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: var(--color-gray-0);
+  --color-border: var(--color-gray-200);
+  --color-input: var(--color-gray-200);
+  --color-ring: var(--color-gray-950);
+  
+  /* Refined Border System */
+  --color-border-subtle: var(--color-gray-100);
+  --color-border-default: var(--color-gray-200);
+  --color-border-hover: var(--color-gray-400);
+  --color-border-focus: var(--color-gray-950);
+  
+  /* Typography - Next.js fonts provide --font-sans and --font-mono variables */
+  
+  /* Radius */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-full: 9999px;
+  
+  /* Button Sizes - Ensuring 44px minimum touch targets */
+  --height-button-sm: 2.25rem; /* 36px */
+  --height-button-md: 2.5rem;  /* 40px */
+  --height-button-lg: 3rem;    /* 48px */
+  --height-button-touch: 2.75rem; /* 44px - Minimum WCAG touch target */
+  
+  /* Touch Target Sizes */
+  --min-width-touch-target: 2.75rem; /* 44px minimum */
+  
+  /* Interactive States */
+  --color-interactive-primary: var(--color-gray-950);
+  --color-interactive-primary-hover: var(--color-gray-800);
+  --color-interactive-primary-active: var(--color-gray-900);
+  --color-interactive-primary-disabled: var(--color-gray-400);
+  
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-950);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-inverse: var(--color-gray-0);
+  
+  /* Border Colors */
+  --color-border-strong: var(--color-gray-300);
+  
+  /* Sale/Special Colors */
+  --color-sale-price: hsl(0 84.2% 60.2%);
+  --color-wishlist: hsl(0 84.2% 60.2%);
+  
+  /* Shadows - Refined for minimal aesthetic */
+  --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-strong: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-dropdown: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  
+  /* Modern Button Elevation System */
+  --elevation-0: none;
+  --elevation-1: 0 2px 4px rgb(0 0 0 / 0.08);
+  --elevation-2: 0 4px 8px rgb(0 0 0 / 0.12);
+  --elevation-3: 0 8px 16px rgb(0 0 0 / 0.16);
+  --elevation-hover: 0 4px 12px rgb(0 0 0 / 0.15);
+  
+  /* Button Color System */
+  --button-primary-bg: var(--color-gray-950);
+  --button-primary-hover: var(--color-gray-800);
+  --button-secondary-bg: var(--color-gray-0);
+  --button-secondary-hover: var(--color-gray-50);
+  --button-danger-bg: hsl(0 84.2% 60.2%);
+  --button-danger-hover: hsl(0 84.2% 50.2%);
+  --button-accent-gradient: linear-gradient(135deg, var(--color-gray-950) 0%, var(--color-gray-800) 100%);
+  
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground;
   }
-
-  /* Mobile safe area support */
-  .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .pt-safe {
-    padding-top: env(safe-area-inset-top);
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-mono tracking-tight;
   }
 }
 
-/* Sharp design system overrides */
-@layer components {
-  /* Override all rounded elements to be sharp */
-  button,
-  input,
-  select,
-  textarea,
-  .card,
-  .badge,
-  [role="dialog"],
-  [data-radix-dialog-content],
-  [data-radix-select-content],
-  [data-radix-dropdown-menu-content],
-  [data-radix-popover-content],
-  [data-radix-sheet-content] {
-    @apply rounded-none;
+/* Typography Classes */
+@layer utilities {
+  .text-price {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    @apply text-base md:text-lg;
   }
-
-  /* Ensure borders are sharp and consistent */
-  .border-sharp {
-    @apply border-2 border-black;
+  
+  .text-product-name {
+    @apply font-sans text-sm md:text-base font-medium leading-snug;
   }
-
-  /* Sharp button variants with touch optimization */
-  .btn-primary-sharp {
-    @apply bg-black text-white hover:bg-black/80 border-2 border-black rounded-none;
-    @apply min-h-[48px] px-4 py-3;
+  
+  .text-product-brand {
+    @apply font-sans text-xs uppercase tracking-wider text-muted-foreground;
   }
-
-  .btn-outline-sharp {
-    @apply border-2 border-black text-black hover:bg-black hover:text-white bg-transparent rounded-none;
-    @apply min-h-[48px] px-4 py-3;
+  
+  /* Modern Button Styles */
+  .btn-modern {
+    box-shadow: var(--elevation-1);
+    border: none;
+    transition: all var(--duration-normal) ease;
   }
-
-  .btn-white-sharp {
-    @apply bg-white text-black hover:bg-white/90 border-2 border-white rounded-none;
-    @apply min-h-[48px] px-4 py-3;
+  
+  .btn-modern:hover {
+    box-shadow: var(--elevation-hover);
+    transform: translateY(-2px);
   }
-
-  /* Mobile touch optimizations */
-  @media (max-width: 768px) {
-    /* Ensure all interactive elements meet minimum touch target size */
-    button,
-    [role="button"],
-    input[type="button"],
-    input[type="submit"] {
-      @apply min-h-[48px];
-      @apply min-w-[48px];
-    }
-
-    /* Increase padding for better touch experience */
-    .touch-target {
-      @apply p-3;
-    }
-
-    /* Sharp focus states for mobile */
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      @apply outline-none;
-      @apply ring-2;
-      @apply ring-black;
-      @apply ring-offset-2;
-      @apply ring-offset-white;
-    }
-
-    /* Mobile dialog optimizations */
-    [data-radix-dialog-content] {
-      @apply max-w-full;
-      @apply w-full;
-      @apply h-full;
-      @apply max-h-screen;
-      @apply m-0;
-      @apply p-0;
-    }
+  
+  .btn-modern:active {
+    box-shadow: var(--elevation-2);
+    transform: translateY(-1px);
   }
-
-  /* Sharp focus states for desktop */
-  @media (min-width: 769px) {
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      @apply outline-none;
-      @apply ring-2;
-      @apply ring-black;
-      @apply ring-offset-1;
-    }
-  }
-
-  /* Sharp hover states - only on devices that support hover */
-  @media (hover: hover) {
-    .sharp-hover:hover {
-      @apply bg-black;
-      @apply text-white;
-      @apply transition-colors;
-      @apply duration-200;
-    }
-
-    .sharp-hover-inverse:hover {
-      @apply bg-white;
-      @apply text-black;
-      @apply transition-colors;
-      @apply duration-200;
-    }
-  }
-
-  /* Sharp active states for touch devices */
-  .sharp-active:active {
-    @apply scale-[0.98];
-    @apply transition-transform;
-    @apply duration-100;
-  }
-
-  /* Ensure sharp edges on mobile dialogs and sheets */
-  [data-radix-dialog-content],
-  [data-radix-sheet-content] {
-    @apply rounded-none;
-  }
-
-  /* Mobile-specific sharp card styling */
-  @media (max-width: 768px) {
-    .card {
-      @apply border-2;
-      @apply border-black/10;
-    }
-  }
-
-  /* Sharp input styling with better mobile UX */
-  input,
-  textarea,
-  select {
-    @apply border-2;
-    @apply border-black/20;
-    @apply focus:border-black;
-    @apply transition-colors;
-    @apply text-base; /* Prevents zoom on iOS */
-  }
-
-  /* Sharp badge styling */
-  .badge {
-    @apply border;
-    @apply border-black/20;
-    @apply font-mono;
-    @apply text-xs;
-    @apply px-2;
-    @apply py-1;
-  }
-
-  /* Sharp separator styling */
-  .separator {
-    @apply bg-black/20;
-    @apply h-px;
-  }
-
-  /* Line clamp utilities */
-  .line-clamp-1 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-  }
-
-  .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
+  
+  
 }
 
+/* Sharp Design System */
+.button-group-vertical button:not(:first-child) {
+  border-top-width: 0;
+}
+
+.button-group-horizontal button:not(:first-child) {
+  border-left-width: 0;
+}
+
+/* Custom animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slide-in-from-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slide-out-to-bottom {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+/* Marquee animations */
 @keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0%); }
+}
+
+/* Marquee animation classes */
+.animate-marquee {
+  animation: marquee 20s linear infinite;
 }
 
 .animate-marquee-slow {
   animation: marquee 30s linear infinite;
 }
 
-.animate-marquee {
-  animation: marquee 20s linear infinite;
-}
-
 .animate-marquee-fast {
   animation: marquee 10s linear infinite;
 }
 
-.reverse {
-  animation-direction: reverse;
+.animate-marquee.reverse {
+  animation: marquee-reverse 20s linear infinite;
 }
 
-.hover\:pause:hover {
+.animate-marquee-slow.reverse {
+  animation: marquee-reverse 30s linear infinite;
+}
+
+.animate-marquee-fast.reverse {
+  animation: marquee-reverse 10s linear infinite;
+}
+
+.animate-marquee:hover.hover\:pause,
+.animate-marquee-slow:hover.hover\:pause,
+.animate-marquee-fast:hover.hover\:pause {
   animation-play-state: paused;
 }
 
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Dark mode */
+.dark {
+  --color-background: var(--color-gray-950);
+  --color-foreground: var(--color-gray-0);
+  --color-card: var(--color-gray-900);
+  --color-card-foreground: var(--color-gray-0);
+  --color-popover: var(--color-gray-900);
+  --color-popover-foreground: var(--color-gray-0);
+  --color-primary: var(--color-gray-0);
+  --color-primary-foreground: var(--color-gray-950);
+  --color-secondary: var(--color-gray-800);
+  --color-secondary-foreground: var(--color-gray-0);
+  --color-muted: var(--color-gray-800);
+  --color-muted-foreground: var(--color-gray-400);
+  --color-accent: var(--color-gray-800);
+  --color-accent-foreground: var(--color-gray-0);
+  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive-foreground: var(--color-gray-0);
+  --color-border: var(--color-gray-800);
+  --color-input: var(--color-gray-800);
+  --color-ring: var(--color-gray-0);
+  
+  /* Dark mode interactive states */
+  --color-interactive-primary: var(--color-gray-0);
+  --color-interactive-primary-hover: var(--color-gray-200);
+  --color-interactive-primary-active: var(--color-gray-100);
+  --color-interactive-primary-disabled: var(--color-gray-600);
+  
+  /* Dark mode text colors */
+  --color-text-primary: var(--color-gray-0);
+  --color-text-secondary: var(--color-gray-400);
+  --color-text-inverse: var(--color-gray-950);
+  
+  /* Dark mode border colors */
+  --color-border-strong: var(--color-gray-700);
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+/* Hero section - Mobile optimized with dynamic viewport height */
+.hero-section {
+  /* Use dvh (dynamic viewport height) for modern browsers, fallback to vh */
+  height: 100vh;
+  height: 100dvh;
+  /* Subtract header height */
+  height: calc(100dvh - 104px);
+  min-height: 400px;
+  /* Prevent iOS pull-to-refresh and bounce */
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Ensure smooth rendering */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
-/* Mobile scroll improvements */
-@media (max-width: 768px) {
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+/* Fallback for browsers without dvh support */
+@supports not (height: 100dvh) {
+  .hero-section {
+    height: calc(100vh - 104px);
   }
 }

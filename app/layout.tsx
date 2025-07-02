@@ -1,12 +1,24 @@
+import React from 'react'
 import type { Metadata } from 'next'
-import { Sora } from 'next/font/google'
+import { Sora, Courier_Prime } from 'next/font/google'
 import './globals.css'
-import { CartProvider } from '@/hooks/use-cart'
-import { Toaster } from '@/components/ui/toaster'
+import { MarketProvider } from '@/hooks/use-market'
+import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
+import { IndecisiveProvider } from '@/components/providers/indecisive-provider'
+import { Toaster } from '@/components/ui/sonner'
+import { CookieConsent } from '@/components/layout/cookie-consent'
 
 const sora = Sora({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-sans',
+})
+
+const courierPrime = Courier_Prime({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
 })
 
 export const metadata: Metadata = {
@@ -21,12 +33,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sora.variable} ${courierPrime.variable}`}>
       <body className={sora.className}>
-        <CartProvider>
-          {children}
-          <Toaster />
-        </CartProvider>
+        <MarketProvider>
+          <HydrogenProvider>
+            <IndecisiveProvider>
+              {children}
+              <Toaster />
+              <CookieConsent />
+            </IndecisiveProvider>
+          </HydrogenProvider>
+        </MarketProvider>
       </body>
     </html>
   )

@@ -1,172 +1,262 @@
-"use client"
+'use client'
 
-import type React from "react"
-
-import { useState } from "react"
-import Image from "next/image"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Heart, Plus, Minus, X } from "lucide-react"
-import { ReviewSummary } from "@/components/shared/review-summary"
-import type { Product } from '@/app/data/products'
+import { useState, useEffect } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { ShoppingCart, ExternalLink } from 'lucide-react'
+import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
+import { useCart } from '@/hooks/use-cart'
+import { useMarket } from '@/hooks/use-market'
+import { VariantSelector } from './variant-selector'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface QuickViewDialogProps {
-  product: Product
-  isDark?: boolean
+  product: ShopifyProduct
   children: React.ReactNode
 }
 
-export function QuickViewDialog({ product, isDark = false, children }: QuickViewDialogProps) {
-  const [selectedSize, setSelectedSize] = useState("")
-  const [selectedColor, setSelectedColor] = useState("")
-  const [quantity, setQuantity] = useState(1)
+export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant | undefined>()
+  const { addItem, cartReady, status } = useCart()
+  const { formatPrice } = useMarket()
+  const [isAdding, setIsAdding] = useState(false)
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
-  const sizes: string[] = (product as any).sizes || ["XS", "S", "M", "L", "XL", "XXL"]
-  const colors: string[] = (product as any).colors || ["Black", "White", "Gray"]
+  // Initialize selected variant for single variant products
+  useEffect(() => {
+    if (product.variants?.edges?.length === 1) {
+      setSelectedVariant(product.variants?.edges?.[0]?.node)
+    }
+  }, [product])
+
+  // Get all images
+  const images = product.images?.edges.map(edge => edge.node) || 
+    (product.featuredImage ? [product.featuredImage] : [])
+  const selectedImage = images[selectedImageIndex]
+
+  // Get price based on selected variant
+  const price = selectedVariant
+    ? formatPrice(selectedVariant.price.amount, selectedVariant.price.currencyCode)
+    : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount
+    ? formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
+    : `${formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)} - ${formatPrice(product.priceRange.maxVariantPrice.amount, product.priceRange.maxVariantPrice.currencyCode)}`
 
   const handleAddToCart = () => {
-    console.log("Added to cart:", { product, selectedSize, selectedColor, quantity })
-    setIsOpen(false)
-    // Show success toast here
-  }
+    if (!selectedVariant || !selectedVariant.availableForSale || !cartReady) return
 
-  const handleAddToWishlist = () => {
-    console.log("Added to wishlist:", product)
-    // Show success toast here
+    setIsAdding(true)
+    try {
+      addItem(selectedVariant.id, 1)
+      // Close dialog after a delay since addItem is not async
+      setTimeout(() => {
+        setIsOpen(false)
+        setIsAdding(false)
+      }, 1500)
+    } catch (_error) {
+      setIsAdding(false)
+    }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild onClick={() => setIsOpen(true)}>
+      <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-full w-full h-full max-h-screen m-0 p-0 font-mono overflow-hidden md:max-w-2xl md:h-auto md:max-h-[90vh] md:m-4 md:p-6">
-        {/* Mobile: Full screen layout */}
-        <div className="flex flex-col h-full md:grid md:grid-cols-2 md:gap-6 md:h-auto">
-          {/* Product Image */}
-          <div className="relative flex-shrink-0 h-[50vh] md:h-auto">
-            <div className="h-full md:aspect-[4/5] relative overflow-hidden">
-              <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
-              {product.isNew && (
-                <Badge className="absolute top-4 left-4 bg-red-500 text-white font-mono text-xs px-2 py-1">NEW</Badge>
-              )}
-              {product.isBestSeller && (
-                <Badge className="absolute top-4 left-4 bg-yellow-500 text-black font-mono text-xs px-2 py-1">
-                  BEST SELLER
-                </Badge>
+      <DialogContent className="w-[calc(100%-1rem)] md:max-w-2xl max-h-[90vh] md:h-auto border border-black rounded-none mx-2 md:mx-auto">
+        <DialogHeader>
+          <DialogTitle className="text-lg md:text-xl font-bold">{product.title}</DialogTitle>
+        </DialogHeader>
+        
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          <div className="space-y-3">
+            {/* Price */}
+            <div>
+              <p className="text-xl font-bold text-gray-900">{price}</p>
+            </div>
+            
+            {/* Compact Image */}
+            <div className="aspect-[3/2] bg-gray-100 overflow-hidden relative border border-gray-200">
+              {selectedImage ? (
+                <Image
+                  src={selectedImage.url}
+                  alt={selectedImage.altText || product.title}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                  priority
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="text-center">
+                    <div className="text-3xl mb-1">👕</div>
+                    <div className="text-xs">No image</div>
+                  </div>
+                </div>
               )}
             </div>
 
-            {/* Close button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-4 right-4 bg-white/80 hover:bg-white h-11 w-11"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="h-5 w-5" />
-            </Button>
+            {/* Variant Selection */}
+            {product.options?.length > 0 && (
+              <div>
+                <VariantSelector
+                  options={product.options}
+                  variants={product.variants?.edges?.map(e => e.node) || []}
+                  onVariantChange={setSelectedVariant}
+                />
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="space-y-2">
+              <Button
+                onClick={handleAddToCart}
+                disabled={isAdding || !selectedVariant || !selectedVariant.availableForSale || !cartReady || status === 'updating'}
+                className="w-full min-h-[48px] text-base font-medium bg-black hover:bg-gray-900 border border-black"
+              >
+                {isAdding || status === 'updating' ? (
+                  <>
+                    <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                    Adding...
+                  </>
+                ) : !selectedVariant ? (
+                  'Select options'
+                ) : !selectedVariant.availableForSale ? (
+                  'Out of stock'
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Add to cart
+                  </>
+                )}
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                className="w-full min-h-[44px] text-sm border border-gray-200 hover:border-black" 
+                asChild
+              >
+                <Link href={`/products/${product.handle}`}>
+                  <ExternalLink className="w-4 h-4 mr-1" />
+                  View full details
+                </Link>
+              </Button>
+            </div>
           </div>
+        </div>
 
-          {/* Product Details - Scrollable on mobile */}
-          <div className="flex-1 flex flex-col p-4 md:p-0 overflow-y-auto md:overflow-visible">
-            <div className="space-y-4 md:space-y-6">
-              {/* Header */}
-              <div>
-                <ReviewSummary rating={product.rating} reviewCount={product.reviews} isDark={isDark} />
-                <h2 className="text-xl md:text-2xl font-bold mt-2 mb-1">{product.name}</h2>
-                <p className="text-black/60 text-sm">{product.category}</p>
-
-                <div className="flex items-center gap-3 mt-3">
-                  <span className="text-2xl font-bold">${product.price}</span>
-                  {product.originalPrice && (
-                    <span className="text-lg text-black/40 line-through">${product.originalPrice}</span>
-                  )}
-                </div>
+        {/* Desktop Layout - RESTORED ORIGINAL */}
+        <div className="hidden md:block">
+          <div className="grid grid-cols-2 gap-6">
+            {/* Product Images */}
+            <div className="space-y-4">
+              <div className="aspect-square bg-gray-100 overflow-hidden relative border border-gray-200">
+                {selectedImage ? (
+                  <Image
+                    src={selectedImage.url}
+                    alt={selectedImage.altText || product.title}
+                    fill
+                    className="object-cover"
+                    sizes="400px"
+                    priority
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    <div className="text-center">
+                      <div className="text-4xl mb-2">👕</div>
+                      <div className="text-sm">No image available</div>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {/* Color Selection - Horizontal scroll */}
-              <div>
-                <h4 className="font-bold mb-3 text-sm uppercase tracking-wider">Color</h4>
+              
+              {/* Image thumbnails */}
+              {images.length > 1 && (
                 <div className="flex gap-2 overflow-x-auto pb-2">
-                  {colors.map((color) => (
+                  {images.map((image, index) => (
                     <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`px-4 py-3 min-h-[44px] min-w-[80px] border-2 text-xs font-mono transition-all flex-shrink-0 ${
-                        selectedColor === color
-                          ? "border-black bg-black text-white"
-                          : "border-black/20 hover:border-black"
-                      }`}
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={cn(
+                        "relative w-16 h-16 flex-shrink-0 overflow-hidden border transition-colors",
+                        selectedImageIndex === index ? 'border-black' : 'border-gray-200'
+                      )}
                     >
-                      {color}
+                      <Image
+                        src={image.url}
+                        alt={image.altText || `${product.title} ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                      />
                     </button>
                   ))}
                 </div>
-              </div>
-
-              {/* Size Selection - Horizontal scroll */}
-              <div>
-                <h4 className="font-bold mb-3 text-sm uppercase tracking-wider">Size</h4>
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`py-3 px-4 min-h-[44px] min-w-[60px] border-2 text-xs font-mono font-medium transition-all flex-shrink-0 ${
-                        selectedSize === size
-                          ? "border-black bg-black text-white"
-                          : "border-black/20 hover:border-black"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quantity */}
-              <div>
-                <h4 className="font-bold mb-3 text-sm uppercase tracking-wider">Quantity</h4>
-                <div className="flex items-center border-2 border-black w-fit">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-3 min-h-[44px] min-w-[44px] hover:bg-black/5"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <span className="px-4 py-3 font-mono font-medium min-h-[44px] flex items-center min-w-[60px] text-center">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="p-3 min-h-[44px] min-w-[44px] hover:bg-black/5"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Fixed bottom actions on mobile */}
-            <div className="mt-auto pt-6 pb-safe">
+            {/* Product Details */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold">{product.title}</h2>
+                <p className="text-2xl font-bold text-gray-900 mt-2">{price}</p>
+              </div>
+
+              {product.description && (
+                <div>
+                  <h3 className="font-semibold mb-2">Description</h3>
+                  <p className="text-gray-600 text-sm line-clamp-4">{product.description}</p>
+                </div>
+              )}
+
+              {/* Variant Selection */}
+              {product.options?.length > 0 && (
+                <div className="border-t-2 border-gray-200 pt-4">
+                  <VariantSelector
+                    options={product.options}
+                    variants={product.variants?.edges?.map(e => e.node) || []}
+                    onVariantChange={setSelectedVariant}
+                  />
+                </div>
+              )}
+
+              {/* Add to Cart */}
               <div className="space-y-3">
                 <Button
                   onClick={handleAddToCart}
-                  className="w-full bg-black text-white hover:bg-black/80 font-mono py-4 text-base min-h-[56px]"
-                  disabled={!selectedSize || !selectedColor}
+                  disabled={isAdding || !selectedVariant || !selectedVariant.availableForSale || !cartReady || status === 'updating'}
+                  className="w-full min-h-[48px] text-base font-medium bg-black hover:bg-gray-900 border border-black hover:border-gray-900"
+                  size="lg"
                 >
-                  ADD TO CART - ${(product.price * quantity).toFixed(2)}
+                  {isAdding || status === 'updating' ? (
+                    <>
+                      <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      Adding to cart...
+                    </>
+                  ) : !selectedVariant ? (
+                    'Select options'
+                  ) : !selectedVariant.availableForSale ? (
+                    'Out of stock'
+                  ) : (
+                    <>
+                      <ShoppingCart className="w-5 h-5 mr-2" />
+                      Add to cart
+                    </>
+                  )}
                 </Button>
-                <Button
-                  onClick={handleAddToWishlist}
-                  variant="outline"
-                  className="w-full border-2 border-black hover:bg-black hover:text-white font-mono py-4 text-base min-h-[56px]"
+                
+                <Button 
+                  variant="outline" 
+                  className="w-full min-h-[48px] text-base border border-gray-200 hover:border-black" 
+                  asChild
                 >
-                  <Heart className="h-4 w-4 mr-2" />
-                  ADD TO WISHLIST
+                  <Link href={`/products/${product.handle}`}>
+                    <ExternalLink className="w-5 h-5 mr-2" />
+                    View full details
+                  </Link>
                 </Button>
               </div>
             </div>

@@ -4,46 +4,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Indecisive Wear** - E-commerce fashion store with social features and customer engagement tools. This is a hybrid architecture project combining Next.js frontend with Medusa v2 backend and Supabase for social features.
+**Indecisive Wear** - E-commerce fashion store with social features and customer engagement tools. This is a headless commerce project using Shopify's Storefront API with Next.js frontend and Supabase for social features.
 
 ## Architecture
 
-- **Frontend**: Next.js 15.2.4 with React 19
-- **Backend**: Medusa v2 e-commerce framework
-- **Database**: PostgreSQL (via Medusa) + Supabase for social features
+- **Frontend**: Next.js 15.3.4 with React 19
+- **Backend**: Shopify Headless Commerce (Storefront API)
+- **Database**: Shopify (products/orders) + Supabase (social features)
 - **Styling**: Tailwind CSS + Radix UI components (shadcn/ui)
-- **Package Manager**: pnpm (frontend), yarn (backend)
+- **Package Manager**: pnpm
 
 ## Development Commands
 
-### Frontend (Root Directory)
+### Development
 ```bash
 pnpm dev          # Start development server
 pnpm build        # Build for production
 pnpm start        # Start production server
 pnpm lint         # Run ESLint
+pnpm type-check   # Run TypeScript type checking
 ```
 
-### Backend (./backend/)
+### Testing
 ```bash
-cd backend
-yarn dev          # Start Medusa development server
-yarn build        # Build Medusa application
-yarn start        # Start production server
-yarn seed         # Run database seeding script
-```
-
-### Testing (Backend)
-```bash
-cd backend
-yarn test:unit                    # Run unit tests
-yarn test:integration:http        # Run HTTP integration tests  
-yarn test:integration:modules     # Run module integration tests
-```
-
-### Docker Development
-```bash
-docker-compose up    # Start full stack (Medusa + PostgreSQL + Redis)
+pnpm test              # Run unit tests
+pnpm test:coverage     # Run tests with coverage
+pnpm test:e2e          # Run Playwright E2E tests
+pnpm test:e2e:ui       # Run E2E tests with UI
 ```
 
 ## Key Directory Structure
@@ -56,12 +43,10 @@ docker-compose up    # Start full stack (Medusa + PostgreSQL + Redis)
 - `/lib/` - Utility functions and services
 - `/styles/` - Global CSS styles
 
-### Backend  
-- `/backend/src/api/` - API route handlers
-- `/backend/src/modules/` - Custom Medusa modules
-- `/backend/src/workflows/` - Business logic workflows
-- `/backend/src/admin/` - Admin dashboard customizations
-- `/backend/src/scripts/` - Database seeding and utility scripts
+### API & Services
+- `/lib/shopify/` - Shopify Storefront API integration
+- `/app/api/` - Next.js API routes
+- `/lib/` - Utility functions and services
 
 ## Code Patterns
 
@@ -79,15 +64,15 @@ Components follow shadcn/ui patterns with Radix UI primitives. Always use existi
 - Utilize shadcn/ui design tokens for consistency
 
 ### API Integration
-Frontend communicates with Medusa backend APIs and Supabase for social features. The hybrid architecture separates e-commerce (Medusa) from social/user features (Supabase).
+Frontend communicates with Shopify Storefront API for commerce operations and Supabase for social features. The headless architecture leverages Shopify's infrastructure while maintaining flexibility for custom features.
 
 ## Important Configuration Files
 
 - `package.json` - Frontend dependencies and scripts
-- `backend/package.json` - Backend dependencies and Medusa configuration  
-- `backend/medusa-config.ts` - Medusa framework configuration
-- `docker-compose.yml` - Development environment setup
 - `components.json` - shadcn/ui configuration
+- `next.config.mjs` - Next.js configuration
+- `tailwind.config.ts` - Tailwind CSS configuration
+- `eslint.config.js` - ESLint 9 flat config
 
 ## Development Notes
 
@@ -99,14 +84,24 @@ Frontend communicates with Medusa backend APIs and Supabase for social features.
 
 ## Environment Variables
 
-Backend requires:
-- `DATABASE_URL` - PostgreSQL connection
-- `STRIPE_API_KEY` & `STRIPE_WEBHOOK_SECRET` - Payment processing
-- `SUPABASE_URL`, `SUPABASE_KEY`, `SUPABASE_BUCKET` - Social features
+Required:
+- `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` - Shopify store domain
+- `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN` - Storefront API token
+- `NEXT_PUBLIC_SHOPIFY_API_VERSION` - API version (2025-04)
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe public key
+
+Optional:
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Social features
+- `REVALIDATE_SECRET` - For on-demand revalidation
 
 ## Testing Strategy
 
-Backend has comprehensive test setup with Jest. Run integration tests when modifying API routes or core business logic. Frontend components should be tested for accessibility and responsive behavior.
+Frontend testing with Jest and Playwright:
+- Unit tests for hooks and utilities
+- Component tests with React Testing Library
+- E2E tests for critical user flows
+- Accessibility tests with jest-axe
+- Performance monitoring with Lighthouse
 
 ## Critical Development Rules
 
@@ -129,11 +124,11 @@ Backend has comprehensive test setup with Jest. Run integration tests when modif
 - Accessibility-first approach with proper ARIA labels
 - Mobile-first responsive design with touch-optimized interactions
 
-### Backend Development
-- Follow Medusa v2 patterns and conventions
-- Proper error handling and logging
-- Database queries optimized with proper indexes
-- API responses follow consistent structure
+### Shopify Integration
+- Use Hydrogen React components where applicable
+- Cache Shopify API responses appropriately
+- Handle rate limiting gracefully
+- Optimize GraphQL queries for performance
 
 ### DevOps & Deployment
 - Environment variables properly configured
@@ -167,7 +162,7 @@ When facing complex tasks, delegate to appropriate subagents:
 ## Important Documentation
 
 Refer to these documents for detailed guidance:
-- @docs/MASTER_IMPLEMENTATION_PLAN.md - Comprehensive implementation roadmap
+- @docs/plans/PROJECT_FINALIZATION_PLAN.md - Production deployment roadmap
 - @docs/NEXTJS_REACT_BEST_PRACTICES.md - Frontend architecture patterns
 - @docs/SHADCN_COMPONENT_ARCHITECTURE.md - Component system guidelines
 - @agents/*/CLAUDE.md - Individual agent capabilities

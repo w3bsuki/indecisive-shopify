@@ -9,7 +9,12 @@ import {
 // Simple admin authentication (replace with your actual auth system)
 function isAdminAuthenticated(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization')
-  const adminToken = process.env.ADMIN_TOKEN || 'admin-secret-token'
+  const adminToken = process.env.ADMIN_TOKEN
+  
+  if (!adminToken) {
+    // Admin token not configured - disable admin endpoints
+    return false
+  }
   
   return authHeader === `Bearer ${adminToken}`
 }

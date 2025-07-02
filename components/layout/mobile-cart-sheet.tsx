@@ -8,36 +8,59 @@ import { Badge } from "@/components/ui/badge"
 import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
-import { formatPrice } from "@/lib/shopify"
+import { useMarket } from "@/hooks/use-market"
 
-export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
-  const { cart, isLoading, updateItem, removeItem, totalItems } = useCart()
+export function MobileCartSheet({ children, isBottomNav = false }: { children?: React.ReactNode; isBottomNav?: boolean }) {
+  // OFFICIAL HYDROGEN REACT CART PATTERN
+  const { lines, cost, checkoutUrl, totalQuantity, status, updateItem, removeItem } = useCart()
+  const { formatPrice } = useMarket()
 
-  const subtotal = cart?.cost.subtotalAmount
-  const total = cart?.cost.totalAmount
+  const subtotal = cost?.subtotalAmount
+  const total = cost?.totalAmount
+  const totalItems = totalQuantity || 0
+  const isLoading = status === 'updating' || status === 'creating' || status === 'fetching'
 
   const handleCheckout = () => {
-    if (cart?.checkoutUrl) {
-      window.location.href = cart.checkoutUrl
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl
     }
   }
+
+  const defaultTrigger = isBottomNav ? (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] relative text-gray-600"
+    >
+      <ShoppingBag className="h-5 w-5" />
+      <span className="text-xs font-mono">CART</span>
+      {totalItems > 0 && (
+        <Badge
+          variant="secondary"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+        >
+          {totalItems}
+        </Badge>
+      )}
+    </Button>
+  ) : (
+    <Button variant="ghost" size="icon" className="relative">
+      <ShoppingBag className="h-5 w-5" />
+      {totalItems > 0 && (
+        <Badge
+          variant="secondary"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+        >
+          {totalItems}
+        </Badge>
+      )}
+    </Button>
+  )
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        {children || (
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingBag className="h-5 w-5" />
-            {totalItems > 0 && (
-              <Badge
-                variant="secondary"
-                className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
-              >
-                {totalItems}
-              </Badge>
-            )}
-          </Button>
-        )}
+        {children || defaultTrigger}
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="px-6 py-4 border-b">
@@ -49,7 +72,7 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
 
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {!cart || cart.lines.edges.length === 0 ? (
+          {!lines || lines.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
               <p className="text-lg font-medium mb-2">Your cart is empty</p>
@@ -60,13 +83,14 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
             </div>
           ) : (
             <div className="space-y-4">
-              {cart.lines.edges.map(({ node: item }) => (
+              {lines.map((item) => 
+                item ? (
                 <div key={item.id} className="flex gap-4 border-b pb-4">
                   <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
-                    {item.merchandise.product.featuredImage ? (
+                    {item.merchandise?.product?.featuredImage ? (
                       <Image
-                        src={item.merchandise.product.featuredImage.url}
-                        alt={item.merchandise.product.featuredImage.altText || item.merchandise.product.title}
+                        src={item.merchandise.product.featuredImage.url || ''}
+                        alt={item.merchandise.product.featuredImage.altText || item.merchandise.product.title || 'Product'}
                         fill
                         className="object-cover"
                       />
@@ -81,9 +105,9 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="font-medium text-sm line-clamp-1">
-                          {item.merchandise.product.title}
+                          {item.merchandise?.product?.title || 'Product'}
                         </h4>
-                        {item.merchandise.title !== 'Default Title' && (
+                        {item.merchandise?.title && item.merchandise.title !== 'Default Title' && (
                           <p className="text-xs text-gray-600">{item.merchandise.title}</p>
                         )}
                       </div>
@@ -91,7 +115,7 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
                         variant="ghost"
                         size="icon"
                         className="h-6 w-6 -mr-2"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => item.id && removeItem(item.id)}
                         disabled={isLoading}
                       >
                         <X className="h-4 w-4" />
@@ -104,35 +128,36 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => updateItem(item.id, item.quantity - 1)}
-                          disabled={isLoading || item.quantity === 1}
+                          onClick={() => item.id && updateItem(item.id, (item.quantity || 1) - 1)}
+                          disabled={isLoading || (item.quantity || 1) === 1}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-8 text-center text-sm">{item.quantity}</span>
+                        <span className="w-8 text-center text-sm">{item.quantity || 1}</span>
                         <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => updateItem(item.id, item.quantity + 1)}
+                          onClick={() => item.id && updateItem(item.id, (item.quantity || 1) + 1)}
                           disabled={isLoading}
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
                       <span className="font-medium text-sm">
-                        {formatPrice(item.cost.totalAmount.amount, item.cost.totalAmount.currencyCode)}
+                        {formatPrice(item.cost?.totalAmount?.amount || '0', item.cost?.totalAmount?.currencyCode || 'USD')}
                       </span>
                     </div>
                   </div>
                 </div>
-              ))}
+              ) : null
+              )}
             </div>
           )}
         </div>
 
         {/* Cart Footer */}
-        {cart && cart.lines.edges.length > 0 && (
+        {lines && lines.length > 0 && (
           <div className="border-t px-6 py-4 space-y-4">
             {/* Promo Code */}
             <div className="flex gap-2">
@@ -150,17 +175,17 @@ export function MobileCartSheet({ children }: { children?: React.ReactNode }) {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>{subtotal && formatPrice(subtotal.amount, subtotal.currencyCode)}</span>
+                <span>{subtotal?.amount && subtotal?.currencyCode ? formatPrice(subtotal.amount, subtotal.currencyCode) : '$0.00'}</span>
               </div>
-              {cart.cost.totalTaxAmount && parseFloat(cart.cost.totalTaxAmount.amount) > 0 && (
+              {cost?.totalTaxAmount?.amount && cost?.totalTaxAmount?.currencyCode && parseFloat(cost.totalTaxAmount.amount) > 0 && (
                 <div className="flex justify-between">
                   <span>Tax</span>
-                  <span>{formatPrice(cart.cost.totalTaxAmount.amount, cart.cost.totalTaxAmount.currencyCode)}</span>
+                  <span>{formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode)}</span>
                 </div>
               )}
               <div className="flex justify-between font-medium text-base pt-2 border-t">
                 <span>Total</span>
-                <span>{total && formatPrice(total.amount, total.currencyCode)}</span>
+                <span>{total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}</span>
               </div>
             </div>
 

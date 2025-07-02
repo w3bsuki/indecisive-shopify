@@ -11,8 +11,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error)
+    // TODO: Log the error to an error reporting service (e.g., Sentry)
   }, [error])
 
   return (
@@ -21,7 +20,7 @@ export default function Error({
         <div className="space-y-2">
           <h1 className="text-4xl font-bold font-mono">SOMETHING WENT WRONG</h1>
           <p className="text-black/60 font-mono">
-            We couldn't load this page. Don't worry, it's not you - it's us.
+            We couldn&apos;t load this page. Don&apos;t worry, it&apos;s not you - it&apos;s us.
           </p>
         </div>
         

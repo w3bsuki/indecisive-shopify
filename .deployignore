@@ -1,0 +1,15 @@
+# Development and documentation files to exclude from deployment
+agents/
+docs/
+tests/
+scripts/
+*.md
+!README.md
+PERFORMANCE_*
+PRODUCT_*
+eslint.config.js
+jest.config.js
+lighthouserc.js
+playwright.config.ts
+vercel.json
+tsconfig.tsbuildinfo

@@ -11,7 +11,7 @@ export function Footer() {
             <div className="flex items-center space-x-2 mb-4 md:mb-8">
               <div className="flex items-center space-x-1">
                 <div className="w-4 h-4 bg-black"></div>
-                <div className="w-4 h-4 bg-white border-2 border-black"></div>
+                <div className="w-4 h-4 bg-white border border-gray-950"></div>
               </div>
               <span className="font-mono font-bold text-sm">INDECISIVE WEAR</span>
             </div>
@@ -42,8 +42,10 @@ export function Footer() {
 
         <div className="border-t border-black/10 mt-8 md:mt-16 pt-6 text-center text-xs sm:text-base text-black/60">
           <p>
-            &copy; {currentYear} Indecisive Wear. All rights reserved. | Privacy Policy | Terms of
-            Service
+            &copy; {currentYear} Indecisive Wear. All rights reserved. | 
+            <Link href="/privacy-policy" className="hover:text-black mx-1">Privacy Policy</Link> | 
+            <Link href="/cookie-policy" className="hover:text-black mx-1">Cookie Policy</Link> | 
+            <Link href="/terms" className="hover:text-black ml-1">Terms of Service</Link>
           </p>
         </div>
       </div>

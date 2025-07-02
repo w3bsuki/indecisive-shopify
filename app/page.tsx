@@ -1,90 +1,95 @@
-import { Suspense } from 'react'
-import { getProducts, getCollections } from '@/lib/shopify'
-import { HeroSection } from '@/components/layout/hero-section'
-import { CategorySection } from '@/components/commerce/category-section'
-import { ProductGrid } from '@/components/commerce/product-grid'
+import Link from 'next/link'
+import { getProducts } from '@/lib/shopify'
+// import { HeroSection } from '@/components/layout/hero-section'
+import { HeroWrapper } from '@/components/layout/hero-wrapper'
+import { ProductCarousel } from '@/components/commerce/product-carousel'
+import { ProductCardMinimal } from '@/components/commerce/product-card-minimal'
 import { NewsletterSection } from '@/components/layout/newsletter-section'
 import { Footer } from '@/components/layout/footer'
 import { MobileNavigation } from '@/components/layout/mobile-navigation'
 import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav'
-import { ProductSkeleton } from '@/components/commerce/product-skeleton'
+import { DesktopNavigation } from '@/components/layout/desktop-navigation'
+import { CommunitySection } from '@/components/commerce/community-section'
+import { ComingSoonCarousel } from '@/components/commerce/coming-soon-carousel'
+import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
 
 export default async function HomePage() {
-  // Fetch data from Shopify
-  const [collections, productsData] = await Promise.all([
-    getCollections(10),
-    getProducts(12)
-  ])
+  // Fetch data from Shopify with error handling
+  try {
+    const productsData = await getProducts(8) // Reduced to 8 featured products
 
-  const products = productsData.edges.map(edge => edge.node)
+    const products = productsData.edges.map(edge => edge.node)
 
-  return (
+    return (
     <div className="min-h-screen bg-white font-mono">
+      {/* Desktop Navigation */}
+      <DesktopNavigation />
+      
       {/* Enhanced Mobile Navigation */}
       <MobileNavigation />
 
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav />
 
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Hero Section - no margin needed, hero handles its own positioning */}
+      {/* <HeroSection /> */}
+      <HeroWrapper />
 
-      {/* Categories */}
-      <section className="py-6 md:py-12">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">SHOP BY CATEGORY</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {collections.edges.slice(0, 4).map(({ node: collection }) => (
-              <a
-                key={collection.id}
-                href={`/collections/${collection.handle}`}
-                className="group relative aspect-square overflow-hidden bg-gray-100 rounded-lg"
-              >
-                {collection.image && (
-                  <img
-                    src={collection.image.url}
-                    alt={collection.image.altText || collection.title}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                  />
-                )}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-white text-lg md:text-xl font-bold text-center px-4">
-                    {collection.title}
-                  </h3>
-                </div>
-              </a>
-            ))}
+      {/* FEATURED DROP Section - Enhanced for 2025 */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header with Modern Typography */}
+          <div className="text-center mb-12">
+            <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">Featured Collection</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 font-mono tracking-tight text-center">
+              ХУЛИГАНКА
+            </h2>
+            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+              Limited edition bucket hats for those who can&apos;t decide
+            </p>
           </div>
-        </div>
-      </section>
-
-      {/* Products */}
-      <section className="py-6 md:py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">FEATURED PRODUCTS</h2>
-          <p className="text-gray-600 text-center mb-8">Curated for the indecisive</p>
           
-          <Suspense fallback={<ProductSkeleton count={12} />}>
-            <ProductGrid products={products} />
-          </Suspense>
-        </div>
-      </section>
-
-      {/* Community Section - Placeholder for future social features */}
-      <section className="py-6 md:py-12">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">COMMUNITY STYLE</h2>
-          <p className="text-gray-600 mb-8">Coming soon - showcase your style with #IndecisiveWear</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400 text-sm">Coming Soon</span>
-              </div>
-            ))}
+          {/* Mobile: Horizontal Carousel */}
+          <div className="md:hidden">
+            <ProductCarousel products={products} />
+          </div>
+          
+          {/* Desktop: Grid Layout */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {products.map((product, index) => (
+                <ProductCardMinimal 
+                  key={product.id} 
+                  product={product} 
+                  priority={index < 4}
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* Enhanced CTA Section */}
+          <div className="mt-8 md:mt-12 text-center">
+            <Link 
+              href="/products" 
+              className="inline-flex items-center gap-2 font-mono font-medium text-sm hover:underline"
+            >
+              VIEW ALL PRODUCTS
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <p className="mt-4 text-sm text-gray-500">
+              View all {productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length} products
+            </p>
           </div>
         </div>
       </section>
+
+      {/* Community Section with Instagram/TikTok Tabs */}
+      <CommunitySection />
+
+      {/* Coming Soon Carousel */}
+      <ComingSoonCarousel />
 
       {/* Newsletter Section */}
       <NewsletterSection />
@@ -93,4 +98,24 @@ export default async function HomePage() {
       <Footer />
     </div>
   )
+  } catch (_error) {
+    // Fallback UI when data fetching fails
+    return (
+      <div className="min-h-screen bg-white font-mono">
+        <DesktopNavigation />
+        <MobileNavigation />
+        <MobileBottomNav />
+        
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+            <p className="text-gray-600 mb-6">We&apos;re having trouble loading the products. Please try refreshing the page.</p>
+            <ErrorRefreshButton />
+          </div>
+        </div>
+        
+        <Footer />
+      </div>
+    )
+  }
 }

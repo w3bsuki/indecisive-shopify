@@ -61,12 +61,26 @@ export const PRODUCT_QUERY = `
           amount
           currencyCode
         }
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
       }
       compareAtPriceRange {
         minVariantPrice {
           amount
           currencyCode
         }
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      featuredImage {
+        url
+        altText
+        width
+        height
       }
       options {
         id
@@ -114,6 +128,7 @@ export const PRODUCT_QUERY = `
         title
         description
       }
+      tags
     }
   }
 `;
