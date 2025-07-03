@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 import { ProductImageGallery } from '@/components/commerce/product-image-gallery'
 import { AddToCartForm } from '@/components/commerce/add-to-cart-form'
 import { ProductInfo } from '@/components/commerce/product-info'
-import { ProductCardMinimal } from '@/components/commerce/product-card-minimal'
+import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
 import { RecentlyViewedSection } from '@/components/commerce/recently-viewed-section'
 import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
@@ -73,7 +73,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Client-side tracking and mobile footer */}
       <ProductPageClient product={product} />
       
-      <div className="pt-4 md:pt-8">
+      <div className="pt-20 md:pt-8">
         {/* Breadcrumb Navigation with Return Arrow */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <nav className="flex items-center gap-2 text-sm text-gray-600 mb-4">
@@ -258,7 +258,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
                   {relatedProducts.map((product) => (
                     <div key={product.id} className="flex-none snap-start" style={{ width: 'calc(50% - 4px)' }}>
-                      <ProductCardMinimal product={product} size="mobile" />
+                      <ProductCardMinimalServer product={product} />
                     </div>
                   ))}
                 </div>
@@ -267,7 +267,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* Desktop: Grid */}
               <div className="hidden md:grid grid-cols-4 gap-4">
                 {relatedProducts.slice(0, 4).map((product) => (
-                  <ProductCardMinimal key={product.id} product={product} />
+                  <ProductCardMinimalServer key={product.id} product={product} />
                 ))}
               </div>
             </div>

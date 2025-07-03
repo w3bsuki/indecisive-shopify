@@ -78,7 +78,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   return (
     <>
     <section className="relative bg-black w-full hero-section-fixed">
-      <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+      <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
 
         {slides.map((slide, index) => (
           <div
@@ -102,8 +102,8 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
             
             {/* Content overlay with gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
-              {/* CTA button positioned at very bottom */}
-              <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
+              {/* CTA button - better spacing from bottom */}
+              <div className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
                 {/* CTA Button */}
                 <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
@@ -120,8 +120,8 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           </div>
         ))}
         
-        {/* Progress indicator - lower position */}
-        <div className="absolute bottom-16 sm:bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-20">
+        {/* Progress indicator - better spacing above CTA */}
+        <div className="absolute bottom-24 sm:bottom-28 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-30">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -138,9 +138,9 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
       </div>
     </section>
     
-    {/* Marquee - moved outside hero section */}
+    {/* Marquee - with better spacing after hero */}
     <Marquee 
-      className="bg-black text-white py-3 sm:py-4"
+      className="bg-black text-white py-4 sm:py-5"
       speed="normal"
       pauseOnHover
     >

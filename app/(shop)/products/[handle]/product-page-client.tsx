@@ -55,6 +55,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
   }
 
   const handleAddToCart = () => {
+    console.log('ProductPageClient handleAddToCart called')
     // Trigger add to cart from the form
     const addToCartEvent = new CustomEvent('trigger-add-to-cart')
     window.dispatchEvent(addToCartEvent)

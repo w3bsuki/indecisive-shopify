@@ -39,6 +39,13 @@ export function StickyMobileFooter({
   const needsSizeSelection = hasSizeOptions && !selectedVariant
   
   const isOutOfStock = selectedVariant && !selectedVariant.availableForSale
+  
+  console.log('Mobile footer state:', {
+    hasSizeOptions,
+    selectedVariant: selectedVariant?.id,
+    needsSizeSelection,
+    isOutOfStock
+  })
 
   return (
     <div
@@ -62,7 +69,10 @@ export function StickyMobileFooter({
             </Button>
           ) : (
             <Button
-              onClick={onAddToCart}
+              onClick={() => {
+                console.log('Mobile footer add to cart clicked')
+                onAddToCart?.()
+              }}
               disabled={isOutOfStock}
               size="lg"
               className="w-full h-12 touch-manipulation"

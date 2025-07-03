@@ -455,14 +455,14 @@
 
 /* New fixed hero section with modern e-commerce height */
 .hero-section-fixed {
-  /* Modern e-commerce hero height - shows product peek below */
-  height: 70vh;
+  /* Better hero height for proper spacing */
+  height: 85vh;
   /* Use small viewport height on mobile */
-  height: 70svh;
+  height: 85svh;
   /* Constrain max height for ultra-wide screens */
-  max-height: 700px;
+  max-height: 800px;
   /* Minimum height for content */
-  min-height: 500px;
+  min-height: 600px;
   /* Prevent any layout shifts */
   position: relative;
   overflow: hidden;
@@ -491,13 +491,13 @@
   }
   
   .hero-section-fixed {
-    /* Mobile gets even shorter hero for immediate product visibility */
-    height: 60svh;
+    /* Better mobile hero height for proper spacing */
+    height: 75svh;
     /* Fallback for browsers without svh support */
-    height: calc(var(--vh, 1vh) * 60);
+    height: calc(var(--vh, 1vh) * 75);
     /* Constrain height on mobile */
-    max-height: 600px;
-    min-height: 400px;
+    max-height: 700px;
+    min-height: 500px;
     /* Ensure content is visible */
     display: flex;
     flex-direction: column;

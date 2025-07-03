@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { cn } from '@/lib/utils'
 import { QuickViewDialog } from './quick-view-dialog'
@@ -17,7 +16,6 @@ export function ProductCardMinimalActions({
   size = 'default' 
 }: ProductCardMinimalActionsProps) {
   const { toggleItem, isInWishlist } = useWishlist()
-  const [showOverlay, setShowOverlay] = useState(false)
   const isWishlisted = isInWishlist(product.id)
 
   const handleWishlist = (event: React.MouseEvent) => {
@@ -55,15 +53,11 @@ export function ProductCardMinimalActions({
         </button>
       )}
 
-      {/* Desktop Hover Overlay */}
-      <div 
-        className="absolute inset-0 z-10"
-        onMouseEnter={() => size !== 'mobile' && setShowOverlay(true)}
-        onMouseLeave={() => size !== 'mobile' && setShowOverlay(false)}
-      >
+      {/* Desktop Hover Overlay - Using parent group hover */}
+      {size !== 'mobile' && (
         <div className={cn(
-          "absolute inset-0 bg-black/0 transition-all duration-300 hidden md:flex items-center justify-center gap-3 pointer-events-none",
-          showOverlay && "bg-black/20"
+          "absolute inset-0 bg-black/0 transition-all duration-300 hidden md:flex items-center justify-center gap-3 pointer-events-none z-10",
+          "group-hover:bg-black/20"
         )}>
           {/* Quick View */}
           <QuickViewDialog product={product}>
@@ -75,7 +69,7 @@ export function ProductCardMinimalActions({
               className={cn(
                 "w-10 h-10 rounded-full bg-white flex items-center justify-center transition-all duration-300 pointer-events-auto",
                 "opacity-0 translate-y-2",
-                showOverlay && "opacity-100 translate-y-0"
+                "group-hover:opacity-100 group-hover:translate-y-0"
               )}
               aria-label="Quick view"
             >
@@ -89,7 +83,7 @@ export function ProductCardMinimalActions({
             className={cn(
               "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 pointer-events-auto",
               "opacity-0 translate-y-2",
-              showOverlay && "opacity-100 translate-y-0 delay-75",
+              "group-hover:opacity-100 group-hover:translate-y-0 group-hover:delay-75",
               isWishlisted ? "bg-red-500 text-white" : "bg-white text-black"
             )}
             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
@@ -102,7 +96,7 @@ export function ProductCardMinimalActions({
             />
           </button>
         </div>
-      </div>
+      )}
     </>
   )
 }

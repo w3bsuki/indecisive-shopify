@@ -34,8 +34,11 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
   // Initialize with first available variant or selections
   useEffect(() => {
+    console.log('Initializing variants:', variants.length, variants)
+    
     if (variants.length === 1) {
       const variant = variants[0]
+      console.log('Single variant found:', variant)
       setSelectedVariant(variant)
       // Set initial selections based on variant
       variant.selectedOptions?.forEach(opt => {
@@ -43,15 +46,33 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         if (opt.name.toLowerCase() === 'color') setSelectedColor(opt.value)
       })
     } else if (variants.length > 0) {
-      // Auto-select first available color
+      // For products with only size options (no color), select the first available size
       const firstAvailable = variants.find(v => v.availableForSale) || variants[0]
-      const colorOpt = firstAvailable.selectedOptions?.find(opt => opt.name.toLowerCase() === 'color')
-      if (colorOpt) setSelectedColor(colorOpt.value)
+      console.log('First available variant:', firstAvailable)
+      
+      // If no color option exists, just select the first available variant
+      if (!colorOption && firstAvailable) {
+        const sizeOpt = firstAvailable.selectedOptions?.find(opt => opt.name.toLowerCase() === 'size')
+        if (sizeOpt) {
+          setSelectedSize(sizeOpt.value)
+          setSelectedVariant(firstAvailable)
+        }
+      } else if (colorOption) {
+        // Auto-select first available color
+        const colorOpt = firstAvailable.selectedOptions?.find(opt => opt.name.toLowerCase() === 'color')
+        if (colorOpt) setSelectedColor(colorOpt.value)
+      }
     }
-  }, [variants])
+  }, [variants, colorOption])
 
   // Find selected variant based on color and size
   const selectedVariantFromOptions = useMemo(() => {
+    // For single variant products, return the only variant
+    if (variants.length === 1) {
+      return variants[0]
+    }
+    
+    // For multi-variant products, need at least one selection
     if (!selectedColor && !selectedSize) return undefined
     
     return variants.find(variant => {
@@ -68,13 +89,16 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
   // Update selected variant when options change
   useEffect(() => {
-    setSelectedVariant(selectedVariantFromOptions)
-    
-    // Emit variant change event for mobile footer
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('variant-changed', {
-        detail: { variant: selectedVariantFromOptions }
-      }))
+    console.log('Selected variant from options:', selectedVariantFromOptions)
+    if (selectedVariantFromOptions) {
+      setSelectedVariant(selectedVariantFromOptions)
+      
+      // Emit variant change event for mobile footer
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('variant-changed', {
+          detail: { variant: selectedVariantFromOptions }
+        }))
+      }
     }
   }, [selectedVariantFromOptions])
 
@@ -137,10 +161,26 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   }
 
   const handleAddToCart = useCallback(async () => {
-    if (!selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding) return
+    console.log('handleAddToCart called', {
+      selectedVariant,
+      cartReady,
+      isAdding,
+      availableForSale: selectedVariant?.availableForSale
+    })
+    
+    if (!selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding) {
+      console.log('Add to cart blocked:', {
+        hasVariant: !!selectedVariant,
+        availableForSale: selectedVariant?.availableForSale,
+        cartReady,
+        isAdding
+      })
+      return
+    }
 
     setIsAdding(true)
     try {
+      console.log('Adding to cart:', selectedVariant.id, quantity)
       // addItem now uses optimistic updates for instant feedback
       await addItem(selectedVariant.id, quantity)
       
@@ -150,6 +190,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         setIsAdding(false)
       }, 300)
     } catch (_error) {
+      console.error('Add to cart error:', _error)
       setIsAdding(false)
     }
   }, [selectedVariant, cartReady, isAdding, addItem, quantity])
