@@ -100,10 +100,10 @@ export function ComingSoonCarousel() {
                 className="group relative flex-shrink-0 w-48 snap-start"
               >
                 {/* Modern Product Card */}
-                <div className="bg-white border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 transform-gpu hover:scale-[1.02]">
+                <div className="bg-white border-2 border-gray-200 hover:border-gray-400">
                   {/* Preview Image Area */}
-                  <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-6 shine-hover">
+                  <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-4">
                       {/* Enhanced Coming Soon Badge - Centered */}
                       <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
                         <div className="card-glass px-2 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
@@ -112,8 +112,8 @@ export function ComingSoonCarousel() {
                       </div>
                       
                       {/* Product Type Icon */}
-                      <div className="w-16 h-16 border border-gray-400 mb-3 flex items-center justify-center mt-6">
-                        <span className="text-2xl">
+                      <div className="w-12 h-12 border border-gray-400 mb-2 flex items-center justify-center mt-4">
+                        <span className="text-xl">
                           {product.category === 'HEADWEAR' && '🧢'}
                           {product.category === 'APPAREL' && '👕'}
                           {product.category === 'ACCESSORIES' && '🧦'}
@@ -131,10 +131,7 @@ export function ComingSoonCarousel() {
                   </div>
 
                   {/* Card Info */}
-                  <div className="p-4 border-t-2 border-black space-y-3">
-                    <p className="font-mono text-xs text-gray-600 text-center min-h-[2.5rem] flex items-center justify-center">
-                      {t(`products.${product.id}.description`)}
-                    </p>
+                  <div className="p-3 border-t-2 border-black space-y-2">
                     
                     {notifiedProducts.has(product.id) ? (
                       <div className="bg-gray-100 p-3 text-center">
@@ -200,11 +197,11 @@ export function ComingSoonCarousel() {
                 key={product.id} 
                 className="group relative"
               >
-                {/* Modern Product Card with Glassmorphism */}
-                <div className="bg-white border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 transform-gpu hover:scale-[1.02]">
+                {/* Modern Product Card */}
+                <div className="bg-white border-2 border-gray-200 hover:border-gray-400">
                   {/* Preview Image Area */}
-                  <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-6 shine-hover">
+                  <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-4">
                       {/* Enhanced Coming Soon Badge - Centered */}
                       <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
                         <div className="card-glass px-3 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
@@ -213,8 +210,8 @@ export function ComingSoonCarousel() {
                       </div>
                       
                       {/* Product Type Icon */}
-                      <div className="w-16 h-16 border border-gray-400 mb-3 flex items-center justify-center mt-6">
-                        <span className="text-2xl">
+                      <div className="w-12 h-12 border border-gray-400 mb-2 flex items-center justify-center mt-4">
+                        <span className="text-xl">
                           {product.category === 'HEADWEAR' && '🧢'}
                           {product.category === 'APPAREL' && '👕'}
                           {product.category === 'ACCESSORIES' && '🧦'}
@@ -232,10 +229,7 @@ export function ComingSoonCarousel() {
                   </div>
 
                   {/* Card Info */}
-                  <div className="p-4 border-t-2 border-black space-y-3">
-                    <p className="font-mono text-xs text-gray-600 text-center min-h-[2.5rem] flex items-center justify-center">
-                      {t(`products.${product.id}.description`)}
-                    </p>
+                  <div className="p-3 border-t-2 border-black space-y-2">
                     
                     {notifiedProducts.has(product.id) ? (
                       <div className="bg-gray-100 p-3 text-center">
