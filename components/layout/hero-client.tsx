@@ -94,29 +94,23 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               sizes="100vw"
               priority={index < 2}
               style={{
-                transform: 'scale(0.85)',
+                transform: 'scale(0.95)',
                 objectPosition: 'center center'
               }}
             />
             
-            {/* Content overlay with gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent">
-              {/* Title positioned at top for visibility */}
-              <div className="absolute top-0 left-0 right-0 text-center px-4 pt-20 sm:pt-24 md:pt-32">
-                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-black tracking-tight leading-tight">
-                  {slide.name.toUpperCase()}
-                </h2>
-                
-                {/* Price only on larger screens */}
+            {/* Content overlay with gradient - more subtle for better image visibility */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent">
+              {/* CTA button and price positioned at bottom */}
+              <div className="absolute bottom-28 sm:bottom-32 left-0 right-0 flex flex-col items-center gap-4 px-4">
+                {/* Price */}
                 {hasPrice && (
-                  <p className="hidden sm:block text-xl sm:text-2xl font-mono text-black/80 mt-4">
+                  <p className="text-xl sm:text-2xl font-mono text-white/90 drop-shadow-lg">
                     {translations.from} {slide.price}
                   </p>
                 )}
-              </div>
-              
-              {/* Single CTA button positioned lower */}
-              <div className="absolute bottom-28 sm:bottom-32 left-0 right-0 flex items-center justify-center px-4">
+                
+                {/* CTA Button */}
                 <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
                   <Button 
                     variant="white-sharp" 
