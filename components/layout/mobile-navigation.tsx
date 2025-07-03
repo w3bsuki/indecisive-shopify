@@ -67,15 +67,6 @@ export function MobileNavigation() {
                         <div className="flex items-center">
                           <span className="text-xl font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
                         </div>
-                        
-                        {/* Close Button - Touch-optimized */}
-                        <button
-                          onClick={() => setIsMenuOpen(false)}
-                          className="w-11 h-11 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-colors duration-200 border-none focus:outline-none focus:ring-2 focus:ring-white/50"
-                          aria-label={tc('close')}
-                        >
-                          <X className="h-5 w-5" />
-                        </button>
                       </div>
                       
                       {/* Account + Wishlist + Cart Icons Row */}
