@@ -44,7 +44,13 @@
   --color-border-hover: var(--color-gray-400);
   --color-border-focus: var(--color-gray-950);
   
-  /* Typography - Next.js fonts provide --font-sans and --font-mono variables */
+  /* Typography - Next.js fonts provide font variables */
+  --font-family-sans: var(--font-noto), var(--font-source), var(--font-roboto), system-ui, -apple-system, sans-serif;
+  --font-family-mono: var(--font-mono), 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  
+  /* Bulgarian-specific typography settings */
+  --font-feature-settings-bulgarian: "loclBGR" 1, "kern" 1, "liga" 1;
+  --font-feature-settings-default: "kern" 1, "liga" 1;
   
   /* Radius */
   --radius-sm: 0;
@@ -117,28 +123,73 @@
   
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-family-sans);
+    font-feature-settings: var(--font-feature-settings-default);
+  }
+  
+  /* Bulgarian locale specific styling */
+  html[lang="bg"] body {
+    font-feature-settings: var(--font-feature-settings-bulgarian);
+    /* Optimize for Bulgarian Cyrillic readability */
+    font-variant-ligatures: common-ligatures;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-mono tracking-tight;
+    font-family: var(--font-family-mono);
+    @apply tracking-tight;
+  }
+  
+  /* Bulgarian headings use sans font for better readability */
+  html[lang="bg"] h1, 
+  html[lang="bg"] h2, 
+  html[lang="bg"] h3, 
+  html[lang="bg"] h4, 
+  html[lang="bg"] h5, 
+  html[lang="bg"] h6 {
+    font-family: var(--font-family-sans);
+    font-weight: 600;
+    @apply tracking-normal;
   }
 }
 
 /* Typography Classes */
 @layer utilities {
   .text-price {
-    font-family: var(--font-mono);
+    font-family: var(--font-family-mono);
     font-weight: 700;
     letter-spacing: -0.02em;
     @apply text-base md:text-lg;
   }
   
   .text-product-name {
-    @apply font-sans text-sm md:text-base font-medium leading-snug;
+    font-family: var(--font-family-sans);
+    @apply text-sm md:text-base font-medium leading-snug;
   }
   
   .text-product-brand {
-    @apply font-sans text-xs uppercase tracking-wider text-muted-foreground;
+    font-family: var(--font-family-sans);
+    @apply text-xs uppercase tracking-wider text-muted-foreground;
+  }
+  
+  /* Bulgarian-specific typography utilities */
+  html[lang="bg"] .text-price {
+    font-family: var(--font-family-sans);
+    font-weight: 700;
+    letter-spacing: normal;
+  }
+  
+  html[lang="bg"] .text-product-name {
+    font-weight: 500;
+    letter-spacing: normal;
+    line-height: 1.4;
+  }
+  
+  html[lang="bg"] .text-product-brand {
+    letter-spacing: 0.05em;
+    font-weight: 500;
   }
   
   /* Modern Button Styles */

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Inter, Courier_Prime } from 'next/font/google'
+import { Noto_Sans, Source_Sans_3, Roboto, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { MarketProvider } from '@/hooks/use-market'
 import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
@@ -15,17 +15,34 @@ import { AnalyticsProvider } from '@/components/analytics/analytics-provider'
 import { WebVitals } from './web-vitals'
 import { ResourceHints } from './resource-hints'
 
-// Inter has excellent Bulgarian Cyrillic support with proper loclBGR OpenType features
-const inter = Inter({
+// Noto Sans - Updated 2024 with proper Bulgarian Cyrillic support (loclBGR)
+const notoSans = Noto_Sans({
   subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-sans',
+  variable: '--font-noto',
 })
 
-const courierPrime = Courier_Prime({
+// Source Sans Pro - Excellent fallback for Bulgarian Cyrillic
+const sourceSans = Source_Sans_3({
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-source',
+})
+
+// Roboto - Reliable Bulgarian Cyrillic support
+const roboto = Roboto({
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+  variable: '--font-roboto',
+})
+
+// JetBrains Mono - Better Cyrillic support than Courier Prime
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
   weight: ['400', '700'],
-  subsets: ['latin'],
   display: 'swap',
   variable: '--font-mono',
 })
@@ -48,11 +65,11 @@ export default async function RootLayout({
   const customer = await getCurrentCustomer()
 
   return (
-    <html lang={locale} className={`${inter.variable} ${courierPrime.variable}`}>
+    <html lang={locale} className={`${notoSans.variable} ${sourceSans.variable} ${roboto.variable} ${jetbrainsMono.variable}`}>
       <head>
         <ResourceHints />
       </head>
-      <body className={inter.className}>
+      <body className={notoSans.className}>
         <NextIntlClientProvider messages={messages}>
           <MarketProvider>
             <HydrogenProvider>
