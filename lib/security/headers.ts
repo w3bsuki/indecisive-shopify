@@ -48,17 +48,19 @@ export function getCSPHeader(): string {
   const defaultSrc = ["'self'"]
   const scriptSrc = [
     "'self'",
-    "'unsafe-eval'", // Required for Next.js in dev
-    isDev && "'unsafe-inline'", // Only in dev for hot reload
+    "'unsafe-eval'", // Required for Next.js
+    "'unsafe-inline'", // Required for Next.js inline scripts in production
     'https://cdn.shopify.com',
     'https://www.googletagmanager.com',
     'https://www.google-analytics.com',
+    'https://fonts.googleapis.com', // For Google Fonts
     process.env.NEXT_PUBLIC_SENTRY_DSN && 'https://*.sentry.io',
   ].filter(Boolean)
   
   const styleSrc = [
     "'self'",
     "'unsafe-inline'", // Required for styled-jsx and inline styles
+    'https://fonts.googleapis.com', // Google Fonts stylesheets
   ]
   
   const imgSrc = [
@@ -71,6 +73,7 @@ export function getCSPHeader(): string {
   const fontSrc = [
     "'self'",
     'data:',
+    'https://fonts.gstatic.com', // Google Fonts
   ]
   
   const connectSrc = [
