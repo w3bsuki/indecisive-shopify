@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { getProducts } from '@/lib/shopify'
 import { getTranslations } from 'next-intl/server'
-// import { HeroSection } from '@/components/layout/hero-section'
-import { HeroWrapperServer } from '@/components/layout/hero-wrapper-server'
+import { Hero } from '@/components/layout/hero'
 import { ProductCarousel } from '@/components/commerce/product-carousel'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
 import { NewsletterSection } from '@/components/layout/newsletter-section'
@@ -36,9 +35,8 @@ export default async function HomePage() {
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav />
 
-      {/* Hero Section - no margin needed, hero handles its own positioning */}
-      {/* <HeroSection /> */}
-      <HeroWrapperServer />
+      {/* Hero Section */}
+      <Hero />
 
       {/* FEATURED DROP Section - Enhanced for 2025 */}
       <section className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">

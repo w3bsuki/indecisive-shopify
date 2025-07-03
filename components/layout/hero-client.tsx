@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Marquee, MarqueeItem } from "@/components/ui/marquee";
 import type { HeroSlide } from '@/lib/shopify/hero-products';
 
-interface HeroEnhancedClientProps {
+interface HeroClientProps {
   slides: HeroSlide[];
   translations: {
     customers: string;
@@ -31,7 +31,7 @@ interface HeroEnhancedClientProps {
   };
 }
 
-export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientProps) {
+export function HeroClient({ slides, translations }: HeroClientProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [customerCount, setCustomerCount] = React.useState(4876);
   

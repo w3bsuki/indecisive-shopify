@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import { getHeroSlides } from '@/lib/shopify/hero-products';
-import { HeroEnhancedClient } from './hero-enhanced-client';
+import { HeroClient } from './hero-client';
 
-export async function HeroEnhancedServer() {
+export async function Hero() {
   const t = await getTranslations('hero');
   const tb = await getTranslations('brand');
   
@@ -49,7 +49,7 @@ export async function HeroEnhancedServer() {
   };
   
   return (
-    <HeroEnhancedClient 
+    <HeroClient 
       slides={slides} 
       translations={translations}
     />
