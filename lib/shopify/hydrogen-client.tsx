@@ -24,9 +24,10 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
 
   // Validation according to official docs
   if (!storeDomain || !storefrontToken) {
-    // Gracefully render children without Shopify provider
-    console.warn('Shopify environment variables missing. Cart functionality will be limited.');
-    return <>{children}</>;
+    throw new Error(`Missing required Shopify environment variables:
+      - NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN: ${storeDomain ? '✓' : '✗'}
+      - NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN: ${storefrontToken ? '✓' : '✗'}
+    `);
   }
 
   // CRITICAL FIX: Hydrogen React expects full domain with .myshopify.com
