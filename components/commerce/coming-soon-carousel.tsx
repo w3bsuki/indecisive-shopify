@@ -112,6 +112,13 @@ export function ComingSoonCarousel() {
                       </div>
                       
                       <div className="flex flex-col items-center gap-1">
+                        {/* Product Icon */}
+                        <span className="text-3xl mb-1">
+                          {product.category === 'HEADWEAR' && '🧢'}
+                          {product.category === 'APPAREL' && '👕'}
+                          {product.category === 'ACCESSORIES' && '🧦'}
+                        </span>
+                        
                         <h3 className="font-mono font-bold text-sm text-center">
                           {t(`products.${product.id}.name`)}
                         </h3>
