@@ -7,6 +7,43 @@ import { analytics } from '@/lib/analytics/events';
 
 // Unified cart hook implementation using Hydrogen React
 export function useCart() {
+  // Try to use Hydrogen cart, but handle gracefully if context is missing
+  let hydrogenCart;
+  try {
+    hydrogenCart = useHydrogenCart();
+  } catch (error) {
+    // Cart context is missing, return fallback values
+    console.warn('Cart context not available. Using fallback cart functionality.');
+    return {
+      // Cart state
+      cart: { lines: [], cost: null, checkoutUrl: '', totalQuantity: 0 },
+      lines: [],
+      cost: null,
+      checkoutUrl: '',
+      totalQuantity: 0,
+      totalItems: 0,
+      cartReady: false,
+      status: 'idle' as const,
+      error: null,
+      
+      // Loading states
+      isLoading: false,
+      isEmpty: true,
+      
+      // Cart actions (no-ops with user feedback)
+      addItem: () => toast.error('Cart not available - Shopify configuration missing'),
+      updateItem: () => toast.error('Cart not available - Shopify configuration missing'),
+      removeItem: () => toast.error('Cart not available - Shopify configuration missing'),
+      clearCart: () => toast.error('Cart not available - Shopify configuration missing'),
+      
+      // Additional actions (no-ops)
+      buyerIdentityUpdate: () => {},
+      cartAttributesUpdate: () => {},
+      discountCodesUpdate: () => {},
+      noteUpdate: () => {},
+    };
+  }
+
   const {
     // Cart state from Hydrogen React
     status,           // 'uninitialized' | 'creating' | 'fetching' | 'updating' | 'idle'
@@ -27,7 +64,7 @@ export function useCart() {
     
     // Error state
     error
-  } = useHydrogenCart();
+  } = hydrogenCart;
   
   // Handle cart errors
   useEffect(() => {

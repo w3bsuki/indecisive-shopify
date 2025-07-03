@@ -54,6 +54,9 @@ export function getCSPHeader(): string {
     'https://www.googletagmanager.com',
     'https://www.google-analytics.com',
     'https://fonts.googleapis.com', // For Google Fonts
+    'https://vercel.live', // Vercel Live feedback
+    'https://*.vercel.app', // Vercel deployment scripts
+    'https://vitals.vercel-insights.com', // Vercel Analytics
     process.env.NEXT_PUBLIC_SENTRY_DSN && 'https://*.sentry.io',
   ].filter(Boolean)
   
