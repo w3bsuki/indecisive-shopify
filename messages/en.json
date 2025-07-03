@@ -39,7 +39,7 @@
     }
   },
   "community": {
-    "title": "COMMUNITY STYLE",
+    "title": "THE INDECISIVE STARS",
     "subtitle": "Tag us @indecisivewear #IndecisiveWear",
     "viewPost": "VIEW POST",
     "viewOnInstagram": "VIEW ON INSTAGRAM",
@@ -96,8 +96,7 @@
     },
     "featured": {
       "title": "FEATURED COLLECTION",
-      "subtitle": "ХУЛИГАНКА",
-      "description": "Limited edition bucket hats for those who can't decide"
+      "subtitle": "ХУЛИГАНКА"
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -112,6 +111,7 @@
     "addToCart": "ADD TO CART",
     "quickView": "QUICK VIEW",
     "viewAll": "VIEW ALL PRODUCTS",
+    "viewAllCount": "View all {count} products",
     "priceFrom": "FROM",
     "soldOut": "SOLD OUT",
     "available": "AVAILABLE",

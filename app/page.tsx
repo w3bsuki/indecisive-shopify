@@ -17,6 +17,7 @@ import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
 export default async function HomePage() {
   // Get translations for the home page
   const t = await getTranslations('home')
+  const tp = await getTranslations('products')
   
   // Fetch data from Shopify with error handling
   try {
@@ -48,9 +49,6 @@ export default async function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4 font-mono tracking-tight text-center">
               {t('featured.subtitle')}
             </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-              {t('featured.description')}
-            </p>
           </div>
           
           {/* Mobile: Horizontal Carousel */}
@@ -77,13 +75,13 @@ export default async function HomePage() {
               href="/products" 
               className="inline-flex items-center gap-2 font-mono font-medium text-sm hover:underline"
             >
-              VIEW ALL PRODUCTS
+              {tp('viewAll')}
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
             <p className="mt-4 text-sm text-gray-500">
-              View all {productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length} products
+              {tp('viewAllCount', { count: productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length })}
             </p>
           </div>
         </div>

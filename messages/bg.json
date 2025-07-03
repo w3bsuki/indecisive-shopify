@@ -39,8 +39,8 @@
     }
   },
   "community": {
-    "title": "ОБЩНОСТЕН СТИЛ",
-    "subtitle": "Маркирай ни @indecisivewear #IndecisiveWear",
+    "title": "КЛУБ НА НЕРЕШИТЕЛНИТЕ",
+    "subtitle": "ТАГНИ НИ @indecisivewear #IndecisiveWear",
     "viewPost": "ВИЖ ПОСТ",
     "viewOnInstagram": "ВИЖ В INSTAGRAM",
     "shareYourStyle": "СПОДЕЛИ ТВОЯ СТИЛ",
@@ -96,8 +96,7 @@
     },
     "featured": {
       "title": "ИЗБРАНА КОЛЕКЦИЯ",
-      "subtitle": "ХУЛИГАНКА",
-      "description": "Ограничена серия шапки за тези, които не могат да решат"
+      "subtitle": "ХУЛИГАНКА"
     },
     "community": {
       "title": "ОБЩНОСТЕН СТИЛ",
@@ -111,7 +110,8 @@
     "title": "ВСИЧКИ ПРОДУКТИ",
     "addToCart": "ДОБАВИ В КОШНИЦАТА",
     "quickView": "БЪРЗ ПРЕГЛЕД",
-    "viewAll": "ВИЖ ВСИЧКИ",
+    "viewAll": "ВИЖ ВСИЧКИ ПРОДУКТИ",
+    "viewAllCount": "Виж всички {count} продукта",
     "priceFrom": "ОТ",
     "soldOut": "ИЗЧЕРПАНО",
     "available": "В НАЛИЧНОСТ",
