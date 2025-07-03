@@ -39,7 +39,7 @@ export async function HeroEnhancedServer() {
     marquee: {
       freeShipping: t('marquee.freeShipping'),
       returns: t('marquee.returns'),
-      joinCustomers: t('marquee.joinCustomers'),
+      joinCustomers: t('marquee.joinCustomers', { count: '4876' }),
       newArrivals: t('marquee.newArrivals'),
     },
     brand: {
