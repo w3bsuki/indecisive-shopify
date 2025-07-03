@@ -104,12 +104,6 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
               {/* CTA button positioned at very bottom */}
               <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
-                {/* Price */}
-                {hasPrice && (
-                  <p className="text-lg sm:text-xl font-mono text-white drop-shadow-lg">
-                    {translations.from} {slide.price}
-                  </p>
-                )}
                 
                 {/* CTA Button */}
                 <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
@@ -126,8 +120,8 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           </div>
         ))}
         
-        {/* Progress indicator - between image and button */}
-        <div className="absolute bottom-32 sm:bottom-36 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-20">
+        {/* Progress indicator - lower position */}
+        <div className="absolute bottom-16 sm:bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-20">
           {slides.map((_, index) => (
             <button
               key={index}
