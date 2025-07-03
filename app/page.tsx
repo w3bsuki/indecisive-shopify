@@ -6,7 +6,9 @@ import { ProductCarousel } from '@/components/commerce/product-carousel'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
 import { NewsletterSection } from '@/components/layout/newsletter-section'
 import { Footer } from '@/components/layout/footer'
-import { Navigation } from '@/components/layout/navigation'
+import { MobileNavigation } from '@/components/layout/mobile-navigation'
+import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav'
+import { DesktopNavigation } from '@/components/layout/desktop-navigation'
 import { CommunitySection } from '@/components/commerce/community-section'
 import { ComingSoonCarousel } from '@/components/commerce/coming-soon-carousel'
 import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
@@ -24,8 +26,14 @@ export default async function HomePage() {
 
     return (
     <div className="min-h-screen bg-white font-mono">
-      {/* Navigation - Desktop + Mobile */}
-      <Navigation />
+      {/* Desktop Navigation */}
+      <DesktopNavigation />
+      
+      {/* Enhanced Mobile Navigation */}
+      <MobileNavigation />
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
 
       {/* Hero Section */}
       <Hero />
@@ -94,7 +102,9 @@ export default async function HomePage() {
     // Fallback UI when data fetching fails
     return (
       <div className="min-h-screen bg-white font-mono">
-        <Navigation />
+        <DesktopNavigation />
+        <MobileNavigation />
+        <MobileBottomNav />
         
         <div className="flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
