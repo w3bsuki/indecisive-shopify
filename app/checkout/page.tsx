@@ -33,7 +33,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   // Normal checkout flow
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen-dynamic bg-gray-50">
       <CheckoutPreparation returnUrl={params.return_url as string} />
     </div>
   )

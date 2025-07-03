@@ -7,7 +7,7 @@ export default function ShopLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen-dynamic bg-white">
       {/* Navigation */}
       <Navigation />
 

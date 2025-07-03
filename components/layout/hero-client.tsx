@@ -58,22 +58,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   const currentProduct = slides[currentSlide];
   const hasPrice = currentProduct?.price && currentProduct.price !== '$0.00';
 
-  // Add viewport height fix for mobile browsers
-  React.useEffect(() => {
-    const setVh = () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-    
-    setVh();
-    window.addEventListener('resize', setVh);
-    window.addEventListener('orientationchange', setVh);
-    
-    return () => {
-      window.removeEventListener('resize', setVh);
-      window.removeEventListener('orientationchange', setVh);
-    };
-  }, []);
+  // Removed dynamic viewport height adjustment to keep hero static
 
   return (
     <>
@@ -103,14 +88,16 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
             {/* Content overlay with gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
               {/* CTA button - better spacing from bottom */}
-              <div className="absolute bottom-8 sm:bottom-12 left-0 right-0 flex flex-col items-center gap-2 px-4">
+              <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
                 {/* CTA Button */}
                 <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
                   <Button 
                     variant="white-sharp" 
                     size="lg" 
-                    className="shadow-lg min-w-[180px] sm:min-w-[220px] h-10 sm:h-12 text-sm sm:text-base"
+                    className="shadow-lg min-w-[200px] sm:min-w-[240px] h-12 sm:h-14 text-sm sm:text-base font-medium tracking-wider uppercase hover:scale-[1.02] transition-all bg-white/95 backdrop-blur-sm border-2 border-white/20"
+                    emphasis="strong"
+                    animation="scale"
                   >
                     {translations.viewCollection}
                   </Button>
@@ -121,7 +108,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
         ))}
         
         {/* Progress indicator - better spacing above CTA */}
-        <div className="absolute bottom-24 sm:bottom-28 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-30">
+        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-30">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -140,7 +127,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
     
     {/* Marquee - with better spacing after hero */}
     <Marquee 
-      className="bg-black text-white py-4 sm:py-5"
+      className="bg-black text-white py-3 sm:py-4"
       speed="normal"
       pauseOnHover
     >

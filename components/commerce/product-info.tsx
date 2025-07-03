@@ -21,27 +21,23 @@ export async function ProductInfo({ product, selectedVariant }: ProductInfoProps
   const inStock = selectedVariant ? selectedVariant.availableForSale : true
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
+      {/* Compact title and price section for mobile */}
       <div>
-        <h1 className="text-3xl font-bold">{product.title}</h1>
-        <div className="mt-2 flex items-center gap-4">
-          <p className="text-2xl font-semibold">{price}</p>
+        <h1 className="text-xl md:text-3xl font-bold leading-tight">{product.title}</h1>
+        <div className="mt-1 flex items-center gap-3">
+          <p className="text-xl md:text-2xl font-semibold">{price}</p>
           {!inStock && (
-            <Badge variant="destructive">{t('soldOut')}</Badge>
+            <Badge variant="destructive" className="text-xs">{t('soldOut')}</Badge>
           )}
         </div>
       </div>
 
-      {product.description && (
-        <div className="prose prose-sm max-w-none">
-          <p className="text-gray-600">{product.description}</p>
-        </div>
-      )}
-
+      {/* Tags - smaller on mobile */}
       {product.tags && product.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {product.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+        <div className="flex flex-wrap gap-1.5">
+          {product.tags.slice(0, 3).map((tag) => (
+            <Badge key={tag} variant="secondary" className="text-xs px-2 py-0.5">
               {tag}
             </Badge>
           ))}

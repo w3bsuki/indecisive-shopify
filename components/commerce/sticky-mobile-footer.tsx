@@ -39,18 +39,11 @@ export function StickyMobileFooter({
   const needsSizeSelection = hasSizeOptions && !selectedVariant
   
   const isOutOfStock = selectedVariant && !selectedVariant.availableForSale
-  
-  console.log('Mobile footer state:', {
-    hasSizeOptions,
-    selectedVariant: selectedVariant?.id,
-    needsSizeSelection,
-    isOutOfStock
-  })
 
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-gray-100 px-4 py-3 md:hidden transition-transform duration-300",
+        "fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 px-4 py-3 md:hidden transition-transform duration-300 shadow-lg",
         isVisible ? "translate-y-0" : "translate-y-full"
       )}
     >
@@ -61,29 +54,31 @@ export function StickyMobileFooter({
             <Button
               onClick={onSizeSelect}
               size="lg"
-              variant="outline"
-              className="w-full h-12 touch-manipulation"
+              className="w-full h-14 touch-manipulation bg-black text-white font-medium tracking-wide border-2 border-black"
             >
-              Select Size
+              <span className="uppercase text-sm">Select Size</span>
               <ChevronUp className="w-4 h-4 ml-2" />
             </Button>
           ) : (
             <Button
-              onClick={() => {
-                console.log('Mobile footer add to cart clicked')
-                onAddToCart?.()
-              }}
+              onClick={onAddToCart}
               disabled={isOutOfStock}
               size="lg"
-              className="w-full h-12 touch-manipulation"
+              className={cn(
+                "w-full h-14 touch-manipulation font-medium tracking-wide transition-all",
+                isOutOfStock 
+                  ? "bg-gray-100 text-gray-400 border-2 border-gray-200" 
+                  : "bg-black text-white border-2 border-black active:scale-[0.98]"
+              )}
             >
               {isOutOfStock ? (
-                'Out of Stock'
+                <span className="uppercase text-sm">Out of Stock</span>
               ) : (
-                <>
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Add to Cart - {formattedPrice}
-                </>
+                <div className="flex items-center justify-center">
+                  <ShoppingCart className="w-5 h-5 mr-2" />
+                  <span className="uppercase text-sm">Add to Cart</span>
+                  <span className="ml-2 text-sm opacity-90">• {formattedPrice}</span>
+                </div>
               )}
             </Button>
           )}

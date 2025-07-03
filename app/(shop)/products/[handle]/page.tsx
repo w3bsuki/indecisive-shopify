@@ -73,9 +73,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Client-side tracking and mobile footer */}
       <ProductPageClient product={product} />
       
-      <div className="pt-20 md:pt-8">
+      <div className="pt-10 md:pt-12">
         {/* Breadcrumb Navigation with Return Arrow */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-sm text-gray-600 mb-4">
             <Link 
               href="/products"
@@ -118,12 +118,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
 
       <div className="min-h-screen bg-white">
-
         {/* Main Content */}
         <div className="max-w-7xl mx-auto md:px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-12">
-            {/* Product Images - Full width on mobile */}
-            <div className="md:sticky md:top-20 md:self-start">
+            {/* Product Images - Scaled down on mobile */}
+            <div className="md:sticky md:top-20 md:self-start px-4 md:px-0">
               <Suspense fallback={
                 <div className="aspect-square bg-gray-100 animate-pulse" />
               }>
@@ -135,7 +134,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Product Details */}
-            <div className="px-4 md:px-0 py-6 md:py-0 pb-8 md:pb-6">
+            <div className="px-4 md:px-0 py-4 md:py-0 pb-8 md:pb-6">
               {/* Product Info */}
               <ProductInfo product={product} />
               

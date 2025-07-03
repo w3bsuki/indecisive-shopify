@@ -34,11 +34,8 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
   // Initialize with first available variant or selections
   useEffect(() => {
-    console.log('Initializing variants:', variants.length, variants)
-    
     if (variants.length === 1) {
       const variant = variants[0]
-      console.log('Single variant found:', variant)
       setSelectedVariant(variant)
       // Set initial selections based on variant
       variant.selectedOptions?.forEach(opt => {
@@ -48,7 +45,6 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
     } else if (variants.length > 0) {
       // For products with only size options (no color), select the first available size
       const firstAvailable = variants.find(v => v.availableForSale) || variants[0]
-      console.log('First available variant:', firstAvailable)
       
       // If no color option exists, just select the first available variant
       if (!colorOption && firstAvailable) {
@@ -89,16 +85,13 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
   // Update selected variant when options change
   useEffect(() => {
-    console.log('Selected variant from options:', selectedVariantFromOptions)
-    if (selectedVariantFromOptions) {
-      setSelectedVariant(selectedVariantFromOptions)
-      
-      // Emit variant change event for mobile footer
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('variant-changed', {
-          detail: { variant: selectedVariantFromOptions }
-        }))
-      }
+    setSelectedVariant(selectedVariantFromOptions)
+    
+    // Emit variant change event for mobile footer
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('variant-changed', {
+        detail: { variant: selectedVariantFromOptions }
+      }))
     }
   }, [selectedVariantFromOptions])
 
@@ -161,26 +154,12 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   }
 
   const handleAddToCart = useCallback(async () => {
-    console.log('handleAddToCart called', {
-      selectedVariant,
-      cartReady,
-      isAdding,
-      availableForSale: selectedVariant?.availableForSale
-    })
-    
     if (!selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding) {
-      console.log('Add to cart blocked:', {
-        hasVariant: !!selectedVariant,
-        availableForSale: selectedVariant?.availableForSale,
-        cartReady,
-        isAdding
-      })
       return
     }
 
     setIsAdding(true)
     try {
-      console.log('Adding to cart:', selectedVariant.id, quantity)
       // addItem now uses optimistic updates for instant feedback
       await addItem(selectedVariant.id, quantity)
       
@@ -190,7 +169,6 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         setIsAdding(false)
       }, 300)
     } catch (_error) {
-      console.error('Add to cart error:', _error)
       setIsAdding(false)
     }
   }, [selectedVariant, cartReady, isAdding, addItem, quantity])
@@ -321,33 +299,29 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         </div>
       )}
 
-      {/* Quantity Selector */}
+      {/* Quantity Selector - Compact mobile design */}
       <div className="space-y-2">
         <Label className="text-sm font-medium">{tc('quantity')}</Label>
-        <div className="flex items-center gap-2">
-          <Button
+        <div className="flex items-center bg-gray-100 rounded-lg p-1 w-fit">
+          <button
             type="button"
-            variant="outline"
-            size="icon"
             onClick={() => handleQuantityChange(-1)}
             disabled={quantity <= 1}
-            className="h-10 w-10 touch-manipulation"
+            className="h-8 w-8 flex items-center justify-center hover:bg-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
-            <Minus className="h-4 w-4" />
-          </Button>
-          <div className="w-16 text-center">
-            <span className="text-lg font-medium">{quantity}</span>
+            <Minus className="h-3 w-3" />
+          </button>
+          <div className="w-12 text-center">
+            <span className="text-base font-medium">{quantity}</span>
           </div>
-          <Button
+          <button
             type="button"
-            variant="outline"
-            size="icon"
             onClick={() => handleQuantityChange(1)}
             disabled={quantity >= 10}
-            className="h-10 w-10 touch-manipulation"
+            className="h-8 w-8 flex items-center justify-center hover:bg-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
-            <Plus className="h-4 w-4" />
-          </Button>
+            <Plus className="h-3 w-3" />
+          </button>
         </div>
       </div>
 
@@ -357,21 +331,21 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           onClick={handleAddToCart}
           disabled={isDisabled}
           size="lg"
-          className="flex-1 h-12 touch-manipulation"
+          className="flex-1 h-14 touch-manipulation bg-black hover:bg-gray-900 text-white font-medium tracking-wide transition-all hover:scale-[1.02]"
         >
           {isAdding ? (
             <>
-              <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin mr-2" />
-              {t('addingToCart')}
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+              <span className="uppercase">{t('addingToCart')}</span>
             </>
           ) : !selectedVariant ? (
-            sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')
+            <span className="uppercase">{sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')}</span>
           ) : !selectedVariant.availableForSale ? (
-            t('soldOut')
+            <span className="uppercase">{t('soldOut')}</span>
           ) : (
             <>
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              {t('addToCart')}
+              <ShoppingCart className="w-5 h-5 mr-2" />
+              <span className="uppercase">{t('addToCart')}</span>
             </>
           )}
         </Button>
@@ -380,10 +354,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           type="button"
           variant="outline"
           size="lg"
-          className="px-4 h-12 touch-manipulation"
+          className="px-4 h-14 touch-manipulation border-2 border-black hover:bg-black hover:text-white transition-all"
           title={t('addToWishlist')}
         >
-          <Heart className="h-4 w-4" />
+          <Heart className="h-5 w-5" />
         </Button>
       </div>
 

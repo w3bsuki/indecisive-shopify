@@ -23,7 +23,7 @@ export default async function HomePage() {
     const products = productsData.edges.map(edge => edge.node)
 
     return (
-    <div className="min-h-screen bg-white font-mono">
+    <div className="min-h-screen-dynamic bg-white font-mono">
       {/* Navigation */}
       <Navigation />
 
@@ -93,7 +93,7 @@ export default async function HomePage() {
   } catch (_error) {
     // Fallback UI when data fetching fails
     return (
-      <div className="min-h-screen bg-white font-mono">
+      <div className="min-h-screen-dynamic bg-white font-mono">
         <Navigation />
         
         <div className="flex items-center justify-center min-h-[50vh]">

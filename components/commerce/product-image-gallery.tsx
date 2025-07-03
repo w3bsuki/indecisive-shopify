@@ -99,7 +99,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
       {/* Main Image */}
       <div 
         ref={containerRef}
-        className="relative aspect-square bg-gray-100 md:rounded-lg overflow-hidden group touch-pan-y"
+        className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group touch-pan-y"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onDoubleClick={handleDoubleClick}
@@ -114,7 +114,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
             aspectRatio="1:1"
             priority={selectedIndex === 0}
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="md:rounded-lg select-none"
+            className="rounded-lg select-none"
           />
         </div>
         

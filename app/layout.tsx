@@ -15,7 +15,6 @@ import { AnalyticsProvider } from '@/components/analytics/analytics-provider'
 import { WebVitals } from './web-vitals'
 import { ResourceHints } from './resource-hints'
 import { FlyToCartProvider } from '@/contexts/fly-to-cart-context'
-import { ViewportHeightFix } from '@/components/layout/viewport-height-fix'
 
 // Noto Sans - Updated 2024 with proper Bulgarian Cyrillic support (loclBGR)
 const notoSans = Noto_Sans({
@@ -80,7 +79,6 @@ export default async function RootLayout({
                 <IndecisiveProvider>
                   <FlyToCartProvider>
                     <AnalyticsProvider>
-                      <ViewportHeightFix />
                       {children}
                       <WebVitals />
                       <Toaster />

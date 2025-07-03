@@ -455,10 +455,10 @@
 
 /* New fixed hero section with modern e-commerce height */
 .hero-section-fixed {
-  /* Better hero height for proper spacing */
-  height: 85vh;
-  /* Use small viewport height on mobile */
+  /* Use small viewport height for consistent sizing */
   height: 85svh;
+  /* Fallback to dynamic viewport height */
+  height: 85dvh;
   /* Constrain max height for ultra-wide screens */
   max-height: 800px;
   /* Minimum height for content */
@@ -491,12 +491,12 @@
   }
   
   .hero-section-fixed {
-    /* Better mobile hero height for proper spacing */
+    /* Use small viewport height on mobile for stability */
     height: 75svh;
-    /* Fallback for browsers without svh support */
-    height: calc(var(--vh, 1vh) * 75);
+    /* Fallback to dynamic viewport height */
+    height: 75dvh;
     /* Constrain height on mobile */
-    max-height: 700px;
+    max-height: 600px;
     min-height: 500px;
     /* Ensure content is visible */
     display: flex;
