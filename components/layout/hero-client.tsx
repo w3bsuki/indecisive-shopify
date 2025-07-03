@@ -87,48 +87,47 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            {/* Product Image Container - takes up most space */}
-            <div className="absolute inset-0 flex flex-col">
-              {/* Image section - 70% of hero */}
-              <div className="relative flex-1">
-                <Image
-                  src={slide.image}
-                  alt={slide.name}
-                  fill
-                  className="object-contain object-center"
-                  sizes="100vw"
-                  priority={index < 2}
-                />
-              </div>
-              
-              {/* Bottom section with CTA - 30% of hero */}
-              <div className="relative bg-gradient-to-t from-black/60 to-transparent px-4 py-6 sm:py-8">
-                <div className="flex flex-col items-center gap-3">
-                  {/* Price */}
-                  {hasPrice && (
-                    <p className="text-lg sm:text-xl font-mono text-white drop-shadow-lg">
-                      {translations.from} {slide.price}
-                    </p>
-                  )}
-                  
-                  {/* CTA Button */}
-                  <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
-                    <Button 
-                      variant="white-sharp" 
-                      size="lg" 
-                      className="shadow-lg min-w-[180px] sm:min-w-[220px] h-11 sm:h-12 text-sm sm:text-base"
-                    >
-                      {translations.viewCollection}
-                    </Button>
-                  </Link>
-                </div>
+            <Image
+              src={slide.image}
+              alt={slide.name}
+              fill
+              className="object-contain object-center"
+              sizes="100vw"
+              priority={index < 2}
+              style={{
+                transform: 'scale(0.85)',
+                objectPosition: 'center center'
+              }}
+            />
+            
+            {/* Content overlay with gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
+              {/* CTA button positioned at very bottom */}
+              <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
+                {/* Price */}
+                {hasPrice && (
+                  <p className="text-lg sm:text-xl font-mono text-white drop-shadow-lg">
+                    {translations.from} {slide.price}
+                  </p>
+                )}
+                
+                {/* CTA Button */}
+                <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
+                  <Button 
+                    variant="white-sharp" 
+                    size="lg" 
+                    className="shadow-lg min-w-[180px] sm:min-w-[220px] h-10 sm:h-12 text-sm sm:text-base"
+                  >
+                    {translations.viewCollection}
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
         ))}
         
-        {/* Progress indicator - inside marquee area */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-40">
+        {/* Progress indicator - above button */}
+        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-20">
           {slides.map((_, index) => (
             <button
               key={index}
