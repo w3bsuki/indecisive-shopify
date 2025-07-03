@@ -113,7 +113,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
               </div>
               
               {/* Single CTA button positioned lower */}
-              <div className="absolute bottom-32 sm:bottom-36 left-0 right-0 flex items-center justify-center px-4">
+              <div className="absolute bottom-28 sm:bottom-32 left-0 right-0 flex items-center justify-center px-4">
                 <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
                   <Button 
                     variant="white-sharp" 
@@ -128,8 +128,8 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
           </div>
         ))}
         
-        {/* Progress indicator - higher on mobile */}
-        <div className="absolute bottom-16 sm:bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-20">
+        {/* Progress indicator - closer to CTA button */}
+        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-20">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -145,7 +145,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
         
         {/* Enhanced Marquee with offers */}
         <Marquee 
-          className="absolute bottom-0 left-0 right-0 z-30 bg-black text-white border-t border-black py-4 sm:py-5"
+          className="absolute bottom-1 left-0 right-0 z-30 bg-black text-white border-t border-black py-3 sm:py-4"
           speed="normal"
           pauseOnHover
         >
