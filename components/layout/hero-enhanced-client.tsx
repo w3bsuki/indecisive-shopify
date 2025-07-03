@@ -61,7 +61,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
 
   return (
     <section className="relative bg-background w-full hero-section">
-      <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
         {/* Subtle trust indicator - top left */}
         <div className="absolute top-4 left-4 z-30 bg-white/90 backdrop-blur-sm px-2 py-1 border border-black/10 hidden md:flex items-center gap-2">
           <Users className="w-4 h-4" />
@@ -79,7 +79,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`absolute inset-0 overflow-hidden transition-opacity duration-1000 ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -100,13 +100,13 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent">
               {/* Title positioned at top for visibility */}
               <div className="absolute top-0 left-0 right-0 text-center px-4 pt-20 sm:pt-24 md:pt-32">
-                <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-white tracking-tight leading-tight drop-shadow-lg">
+                <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-black tracking-tight leading-tight">
                   {slide.name.toUpperCase()}
                 </h2>
                 
                 {/* Price only on larger screens */}
                 {hasPrice && (
-                  <p className="hidden sm:block text-xl sm:text-2xl font-mono text-white/90 drop-shadow-md mt-4">
+                  <p className="hidden sm:block text-xl sm:text-2xl font-mono text-black/80 mt-4">
                     {translations.from} {slide.price}
                   </p>
                 )}
@@ -145,7 +145,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
         
         {/* Enhanced Marquee with offers */}
         <Marquee 
-          className="absolute bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
+          className="absolute bottom-2 sm:bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
           speed="normal"
           pauseOnHover
         >
