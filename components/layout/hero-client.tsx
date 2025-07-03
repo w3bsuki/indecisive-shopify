@@ -76,8 +76,9 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   }, []);
 
   return (
+    <>
     <section className="relative bg-black w-full hero-section-fixed">
-      <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
 
         {slides.map((slide, index) => (
           <div
@@ -86,47 +87,48 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <Image
-              src={slide.image}
-              alt={slide.name}
-              fill
-              className="object-contain object-center"
-              sizes="100vw"
-              priority={index < 2}
-              style={{
-                transform: 'scale(0.75)',
-                objectPosition: 'center 40%'
-              }}
-            />
-            
-            {/* Content overlay with gradient - more subtle for better image visibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent">
-              {/* CTA button and price positioned at bottom - above marquee */}
-              <div className="absolute bottom-20 sm:bottom-24 left-0 right-0 flex flex-col items-center gap-3 px-4">
-                {/* Price */}
-                {hasPrice && (
-                  <p className="text-xl sm:text-2xl font-mono text-white/90 drop-shadow-lg">
-                    {translations.from} {slide.price}
-                  </p>
-                )}
-                
-                {/* CTA Button */}
-                <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
-                  <Button 
-                    variant="white-sharp" 
-                    size="lg" 
-                    className="shadow-lg min-w-[200px] sm:min-w-[250px] h-12 sm:h-14 text-base sm:text-lg"
-                  >
-                    {translations.viewCollection}
-                  </Button>
-                </Link>
+            {/* Product Image Container - takes up most space */}
+            <div className="absolute inset-0 flex flex-col">
+              {/* Image section - 70% of hero */}
+              <div className="relative flex-1">
+                <Image
+                  src={slide.image}
+                  alt={slide.name}
+                  fill
+                  className="object-contain object-center"
+                  sizes="100vw"
+                  priority={index < 2}
+                />
+              </div>
+              
+              {/* Bottom section with CTA - 30% of hero */}
+              <div className="relative bg-gradient-to-t from-black/60 to-transparent px-4 py-6 sm:py-8">
+                <div className="flex flex-col items-center gap-3">
+                  {/* Price */}
+                  {hasPrice && (
+                    <p className="text-lg sm:text-xl font-mono text-white drop-shadow-lg">
+                      {translations.from} {slide.price}
+                    </p>
+                  )}
+                  
+                  {/* CTA Button */}
+                  <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
+                    <Button 
+                      variant="white-sharp" 
+                      size="lg" 
+                      className="shadow-lg min-w-[180px] sm:min-w-[220px] h-11 sm:h-12 text-sm sm:text-base"
+                    >
+                      {translations.viewCollection}
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         ))}
         
-        {/* Progress indicator - moved above marquee */}
-        <div className="absolute bottom-14 sm:bottom-16 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-30">
+        {/* Progress indicator - inside marquee area */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-40">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -140,24 +142,26 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           ))}
         </div>
         
-        {/* Enhanced Marquee with offers */}
-        <Marquee 
-          className="absolute bottom-0 left-0 right-0 z-30 bg-black text-white py-3 sm:py-4"
-          speed="normal"
-          pauseOnHover
-        >
-          {[...Array(6)].map((_, i) => (
-            <span key={i} className="flex">
-              <MarqueeItem className="text-white">{translations.brand.name}</MarqueeItem>
-              <MarqueeItem className="text-white">{translations.marquee.freeShipping}</MarqueeItem>
-              <MarqueeItem className="text-white">{translations.marquee.returns}</MarqueeItem>
-              <MarqueeItem className="text-white">{translations.marquee.joinCustomers.replace('{count}', customerCount.toLocaleString())}</MarqueeItem>
-              <MarqueeItem className="text-white">{translations.brand.socialHandle}</MarqueeItem>
-              <MarqueeItem className="text-white">{translations.marquee.newArrivals}</MarqueeItem>
-            </span>
-          ))}
-        </Marquee>
       </div>
     </section>
+    
+    {/* Marquee - moved outside hero section */}
+    <Marquee 
+      className="bg-black text-white py-3 sm:py-4"
+      speed="normal"
+      pauseOnHover
+    >
+      {[...Array(6)].map((_, i) => (
+        <span key={i} className="flex">
+          <MarqueeItem className="text-white">{translations.brand.name}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.freeShipping}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.returns}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.joinCustomers.replace('{count}', customerCount.toLocaleString())}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.brand.socialHandle}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.newArrivals}</MarqueeItem>
+        </span>
+      ))}
+    </Marquee>
+    </>
   );
 }
