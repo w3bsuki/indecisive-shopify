@@ -126,8 +126,8 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           </div>
         ))}
         
-        {/* Progress indicator - above button */}
-        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-20">
+        {/* Progress indicator - between image and button */}
+        <div className="absolute bottom-32 sm:bottom-36 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-20">
           {slides.map((_, index) => (
             <button
               key={index}
