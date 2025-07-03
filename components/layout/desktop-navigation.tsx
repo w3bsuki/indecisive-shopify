@@ -91,42 +91,45 @@ export function DesktopNavigation() {
               </NavigationMenu>
             )}
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-4">
+            {/* Right Actions - Clean, modern icons */}
+            <div className="flex items-center gap-2">
               {/* Market Switcher */}
               <MarketSwitcher />
 
-              {/* Search - Desktop shows inline search, mobile shows sheet */}
+              {/* Search - Clean hover states */}
               <div className="hidden lg:block">
                 <Button 
                   variant="ghost" 
                   size="icon"
                   onClick={() => setShowSearchBar(!showSearchBar)}
+                  className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors"
                 >
-                  <Search className="h-5 w-5" />
+                  <Search className="h-5 w-5 stroke-[1.5]" />
                 </Button>
               </div>
               <div className="lg:hidden">
                 <MobileSearchSheet>
-                  <Button variant="ghost" size="icon">
-                    <Search className="h-5 w-5" />
+                  <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                    <Search className="h-5 w-5 stroke-[1.5]" />
                   </Button>
                 </MobileSearchSheet>
               </div>
 
               {/* Account */}
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
+              <Link href="/account">
+                <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                  <User className="h-5 w-5 stroke-[1.5]" />
+                </Button>
+              </Link>
 
               {/* Wishlist */}
               <Link href="/wishlist">
-                <Button variant="ghost" size="icon" className="relative">
-                  <Heart className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                  <Heart className="h-5 w-5 stroke-[1.5]" />
                   {wishlistCount > 0 && (
                     <Badge
                       variant="secondary"
-                      className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+                      className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-black text-white border-2 border-white"
                     >
                       {wishlistCount}
                     </Badge>
@@ -136,12 +139,12 @@ export function DesktopNavigation() {
 
               {/* Cart */}
               <MobileCartSheet>
-                <Button variant="ghost" size="icon" className="relative">
-                  <ShoppingBag className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="relative h-16 w-16 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                  <ShoppingBag className="h-8 w-8 stroke-[1.5]" />
                   {totalItems > 0 && (
                     <Badge
                       variant="secondary"
-                      className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+                      className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-black text-white border-2 border-white"
                     >
                       {totalItems}
                     </Badge>

@@ -168,7 +168,7 @@ export function HeroEnhanced() {
         
         {/* Enhanced Marquee with offers */}
         <Marquee 
-          className="absolute bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
+          className="absolute bottom-12 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
           speed="normal"
           pauseOnHover
         >

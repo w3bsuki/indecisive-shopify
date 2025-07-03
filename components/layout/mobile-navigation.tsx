@@ -39,27 +39,16 @@ export function MobileNavigation() {
         {/* Mobile Navigation Bar */}
         <nav className="bg-white/95 backdrop-blur-md border-b border-gray-950">
           <div className="px-3 h-16 flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <span className="text-lg font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
-            </Link>
-
-            {/* Right Actions */}
+            {/* Left Side: Menu + Logo */}
             <div className="flex items-center gap-1">
-              {/* Search */}
-              <MobileSearchSheet />
-
-              {/* Cart */}
-              <MobileCartSheet />
-
-              {/* Menu */}
+              {/* Menu on LEFT */}
               <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative">
-                    {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                  </Button>
+                  <button className="relative h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg -ml-2">
+                    {isMenuOpen ? <X className="h-6 w-6 stroke-[1.5] text-black" /> : <Menu className="h-6 w-6 stroke-[1.5] text-black" />}
+                  </button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:w-[400px] p-0 border border-gray-950 bg-white">
+                <SheetContent side="left" className="w-full sm:w-[400px] p-0 border border-gray-950 bg-white">
                   <div className="flex flex-col h-full">
                     {/* Menu Header - Logo + Icons Row */}
                     <div className="px-6 py-6 border-b border-gray-950">
@@ -157,6 +146,20 @@ export function MobileNavigation() {
                   </div>
                 </SheetContent>
               </Sheet>
+              
+              {/* Logo */}
+              <Link href="/" className="flex items-center">
+                <span className="text-lg font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
+              </Link>
+            </div>
+
+            {/* Right Actions - Search + Cart ONLY */}
+            <div className="flex items-center gap-1">
+              {/* Search */}
+              <MobileSearchSheet />
+
+              {/* Cart */}
+              <MobileCartSheet />
             </div>
           </div>
         </nav>

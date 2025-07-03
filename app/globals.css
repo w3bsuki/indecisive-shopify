@@ -63,6 +63,7 @@
   --height-button-md: 2.5rem;  /* 40px */
   --height-button-lg: 3rem;    /* 48px */
   --height-button-touch: 2.75rem; /* 44px - Minimum WCAG touch target */
+  --width-button-touch: 2.75rem; /* 44px - Minimum WCAG touch target */
   
   /* Touch Target Sizes */
   --min-width-touch-target: 2.75rem; /* 44px minimum */
@@ -334,7 +335,7 @@
 /* Mobile-specific height adjustment */
 @media (max-width: 640px) {
   .hero-section {
-    height: calc(100vh - 96px); /* Slightly less header height on mobile */
+    height: calc(100vh - 120px); /* Account for header + marquee on mobile */
     min-height: 400px;
   }
 }

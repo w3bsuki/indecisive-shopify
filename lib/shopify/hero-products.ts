@@ -9,32 +9,41 @@ export interface HeroSlide {
   price?: string;
 }
 
+// Custom product names for hero rotation
+const CUSTOM_HERO_NAMES = [
+  'ХУЛИГАНКА',
+  'DADDY ISSUES',
+  'DO NOT DISTURB',
+  'DADDY CHILL',
+  'BITE ME',
+];
+
 // Fallback fashion images that match the store's streetwear aesthetic
 const FALLBACK_HERO_IMAGES: HeroSlide[] = [
   {
     id: 'hero-1',
     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=1600&fit=crop&crop=center',
-    name: 'Streetwear Collection',
+    name: 'ХУЛИГАНКА',
   },
   {
     id: 'hero-2', 
     image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=1200&h=1600&fit=crop&crop=center',
-    name: 'Statement Pieces',
+    name: 'DADDY ISSUES',
   },
   {
     id: 'hero-3',
     image: 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=1200&h=1600&fit=crop&crop=center', 
-    name: 'Bold Graphics',
+    name: 'DO NOT DISTURB',
   },
   {
     id: 'hero-4',
     image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&h=1600&fit=crop&crop=center',
-    name: 'Urban Essentials',
+    name: 'DADDY CHILL',
   },
   {
     id: 'hero-5',
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&h=1600&fit=crop&crop=center',
-    name: 'Attitude Wear',
+    name: 'BITE ME',
   },
 ];
 
@@ -49,14 +58,16 @@ export async function getHeroSlides(maxSlides: number = 5): Promise<HeroSlide[]>
     const productsData = await getProducts(maxSlides);
     const products = productsData.edges.map(edge => edge.node);
     
-    // Filter products that have featured images
+    // Filter products that have featured images AND exclude C&C products
     const productsWithImages = products.filter(
-      (product: Product) => product.featuredImage?.url
+      (product: Product) => product.featuredImage?.url && 
+        !product.title.toUpperCase().includes('C&C') && 
+        !product.title.toUpperCase().includes('C & C')
     );
     
     if (productsWithImages.length >= 3) {
       // We have enough products with images, use them
-      // Using product images for hero carousel
+      // Using product images for hero carousel with custom names
       
       return productsWithImages.slice(0, maxSlides).map((product: Product) => ({
         id: product.id,

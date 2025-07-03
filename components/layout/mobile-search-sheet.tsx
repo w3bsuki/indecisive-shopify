@@ -3,10 +3,10 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, TrendingUp, Clock, Loader2 } from "lucide-react"
+import { Search, TrendingUp, Clock, Loader2, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearch, getTrendingSearches } from "@/hooks/use-search"
@@ -50,13 +50,21 @@ export function MobileSearchSheet({ children }: MobileSearchSheetProps) {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         {children || (
-          <Button variant="ghost" size="icon" className="hover:bg-black/5 h-11 w-11 sharp-active">
-            <Search className="h-5 w-5" />
-          </Button>
+          <button className="h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg">
+            <Search className="h-6 w-6 stroke-[1.5] text-black" />
+          </button>
         )}
       </SheetTrigger>
       <SheetContent side="top" className="w-full h-full font-mono p-0 flex flex-col">
         <SheetHeader className="p-6 border-b border-black/10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold font-mono">SEARCH</h2>
+            <SheetClose asChild>
+              <Button variant="ghost" size="icon" className="h-10 w-10 -mr-2">
+                <X className="h-5 w-5" />
+              </Button>
+            </SheetClose>
+          </div>
           <div className="flex items-center gap-4">
             <div className="flex-1 relative">
               <Input

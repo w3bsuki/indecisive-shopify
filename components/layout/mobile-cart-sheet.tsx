@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2 } from "lucide-react"
@@ -40,24 +40,24 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       {totalItems > 0 && (
         <Badge
           variant="secondary"
-          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] font-bold bg-black text-white border border-white"
         >
           {totalItems}
         </Badge>
       )}
     </Button>
   ) : (
-    <Button variant="ghost" size="icon" className="relative">
-      <ShoppingBag className="h-5 w-5" />
+    <button className="relative h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg">
+      <ShoppingBag className="h-6 w-6 stroke-[1.5] text-black" />
       {totalItems > 0 && (
         <Badge
           variant="secondary"
-          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] font-bold bg-black text-white border border-white"
         >
           {totalItems}
         </Badge>
       )}
-    </Button>
+    </button>
   )
 
   return (
@@ -67,10 +67,16 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="px-6 py-4 border-b">
-          <SheetTitle className="flex items-center justify-between">
-            <span>{t('title')}</span>
-            <Badge variant="secondary">{totalItems} {totalItems === 1 ? 'item' : 'items'}</Badge>
-          </SheetTitle>
+          <div className="flex items-center justify-between">
+            <SheetTitle className="text-lg font-bold font-mono">
+              {t('title')} {totalItems > 0 && `(${totalItems})`}
+            </SheetTitle>
+            <SheetClose asChild>
+              <Button variant="ghost" size="icon" className="h-10 w-10 -mr-2">
+                <X className="h-5 w-5" />
+              </Button>
+            </SheetClose>
+          </div>
         </SheetHeader>
 
         {/* Cart Items */}
