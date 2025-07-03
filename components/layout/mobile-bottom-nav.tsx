@@ -29,13 +29,9 @@ export function MobileBottomNav() {
       if (currentScrollY < 100) {
         setIsVisible(false) // Hidden on hero section
       }
-      // Show nav when scrolled past hero
-      else if (currentScrollY >= 100) {
-        if (currentScrollY > lastScrollY && currentScrollY > 200) {
-          setIsVisible(false) // Hide when scrolling down fast
-        } else {
-          setIsVisible(true) // Show when scrolled past hero or scrolling up
-        }
+      // Show nav when scrolled past hero and keep it visible
+      else {
+        setIsVisible(true) // Always show when scrolled past hero
       }
       
       setLastScrollY(currentScrollY)
