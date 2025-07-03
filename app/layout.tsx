@@ -67,6 +67,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${notoSans.variable} ${sourceSans.variable} ${roboto.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
         <ResourceHints />
       </head>
       <body className={notoSans.className}>

@@ -117,15 +117,37 @@
   
 }
 
+/* CSS Custom Properties for Safe Area */
+:root {
+  /* Safe area insets for devices with notches/rounded corners */
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-right: env(safe-area-inset-right);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+}
+
 @layer base {
   * {
     @apply border-border;
+  }
+  
+  html {
+    /* Prevent iOS Safari bounce scrolling */
+    overscroll-behavior-y: contain;
+    /* Ensure proper text rendering on mobile */
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-family-sans);
     font-feature-settings: var(--font-feature-settings-default);
+    /* Prevent iOS Safari bounce scrolling */
+    overscroll-behavior-y: contain;
+    /* Disable blue highlight on tap in WebKit */
+    -webkit-tap-highlight-color: transparent;
   }
   
   /* Bulgarian locale specific styling */
@@ -153,6 +175,74 @@
     font-family: var(--font-family-sans);
     font-weight: 600;
     @apply tracking-normal;
+  }
+}
+
+/* Mobile Safe Area & Viewport Utilities */
+@layer utilities {
+  /* Safe Area Utilities */
+  .pt-safe {
+    padding-top: var(--safe-area-inset-top);
+  }
+  
+  .pb-safe {
+    padding-bottom: var(--safe-area-inset-bottom);
+  }
+  
+  .pl-safe {
+    padding-left: var(--safe-area-inset-left);
+  }
+  
+  .pr-safe {
+    padding-right: var(--safe-area-inset-right);
+  }
+  
+  .p-safe {
+    padding-top: var(--safe-area-inset-top);
+    padding-right: var(--safe-area-inset-right);
+    padding-bottom: var(--safe-area-inset-bottom);
+    padding-left: var(--safe-area-inset-left);
+  }
+  
+  /* Dynamic Viewport Height Utilities */
+  .h-screen-dynamic {
+    height: 100dvh;
+    height: 100vh; /* fallback */
+  }
+  
+  .min-h-screen-dynamic {
+    min-height: 100dvh;
+    min-height: 100vh; /* fallback */
+  }
+  
+  .max-h-screen-dynamic {
+    max-height: 100dvh;
+    max-height: 100vh; /* fallback */
+  }
+  
+  /* Mobile-Optimized Fixed Positioning */
+  .fixed-mobile-safe {
+    position: fixed;
+    top: var(--safe-area-inset-top);
+    left: var(--safe-area-inset-left);
+    right: var(--safe-area-inset-right);
+  }
+  
+  .fixed-bottom-mobile-safe {
+    position: fixed;
+    bottom: var(--safe-area-inset-bottom);
+    left: var(--safe-area-inset-left);
+    right: var(--safe-area-inset-right);
+  }
+  
+  /* Essential mobile utilities */
+  .touch-optimized {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .overscroll-contain {
+    overscroll-behavior-y: contain;
   }
 }
 
@@ -324,18 +414,43 @@
 
 /* Hero section - Fixed height to prevent layout shifts */
 .hero-section {
-  /* Fixed height calculation without dynamic viewport units */
+  /* Use dynamic viewport height for better mobile support */
+  height: calc(100dvh - 104px);
+  /* Fallback for browsers that don't support dvh */
   height: calc(100vh - 104px);
   min-height: 500px;
   /* Prevent iOS pull-to-refresh and bounce */
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
+  /* Prevent zoom on double tap */
+  touch-action: manipulation;
+  /* GPU acceleration for smooth scrolling */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Prevent reflow on scroll */
+  contain: layout style paint;
+  /* Force hardware acceleration */
+  will-change: auto;
 }
 
 /* Mobile-specific height adjustment */
 @media (max-width: 640px) {
   .hero-section {
-    height: calc(100vh - 120px); /* Account for header + marquee on mobile */
+    /* Use dynamic viewport height for mobile */
+    height: calc(100dvh - 120px);
+    /* Fallback for older browsers */
+    height: calc(100vh - 120px); 
     min-height: 400px;
+    /* Additional mobile optimizations */
+    position: relative;
+    isolation: isolate;
+  }
+}
+
+/* Essential mobile scroll fixes only */
+@media (max-width: 768px) {
+  html {
+    /* Smooth scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
   }
 }

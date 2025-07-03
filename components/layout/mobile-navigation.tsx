@@ -27,7 +27,7 @@ export function MobileNavigation() {
   return (
     <>
       {/* Mobile Navigation Stack */}
-      <div className="fixed top-0 w-full z-50 md:hidden">
+      <div className="fixed-mobile-safe w-full z-50 md:hidden touch-optimized">
         {/* Newsletter Banner */}
         <div className="bg-black text-white py-3 px-4 text-center">
           <p className="text-sm font-mono">
@@ -36,7 +36,7 @@ export function MobileNavigation() {
         </div>
 
         {/* Mobile Navigation Bar */}
-        <nav className="bg-white/95 backdrop-blur-md border-b border-gray-950">
+        <nav className="bg-white/95 backdrop-blur-md border-b border-gray-950 overscroll-contain">
           <div className="px-3 h-16 flex items-center justify-between">
             {/* Left Side: Menu + Logo */}
             <div className="flex items-center gap-1">

@@ -59,8 +59,8 @@ export function MobileBottomNav() {
   return (
     <div 
       className={cn(
-        "fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 md:hidden",
-        "transition-transform duration-300 ease-in-out",
+        "fixed-bottom-mobile-safe bg-white border-t border-gray-200 z-40 md:hidden touch-optimized",
+        "transition-transform duration-300 ease-in-out overscroll-contain",
         isVisible ? "transform translate-y-0" : "transform translate-y-full"
       )}
     >

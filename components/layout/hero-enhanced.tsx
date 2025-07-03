@@ -83,8 +83,8 @@ export function HeroEnhanced() {
   const hasPrice = currentProduct?.price && currentProduct.price !== '$0.00';
 
   return (
-    <section className="relative bg-background w-full hero-section">
-      <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+    <section className="relative bg-background w-full hero-section touch-optimized">
+      <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 overscroll-contain">
         {/* Subtle trust indicator - top left */}
         <div className="absolute top-4 left-4 z-30 bg-white/90 backdrop-blur-sm px-2 py-1 border border-black/10 hidden md:flex items-center gap-2">
           <Users className="w-4 h-4" />
