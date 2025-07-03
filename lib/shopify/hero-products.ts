@@ -10,7 +10,7 @@ export interface HeroSlide {
 }
 
 // Custom product names for hero rotation
-const CUSTOM_HERO_NAMES = [
+const _CUSTOM_HERO_NAMES = [
   'ХУЛИГАНКА',
   'DADDY ISSUES',
   'DO NOT DISTURB',

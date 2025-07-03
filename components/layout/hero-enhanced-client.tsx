@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Marquee, MarqueeItem } from "@/components/ui/marquee";
 import type { HeroSlide } from '@/lib/shopify/hero-products';
-import { TrendingUp, Users } from 'lucide-react';
 
 interface HeroEnhancedClientProps {
   slides: HeroSlide[];
