@@ -55,8 +55,6 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
     return () => clearInterval(interval);
   }, [slides.length]);
 
-  const currentProduct = slides[currentSlide];
-
   // Removed dynamic viewport height adjustment to keep hero static
 
   return (
