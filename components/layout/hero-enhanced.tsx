@@ -119,8 +119,8 @@ export function HeroEnhanced() {
               }}
             />
             
-            {/* Content overlay */}
-            <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
+            {/* Content overlay with better contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent flex items-center justify-center">
               <div className="text-center space-y-4 sm:space-y-6 px-4 relative z-10">
                 <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-primary-foreground tracking-tight leading-tight drop-shadow-lg">
                   {slide.name.toUpperCase()}
@@ -139,28 +139,13 @@ export function HeroEnhanced() {
                   </div>
                 )}
                 
-                {/* CTA buttons with slight enhancement */}
-                <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
-                  {slide.handle ? (
-                    <>
-                      <Link href={`/products/${slide.handle}`}>
-                        <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[200px]">
-                          {t('shopNow')}
-                        </Button>
-                      </Link>
-                      <Link href="/new">
-                        <Button variant="outline" size="lg" className="shadow-lg border-white text-white hover:bg-white hover:text-black min-w-[200px]">
-                          {t('viewCollection')}
-                        </Button>
-                      </Link>
-                    </>
-                  ) : (
-                    <Link href="/products">
-                      <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[200px]">
-                        {t('shopCollection')}
-                      </Button>
-                    </Link>
-                  )}
+                {/* Single CTA button for cleaner design */}
+                <div className="flex items-center justify-center">
+                  <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
+                    <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[250px] h-14 text-lg">
+                      {slide.handle ? t('shopNow') : t('shopCollection')}
+                    </Button>
+                  </Link>
                 </div>
                 
                 {/* Limited stock indicator - only for products with handle */}

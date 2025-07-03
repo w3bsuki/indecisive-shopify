@@ -160,7 +160,8 @@ export function ComingSoonCarousel() {
                               ...prev,
                               [product.id]: e.target.value
                             }))}
-                            className="font-mono text-xs"
+                            className="font-mono text-base"
+                            style={{ fontSize: '16px' }}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 handleNotifyMe(product.id)
@@ -260,7 +261,8 @@ export function ComingSoonCarousel() {
                               ...prev,
                               [product.id]: e.target.value
                             }))}
-                            className="font-mono text-xs"
+                            className="font-mono text-base"
+                            style={{ fontSize: '16px' }}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 handleNotifyMe(product.id)

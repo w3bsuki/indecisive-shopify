@@ -321,25 +321,20 @@
   --color-border-strong: var(--color-gray-700);
 }
 
-/* Hero section - Mobile optimized with dynamic viewport height */
+/* Hero section - Fixed height to prevent layout shifts */
 .hero-section {
-  /* Use dvh (dynamic viewport height) for modern browsers, fallback to vh */
-  height: 100vh;
-  height: 100dvh;
-  /* Subtract header height */
-  height: calc(100dvh - 104px);
-  min-height: 400px;
+  /* Fixed height calculation without dynamic viewport units */
+  height: calc(100vh - 104px);
+  min-height: 500px;
   /* Prevent iOS pull-to-refresh and bounce */
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
-  /* Ensure smooth rendering */
-  will-change: transform;
-  transform: translateZ(0);
 }
 
-/* Fallback for browsers without dvh support */
-@supports not (height: 100dvh) {
+/* Mobile-specific height adjustment */
+@media (max-width: 640px) {
   .hero-section {
-    height: calc(100vh - 104px);
+    height: calc(100vh - 96px); /* Slightly less header height on mobile */
+    min-height: 400px;
   }
 }
