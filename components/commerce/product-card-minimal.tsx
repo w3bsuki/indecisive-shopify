@@ -7,6 +7,7 @@ import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
+import { parsePriceString, isProductOnSale } from '@/lib/utils/price'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Heart, Eye } from 'lucide-react'
 
@@ -28,10 +29,8 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
     product.priceRange.minVariantPrice.currencyCode
   )
   
-  // Split price and currency for Bulgarian Lev
-  const priceMatch = rawPrice.match(/^([\d,\.]+)\s*(.*?)$/)
-  const priceNumber = priceMatch ? priceMatch[1] : rawPrice
-  const currency = priceMatch ? priceMatch[2] : ''
+  // Split price and currency for display
+  const { number: priceNumber, currency } = parsePriceString(rawPrice)
 
   const comparePrice = product.compareAtPriceRange?.maxVariantPrice
     ? formatPrice(
@@ -40,7 +39,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
       )
     : null
 
-  const isOnSale = comparePrice && comparePrice !== rawPrice
+  const isOnSale = isProductOnSale(rawPrice, comparePrice)
 
   const handleWishlist = (event: React.MouseEvent) => {
     event.preventDefault()

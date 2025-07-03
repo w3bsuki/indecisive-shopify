@@ -9,7 +9,7 @@ import type { ShopifyProduct } from '@/lib/shopify/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useMarket } from '@/hooks/use-market'
-import { QuickViewDialog } from './quick-view-dialog-v2'
+import { QuickViewDialog } from './quick-view-dialog'
 
 interface IndecisiveActionsProps {
   products: ShopifyProduct[]

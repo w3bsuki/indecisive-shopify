@@ -1,232 +1,161 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { User, Package, Heart, MapPin, CreditCard, LogOut } from 'lucide-react'
+import { Metadata } from 'next'
+import { getCurrentCustomer } from '@/app/actions/auth'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
+import { Package, User, MapPin, Heart, ShoppingBag } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
-export const metadata = {
-  title: 'My Account | Indecisive Wear',
-  description: 'Manage your account, orders, and preferences at Indecisive Wear.',
+export const metadata: Metadata = {
+  title: 'Dashboard - My Account - Indecisive Wear',
+  description: 'Your account dashboard overview',
 }
 
-export default function AccountPage() {
-  // TODO: Implement Shopify customer authentication
-  const isAuthenticated = false
-
-  if (!isAuthenticated) {
-    return (
-      <div className="max-w-md mx-auto px-4 py-16">
-        <h1 className="text-3xl font-bold font-mono mb-8 text-center">ACCOUNT LOGIN</h1>
-        
-        <div className="space-y-8">
-          {/* Login Form */}
-          <div className="border-2 border-black p-6">
-            <h2 className="text-xl font-bold font-mono mb-4">SIGN IN</h2>
-            <form className="space-y-4">
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="you@example.com"
-                  className="font-mono"
-                />
-              </div>
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
-                  type="password"
-                  className="font-mono" 
-                />
-              </div>
-              <div className="flex justify-between text-sm">
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-gray-300" />
-                  Remember me
-                </label>
-                <Link href="/account/forgot-password" className="underline">
-                  Forgot password?
-                </Link>
-              </div>
-              <Button className="w-full font-mono" size="lg">
-                SIGN IN
-              </Button>
-            </form>
-          </div>
-
-          {/* Register Form */}
-          <div className="border-2 border-black p-6">
-            <h2 className="text-xl font-bold font-mono mb-4">CREATE ACCOUNT</h2>
-            <p className="text-gray-600 mb-4">
-              Join to track orders, save favorites, and get exclusive offers.
-            </p>
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input 
-                    id="firstName" 
-                    className="font-mono"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input 
-                    id="lastName" 
-                    className="font-mono"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="registerEmail">Email</Label>
-                <Input 
-                  id="registerEmail" 
-                  type="email" 
-                  placeholder="you@example.com"
-                  className="font-mono"
-                />
-              </div>
-              <div>
-                <Label htmlFor="registerPassword">Password</Label>
-                <Input 
-                  id="registerPassword" 
-                  type="password"
-                  className="font-mono" 
-                />
-              </div>
-              <Button className="w-full font-mono" size="lg">
-                CREATE ACCOUNT
-              </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    )
+export default async function AccountDashboardPage() {
+  const customer = await getCurrentCustomer()
+  
+  // This will be handled by the layout, but keeping for safety
+  if (!customer) {
+    return null
   }
 
-  // Authenticated Account Dashboard
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold font-mono mb-8">MY ACCOUNT</h1>
+    <div className="space-y-6">
+      {/* Account Overview Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link href="/account/orders">
+          <Card className="border-2 border-black hover:shadow-lg transition-shadow cursor-pointer h-full">
+            <CardHeader className="flex flex-row items-center space-x-4">
+              <Package className="h-6 w-6" />
+              <CardTitle className="font-mono">Recent Orders</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-2">View your order history and track shipments</p>
+              <p className="text-xs text-gray-500">Last order: Recently</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Sidebar Navigation */}
-        <aside className="lg:col-span-1">
-          <nav className="space-y-2">
-            <Link href="/account" className="flex items-center gap-3 p-3 bg-black text-white font-mono">
-              <User className="w-5 h-5" />
-              PROFILE
-            </Link>
-            <Link href="/account/orders" className="flex items-center gap-3 p-3 hover:bg-gray-100 font-mono">
-              <Package className="w-5 h-5" />
-              ORDERS
-            </Link>
-            <Link href="/account/wishlist" className="flex items-center gap-3 p-3 hover:bg-gray-100 font-mono">
-              <Heart className="w-5 h-5" />
-              WISHLIST
-            </Link>
-            <Link href="/account/addresses" className="flex items-center gap-3 p-3 hover:bg-gray-100 font-mono">
-              <MapPin className="w-5 h-5" />
-              ADDRESSES
-            </Link>
-            <Link href="/account/payment" className="flex items-center gap-3 p-3 hover:bg-gray-100 font-mono">
-              <CreditCard className="w-5 h-5" />
-              PAYMENT
-            </Link>
-            <button className="flex items-center gap-3 p-3 hover:bg-gray-100 font-mono w-full text-left text-red-600">
-              <LogOut className="w-5 h-5" />
-              LOGOUT
-            </button>
-          </nav>
-        </aside>
+        <Link href="/account/profile">
+          <Card className="border-2 border-black hover:shadow-lg transition-shadow cursor-pointer h-full">
+            <CardHeader className="flex flex-row items-center space-x-4">
+              <User className="h-6 w-6" />
+              <CardTitle className="font-mono">Profile</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-2">Manage your personal information</p>
+              <p className="text-xs text-gray-500">Keep your details up to date</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-        {/* Main Content */}
-        <main className="lg:col-span-3">
-          <div className="border-2 border-black p-6">
-            <h2 className="text-xl font-bold font-mono mb-6">PROFILE INFORMATION</h2>
-            
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input 
-                    id="firstName" 
-                    defaultValue="John"
-                    className="font-mono"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input 
-                    id="lastName" 
-                    defaultValue="Doe"
-                    className="font-mono"
-                  />
-                </div>
+        <Link href="/account/addresses">
+          <Card className="border-2 border-black hover:shadow-lg transition-shadow cursor-pointer h-full">
+            <CardHeader className="flex flex-row items-center space-x-4">
+              <MapPin className="h-6 w-6" />
+              <CardTitle className="font-mono">Addresses</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-2">Manage shipping addresses</p>
+              <p className="text-xs text-gray-500">
+                {customer.defaultAddress ? 'Default address set' : 'No default address'}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/wishlist">
+          <Card className="border-2 border-black hover:shadow-lg transition-shadow cursor-pointer h-full">
+            <CardHeader className="flex flex-row items-center space-x-4">
+              <Heart className="h-6 w-6" />
+              <CardTitle className="font-mono">Wishlist</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-2">View saved items</p>
+              <p className="text-xs text-gray-500">Items you&apos;re considering</p>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      {/* Account Summary */}
+      <Card className="border-2 border-black">
+        <CardHeader>
+          <CardTitle className="font-mono">Account Summary</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Contact Information</p>
+              <div className="space-y-1">
+                <p className="font-mono text-sm">{customer.email}</p>
+                {customer.phone && (
+                  <p className="font-mono text-sm">{customer.phone}</p>
+                )}
               </div>
+            </div>
 
+            {customer.defaultAddress && (
               <div>
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  defaultValue="john.doe@example.com"
-                  className="font-mono"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input 
-                  id="phone" 
-                  type="tel"
-                  placeholder="+1 (555) 123-4567"
-                  className="font-mono"
-                />
-              </div>
-
-              <div>
-                <h3 className="font-bold mb-2">Email Preferences</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                    Order updates
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                    New arrivals & promotions
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox" className="rounded border-gray-300" />
-                    Style tips & lookbooks
-                  </label>
+                <p className="text-sm text-gray-600 mb-2">Default Shipping Address</p>
+                <div className="font-mono text-sm space-y-1">
+                  <p>{customer.defaultAddress.firstName} {customer.defaultAddress.lastName}</p>
+                  <p>{customer.defaultAddress.address1}</p>
+                  {customer.defaultAddress.address2 && <p>{customer.defaultAddress.address2}</p>}
+                  <p>
+                    {customer.defaultAddress.city}, {customer.defaultAddress.provinceCode || customer.defaultAddress.province} {customer.defaultAddress.zip}
+                  </p>
+                  <p>{customer.defaultAddress.country}</p>
                 </div>
               </div>
-
-              <div className="flex gap-4">
-                <Button className="font-mono">
-                  SAVE CHANGES
-                </Button>
-                <Button variant="outline" className="font-mono">
-                  CHANGE PASSWORD
-                </Button>
-              </div>
-            </form>
+            )}
           </div>
 
-          {/* Recent Orders Preview */}
-          <div className="mt-8 border-2 border-black p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold font-mono">RECENT ORDERS</h2>
-              <Link href="/account/orders" className="text-sm underline">
-                View all
+          <div className="border-t pt-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/account/profile">
+                <Button variant="outline" size="sm" className="font-mono border-2 border-black">
+                  Edit Profile
+                </Button>
+              </Link>
+              
+              <Link href="/account/addresses">
+                <Button variant="outline" size="sm" className="font-mono border-2 border-black">
+                  Manage Addresses
+                </Button>
+              </Link>
+              
+              <Link href="/">
+                <Button variant="outline" size="sm" className="font-mono border-2 border-black">
+                  <ShoppingBag className="h-4 w-4 mr-2" />
+                  Continue Shopping
+                </Button>
               </Link>
             </div>
-            <p className="text-gray-600">No recent orders to display.</p>
           </div>
-        </main>
-      </div>
+        </CardContent>
+      </Card>
+
+      {/* Marketing Preferences */}
+      <Card className="border-2 border-black">
+        <CardHeader>
+          <CardTitle className="font-mono">Preferences</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-mono text-sm">Marketing Communications</p>
+              <p className="text-xs text-gray-600">
+                {customer.acceptsMarketing ? 'You are subscribed to receive updates and offers' : 'You are not subscribed to marketing communications'}
+              </p>
+            </div>
+            <Link href="/account/settings">
+              <Button variant="outline" size="sm" className="font-mono border-2 border-black">
+                Change
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

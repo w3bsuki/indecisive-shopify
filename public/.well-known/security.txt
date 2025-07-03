@@ -1,0 +1,11 @@
+# Security Policy for Indecisive Wear
+# Last updated: 2025-01-03
+
+Contact: security@indecisivewear.com
+Expires: 2026-01-03T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://indecisivewear.com/.well-known/security.txt
+
+# Reporting Security Issues
+# Please report security vulnerabilities to security@indecisivewear.com
+# We aim to respond within 24 hours and resolve issues based on severity

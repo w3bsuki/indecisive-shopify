@@ -7,6 +7,7 @@ import { ShoppingCart, Heart, Minus, Plus } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart'
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
+import { useTranslations } from 'next-intl'
 
 interface AddToCartFormProps {
   product: ShopifyProduct
@@ -19,6 +20,8 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   const [isAdding, setIsAdding] = useState(false)
   const [showSizeGuide, setShowSizeGuide] = useState(false)
   const { addItem, cartReady } = useCart()
+  const t = useTranslations('products')
+  const tc = useTranslations('common')
 
   // Get all variants for easier processing
   const variants = useMemo(() => product.variants.edges.map(edge => edge.node), [product.variants])
@@ -191,7 +194,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-sm font-medium">
-              Color{selectedColor && <span className="ml-2 text-gray-600 font-normal">{selectedColor}</span>}
+              {tc('color')}{selectedColor && <span className="ml-2 text-gray-600 font-normal">{selectedColor}</span>}
             </Label>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -208,7 +211,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
                     !available && "opacity-40 cursor-not-allowed"
                   )}
                   title={value}
-                  aria-label={`Select ${value} color`}
+                  aria-label={`${tc('select')} ${value} ${tc('color')}`}
                 >
                   <span
                     className="absolute inset-1 block"
@@ -231,13 +234,13 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-sm font-medium">
-              Size{selectedSize && <span className="ml-2 text-gray-600 font-normal">{selectedSize}</span>}
+              {tc('size')}{selectedSize && <span className="ml-2 text-gray-600 font-normal">{selectedSize}</span>}
             </Label>
             <button
               onClick={() => setShowSizeGuide(true)}
               className="text-sm text-gray-600 hover:text-black underline underline-offset-2"
             >
-              Size Guide
+              {tc('sizeGuide')}
             </button>
           </div>
           
@@ -258,7 +261,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
                       : "border-gray-200 hover:border-gray-400",
                     !available && "opacity-40 cursor-not-allowed line-through bg-gray-50"
                   )}
-                  aria-label={`Select size ${value}`}
+                  aria-label={`${tc('select')} ${tc('size')} ${value}`}
                 >
                   {value}
                   {!available && (
@@ -272,14 +275,14 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           </div>
           
           {!selectedSize && sizeOption && (
-            <p className="text-sm text-gray-600">Please select a size</p>
+            <p className="text-sm text-gray-600">{t('selectSize')}</p>
           )}
         </div>
       )}
 
       {/* Quantity Selector */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium">Quantity</Label>
+        <Label className="text-sm font-medium">{tc('quantity')}</Label>
         <div className="flex items-center gap-2">
           <Button
             type="button"
@@ -318,16 +321,16 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           {isAdding ? (
             <>
               <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin mr-2" />
-              Adding...
+              {t('addingToCart')}
             </>
           ) : !selectedVariant ? (
-            sizeOption && !selectedSize ? 'Select Size' : 'Select Options'
+            sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')
           ) : !selectedVariant.availableForSale ? (
-            'Out of Stock'
+            t('soldOut')
           ) : (
             <>
               <ShoppingCart className="w-4 h-4 mr-2" />
-              Add to Cart
+              {t('addToCart')}
             </>
           )}
         </Button>
@@ -337,7 +340,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           variant="outline"
           size="lg"
           className="px-4 h-12 touch-manipulation"
-          title="Add to wishlist"
+          title={t('addToWishlist')}
         >
           <Heart className="h-4 w-4" />
         </Button>
@@ -349,12 +352,12 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           {selectedVariant.availableForSale ? (
             <p className="text-green-600 flex items-center gap-2">
               <span className="w-2 h-2 bg-green-600 rounded-full" />
-              In stock and ready to ship
+              {tc('inStock')}
             </p>
           ) : (
             <p className="text-red-600 flex items-center gap-2">
               <span className="w-2 h-2 bg-red-600 rounded-full" />
-              Currently out of stock
+              {tc('outOfStock')}
             </p>
           )}
         </div>
@@ -365,18 +368,18 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowSizeGuide(false)}>
           <div className="bg-white max-w-md w-full p-6 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Size Guide</h3>
+              <h3 className="text-lg font-semibold">{tc('sizeGuide')}</h3>
               <button onClick={() => setShowSizeGuide(false)} className="text-gray-500 hover:text-black">
                 ×
               </button>
             </div>
             <div className="space-y-4">
-              <p className="text-sm text-gray-600">All sizes are in US sizing.</p>
+              <p className="text-sm text-gray-600">{tc('sizeGuideNote')}</p>
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-2">Size</th>
-                    <th className="text-center py-2">Measurements</th>
+                    <th className="text-left py-2">{tc('size')}</th>
+                    <th className="text-center py-2">{tc('measurements')}</th>
                   </tr>
                 </thead>
                 <tbody>

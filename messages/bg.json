@@ -1,4 +1,12 @@
 {
+  "brand": {
+    "name": "INDECISIVE WEAR",
+    "tagline": "Мода за нерешителните",
+    "social": {
+      "handle": "@indecisivewear",
+      "hashtag": "#IndecisiveWear"
+    }
+  },
   "nav": {
     "products": "ПРОДУКТИ",
     "collections": "КОЛЕКЦИИ",
@@ -7,7 +15,78 @@
     "cart": "КОШНИЦА",
     "account": "ПРОФИЛ",
     "login": "ВХОД",
-    "logout": "ИЗХОД"
+    "logout": "ИЗХОД",
+    "new": "НОВО",
+    "comingSoon": "СКОРО",
+    "sale": "РАЗПРОДАЖБА",
+    "banner": "БЕЗПЛАТНА ДОСТАВКА ЗА ПОРЪЧКИ НАД 100 ЛВ | 30-ДНЕВЕН ВРЪЩАНЕ"
+  },
+  "hero": {
+    "customers": "клиенти",
+    "trending": "ПОПУЛЯРНО",
+    "from": "ОТ",
+    "freeShipping": "БЕЗПЛАТНА ДОСТАВКА ЗА ПОРЪЧКИ НАД 100 ЛВ",
+    "shopNow": "КУПИ СЕГА",
+    "viewCollection": "ВИЖ КОЛЕКЦИЯТА",
+    "shopCollection": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА",
+    "exploreCollection": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА",
+    "limitedStock": "Ограничени количества",
+    "marquee": {
+      "freeShipping": "БЕЗПЛАТНА ДОСТАВКА НАД 100 ЛВ",
+      "returns": "30-ДНЕВНО ВРЪЩАНЕ",
+      "joinCustomers": "ПРИСЪЕДИНИ СЕ КЪМ {count}+ КЛИЕНТИ",
+      "newArrivals": "НОВИ ПРОДУКТИ ВСЯКА СЕДМИЦА"
+    }
+  },
+  "community": {
+    "title": "ОБЩНОСТЕН СТИЛ",
+    "subtitle": "Маркирай ни @indecisivewear #IndecisiveWear",
+    "viewPost": "ВИЖ ПОСТ",
+    "viewOnInstagram": "ВИЖ В INSTAGRAM",
+    "shareYourStyle": "СПОДЕЛИ ТВОЯ СТИЛ",
+    "tagToBeFeature": "Маркирай @indecisivewear за да бъдеш показан",
+    "getFeaturedInCommunity": "Бъди част от нашата общност",
+    "getFeatured": "БЪДИ ПОКАЗАН"
+  },
+  "comingSoon": {
+    "title": "СКОРО",
+    "subtitle": "Бъди информиран когато пуснем тези продукти",
+    "badge": "СКОРО",
+    "emailPlaceholder": "Въведи имейл адрес",
+    "notifyButton": "ИНФОРМИРАЙ МЕ",
+    "onTheList": "В СПИСЪКА СТЕ",
+    "joinOthersWaiting": "Присъедини се към {count} други чакащи",
+    "peopleWaiting": "{count} души чакат",
+    "viewAllDrops": "ВИЖДАЙ ВСИЧКИ ПРЕДСТОЯЩИ ПРОДУКТИ →",
+    "errors": {
+      "enterEmail": "Моля, въведи имейл адрес",
+      "validEmail": "Моля, въведи валиден имейл адрес"
+    },
+    "success": {
+      "notified": "Ще бъдеш информиран когато пуснем този продукт!"
+    },
+    "products": {
+      "caps-001": {
+        "name": "ФИРМЕНИ ШАПКИ",
+        "launchDate": "ФЕВРУАРИ 2025",
+        "description": "Премиум шапки с лого"
+      },
+      "tshirts-001": {
+        "name": "ESSENTIAL ТЕНИСКИ",
+        "launchDate": "МАРТ 2025",
+        "description": "Oversized памучни с графики"
+      },
+      "socks-001": {
+        "name": "ЧОРАПИ",
+        "launchDate": "АПРИЛ 2025",
+        "description": "Памучни с брандиране"
+      },
+      "hoodies-001": {
+        "name": "СУИЧЪРИ",
+        "launchDate": "МАЙ 2025",
+        "description": "Премиум качество с детайли"
+      }
+    }
   },
   "home": {
     "hero": {
@@ -16,7 +95,9 @@
       "cta": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА"
     },
     "featured": {
-      "title": "ИЗБРАНИ ПРОДУКТИ"
+      "title": "ИЗБРАНА КОЛЕКЦИЯ",
+      "subtitle": "ХУЛИГАНКА",
+      "description": "Ограничена серия шапки за тези, които не могат да решат"
     },
     "community": {
       "title": "ОБЩНОСТЕН СТИЛ",
@@ -30,28 +111,34 @@
     "title": "ВСИЧКИ ПРОДУКТИ",
     "addToCart": "ДОБАВИ В КОШНИЦАТА",
     "quickView": "БЪРЗ ПРЕГЛЕД",
-    "viewAll": "ВСИЧКИ ПРОДУКТИ",
+    "viewAll": "ВИЖ ВСИЧКИ",
     "priceFrom": "ОТ",
     "soldOut": "ИЗЧЕРПАНО",
-    "available": "В НАЛИЧНОСТ"
+    "available": "В НАЛИЧНОСТ",
+    "sale": "НАМАЛЕНИЕ",
+    "noImage": "Няма снимка",
+    "addToWishlist": "Добави в любими",
+    "removeFromWishlist": "Премахни от любими",
+    "addingToCart": "Добавяне в кошницата",
+    "selectSize": "Избери размер"
   },
   "cart": {
     "title": "КОШНИЦА",
     "empty": {
       "title": "КОШНИЦАТА Е ПРАЗНА",
-      "subtitle": "Изглежда още не сте добавили нищо.",
+      "subtitle": "Добавете продукти за да започнете",
       "cta": "ПРОДЪЛЖИ ПАЗАРУВАНЕТО"
     },
     "subtotal": "Междинна сума",
     "shipping": "Доставка",
     "tax": "Данък",
     "total": "Общо",
-    "checkout": "КЪМ ПЛАЩАНЕ",
-    "continueShopping": "ПРОДЪЛЖИ ПАЗАРУВАНЕТО",
+    "checkout": "Плащане",
+    "continueShopping": "Продължи пазаруването",
     "remove": "Премахни",
     "clear": "ИЗЧИСТИ КОШНИЦАТА",
-    "discountCode": "Код за отстъпка",
-    "apply": "ПРИЛОЖИ",
+    "discountCode": "Въведи промо код",
+    "apply": "Приложи",
     "calculatedAtCheckout": "Изчислява се при плащане"
   },
   "auth": {
@@ -67,7 +154,9 @@
     },
     "register": {
       "title": "СЪЗДАЙ ПРОФИЛ",
-      "subtitle": "Присъединете се към общността Indecisive Wear",
+      "subtitle": "Присъединете се към общността Indecisive Wear", 
+      "cardTitle": "Създайте своя профил",
+      "cardDescription": "Попълнете данните си за да започнете",
       "firstName": "Име",
       "lastName": "Фамилия",
       "email": "Имейл",
@@ -105,7 +194,20 @@
     "comingSoon": "СКОРО",
     "soldOut": "ИЗЧЕРПАНО",
     "new": "НОВО",
-    "sale": "НАМАЛЕНИЕ"
+    "sale": "НАМАЛЕНИЕ",
+    "color": "Цвят",
+    "size": "Размер",
+    "quantity": "Количество",
+    "select": "Избери",
+    "selectOptions": "Избери опции",
+    "sizeGuide": "Размери",
+    "sizeGuideNote": "Всички размери са в US система.",
+    "measurements": "Мерки",
+    "inStock": "В наличност и готов за изпращане",
+    "outOfStock": "В момента няма наличност",
+    "close": "Затвори",
+    "wishlist": "Любими",
+    "categories": "КАТЕГОРИИ"
   },
   "footer": {
     "customerService": "Клиентско обслужване",
@@ -114,8 +216,33 @@
     "shipping": "Доставка",
     "returns": "Връщания",
     "sizeGuide": "Размери",
-    "privacy": "Поверителност",
-    "terms": "Условия",
+    "privacy": "Политика за поверителност",
+    "cookie": "Политика за бисквитки",
+    "terms": "Условия за ползване",
+    "tagline": "За красиво нерешителните. Прегърнете и двете страни на вашия стил.",
+    "sections": {
+      "shop": {
+        "title": "МАГАЗИН",
+        "newArrivals": "Нови продукти",
+        "essentials": "Основни",
+        "streetwear": "Streetwear",
+        "sale": "Разпродажба"
+      },
+      "support": {
+        "title": "ПОДДРЪЖКА",
+        "sizeGuide": "Размери",
+        "shipping": "Доставка",
+        "returns": "Връщания",
+        "contact": "Контакт"
+      },
+      "connect": {
+        "title": "СВЪРЖЕТЕ СЕ",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "tiktok": "TikTok",
+        "newsletter": "Бюлетин"
+      }
+    },
     "newsletter": {
       "title": "БЮЛЕТИН",
       "subtitle": "Получавайте най-новите новини",
@@ -125,7 +252,7 @@
     "social": {
       "follow": "Следете ни"
     },
-    "copyright": "© 2025 Indecisive Wear. Всички права запазени."
+    "copyright": "© {year} Indecisive Wear. Всички права запазени."
   },
   "messages": {
     "addedToCart": "Добавено в кошницата",

@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Marquee, MarqueeItem } from "@/components/ui/marquee";
 import { getHeroSlides, type HeroSlide } from '@/lib/shopify/hero-products';
 import { useMarket } from '@/hooks/use-market';
+import { useTranslations } from 'next-intl';
 import { TrendingUp, Users } from 'lucide-react';
 
 export function HeroEnhanced() {
+  const t = useTranslations('hero');
+  const tb = useTranslations('brand');
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [slides, setSlides] = React.useState<HeroSlide[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -85,14 +88,14 @@ export function HeroEnhanced() {
         {/* Subtle trust indicator - top left */}
         <div className="absolute top-4 left-4 z-30 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-sm border border-black/10 hidden md:flex items-center gap-2">
           <Users className="w-4 h-4" />
-          <span className="text-xs font-mono">{customerCount.toLocaleString()} customers</span>
+          <span className="text-xs font-mono">{customerCount.toLocaleString()} {t('customers')}</span>
         </div>
         
         {/* Subtle trending indicator - top right */}
         {currentProduct?.handle && (
           <div className="absolute top-4 right-4 z-30 bg-red-500 text-white px-3 py-2 rounded-sm flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
-            <span className="text-xs font-mono font-bold">TRENDING</span>
+            <span className="text-xs font-mono font-bold">{t('trending')}</span>
           </div>
         )}
 
@@ -127,11 +130,11 @@ export function HeroEnhanced() {
                 {hasPrice && (
                   <div className="space-y-1">
                     <p className="text-xl sm:text-2xl font-mono text-primary-foreground/90 drop-shadow-md">
-                      FROM {slide.price}
+                      {t('from')} {slide.price}
                     </p>
                     {/* Subtle free shipping indicator */}
                     <p className="text-sm font-mono text-primary-foreground/80">
-                      FREE SHIPPING ON ORDERS OVER $100
+                      {t('freeShipping')}
                     </p>
                   </div>
                 )}
@@ -142,19 +145,19 @@ export function HeroEnhanced() {
                     <>
                       <Link href={`/products/${slide.handle}`}>
                         <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[200px]">
-                          SHOP NOW
+                          {t('shopNow')}
                         </Button>
                       </Link>
                       <Link href="/new">
                         <Button variant="outline" size="lg" className="shadow-lg border-white text-white hover:bg-white hover:text-black min-w-[200px]">
-                          VIEW COLLECTION
+                          {t('viewCollection')}
                         </Button>
                       </Link>
                     </>
                   ) : (
                     <Link href="/products">
                       <Button variant="white-sharp" size="lg" className="shadow-lg min-w-[200px]">
-                        SHOP COLLECTION
+                        {t('shopCollection')}
                       </Button>
                     </Link>
                   )}
@@ -163,7 +166,7 @@ export function HeroEnhanced() {
                 {/* Limited stock indicator - only for products with handle */}
                 {slide.handle && index === 0 && (
                   <p className="text-sm font-mono text-primary-foreground/90 animate-pulse">
-                    Limited stock available
+                    {t('limitedStock')}
                   </p>
                 )}
               </div>
@@ -194,12 +197,12 @@ export function HeroEnhanced() {
         >
           {[...Array(6)].map((_, i) => (
             <span key={i} className="flex">
-              <MarqueeItem className="text-primary-foreground">INDECISIVE WEAR</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">FREE SHIPPING OVER $100</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">30-DAY RETURNS</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">JOIN {customerCount.toLocaleString()}+ CUSTOMERS</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">@INDECISIVEWEAR</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">NEW ARRIVALS WEEKLY</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">{tb('name')}</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">{t('marquee.freeShipping')}</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">{t('marquee.returns')}</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">{t('marquee.joinCustomers', { count: customerCount.toLocaleString() })}</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">{tb('social.handle')}</MarqueeItem>
+              <MarqueeItem className="text-primary-foreground">{t('marquee.newArrivals')}</MarqueeItem>
             </span>
           ))}
         </Marquee>

@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useInstagram } from '@/hooks/use-instagram'
+import { useTranslations } from 'next-intl'
 
 interface SocialPost {
   id: string
@@ -16,6 +17,7 @@ interface SocialPost {
 
 export function CommunitySection() {
   const { posts: instagramPosts, loading: instagramLoading } = useInstagram({ limit: 6 })
+  const t = useTranslations('community')
   
   // Convert Instagram API posts to SocialPost format
   const convertedInstagramPosts: SocialPost[] = instagramPosts.map(post => ({
@@ -33,10 +35,10 @@ export function CommunitySection() {
       <div className="max-w-7xl mx-auto">
         <div className="px-4 sm:px-6 lg:px-8 mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-mono tracking-wide">
-            COMMUNITY STYLE
+            {t('title')}
           </h2>
           <p className="text-gray-600 text-center font-mono text-sm">
-            Tag us @indecisivewear #IndecisiveWear
+            {t('subtitle')}
           </p>
         </div>
         
@@ -48,6 +50,7 @@ export function CommunitySection() {
 }
 
 function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: boolean }) {
+  const t = useTranslations('community')
   if (loading) {
     return (
       <div className="overflow-x-auto scrollbar-hide">
@@ -111,7 +114,7 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
                 {/* Hover View Button */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <button className="bg-white border border-gray-950 px-3 py-1 font-mono text-xs font-medium hover:bg-gray-100 transition-colors">
-                    VIEW POST
+                    {t('viewPost')}
                   </button>
                 </div>
               </div>
@@ -143,7 +146,7 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
                     }}
                     className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation"
                   >
-                    VIEW ON INSTAGRAM
+                    {t('viewOnInstagram')}
                   </button>
                 </div>
               </div>
@@ -160,6 +163,7 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
 
 
 function CallToActionCard() {
+  const t = useTranslations('community')
   return (
     <div className="flex-shrink-0 w-48 snap-start">
       <div className="bg-white border border-dashed border-gray-950 hover:border-solid hover:border-gray-600 hover:shadow-md transition-all duration-200 group">
@@ -169,10 +173,10 @@ function CallToActionCard() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           <h3 className="font-mono font-bold text-sm text-gray-600 group-hover:text-black transition-colors text-center mb-2">
-            SHARE YOUR STYLE
+            {t('shareYourStyle')}
           </h3>
           <p className="font-mono text-xs text-gray-500 text-center leading-tight">
-            Tag @indecisivewear to be featured
+            {t('tagToBeFeature')}
           </p>
         </div>
         
@@ -189,12 +193,12 @@ function CallToActionCard() {
           </div>
           
           <p className="font-mono text-xs text-gray-600 line-clamp-1 mb-2">
-            Get featured in our community
+            {t('getFeaturedInCommunity')}
           </p>
           
           <div className="w-full border border-gray-950">
             <button className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation">
-              GET FEATURED
+              {t('getFeatured')}
             </button>
           </div>
         </div>

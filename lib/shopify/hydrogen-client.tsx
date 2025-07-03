@@ -9,7 +9,7 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
   const { market, isLoading } = useMarket();
   const prevMarketRef = useRef(market);
   
-  const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN;
+  const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
   const storefrontToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
   const apiVersion = process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || '2025-04';
 
@@ -17,7 +17,7 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const prevMarket = prevMarketRef.current;
     if (prevMarket.id !== market.id) {
-      console.log(`Market changed from ${prevMarket.countryCode} to ${market.countryCode}`);
+      // Market changed
       prevMarketRef.current = market;
     }
   }, [market]);
@@ -43,12 +43,12 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
       storeDomain={fullDomain}
       storefrontToken={storefrontToken}
       storefrontApiVersion={apiVersion}
-      countryIsoCode={market.countryCode as any}
-      languageIsoCode={market.languageCode as any}
+      countryIsoCode={market.countryCode as Parameters<typeof ShopifyProvider>[0]['countryIsoCode']}
+      languageIsoCode={market.languageCode as Parameters<typeof ShopifyProvider>[0]['languageIsoCode']}
       key={`shopify-${market.id}`} // Force re-render when market changes
     >
       <CartProvider
-        countryCode={market.countryCode as any}
+        countryCode={market.countryCode as Parameters<typeof CartProvider>[0]['countryCode']}
         key={`cart-${market.id}`} // Force cart re-initialization with new market
       >
         {children}

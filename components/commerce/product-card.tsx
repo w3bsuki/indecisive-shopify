@@ -9,8 +9,10 @@ import { useWishlist } from '@/hooks/use-wishlist'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
+import { parsePriceString, isProductOnSale } from '@/lib/utils/price'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Heart, Eye, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {
   Dialog,
   DialogContent,
@@ -33,16 +35,15 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [imageLoading, setImageLoading] = useState(true)
   const isWishlisted = isInWishlist(product.id)
+  const t = useTranslations('products')
 
   const rawPrice = formatPrice(
     product.priceRange.minVariantPrice.amount,
     product.priceRange.minVariantPrice.currencyCode
   )
   
-  // Split price and currency for Bulgarian Lev
-  const priceMatch = rawPrice.match(/^([\d,\.]+)\s*(.*?)$/)
-  const priceNumber = priceMatch ? priceMatch[1] : rawPrice
-  const currency = priceMatch ? priceMatch[2] : ''
+  // Split price and currency for display
+  const { number: priceNumber, currency } = parsePriceString(rawPrice)
 
   const comparePrice = product.compareAtPriceRange?.maxVariantPrice
     ? formatPrice(
@@ -51,7 +52,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       )
     : null
 
-  const isOnSale = comparePrice && comparePrice !== rawPrice
+  const isOnSale = isProductOnSale(rawPrice, comparePrice)
 
   // Extract sizes from variants
   const sizes = product.variants?.edges
@@ -136,7 +137,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="flex items-center justify-center h-full text-gray-400 bg-gray-100">
           <div className="text-center">
             <div className="text-2xl mb-1">👕</div>
-            <div className="text-xs">No image</div>
+            <div className="text-xs">{t('noImage')}</div>
           </div>
         </div>
       )}
@@ -149,7 +150,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {/* Sale Badge */}
         {isOnSale && (
           <div className="absolute top-2 left-2 z-10 bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase">
-            Sale
+            {t('sale')}
           </div>
         )}
 
@@ -200,7 +201,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                         ? "bg-black text-white" 
                         : "bg-white text-black hover:bg-black hover:text-white"
                     )}
-                    aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                    aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
                   >
                     <Heart 
                       className={cn(
@@ -234,7 +235,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                         ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                         : "bg-black text-white hover:bg-gray-900"
                     )}
-                    aria-label={isLoading ? "Adding to cart" : "Add to cart"}
+                    aria-label={isLoading ? t('addingToCart') : t('addToCart')}
                   >
                     {isLoading ? (
                       <div className="absolute w-[18px] h-[18px] border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -285,7 +286,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       <Dialog open={showSizeSelector} onOpenChange={setShowSizeSelector}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-mono">Select Size</DialogTitle>
+            <DialogTitle className="font-mono">{t('selectSize')}</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-3 gap-2 mt-4">
             {sizes.map((size) => (

@@ -54,7 +54,7 @@ export class InstagramClient {
    */
   async getPosts(limit: number = 12): Promise<InstagramPost[]> {
     if (!this.accessToken || !this.userId) {
-      console.warn('Instagram API not configured, returning sample posts')
+      // Instagram API not configured, returning sample posts
       return this.getSamplePosts(limit)
     }
 

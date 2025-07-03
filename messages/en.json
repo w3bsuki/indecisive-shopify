@@ -1,4 +1,12 @@
 {
+  "brand": {
+    "name": "INDECISIVE WEAR",
+    "tagline": "Fashion for the Indecisive",
+    "social": {
+      "handle": "@indecisivewear",
+      "hashtag": "#IndecisiveWear"
+    }
+  },
   "nav": {
     "products": "PRODUCTS",
     "collections": "COLLECTIONS",
@@ -7,7 +15,78 @@
     "cart": "CART",
     "account": "ACCOUNT",
     "login": "LOGIN",
-    "logout": "LOGOUT"
+    "logout": "LOGOUT",
+    "new": "NEW",
+    "comingSoon": "COMING SOON",
+    "sale": "SALE",
+    "banner": "FREE SHIPPING ON ORDERS OVER $100 | 30-DAY RETURNS"
+  },
+  "hero": {
+    "customers": "customers",
+    "trending": "TRENDING",
+    "from": "FROM",
+    "freeShipping": "FREE SHIPPING ON ORDERS OVER $100",
+    "shopNow": "SHOP NOW",
+    "viewCollection": "VIEW COLLECTION",
+    "shopCollection": "SHOP COLLECTION",
+    "exploreCollection": "EXPLORE COLLECTION",
+    "limitedStock": "Limited stock available",
+    "marquee": {
+      "freeShipping": "FREE SHIPPING OVER $100",
+      "returns": "30-DAY RETURNS",
+      "joinCustomers": "JOIN {count}+ CUSTOMERS",
+      "newArrivals": "NEW ARRIVALS WEEKLY"
+    }
+  },
+  "community": {
+    "title": "COMMUNITY STYLE",
+    "subtitle": "Tag us @indecisivewear #IndecisiveWear",
+    "viewPost": "VIEW POST",
+    "viewOnInstagram": "VIEW ON INSTAGRAM",
+    "shareYourStyle": "SHARE YOUR STYLE",
+    "tagToBeFeature": "Tag @indecisivewear to be featured",
+    "getFeaturedInCommunity": "Get featured in our community",
+    "getFeatured": "GET FEATURED"
+  },
+  "comingSoon": {
+    "title": "COMING SOON",
+    "subtitle": "Get notified when these drop",
+    "badge": "COMING SOON",
+    "emailPlaceholder": "Enter your email",
+    "notifyButton": "NOTIFY ME",
+    "onTheList": "YOU'RE ON THE LIST",
+    "joinOthersWaiting": "Join {count} others waiting",
+    "peopleWaiting": "{count} people waiting",
+    "viewAllDrops": "VIEW ALL UPCOMING DROPS →",
+    "errors": {
+      "enterEmail": "Please enter your email",
+      "validEmail": "Please enter a valid email"
+    },
+    "success": {
+      "notified": "You'll be notified when this drops!"
+    },
+    "products": {
+      "caps-001": {
+        "name": "SIGNATURE CAPS",
+        "launchDate": "FEBRUARY 2025",
+        "description": "Premium snapbacks with logo"
+      },
+      "tshirts-001": {
+        "name": "ESSENTIAL TEES",
+        "launchDate": "MARCH 2025",
+        "description": "Oversized cotton with graphics"
+      },
+      "socks-001": {
+        "name": "CREW SOCKS",
+        "launchDate": "APRIL 2025",
+        "description": "Cotton blend with branding"
+      },
+      "hoodies-001": {
+        "name": "HOODIES",
+        "launchDate": "MAY 2025",
+        "description": "Premium fleece with details"
+      }
+    }
   },
   "home": {
     "hero": {
@@ -16,7 +95,9 @@
       "cta": "EXPLORE COLLECTION"
     },
     "featured": {
-      "title": "FEATURED PRODUCTS"
+      "title": "FEATURED COLLECTION",
+      "subtitle": "ХУЛИГАНКА",
+      "description": "Limited edition bucket hats for those who can't decide"
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -33,25 +114,31 @@
     "viewAll": "VIEW ALL PRODUCTS",
     "priceFrom": "FROM",
     "soldOut": "SOLD OUT",
-    "available": "AVAILABLE"
+    "available": "AVAILABLE",
+    "sale": "SALE",
+    "noImage": "No image",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "addingToCart": "Adding to cart",
+    "selectSize": "Select Size"
   },
   "cart": {
-    "title": "SHOPPING CART",
+    "title": "CART",
     "empty": {
       "title": "YOUR CART IS EMPTY",
-      "subtitle": "Looks like you haven't added anything yet.",
+      "subtitle": "Add some items to get started",
       "cta": "CONTINUE SHOPPING"
     },
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "tax": "Tax",
     "total": "Total",
-    "checkout": "PROCEED TO CHECKOUT",
-    "continueShopping": "CONTINUE SHOPPING",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
     "remove": "Remove",
     "clear": "CLEAR CART",
-    "discountCode": "Discount code",
-    "apply": "APPLY",
+    "discountCode": "Enter promo code",
+    "apply": "Apply",
     "calculatedAtCheckout": "Calculated at checkout"
   },
   "auth": {
@@ -68,6 +155,8 @@
     "register": {
       "title": "CREATE ACCOUNT",
       "subtitle": "Join the Indecisive Wear community",
+      "cardTitle": "Create your account",
+      "cardDescription": "Fill in your details to get started",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
@@ -105,7 +194,20 @@
     "comingSoon": "COMING SOON",
     "soldOut": "SOLD OUT",
     "new": "NEW",
-    "sale": "SALE"
+    "sale": "SALE",
+    "color": "Color",
+    "size": "Size",
+    "quantity": "Quantity",
+    "select": "Select",
+    "selectOptions": "Select Options",
+    "sizeGuide": "Size Guide",
+    "sizeGuideNote": "All sizes are in US sizing.",
+    "measurements": "Measurements",
+    "inStock": "In stock and ready to ship",
+    "outOfStock": "Currently out of stock",
+    "close": "Close",
+    "wishlist": "Wishlist",
+    "categories": "CATEGORIES"
   },
   "footer": {
     "customerService": "Customer Service",
@@ -114,8 +216,33 @@
     "shipping": "Shipping",
     "returns": "Returns",
     "sizeGuide": "Size Guide",
-    "privacy": "Privacy",
-    "terms": "Terms",
+    "privacy": "Privacy Policy",
+    "cookie": "Cookie Policy",
+    "terms": "Terms of Service",
+    "tagline": "For the beautifully undecided. Embrace both sides of your style.",
+    "sections": {
+      "shop": {
+        "title": "SHOP",
+        "newArrivals": "New Arrivals",
+        "essentials": "Essentials",
+        "streetwear": "Streetwear",
+        "sale": "Sale"
+      },
+      "support": {
+        "title": "SUPPORT",
+        "sizeGuide": "Size Guide",
+        "shipping": "Shipping",
+        "returns": "Returns",
+        "contact": "Contact"
+      },
+      "connect": {
+        "title": "CONNECT",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "tiktok": "TikTok",
+        "newsletter": "Newsletter"
+      }
+    },
     "newsletter": {
       "title": "NEWSLETTER",
       "subtitle": "Get the latest updates",
@@ -125,7 +252,7 @@
     "social": {
       "follow": "Follow Us"
     },
-    "copyright": "© 2025 Indecisive Wear. All rights reserved."
+    "copyright": "© {year} Indecisive Wear. All rights reserved."
   },
   "messages": {
     "addedToCart": "Added to cart",

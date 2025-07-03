@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useEffect } from 'react';
 import { useCart as useHydrogenCart, type Cart } from '@shopify/hydrogen-react';
 import { toast } from 'sonner';
+import { analytics } from '@/lib/analytics/events';
 
 // Unified cart hook implementation using Hydrogen React
 export function useCart() {
@@ -90,6 +91,17 @@ export function useCart() {
           description: `${quantity} item${quantity > 1 ? 's' : ''} added`,
           duration: 3000,
         });
+        
+        // Track add to cart event
+        const line = lines?.find(l => l?.merchandise?.id === merchandiseId)
+        if (line?.merchandise?.product && line.merchandise.product.id) {
+          analytics.addToCart({
+            id: line.merchandise.product.id,
+            name: line.merchandise.product.title || 'Unknown Product',
+            price: parseFloat(line.merchandise.price?.amount || '0'),
+            quantity
+          })
+        }
       }
     } catch (_error) {
       toast.error('Failed to add item to cart', { id: 'cart-error' });
@@ -127,12 +139,23 @@ export function useCart() {
     }
 
     try {
+      // Track remove from cart event
+      const line = lines?.find(l => l?.id === lineId)
+      if (line?.merchandise?.product && line.merchandise.product.id) {
+        analytics.removeFromCart({
+          id: line.merchandise.product.id,
+          name: line.merchandise.product.title || 'Unknown Product',
+          price: parseFloat(line.merchandise.price?.amount || '0'),
+          quantity: line.quantity || 1
+        })
+      }
+      
       linesRemove([lineId]);
       toast.success('Removed from cart', { id: 'cart-update-success' });
     } catch (_error) {
       toast.error('Failed to remove item', { id: 'cart-error' });
     }
-  }, [linesRemove]);
+  }, [linesRemove, lines]);
 
   // Clear all items from cart
   const clearCart = useCallback(() => {

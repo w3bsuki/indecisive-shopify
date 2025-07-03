@@ -9,11 +9,15 @@ import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
 import { useMarket } from "@/hooks/use-market"
+import { useTranslations } from "next-intl"
 
 export function MobileCartSheet({ children, isBottomNav = false }: { children?: React.ReactNode; isBottomNav?: boolean }) {
   // OFFICIAL HYDROGEN REACT CART PATTERN
-  const { lines, cost, checkoutUrl, totalQuantity, status, updateItem, removeItem } = useCart()
+  const { lines, cost, totalQuantity, status, updateItem, removeItem } = useCart()
   const { formatPrice } = useMarket()
+  const t = useTranslations('cart')
+  const tc = useTranslations('common')
+  const tp = useTranslations('products')
 
   const subtotal = cost?.subtotalAmount
   const total = cost?.totalAmount
@@ -21,9 +25,8 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
   const isLoading = status === 'updating' || status === 'creating' || status === 'fetching'
 
   const handleCheckout = () => {
-    if (checkoutUrl) {
-      window.location.href = checkoutUrl
-    }
+    // Navigate to our enhanced checkout page for smooth experience
+    window.location.href = '/checkout'
   }
 
   const defaultTrigger = isBottomNav ? (
@@ -33,7 +36,7 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       className="flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] relative text-gray-600"
     >
       <ShoppingBag className="h-5 w-5" />
-      <span className="text-xs font-mono">CART</span>
+      <span className="text-xs font-mono">{t('title')}</span>
       {totalItems > 0 && (
         <Badge
           variant="secondary"
@@ -65,8 +68,8 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="px-6 py-4 border-b">
           <SheetTitle className="flex items-center justify-between">
-            <span>SHOPPING CART</span>
-            <Badge variant="secondary">{totalItems} items</Badge>
+            <span>{t('title')}</span>
+            <Badge variant="secondary">{totalItems} {totalItems === 1 ? 'item' : 'items'}</Badge>
           </SheetTitle>
         </SheetHeader>
 
@@ -75,10 +78,10 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
           {!lines || lines.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
-              <p className="text-lg font-medium mb-2">Your cart is empty</p>
-              <p className="text-sm text-gray-600 mb-6">Add some items to get started</p>
+              <p className="text-lg font-medium mb-2">{t('empty.title')}</p>
+              <p className="text-sm text-gray-600 mb-6">{t('empty.subtitle')}</p>
               <Button variant="outline" className="w-full max-w-xs">
-                Continue Shopping
+                {t('continueShopping')}
               </Button>
             </div>
           ) : (
@@ -96,7 +99,7 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-gray-400">
-                        No image
+                        {tp('noImage')}
                       </div>
                     )}
                   </div>
@@ -163,28 +166,28 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="Enter promo code"
+                placeholder={t('discountCode')}
                 className="flex-1 px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               />
               <Button variant="outline" size="sm">
-                Apply
+                {t('apply')}
               </Button>
             </div>
 
             {/* Totals */}
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>Subtotal</span>
+                <span>{t('subtotal')}</span>
                 <span>{subtotal?.amount && subtotal?.currencyCode ? formatPrice(subtotal.amount, subtotal.currencyCode) : '$0.00'}</span>
               </div>
               {cost?.totalTaxAmount?.amount && cost?.totalTaxAmount?.currencyCode && parseFloat(cost.totalTaxAmount.amount) > 0 && (
                 <div className="flex justify-between">
-                  <span>Tax</span>
+                  <span>{t('tax')}</span>
                   <span>{formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode)}</span>
                 </div>
               )}
               <div className="flex justify-between font-medium text-base pt-2 border-t">
-                <span>Total</span>
+                <span>{t('total')}</span>
                 <span>{total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}</span>
               </div>
             </div>
@@ -199,12 +202,12 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
+                  {tc('loading')}
                 </>
               ) : (
                 <>
                   <CreditCard className="mr-2 h-4 w-4" />
-                  Checkout
+                  {t('checkout')}
                 </>
               )}
             </Button>

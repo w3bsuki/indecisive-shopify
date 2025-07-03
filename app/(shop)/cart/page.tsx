@@ -12,30 +12,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export default function CartPage() {
-  const { lines, cost, totalItems, updateItem, removeItem, clearCart, checkoutUrl, isEmpty, isLoading } = useCart()
+  const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading } = useCart()
   const { formatPrice } = useMarket()
 
-  const handleCheckout = async () => {
-    // Check if user is authenticated
-    try {
-      const response = await fetch('/api/auth/me')
-      
-      if (response.ok) {
-        // User is authenticated, proceed to Shopify checkout
-        if (checkoutUrl) {
-          window.location.href = checkoutUrl
-        }
-      } else {
-        // User not authenticated, redirect to login with return URL
-        const returnUrl = encodeURIComponent('/cart?checkout=true')
-        window.location.href = `/login?returnUrl=${returnUrl}`
-      }
-    } catch (error) {
-      console.error('Authentication check failed:', error)
-      // Fallback to login page
-      const returnUrl = encodeURIComponent('/cart?checkout=true')
-      window.location.href = `/login?returnUrl=${returnUrl}`
-    }
+  const handleCheckout = () => {
+    // Navigate to our enhanced checkout page for smooth experience
+    window.location.href = '/checkout'
   }
 
   if (isEmpty) {

@@ -30,7 +30,7 @@ export function useRecentlyViewed() {
         setProducts(filtered)
       }
     } catch (error) {
-      console.warn('Failed to load recently viewed products:', error)
+      // Failed to load recently viewed products
     } finally {
       setIsLoaded(true)
     }
@@ -42,7 +42,7 @@ export function useRecentlyViewed() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(products))
       } catch (error) {
-        console.warn('Failed to save recently viewed products:', error)
+        // Failed to save recently viewed products
       }
     }
   }, [products, isLoaded])

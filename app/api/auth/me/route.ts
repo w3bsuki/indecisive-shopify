@@ -42,7 +42,7 @@ export async function GET(_request: NextRequest) {
 
 // Get customer details from Shopify using access token
 async function getCustomerDetails(accessToken: string) {
-  const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN
+  const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
   const storefrontToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
   if (!shopDomain || !storefrontToken) {

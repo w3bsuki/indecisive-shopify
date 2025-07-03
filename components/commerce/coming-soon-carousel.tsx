@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface ComingSoonProduct {
   id: string
@@ -52,24 +53,25 @@ const upcomingProducts: ComingSoonProduct[] = [
 export function ComingSoonCarousel() {
   const [emailInputs, setEmailInputs] = useState<Record<string, string>>({})
   const [notifiedProducts, setNotifiedProducts] = useState<Set<string>>(new Set())
+  const t = useTranslations('comingSoon')
 
   const handleNotifyMe = async (productId: string) => {
     const email = emailInputs[productId]
     
     if (!email) {
-      toast.error('Please enter your email')
+      toast.error(t('errors.enterEmail'))
       return
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error('Please enter a valid email')
+      toast.error(t('errors.validEmail'))
       return
     }
 
     // Here you would typically send to your API
     // For now, we'll just show success and mark as notified
     setNotifiedProducts(prev => new Set([...prev, productId]))
-    toast.success('You\'ll be notified when this drops!')
+    toast.success(t('success.notified'))
     
     // Clear the email input for this product
     setEmailInputs(prev => ({ ...prev, [productId]: '' }))
@@ -80,10 +82,10 @@ export function ComingSoonCarousel() {
       <div className="max-w-7xl mx-auto">
         <div className="px-4 sm:px-6 lg:px-8 mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-mono tracking-wide">
-            COMING SOON
+            {t('title')}
           </h2>
           <p className="text-gray-600 text-center font-mono text-sm">
-            Get notified when these drop
+            {t('subtitle')}
           </p>
         </div>
         
@@ -105,7 +107,7 @@ export function ComingSoonCarousel() {
                       {/* Enhanced Coming Soon Badge - Centered */}
                       <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
                         <div className="card-glass px-2 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
-                          COMING SOON
+                          {t('badge')}
                         </div>
                       </div>
                       
@@ -119,11 +121,11 @@ export function ComingSoonCarousel() {
                       </div>
                       
                       <h3 className="font-mono font-bold text-base text-center mb-2">
-                        {product.name}
+                        {t(`products.${product.id}.name`)}
                       </h3>
                       
                       <p className="font-mono text-xs text-gray-600 text-center">
-                        {product.launchDate}
+                        {t(`products.${product.id}.launchDate`)}
                       </p>
                     </div>
                   </div>
@@ -131,17 +133,17 @@ export function ComingSoonCarousel() {
                   {/* Card Info */}
                   <div className="p-4 border-t-2 border-black space-y-3">
                     <p className="font-mono text-xs text-gray-600 text-center min-h-[2.5rem] flex items-center justify-center">
-                      {product.description}
+                      {t(`products.${product.id}.description`)}
                     </p>
                     
                     {notifiedProducts.has(product.id) ? (
                       <div className="bg-gray-100 p-3 text-center">
                         <p className="font-mono text-xs font-medium">
-                          ✓ YOU&apos;RE ON THE LIST
+                          ✓ {t('onTheList')}
                         </p>
                         {product.notifyCount && (
                           <p className="font-mono text-xs text-gray-600 mt-1">
-                            Join {product.notifyCount} others waiting
+                            {t('joinOthersWaiting', { count: product.notifyCount })}
                           </p>
                         )}
                       </div>
@@ -152,7 +154,7 @@ export function ComingSoonCarousel() {
                             type="email"
                             inputMode="email"
                             autoComplete="email"
-                            placeholder="Enter your email"
+                            placeholder={t('emailPlaceholder')}
                             value={emailInputs[product.id] || ''}
                             onChange={(e) => setEmailInputs(prev => ({
                               ...prev,
@@ -172,12 +174,12 @@ export function ComingSoonCarousel() {
                           className="w-full font-mono text-xs"
                           variant="default"
                         >
-                          NOTIFY ME
+                          {t('notifyButton')}
                         </Button>
                         
                         {product.notifyCount && (
                           <p className="font-mono text-xs text-gray-500 text-center">
-                            {product.notifyCount} people waiting
+                            {t('peopleWaiting', { count: product.notifyCount })}
                           </p>
                         )}
                       </>
@@ -205,7 +207,7 @@ export function ComingSoonCarousel() {
                       {/* Enhanced Coming Soon Badge - Centered */}
                       <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
                         <div className="card-glass px-3 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
-                          COMING SOON
+                          {t('badge')}
                         </div>
                       </div>
                       
@@ -219,11 +221,11 @@ export function ComingSoonCarousel() {
                       </div>
                       
                       <h3 className="font-mono font-bold text-base text-center mb-2">
-                        {product.name}
+                        {t(`products.${product.id}.name`)}
                       </h3>
                       
                       <p className="font-mono text-xs text-gray-600 text-center">
-                        {product.launchDate}
+                        {t(`products.${product.id}.launchDate`)}
                       </p>
                     </div>
                   </div>
@@ -231,17 +233,17 @@ export function ComingSoonCarousel() {
                   {/* Card Info */}
                   <div className="p-4 border-t-2 border-black space-y-3">
                     <p className="font-mono text-xs text-gray-600 text-center min-h-[2.5rem] flex items-center justify-center">
-                      {product.description}
+                      {t(`products.${product.id}.description`)}
                     </p>
                     
                     {notifiedProducts.has(product.id) ? (
                       <div className="bg-gray-100 p-3 text-center">
                         <p className="font-mono text-xs font-medium">
-                          ✓ YOU&apos;RE ON THE LIST
+                          ✓ {t('onTheList')}
                         </p>
                         {product.notifyCount && (
                           <p className="font-mono text-xs text-gray-600 mt-1">
-                            Join {product.notifyCount} others waiting
+                            {t('joinOthersWaiting', { count: product.notifyCount })}
                           </p>
                         )}
                       </div>
@@ -252,7 +254,7 @@ export function ComingSoonCarousel() {
                             type="email"
                             inputMode="email"
                             autoComplete="email"
-                            placeholder="Enter your email"
+                            placeholder={t('emailPlaceholder')}
                             value={emailInputs[product.id] || ''}
                             onChange={(e) => setEmailInputs(prev => ({
                               ...prev,
@@ -272,12 +274,12 @@ export function ComingSoonCarousel() {
                           className="w-full font-mono text-xs"
                           variant="default"
                         >
-                          NOTIFY ME
+                          {t('notifyButton')}
                         </Button>
                         
                         {product.notifyCount && (
                           <p className="font-mono text-xs text-gray-500 text-center">
-                            {product.notifyCount} people waiting
+                            {t('peopleWaiting', { count: product.notifyCount })}
                           </p>
                         )}
                       </>
@@ -299,7 +301,7 @@ export function ComingSoonCarousel() {
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
             >
-              VIEW ALL UPCOMING DROPS →
+              {t('viewAllDrops')}
             </Button>
           </div>
         </div>

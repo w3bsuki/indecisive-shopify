@@ -1,4 +1,12 @@
 {
+  "brand": {
+    "name": "INDECISIVE WEAR",
+    "tagline": "Mode für Unentschlossene",
+    "social": {
+      "handle": "@indecisivewear",
+      "hashtag": "#IndecisiveWear"
+    }
+  },
   "nav": {
     "products": "PRODUKTE",
     "collections": "KOLLEKTIONEN",
@@ -7,7 +15,78 @@
     "cart": "WARENKORB",
     "account": "KONTO",
     "login": "ANMELDEN",
-    "logout": "ABMELDEN"
+    "logout": "ABMELDEN",
+    "new": "NEU",
+    "comingSoon": "DEMNÄCHST",
+    "sale": "SALE",
+    "banner": "KOSTENLOSER VERSAND AB 100€ | 30 TAGE RÜCKGABE"
+  },
+  "hero": {
+    "customers": "Kunden",
+    "trending": "TREND",
+    "from": "AB",
+    "freeShipping": "KOSTENLOSER VERSAND AB 100€",
+    "shopNow": "JETZT SHOPPEN",
+    "viewCollection": "KOLLEKTION ANSEHEN",
+    "shopCollection": "KOLLEKTION SHOPPEN",
+    "exploreCollection": "KOLLEKTION ENTDECKEN",
+    "limitedStock": "Limitierter Bestand",
+    "marquee": {
+      "freeShipping": "KOSTENLOSER VERSAND AB 100€",
+      "returns": "30 TAGE RÜCKGABE",
+      "joinCustomers": "SCHLIESSEN SIE SICH {count}+ KUNDEN AN",
+      "newArrivals": "WÖCHENTLICH NEUE ARTIKEL"
+    }
+  },
+  "community": {
+    "title": "COMMUNITY STYLE",
+    "subtitle": "Markiere uns @indecisivewear #IndecisiveWear",
+    "viewPost": "POST ANSEHEN",
+    "viewOnInstagram": "AUF INSTAGRAM ANSEHEN",
+    "shareYourStyle": "TEILE DEINEN STYLE",
+    "tagToBeFeature": "Markiere @indecisivewear um vorgestellt zu werden",
+    "getFeaturedInCommunity": "Werde Teil unserer Community",
+    "getFeatured": "VORGESTELLT WERDEN"
+  },
+  "comingSoon": {
+    "title": "KOMMT BALD",
+    "subtitle": "Lass dich benachrichtigen wenn diese Artikel verfügbar sind",
+    "badge": "KOMMT BALD",
+    "emailPlaceholder": "Deine E-Mail eingeben",
+    "notifyButton": "BENACHRICHTIGE MICH",
+    "onTheList": "DU BIST AUF DER LISTE",
+    "joinOthersWaiting": "Schließe dich {count} anderen Wartenden an",
+    "peopleWaiting": "{count} Personen warten",
+    "viewAllDrops": "ALLE KOMMENDEN DROPS ANSEHEN →",
+    "errors": {
+      "enterEmail": "Bitte gib deine E-Mail ein",
+      "validEmail": "Bitte gib eine gültige E-Mail ein"
+    },
+    "success": {
+      "notified": "Du wirst benachrichtigt wenn dieser Artikel verfügbar ist!"
+    },
+    "products": {
+      "caps-001": {
+        "name": "SIGNATURE CAPS",
+        "launchDate": "FEBRUAR 2025",
+        "description": "Premium Snapbacks mit Logo"
+      },
+      "tshirts-001": {
+        "name": "ESSENTIAL TEES",
+        "launchDate": "MÄRZ 2025",
+        "description": "Oversized Baumwolle mit Grafiken"
+      },
+      "socks-001": {
+        "name": "CREW SOCKEN",
+        "launchDate": "APRIL 2025",
+        "description": "Baumwollmischung mit Branding"
+      },
+      "hoodies-001": {
+        "name": "HOODIES",
+        "launchDate": "MAI 2025",
+        "description": "Premium Fleece mit Details"
+      }
+    }
   },
   "home": {
     "hero": {
@@ -16,7 +95,9 @@
       "cta": "KOLLEKTION ENTDECKEN"
     },
     "featured": {
-      "title": "FEATURED PRODUKTE"
+      "title": "FEATURED KOLLEKTION",
+      "subtitle": "ХУЛИГАНКА",
+      "description": "Limitierte Bucket Hats für die Unentschlossenen"
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -33,25 +114,31 @@
     "viewAll": "ALLE PRODUKTE ANZEIGEN",
     "priceFrom": "AB",
     "soldOut": "AUSVERKAUFT",
-    "available": "VERFÜGBAR"
+    "available": "VERFÜGBAR",
+    "sale": "SALE",
+    "noImage": "Kein Bild",
+    "addToWishlist": "Zur Wunschliste hinzufügen",
+    "removeFromWishlist": "Von Wunschliste entfernen",
+    "addingToCart": "Wird zum Warenkorb hinzugefügt",
+    "selectSize": "Größe wählen"
   },
   "cart": {
     "title": "WARENKORB",
     "empty": {
       "title": "IHR WARENKORB IST LEER",
-      "subtitle": "Sie haben noch nichts hinzugefügt.",
+      "subtitle": "Fügen Sie Artikel hinzu, um zu beginnen",
       "cta": "WEITER EINKAUFEN"
     },
     "subtotal": "Zwischensumme",
     "shipping": "Versand",
     "tax": "Steuer",
     "total": "Gesamt",
-    "checkout": "ZUR KASSE",
-    "continueShopping": "WEITER EINKAUFEN",
+    "checkout": "Zur Kasse",
+    "continueShopping": "Weiter einkaufen",
     "remove": "Entfernen",
     "clear": "WARENKORB LEEREN",
-    "discountCode": "Rabattcode",
-    "apply": "ANWENDEN",
+    "discountCode": "Promo-Code eingeben",
+    "apply": "Anwenden",
     "calculatedAtCheckout": "Wird an der Kasse berechnet"
   },
   "auth": {
@@ -68,6 +155,8 @@
     "register": {
       "title": "KONTO ERSTELLEN",
       "subtitle": "Werden Sie Teil der Indecisive Wear Community",
+      "cardTitle": "Erstellen Sie Ihr Konto",
+      "cardDescription": "Geben Sie Ihre Daten ein, um zu beginnen",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "email": "E-Mail",
@@ -105,7 +194,20 @@
     "comingSoon": "KOMMT BALD",
     "soldOut": "AUSVERKAUFT",
     "new": "NEU",
-    "sale": "SALE"
+    "sale": "SALE",
+    "color": "Farbe",
+    "size": "Größe",
+    "quantity": "Anzahl",
+    "select": "Auswählen",
+    "selectOptions": "Optionen auswählen",
+    "sizeGuide": "Größentabelle",
+    "sizeGuideNote": "Alle Größen sind in US-Größen.",
+    "measurements": "Maße",
+    "inStock": "Auf Lager und versandbereit",
+    "outOfStock": "Derzeit nicht auf Lager",
+    "close": "Schließen",
+    "wishlist": "Wunschliste",
+    "categories": "KATEGORIEN"
   },
   "footer": {
     "customerService": "Kundenservice",
@@ -114,8 +216,33 @@
     "shipping": "Versand",
     "returns": "Rücksendungen",
     "sizeGuide": "Größentabelle",
-    "privacy": "Datenschutz",
-    "terms": "AGB",
+    "privacy": "Datenschutzrichtlinie",
+    "cookie": "Cookie-Richtlinie",
+    "terms": "Nutzungsbedingungen",
+    "tagline": "Für die wunderbar Unentschlossenen. Umarmen Sie beide Seiten Ihres Stils.",
+    "sections": {
+      "shop": {
+        "title": "SHOP",
+        "newArrivals": "Neuheiten",
+        "essentials": "Essentials",
+        "streetwear": "Streetwear",
+        "sale": "Sale"
+      },
+      "support": {
+        "title": "SUPPORT",
+        "sizeGuide": "Größentabelle",
+        "shipping": "Versand",
+        "returns": "Rücksendungen",
+        "contact": "Kontakt"
+      },
+      "connect": {
+        "title": "VERBINDEN",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "tiktok": "TikTok",
+        "newsletter": "Newsletter"
+      }
+    },
     "newsletter": {
       "title": "NEWSLETTER",
       "subtitle": "Erhalten Sie die neuesten Updates",
@@ -125,7 +252,7 @@
     "social": {
       "follow": "Folgen Sie uns"
     },
-    "copyright": "© 2025 Indecisive Wear. Alle Rechte vorbehalten."
+    "copyright": "© {year} Indecisive Wear. Alle Rechte vorbehalten."
   },
   "messages": {
     "addedToCart": "Zum Warenkorb hinzugefügt",

@@ -73,11 +73,11 @@ class CurrencyService {
         }
         
         this.lastFetch = now
-        console.log('✅ Updated exchange rates:', this.rates)
+        // Updated exchange rates
         return this.rates
       }
-    } catch (error) {
-      console.warn('⚠️ Failed to fetch live exchange rates, using fallback:', error)
+    } catch (_error) {
+      // Failed to fetch live exchange rates, using fallback
     }
 
     // Fallback to static rates
@@ -117,7 +117,7 @@ class CurrencyService {
       exchangeRate = rates.EUR
     } else {
       // For other conversions, convert through BGN
-      console.warn(`Unsupported conversion: ${fromCurrency} → ${toCurrency}`)
+      // Unsupported conversion
       exchangeRate = 1
     }
 

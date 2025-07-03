@@ -32,10 +32,14 @@ export function MarketSwitcher({ className, variant = 'default' }: MarketSwitche
   }
 
   const handleMarketChange = (marketId: string) => {
+    // Market change requested
     const newMarket = SUPPORTED_MARKETS.find(m => m.id === marketId)
     if (newMarket) {
+      // Valid market found, switching...
       setMarket(newMarket)
-      // No reload - let React context handle the market update seamlessly
+      // setMarket will handle cookie setting and page reload for i18n
+    } else {
+      // Invalid market ID
     }
   }
 

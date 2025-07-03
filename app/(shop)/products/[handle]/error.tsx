@@ -12,7 +12,8 @@ export default function ProductError({
   reset: () => void
 }) {
   useEffect(() => {
-    // TODO: Log to error reporting service
+    // FUTURE: Integrate error reporting (Sentry, LogRocket, etc.)
+    // console.error('Product page error:', error)
   }, [error])
 
   return (

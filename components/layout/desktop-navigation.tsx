@@ -11,6 +11,7 @@ import { SearchBar } from "@/components/layout/search-bar"
 import { useCart } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { MarketSwitcher } from "@/components/commerce/market-switcher"
+import { useTranslations } from 'next-intl'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -19,18 +20,19 @@ import {
 } from "@/components/ui/navigation-menu"
 
 export function DesktopNavigation() {
+  const t = useTranslations('nav')
   const { totalItems } = useCart()
   const { totalItems: wishlistCount } = useWishlist()
   const [showSearchBar, setShowSearchBar] = useState(false)
 
   const categories = [
     {
-      title: "NEW",
+      title: t('new'),
       href: "/new",
       isSimple: true, // No dropdown for NEW
     },
     {
-      title: "COMING SOON",
+      title: t('comingSoon'),
       href: "/coming-soon",
       isSimple: true, // No dropdown for COMING SOON
     },
@@ -40,7 +42,7 @@ export function DesktopNavigation() {
     <div className="hidden md:block">
       {/* Top Banner */}
       <div className="bg-black text-white py-2 text-center text-sm">
-        <p>FREE SHIPPING ON ORDERS OVER $100 | 30-DAY RETURNS</p>
+        <p>{t('banner')}</p>
       </div>
 
       {/* Main Navigation */}
@@ -81,7 +83,7 @@ export function DesktopNavigation() {
                         href="/sale"
                         className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
                       >
-                        <span className="text-red-600">SALE</span>
+                        <span className="text-red-600">{t('sale')}</span>
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
@@ -118,17 +120,19 @@ export function DesktopNavigation() {
               </Button>
 
               {/* Wishlist */}
-              <Button variant="ghost" size="icon" className="relative">
-                <Heart className="h-5 w-5" />
-                {wishlistCount > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
-                  >
-                    {wishlistCount}
-                  </Badge>
-                )}
-              </Button>
+              <Link href="/wishlist">
+                <Button variant="ghost" size="icon" className="relative">
+                  <Heart className="h-5 w-5" />
+                  {wishlistCount > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-black text-white"
+                    >
+                      {wishlistCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
 
               {/* Cart */}
               <MobileCartSheet>

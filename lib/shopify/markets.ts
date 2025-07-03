@@ -102,8 +102,8 @@ export function getStoredMarket(): Market | null {
       const marketId = JSON.parse(stored)
       return getMarketById(marketId)
     }
-  } catch (e) {
-    console.error('Error reading stored market:', e)
+  } catch (_e) {
+    // Silent error - fallback to null
   }
   
   return null
@@ -114,7 +114,7 @@ export function storeMarket(market: Market): void {
   
   try {
     localStorage.setItem(MARKET_STORAGE_KEY, JSON.stringify(market.id))
-  } catch (e) {
-    console.error('Error storing market:', e)
+  } catch (_e) {
+    // Silent error - localStorage unavailable
   }
 }

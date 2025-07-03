@@ -50,13 +50,34 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
     initializeMarket()
   }, [])
 
-  const setMarket = (newMarket: Market) => {
+  const setMarket = async (newMarket: Market) => {
+    // Switching market
+    
+    // Update local state immediately
     setMarketState(newMarket)
     storeMarket(newMarket)
     
-    // Force a page reload to trigger next-intl locale change
-    // This is necessary because next-intl reads locale from cookies on server
-    window.location.reload()
+    // Set cookie for next-intl in the correct format
+    // The i18n system expects market ID to be set in cookies
+    try {
+      // Setting market cookie for i18n...
+      
+      // Set the market cookie that i18n/request.ts reads
+      document.cookie = `indecisive-wear-market=${JSON.stringify(newMarket.id)}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=strict`
+      
+      // Market cookie set successfully
+      
+      // Force a page reload to trigger next-intl locale change
+      // This is necessary because next-intl reads locale from cookies on server
+      setTimeout(() => {
+        // Reloading page to apply i18n changes...
+        window.location.reload()
+      }, 100)
+    } catch (error) {
+      console.error('❌ [MARKET] Failed to set market cookie:', error)
+      // Fallback: still reload to ensure consistency
+      window.location.reload()
+    }
   }
 
   const formatPrice = (amount: string, currencyCode?: string) => {

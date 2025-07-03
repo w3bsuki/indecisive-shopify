@@ -305,8 +305,8 @@ export async function sendRateLimitAlert(
   // This is where you would integrate with your alerting system
   // For example: Slack, PagerDuty, email, etc.
   
-  // TODO: Integrate with alerting system (Slack, PagerDuty, email, etc.)
-  // Rate limit alert triggered for key: ${key}, endpoint: ${endpoint}
+  // FUTURE: Integrate with alerting system when implementing production monitoring
+  // Options: Slack webhook, PagerDuty, SendGrid email, etc.
   
   // Example integration with external service:
   // await sendSlackNotification({

@@ -1,22 +1,22 @@
-'use client'
-
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { Badge } from '@/components/ui/badge'
-import { useMarket } from '@/hooks/use-market'
+import { formatPriceServer } from '@/lib/shopify/server-market'
+import { getTranslations } from 'next-intl/server'
 
 interface ProductInfoProps {
   product: ShopifyProduct
   selectedVariant?: ShopifyProductVariant
 }
 
-export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
-  const { formatPrice } = useMarket()
+export async function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
+  const t = await getTranslations('products')
+  
   // Use selected variant price if available, otherwise show price range
   const price = selectedVariant
-    ? formatPrice(selectedVariant.price.amount, selectedVariant.price.currencyCode)
+    ? await formatPriceServer(selectedVariant.price.amount, selectedVariant.price.currencyCode)
     : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount
-    ? formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
-    : `${formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)} - ${formatPrice(product.priceRange.maxVariantPrice.amount, product.priceRange.maxVariantPrice.currencyCode)}`
+    ? await formatPriceServer(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
+    : `${await formatPriceServer(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)} - ${await formatPriceServer(product.priceRange.maxVariantPrice.amount, product.priceRange.maxVariantPrice.currencyCode)}`
 
   const inStock = selectedVariant ? selectedVariant.availableForSale : true
 
@@ -27,7 +27,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
         <div className="mt-2 flex items-center gap-4">
           <p className="text-2xl font-semibold">{price}</p>
           {!inStock && (
-            <Badge variant="destructive">Out of Stock</Badge>
+            <Badge variant="destructive">{t('soldOut')}</Badge>
           )}
         </div>
       </div>

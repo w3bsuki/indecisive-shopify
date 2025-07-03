@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { getProducts } from '@/lib/shopify'
+import { getTranslations } from 'next-intl/server'
 // import { HeroSection } from '@/components/layout/hero-section'
-import { HeroWrapper } from '@/components/layout/hero-wrapper'
+import { HeroWrapperServer } from '@/components/layout/hero-wrapper-server'
 import { ProductCarousel } from '@/components/commerce/product-carousel'
-import { ProductCardMinimal } from '@/components/commerce/product-card-minimal'
+import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
 import { NewsletterSection } from '@/components/layout/newsletter-section'
 import { Footer } from '@/components/layout/footer'
 import { MobileNavigation } from '@/components/layout/mobile-navigation'
@@ -14,6 +15,9 @@ import { ComingSoonCarousel } from '@/components/commerce/coming-soon-carousel'
 import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
 
 export default async function HomePage() {
+  // Get translations for the home page
+  const t = await getTranslations('home')
+  
   // Fetch data from Shopify with error handling
   try {
     const productsData = await getProducts(8) // Reduced to 8 featured products
@@ -33,19 +37,19 @@ export default async function HomePage() {
 
       {/* Hero Section - no margin needed, hero handles its own positioning */}
       {/* <HeroSection /> */}
-      <HeroWrapper />
+      <HeroWrapperServer />
 
       {/* FEATURED DROP Section - Enhanced for 2025 */}
       <section className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header with Modern Typography */}
           <div className="text-center mb-12">
-            <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">Featured Collection</p>
+            <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">{t('featured.title')}</p>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 font-mono tracking-tight text-center">
-              ХУЛИГАНКА
+              {t('featured.subtitle')}
             </h2>
             <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-              Limited edition bucket hats for those who can&apos;t decide
+              {t('featured.description')}
             </p>
           </div>
           
@@ -58,7 +62,7 @@ export default async function HomePage() {
           <div className="hidden md:block">
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
               {products.map((product, index) => (
-                <ProductCardMinimal 
+                <ProductCardMinimalServer 
                   key={product.id} 
                   product={product} 
                   priority={index < 4}

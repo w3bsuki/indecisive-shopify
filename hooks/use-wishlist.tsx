@@ -1,102 +1,36 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+// Re-export enhanced wishlist hook for production use
+// This maintains backward compatibility while adding Shopify metafield support
 
-interface WishlistItem {
+import { useWishlistEnhanced } from './use-wishlist-enhanced';
+
+// Export the enhanced hook as the default wishlist hook
+export function useWishlist() {
+  const enhanced = useWishlistEnhanced();
+  
+  // Return compatible interface (hide enhanced features for now)
+  return {
+    items: enhanced.items,
+    totalItems: enhanced.totalItems,
+    addItem: enhanced.addItem,
+    removeItem: enhanced.removeItem,
+    toggleItem: enhanced.toggleItem,
+    isInWishlist: enhanced.isInWishlist,
+    clearWishlist: enhanced.clearWishlist,
+    isLoading: enhanced.isLoading,
+    // Additional features for enhanced usage
+    isAuthenticated: enhanced.isAuthenticated,
+    isSyncing: enhanced.isSyncing,
+    migrateToShopify: enhanced.migrateToShopify
+  };
+}
+
+// Export types for external use
+export interface WishlistItem {
   id: string;
   handle: string;
   title: string;
   image?: string;
   price?: string;
-}
-
-export function useWishlist() {
-  const [items, setItems] = useState<WishlistItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Load wishlist from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('wishlist');
-      if (saved) {
-        setItems(JSON.parse(saved));
-      }
-    } catch (_error) {
-      // Silently fail if localStorage is not available
-    }
-    setIsLoading(false);
-  }, []);
-
-  // Save to localStorage whenever items change
-  useEffect(() => {
-    if (!isLoading) {
-      try {
-        localStorage.setItem('wishlist', JSON.stringify(items));
-      } catch (error) {
-        // Silently fail if localStorage is not available
-      }
-    }
-  }, [items, isLoading]);
-
-  const addItem = useCallback((item: WishlistItem) => {
-    setItems(prev => {
-      const exists = prev.some(i => i.id === item.id);
-      if (exists) {
-        toast.info('Already in wishlist', { id: 'wishlist-update' });
-        return prev;
-      }
-      toast.success('Added to wishlist', {
-        id: 'wishlist-update',
-        description: item.title,
-      });
-      return [...prev, item];
-    });
-  }, []);
-
-  const removeItem = useCallback((id: string) => {
-    setItems(prev => {
-      const item = prev.find(i => i.id === id);
-      if (item) {
-        toast.success('Removed from wishlist', {
-          id: 'wishlist-update',
-          description: item.title,
-        });
-      }
-      return prev.filter(i => i.id !== id);
-    });
-  }, []);
-
-  const toggleItem = useCallback((item: WishlistItem) => {
-    setItems(prev => {
-      const exists = prev.some(i => i.id === item.id);
-      if (exists) {
-        toast.success('Removed from wishlist', { id: 'wishlist-update' });
-        return prev.filter(i => i.id !== item.id);
-      } else {
-        toast.success('Added to wishlist', { id: 'wishlist-update' });
-        return [...prev, item];
-      }
-    });
-  }, []);
-
-  const isInWishlist = useCallback((id: string) => {
-    return items.some(item => item.id === id);
-  }, [items]);
-
-  const clearWishlist = useCallback(() => {
-    setItems([]);
-    toast.success('Wishlist cleared', { id: 'wishlist-update' });
-  }, []);
-
-  return {
-    items,
-    totalItems: items.length,
-    addItem,
-    removeItem,
-    toggleItem,
-    isInWishlist,
-    clearWishlist,
-    isLoading,
-  };
 }

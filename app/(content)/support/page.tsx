@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -163,7 +164,7 @@ export default function SupportPage() {
                 <a href="/size-guide" className="underline">Size Guide</a>
               </li>
               <li>
-                <a href="/account/orders" className="underline">Track Order</a>
+                <Link href="/account/orders" className="underline">Track Order</Link>
               </li>
               <li>
                 <a href="/returns" className="underline">Returns & Exchanges</a>

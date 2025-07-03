@@ -9,15 +9,19 @@ import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { MarketSwitcher } from "@/components/commerce/market-switcher"
+import { useTranslations } from "next-intl"
 
 export function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { totalItems: wishlistCount } = useWishlist()
+  const t = useTranslations('nav')
+  const tc = useTranslations('common')
+  const tf = useTranslations('footer')
 
   const menuItems = [
-    { name: "NEW", href: "/new", badge: "DROP 1" },
-    { name: "COMING SOON", href: "/coming-soon", badge: null },
-    { name: "SALE", href: "/sale", badge: "50% OFF" },
+    { name: t('new'), href: "/new", badge: "DROP 1" },
+    { name: t('comingSoon'), href: "/coming-soon", badge: null },
+    { name: t('sale'), href: "/sale", badge: "50% OFF" },
   ]
 
 
@@ -28,7 +32,7 @@ export function MobileNavigation() {
         {/* Newsletter Banner */}
         <div className="bg-black text-white py-3 px-4 text-center">
           <p className="text-sm font-mono">
-            <strong>BECOME AN AFFILIATE</strong> - Earn 15% commission
+            {t('banner')}
           </p>
         </div>
 
@@ -68,7 +72,7 @@ export function MobileNavigation() {
                         <button
                           onClick={() => setIsMenuOpen(false)}
                           className="w-11 h-11 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-colors duration-200 border-none focus:outline-none focus:ring-2 focus:ring-white/50"
-                          aria-label="Close menu"
+                          aria-label={tc('close')}
                         >
                           <X className="h-5 w-5" />
                         </button>
@@ -83,7 +87,7 @@ export function MobileNavigation() {
                           className="flex-1 h-12 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-all duration-200 font-mono text-sm font-medium"
                         >
                           <User className="h-4 w-4 mr-2" />
-                          ACCOUNT
+                          {t('account')}
                         </Link>
                         
                         {/* Wishlist */}
@@ -93,7 +97,7 @@ export function MobileNavigation() {
                           className="flex-1 h-12 flex items-center justify-center bg-white text-black border border-gray-950 hover:bg-gray-50 hover:shadow-md transition-all duration-200 font-mono text-sm font-medium relative"
                         >
                           <Heart className="h-4 w-4 mr-2" />
-                          WISHLIST
+                          {tc('wishlist')}
                           {wishlistCount > 0 && (
                             <span className="ml-1 text-xs bg-black text-white px-1.5 py-0.5 rounded-full">
                               {wishlistCount}
@@ -108,7 +112,7 @@ export function MobileNavigation() {
                           className="flex-1 h-12 flex items-center justify-center bg-black text-white hover:bg-gray-800 transition-all duration-200 font-mono text-sm font-medium"
                         >
                           <ShoppingBag className="h-4 w-4 mr-2" />
-                          CART
+                          {t('cart')}
                         </Link>
                       </div>
                     </div>
@@ -116,7 +120,7 @@ export function MobileNavigation() {
                     {/* Navigation Categories */}
                     <div className="flex-1 overflow-y-auto">
                       <nav className="px-6 py-6">
-                        <h3 className="font-mono text-xs font-bold text-gray-600 mb-4 tracking-wider">CATEGORIES</h3>
+                        <h3 className="font-mono text-xs font-bold text-gray-600 mb-4 tracking-wider">{tc('categories')}</h3>
                         <div className="space-y-0">
                           {menuItems.map((item) => (
                             <Link
@@ -149,13 +153,13 @@ export function MobileNavigation() {
                       
                       <div className="space-y-2">
                         <Link href="/support" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
-                          CUSTOMER SUPPORT
+                          {tf('customerService')}
                         </Link>
                         <Link href="/size-guide" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
-                          SIZE GUIDE
+                          {tf('sizeGuide')}
                         </Link>
                         <Link href="/shipping" className="block font-mono text-sm font-medium hover:text-gray-600 transition-colors py-3 -mx-2 px-2 rounded min-h-[44px] flex items-center">
-                          SHIPPING & RETURNS
+                          {tf('shipping')} & {tf('returns')}
                         </Link>
                       </div>
                     </div>

@@ -1,13 +1,13 @@
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct } from '@/lib/shopify/types'
-import { ProductCard } from './product-card'
+import { ProductCardServer } from './product-card-server'
 
 interface ProductGridProps {
   products: ShopifyProduct[]
   className?: string
 }
 
-export function ProductGrid({ products, className }: ProductGridProps) {
+export async function ProductGrid({ products, className }: ProductGridProps) {
   // Safety check for undefined or empty products
   if (!products || products.length === 0) {
     return (
@@ -23,7 +23,7 @@ export function ProductGrid({ products, className }: ProductGridProps) {
       className
     )}>
       {products.map((product, index) => (
-        <ProductCard 
+        <ProductCardServer 
           key={product.id} 
           product={product} 
           priority={index < 4} // Prioritize first 4 images for LCP

@@ -1,7 +1,7 @@
 'use client'
 
 import { Hero2 } from './hero-2'
-import { HeroEnhanced } from './hero-enhanced'
+import { HeroEnhancedServer } from './hero-enhanced-server'
 import { useABTest } from '@/hooks/use-ab-test'
 
 export function HeroWrapper() {
@@ -12,7 +12,7 @@ export function HeroWrapper() {
   })
   
   if (variant === 'enhanced') {
-    return <HeroEnhanced />
+    return <HeroEnhancedServer />
   }
   
   return <Hero2 />
