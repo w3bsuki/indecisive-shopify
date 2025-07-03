@@ -44,17 +44,18 @@ export function QuickViewDialog({ product, children }: QuickViewDialogProps) {
     ? formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
     : `${formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)} - ${formatPrice(product.priceRange.maxVariantPrice.amount, product.priceRange.maxVariantPrice.currencyCode)}`
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedVariant || !selectedVariant.availableForSale || !cartReady) return
 
     setIsAdding(true)
     try {
-      addItem(selectedVariant.id, 1)
-      // Close dialog after a delay since addItem is not async
+      // addItem now uses optimistic updates for instant feedback
+      await addItem(selectedVariant.id, 1)
+      // Close dialog after reduced delay since feedback is instant
       setTimeout(() => {
         setIsOpen(false)
         setIsAdding(false)
-      }, 1500)
+      }, 500)
     } catch (_error) {
       setIsAdding(false)
     }

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Search, ShoppingBag, Heart, User } from "lucide-react"
@@ -12,6 +12,7 @@ import { useCart } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { MarketSwitcher } from "@/components/commerce/market-switcher"
 import { useTranslations } from 'next-intl'
+import { useFlyToCart } from "@/contexts/fly-to-cart-context"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -24,6 +25,14 @@ export function DesktopNavigation() {
   const { totalItems } = useCart()
   const { totalItems: wishlistCount } = useWishlist()
   const [showSearchBar, setShowSearchBar] = useState(false)
+  const { setCartIconRef } = useFlyToCart()
+  const cartIconRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (cartIconRef.current) {
+      setCartIconRef(cartIconRef.current)
+    }
+  }, [setCartIconRef])
 
   const categories = [
     {
@@ -139,7 +148,12 @@ export function DesktopNavigation() {
 
               {/* Cart */}
               <MobileCartSheet>
-                <Button variant="ghost" size="icon" className="relative h-16 w-16 hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                <Button 
+                  ref={cartIconRef}
+                  variant="ghost" 
+                  size="icon" 
+                  className="relative h-16 w-16 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                >
                   <ShoppingBag className="h-8 w-8 stroke-[1.5]" />
                   {totalItems > 0 && (
                     <Badge

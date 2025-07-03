@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
@@ -13,6 +13,7 @@ import { parsePriceString, isProductOnSale } from '@/lib/utils/price'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Heart, Eye, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useFlyToCart } from '@/contexts/fly-to-cart-context'
 import {
   Dialog,
   DialogContent,
@@ -36,6 +37,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const [imageLoading, setImageLoading] = useState(true)
   const isWishlisted = isInWishlist(product.id)
   const t = useTranslations('products')
+  const { flyToCart } = useFlyToCart()
+  const productImageRef = useRef<HTMLDivElement>(null)
 
   const rawPrice = formatPrice(
     product.priceRange.minVariantPrice.amount,
@@ -78,23 +81,28 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
     setIsLoading(true)
     
-    try {
-      addItem(variant, 1)
-      
-      // Haptic feedback on mobile (if supported)
-      if (isMobile && 'vibrate' in navigator) {
-        navigator.vibrate(50)
-      }
-      
-      setTimeout(() => {
-        setIsLoading(false)
-        setShowSizeSelector(false)
-        setSelectedSize(null)
-      }, 1000)
-    } catch {
-      setIsLoading(false)
+    // Trigger fly animation if product image is available
+    if (product.featuredImage?.url && productImageRef.current && !isMobile) {
+      flyToCart({
+        imageUrl: product.featuredImage.url,
+        elementRef: productImageRef.current
+      })
     }
-  }, [cartReady, isLoading, isMobile, sizes.length, product.variants?.edges, addItem])
+    
+    // Add item with optimistic update (instant feedback)
+    await addItem(variant, 1)
+    
+    // Haptic feedback on mobile (if supported)
+    if (isMobile && 'vibrate' in navigator) {
+      navigator.vibrate(50)
+    }
+    
+    setTimeout(() => {
+      setIsLoading(false)
+      setShowSizeSelector(false)
+      setSelectedSize(null)
+    }, 300) // Reduced timeout since feedback is instant
+  }, [cartReady, isLoading, isMobile, sizes.length, product.variants?.edges, addItem, flyToCart, product.featuredImage?.url])
 
   const handleWishlist = useCallback((event: React.MouseEvent) => {
     event.preventDefault()
@@ -160,11 +168,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             href={`/products/${product.handle}`}
             className="block relative aspect-square overflow-hidden bg-gray-50"
           >
-            {imageContent}
+            <div ref={productImageRef}>
+              {imageContent}
+            </div>
           </Link>
         ) : (
           <QuickViewDialog product={product}>
-            <div className="relative aspect-square md:aspect-[4/5] overflow-hidden bg-gray-50 cursor-pointer">
+            <div ref={productImageRef} className="relative aspect-square md:aspect-[4/5] overflow-hidden bg-gray-50 cursor-pointer">
               {imageContent}
               {/* Desktop hover overlay */}
               <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">

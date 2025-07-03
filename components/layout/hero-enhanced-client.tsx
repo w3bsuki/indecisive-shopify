@@ -58,8 +58,25 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
   const currentProduct = slides[currentSlide];
   const hasPrice = currentProduct?.price && currentProduct.price !== '$0.00';
 
+  // Add viewport height fix for mobile browsers
+  React.useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
+    setVh();
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
+    
+    return () => {
+      window.removeEventListener('resize', setVh);
+      window.removeEventListener('orientationchange', setVh);
+    };
+  }, []);
+
   return (
-    <section className="relative bg-black w-full hero-section">
+    <section className="relative bg-black w-full hero-section-fixed">
       <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
 
         {slides.map((slide, index) => (

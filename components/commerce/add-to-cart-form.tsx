@@ -141,14 +141,14 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
     setIsAdding(true)
     try {
-      // addItem is synchronous but triggers async cart update
-      addItem(selectedVariant.id, quantity)
+      // addItem now uses optimistic updates for instant feedback
+      await addItem(selectedVariant.id, quantity)
       
-      // Reset after successful add
+      // Reset after successful add (reduced timeout since feedback is instant)
       setTimeout(() => {
         setQuantity(1)
         setIsAdding(false)
-      }, 1000)
+      }, 300)
     } catch (_error) {
       setIsAdding(false)
     }

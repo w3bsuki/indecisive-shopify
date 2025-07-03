@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useRef, useEffect } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +10,7 @@ import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
 import { useMarket } from "@/hooks/use-market"
 import { useTranslations } from "next-intl"
+import { useFlyToCart } from "@/contexts/fly-to-cart-context"
 
 export function MobileCartSheet({ children, isBottomNav = false }: { children?: React.ReactNode; isBottomNav?: boolean }) {
   // OFFICIAL HYDROGEN REACT CART PATTERN
@@ -18,6 +19,14 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
   const t = useTranslations('cart')
   const tc = useTranslations('common')
   const tp = useTranslations('products')
+  const { setCartIconRef } = useFlyToCart()
+  const cartIconRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (cartIconRef.current && !children) {
+      setCartIconRef(cartIconRef.current)
+    }
+  }, [children, setCartIconRef])
 
   const subtotal = cost?.subtotalAmount
   const total = cost?.totalAmount
@@ -31,6 +40,7 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
 
   const defaultTrigger = isBottomNav ? (
     <Button
+      ref={cartIconRef}
       variant="ghost"
       size="sm"
       className="flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] relative text-gray-600"
@@ -47,7 +57,10 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       )}
     </Button>
   ) : (
-    <button className="relative h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg">
+    <button
+      ref={cartIconRef}
+      className="relative h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg"
+    >
       <ShoppingBag className="h-6 w-6 stroke-[1.5] text-black" />
       {totalItems > 0 && (
         <Badge
