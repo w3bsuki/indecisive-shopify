@@ -100,7 +100,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent">
               {/* Title positioned at top for visibility */}
               <div className="absolute top-0 left-0 right-0 text-center px-4 pt-20 sm:pt-24 md:pt-32">
-                <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-black tracking-tight leading-tight">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-black tracking-tight leading-tight">
                   {slide.name.toUpperCase()}
                 </h2>
                 
@@ -145,18 +145,18 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
         
         {/* Enhanced Marquee with offers */}
         <Marquee 
-          className="absolute bottom-2 sm:bottom-0 left-0 right-0 z-30 bg-primary text-primary-foreground border-t border-primary-foreground/20"
+          className="absolute bottom-0 left-0 right-0 z-30 bg-black text-white border-t border-black py-4 sm:py-5"
           speed="normal"
           pauseOnHover
         >
           {[...Array(6)].map((_, i) => (
             <span key={i} className="flex">
-              <MarqueeItem className="text-primary-foreground">{translations.brand.name}</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">{translations.marquee.freeShipping}</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">{translations.marquee.returns}</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">{translations.marquee.joinCustomers.replace('{count}', customerCount.toLocaleString())}</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">{translations.brand.socialHandle}</MarqueeItem>
-              <MarqueeItem className="text-primary-foreground">{translations.marquee.newArrivals}</MarqueeItem>
+              <MarqueeItem className="text-white">{translations.brand.name}</MarqueeItem>
+              <MarqueeItem className="text-white">{translations.marquee.freeShipping}</MarqueeItem>
+              <MarqueeItem className="text-white">{translations.marquee.returns}</MarqueeItem>
+              <MarqueeItem className="text-white">{translations.marquee.joinCustomers.replace('{count}', customerCount.toLocaleString())}</MarqueeItem>
+              <MarqueeItem className="text-white">{translations.brand.socialHandle}</MarqueeItem>
+              <MarqueeItem className="text-white">{translations.marquee.newArrivals}</MarqueeItem>
             </span>
           ))}
         </Marquee>
