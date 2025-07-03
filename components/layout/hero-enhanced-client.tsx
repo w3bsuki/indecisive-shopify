@@ -60,21 +60,8 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
   const hasPrice = currentProduct?.price && currentProduct.price !== '$0.00';
 
   return (
-    <section className="relative bg-background w-full hero-section">
+    <section className="relative bg-black w-full hero-section">
       <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
-        {/* Subtle trust indicator - top left */}
-        <div className="absolute top-4 left-4 z-30 bg-white/90 backdrop-blur-sm px-2 py-1 border border-black/10 hidden md:flex items-center gap-2">
-          <Users className="w-4 h-4" />
-          <span className="text-xs font-mono">{customerCount.toLocaleString()} {translations.customers}</span>
-        </div>
-        
-        {/* Subtle trending indicator - top right */}
-        {currentProduct?.handle && (
-          <div className="absolute top-4 right-4 z-30 bg-red-500 text-white px-2 py-1 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" />
-            <span className="text-xs font-mono font-bold">{translations.trending}</span>
-          </div>
-        )}
 
         {slides.map((slide, index) => (
           <div
@@ -145,7 +132,7 @@ export function HeroEnhancedClient({ slides, translations }: HeroEnhancedClientP
         
         {/* Enhanced Marquee with offers */}
         <Marquee 
-          className="absolute bottom-1 left-0 right-0 z-30 bg-black text-white border-t border-black py-3 sm:py-4"
+          className="absolute bottom-0 left-0 right-0 z-30 bg-black text-white py-3 sm:py-4"
           speed="normal"
           pauseOnHover
         >
