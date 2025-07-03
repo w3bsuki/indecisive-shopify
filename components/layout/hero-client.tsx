@@ -56,7 +56,6 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   }, [slides.length]);
 
   const currentProduct = slides[currentSlide];
-  const hasPrice = currentProduct?.price && currentProduct.price !== '$0.00';
 
   // Removed dynamic viewport height adjustment to keep hero static
 
