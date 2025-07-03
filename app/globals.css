@@ -148,6 +148,13 @@
     overscroll-behavior-y: contain;
     /* Disable blue highlight on tap in WebKit */
     -webkit-tap-highlight-color: transparent;
+    /* Force smooth scrolling */
+    scroll-behavior: smooth;
+    /* Prevent layout shifts */
+    overflow-x: hidden;
+    /* Lock body height */
+    position: relative;
+    min-height: 100vh;
   }
   
   /* Bulgarian locale specific styling */
@@ -204,20 +211,20 @@
     padding-left: var(--safe-area-inset-left);
   }
   
-  /* Dynamic Viewport Height Utilities */
+  /* Fixed height utilities for stable layouts */
   .h-screen-dynamic {
-    height: 100dvh;
-    height: 100vh; /* fallback */
+    height: 100vh;
+    position: relative;
   }
   
   .min-h-screen-dynamic {
-    min-height: 100dvh;
-    min-height: 100vh; /* fallback */
+    min-height: 100vh;
+    position: relative;
   }
   
   .max-h-screen-dynamic {
-    max-height: 100dvh;
-    max-height: 100vh; /* fallback */
+    max-height: 100vh;
+    position: relative;
   }
   
   /* Mobile-Optimized Fixed Positioning */
@@ -455,14 +462,8 @@
 
 /* New fixed hero section with modern e-commerce height */
 .hero-section-fixed {
-  /* Use small viewport height for consistent sizing */
-  height: 85svh;
-  /* Fallback to dynamic viewport height */
-  height: 85dvh;
-  /* Constrain max height for ultra-wide screens */
-  max-height: 800px;
-  /* Minimum height for content */
-  min-height: 600px;
+  /* Fixed pixel height - no viewport units */
+  height: 650px;
   /* Prevent any layout shifts */
   position: relative;
   overflow: hidden;
@@ -471,19 +472,19 @@
   /* Hardware acceleration */
   transform: translateZ(0);
   backface-visibility: hidden;
-  /* Contain layout to prevent reflow */
+  /* Contain layout style paint */
   contain: layout style paint;
   /* Smooth interactions */
   touch-action: manipulation;
+  /* Prevent any resizing */
+  flex-shrink: 0;
 }
 
 /* Mobile-specific height adjustment */
 @media (max-width: 640px) {
   .hero-section {
-    /* Use dynamic viewport height for mobile */
-    height: calc(100dvh - 120px);
-    /* Fallback for older browsers */
-    height: calc(100vh - 120px); 
+    /* Fixed height for mobile */
+    height: calc(100vh - 120px);
     min-height: 400px;
     /* Additional mobile optimizations */
     position: relative;
@@ -491,16 +492,16 @@
   }
   
   .hero-section-fixed {
-    /* Use small viewport height on mobile for stability */
-    height: 75svh;
-    /* Fallback to dynamic viewport height */
-    height: 75dvh;
-    /* Constrain height on mobile */
-    max-height: 600px;
-    min-height: 500px;
+    /* Fixed mobile height - no viewport units */
+    height: 550px;
+    /* No dynamic sizing */
+    min-height: 550px;
+    max-height: 550px;
     /* Ensure content is visible */
     display: flex;
     flex-direction: column;
+    /* Force fixed sizing */
+    flex-shrink: 0;
   }
 }
 
