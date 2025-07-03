@@ -102,7 +102,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
             {/* Content overlay with gradient - more subtle for better image visibility */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent">
               {/* CTA button and price positioned at bottom */}
-              <div className="absolute bottom-28 sm:bottom-32 left-0 right-0 flex flex-col items-center gap-4 px-4">
+              <div className="absolute bottom-16 sm:bottom-20 left-0 right-0 flex flex-col items-center gap-4 px-4">
                 {/* Price */}
                 {hasPrice && (
                   <p className="text-xl sm:text-2xl font-mono text-white/90 drop-shadow-lg">
@@ -125,8 +125,8 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           </div>
         ))}
         
-        {/* Progress indicator - closer to CTA button */}
-        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-20">
+        {/* Progress indicator */}
+        <div className="absolute bottom-8 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-20">
           {slides.map((_, index) => (
             <button
               key={index}
