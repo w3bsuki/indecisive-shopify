@@ -26,7 +26,7 @@ const upcomingProducts: ComingSoonProduct[] = [
   },
   {
     id: 'tshirts-001',
-    name: 'ESSENTIAL TEES',
+    name: 'TSHIRTS',
     category: 'APPAREL',
     launchDate: 'MARCH 2025',
     description: 'Oversized cotton with graphics',
@@ -102,31 +102,24 @@ export function ComingSoonCarousel() {
                 {/* Modern Product Card */}
                 <div className="bg-white border-2 border-gray-200 hover:border-gray-400">
                   {/* Preview Image Area */}
-                  <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-4">
+                  <div className="h-32 bg-gray-100 relative overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-2">
                       {/* Enhanced Coming Soon Badge - Centered */}
-                      <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
-                        <div className="card-glass px-2 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
+                      <div className="absolute top-2 left-1/2 transform -translate-x-1/2">
+                        <div className="px-2 py-0.5 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
                           {t('badge')}
                         </div>
                       </div>
                       
-                      {/* Product Type Icon */}
-                      <div className="w-12 h-12 border border-gray-400 mb-2 flex items-center justify-center mt-4">
-                        <span className="text-xl">
-                          {product.category === 'HEADWEAR' && '🧢'}
-                          {product.category === 'APPAREL' && '👕'}
-                          {product.category === 'ACCESSORIES' && '🧦'}
-                        </span>
+                      <div className="flex flex-col items-center gap-1">
+                        <h3 className="font-mono font-bold text-sm text-center">
+                          {t(`products.${product.id}.name`)}
+                        </h3>
+                        
+                        <p className="font-mono text-xs text-gray-600 text-center">
+                          {t(`products.${product.id}.launchDate`)}
+                        </p>
                       </div>
-                      
-                      <h3 className="font-mono font-bold text-base text-center mb-2">
-                        {t(`products.${product.id}.name`)}
-                      </h3>
-                      
-                      <p className="font-mono text-xs text-gray-600 text-center">
-                        {t(`products.${product.id}.launchDate`)}
-                      </p>
                     </div>
                   </div>
 
@@ -200,8 +193,8 @@ export function ComingSoonCarousel() {
                 {/* Modern Product Card */}
                 <div className="bg-white border-2 border-gray-200 hover:border-gray-400">
                   {/* Preview Image Area */}
-                  <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-4">
+                  <div className="h-32 bg-gray-100 relative overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-white flex flex-col items-center justify-center p-2">
                       {/* Enhanced Coming Soon Badge - Centered */}
                       <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
                         <div className="card-glass px-3 py-1 font-mono text-xs font-bold text-black border border-gray-200 whitespace-nowrap">
