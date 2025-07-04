@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,6 +11,9 @@ import { useCart } from "@/hooks/use-cart"
 import { useMarket } from "@/hooks/use-market"
 import { useTranslations } from "next-intl"
 import { useFlyToCart } from "@/contexts/fly-to-cart-context"
+import { FreeShippingProgress } from "@/components/commerce/free-shipping-progress"
+import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 export function MobileCartSheet({ children, isBottomNav = false }: { children?: React.ReactNode; isBottomNav?: boolean }) {
   // OFFICIAL HYDROGEN REACT CART PATTERN
@@ -21,16 +24,30 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
   const tp = useTranslations('products')
   const { setCartIconRef } = useFlyToCart()
   const cartIconRef = useRef<HTMLButtonElement>(null)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const router = useRouter()
+  
+  const totalItems = totalQuantity || 0
+  const prevTotalItems = useRef(totalItems)
 
   useEffect(() => {
     if (cartIconRef.current && !children) {
       setCartIconRef(cartIconRef.current)
     }
   }, [children, setCartIconRef])
+  
+  // Animate cart icon when items are added
+  useEffect(() => {
+    if (totalItems > prevTotalItems.current && totalItems > 0) {
+      setIsAnimating(true)
+      const timer = setTimeout(() => setIsAnimating(false), 400)
+      return () => clearTimeout(timer)
+    }
+    prevTotalItems.current = totalItems
+  }, [totalItems])
 
   const subtotal = cost?.subtotalAmount
   const total = cost?.totalAmount
-  const totalItems = totalQuantity || 0
   const isLoading = status === 'updating' || status === 'creating' || status === 'fetching'
 
   const handleCheckout = () => {
@@ -43,14 +60,17 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       ref={cartIconRef}
       variant="ghost"
       size="sm"
-      className="flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] relative text-gray-600"
+      className={cn(
+        "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] relative text-gray-700 hover:text-black border border-transparent hover:border-black/30 transition-all duration-150",
+        isAnimating && "cart-icon-bounce"
+      )}
     >
-      <ShoppingBag className="h-5 w-5" />
-      <span className="text-xs font-mono">{t('title')}</span>
+      <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+      <span className="text-[10px] font-medium">{t('title')}</span>
       {totalItems > 0 && (
         <Badge
           variant="secondary"
-          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] font-bold bg-black text-white border border-white"
+          className="absolute -top-0.5 -right-0.5 h-5 w-5 p-0 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white border-2 border-white shadow-lg scale-110"
         >
           {totalItems}
         </Badge>
@@ -59,13 +79,17 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
   ) : (
     <button
       ref={cartIconRef}
-      className="relative h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg"
+      className={cn(
+        "relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95",
+        isAnimating && "cart-icon-bounce"
+      )}
     >
-      <ShoppingBag className="h-6 w-6 stroke-[1.5] text-black" />
+      <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+      <span className="sr-only">Shopping Cart</span>
       {totalItems > 0 && (
         <Badge
           variant="secondary"
-          className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] font-bold bg-black text-white border border-white"
+          className="absolute -top-1.5 -right-1.5 h-5 w-5 p-0 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white border-2 border-white shadow-lg scale-110"
         >
           {totalItems}
         </Badge>
@@ -180,7 +204,16 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
 
         {/* Cart Footer */}
         {lines && lines.length > 0 && (
-          <div className="border-t px-6 py-4 space-y-4">
+          <div className="border-t bg-gray-50">
+            {/* Free Shipping Progress */}
+            <div className="px-6 py-3 border-b bg-white">
+              <FreeShippingProgress 
+                currentAmount={parseFloat(subtotal?.amount || '0')} 
+                currency={subtotal?.currencyCode || 'USD'} 
+              />
+            </div>
+            
+            <div className="px-6 py-4 space-y-4">
             {/* Promo Code */}
             <div className="flex gap-2">
               <input
@@ -213,7 +246,7 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
 
             {/* Checkout Button */}
             <Button
-              className="w-full"
+              className="w-full bg-black text-white hover:bg-gray-800"
               size="lg"
               onClick={handleCheckout}
               disabled={isLoading}
@@ -226,15 +259,27 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
               ) : (
                 <>
                   <CreditCard className="mr-2 h-4 w-4" />
-                  {t('checkout')}
+                  {t('checkout')} • {total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}
                 </>
               )}
             </Button>
+            
+            {/* Continue Shopping */}
+            <SheetClose asChild>
+              <Button
+                variant="outline"
+                className="w-full"
+                size="lg"
+              >
+                {t('continueShopping')}
+              </Button>
+            </SheetClose>
 
             {/* Security Notice */}
-            <p className="text-xs text-center text-gray-600">
+            <p className="text-xs text-center text-gray-600 mt-2">
               Secure checkout powered by Shopify
             </p>
+            </div>
           </div>
         )}
       </SheetContent>

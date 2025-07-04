@@ -27,8 +27,8 @@ export function NewsletterFormClient({ variant, buttonText, placeholder }: Newsl
   }
 
   const inputClass = variant === 'light' 
-    ? "font-mono bg-black/5 focus:bg-black/10 focus:ring-0 text-xs sm:text-base md:text-lg px-3"
-    : "font-mono bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 focus:ring-0 text-xs sm:text-base md:text-lg px-3"
+    ? "font-mono bg-black/5 focus:bg-black/10 focus:ring-0 text-sm sm:text-base md:text-lg px-3"
+    : "font-mono bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 focus:ring-0 text-sm sm:text-base md:text-lg px-3"
 
   const buttonClass = variant === 'light'
     ? "bg-black text-white hover:bg-black/80 font-mono text-xs sm:text-base md:text-lg py-3"

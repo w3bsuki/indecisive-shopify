@@ -59,7 +59,7 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
             <div key={i} className="flex-shrink-0 w-48 snap-start">
               <div className="bg-white border border-gray-200 animate-pulse">
                 <div className="aspect-[4/5] bg-gray-200" />
-                <div className="p-3 border-t border-gray-200">
+                <div className="p-3 border-t border-black/20">
                   <div className="h-3 bg-gray-200 rounded mb-2" />
                   <div className="h-2 bg-gray-200 rounded w-3/4 mb-2" />
                   <div className="h-8 bg-gray-200 rounded" />
@@ -81,7 +81,7 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
             className="group relative flex-shrink-0 w-48 snap-start"
           >
             {/* Clean Instagram Card - Product Card Style */}
-            <div className="bg-white border border-gray-200 hover:border-gray-400 hover:shadow-md transition-all duration-200">
+            <div className="bg-white border border-gray-200 hover:border-black/40 hover:shadow-lg transition-all duration-200">
               {/* Image - Same aspect ratio as TikTok */}
               <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
                 {post.image ? (
@@ -113,14 +113,14 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
 
                 {/* Hover View Button */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <button className="bg-white border border-gray-950 px-3 py-1 font-mono text-xs font-medium hover:bg-gray-100 transition-colors">
+                  <button className="bg-white border border-black px-3 py-1 font-mono text-xs font-medium hover:bg-black hover:text-white transition-colors">
                     {t('viewPost')}
                   </button>
                 </div>
               </div>
 
               {/* Card Info */}
-              <div className="p-3 border-t border-gray-200">
+              <div className="p-3 border-t border-black/20">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-mono font-medium text-xs">{post.username}</p>
                   <div className="flex items-center gap-1">
@@ -181,7 +181,7 @@ function CallToActionCard() {
         </div>
         
         {/* Card Info - matching other cards */}
-        <div className="p-3 border-t border-gray-200">
+        <div className="p-3 border-t border-black/20">
           <div className="flex items-center justify-between mb-2">
             <p className="font-mono font-medium text-xs">@indecisivewear</p>
             <div className="flex items-center gap-1">
@@ -196,7 +196,7 @@ function CallToActionCard() {
             {t('getFeaturedInCommunity')}
           </p>
           
-          <div className="w-full border border-gray-950">
+          <div className="w-full border border-black">
             <button className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation">
               {t('getFeatured')}
             </button>

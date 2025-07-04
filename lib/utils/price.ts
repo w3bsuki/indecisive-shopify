@@ -26,12 +26,17 @@ export function parsePriceString(rawPrice: string): ParsedPrice {
 export function formatPriceNumber(amount: number | string, currencyCode?: string): string {
   const value = typeof amount === 'string' ? parseFloat(amount) : amount
   
-  // No decimals for Japanese Yen
-  if (currencyCode === 'JPY') {
+  // No decimals for Japanese Yen and Bulgarian Lev (whole numbers)
+  if (currencyCode === 'JPY' || currencyCode === 'BGN') {
     return Math.round(value).toString()
   }
   
-  // Two decimals for all other currencies
+  // Check if it's a whole number for any currency - display without decimals
+  if (value % 1 === 0) {
+    return Math.round(value).toString()
+  }
+  
+  // Two decimals for all other currencies with fractional parts
   return value.toFixed(2)
 }
 

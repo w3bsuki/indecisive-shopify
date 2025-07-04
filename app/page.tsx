@@ -48,12 +48,13 @@ export default async function HomePage() {
           
           {/* Desktop: Grid Layout */}
           <div className="hidden md:block">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
               {products.map((product, index) => (
                 <ProductCardMinimalServer 
                   key={product.id} 
                   product={product} 
                   priority={index < 4}
+                  size="large"
                 />
               ))}
             </div>

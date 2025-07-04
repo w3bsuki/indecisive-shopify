@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useEffect, useOptimistic } from 'react';
+import { useCallback, useMemo, useEffect, useOptimistic, useState } from 'react';
 import { useCart as useHydrogenCart, type Cart } from '@shopify/hydrogen-react';
 import { toast } from 'sonner';
 import { analytics } from '@/lib/analytics/events';
@@ -22,6 +22,13 @@ type OptimisticAction =
   | { type: 'UPDATE_LINE'; lineId: string; quantity: number; previousQuantity: number }
   | { type: 'REMOVE_LINE'; lineId: string; line: OptimisticCartLine }
   | { type: 'REVERT' };
+
+// Export for external use
+export let cartNotificationCallback: ((product: any) => void) | null = null;
+
+export function setCartNotificationCallback(callback: (product: any) => void) {
+  cartNotificationCallback = callback;
+}
 
 // Unified cart hook implementation using Hydrogen React
 export function useCart() {
@@ -163,11 +170,35 @@ export function useCart() {
     dispatchOptimisticQuantity({ type: 'ADD_LINE', merchandiseId, quantity, tempId });
     
     // Show instant success feedback
-    toast.success('Added to cart', {
-      id: 'cart-add-success',
-      description: `${quantity} item${quantity > 1 ? 's' : ''} added`,
-      duration: 3000,
-    });
+    // Check if mobile and use custom notification
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    
+    if (isMobile && cartNotificationCallback) {
+      // Find product info for notification
+      const line = lines?.find(l => l?.merchandise?.id === merchandiseId);
+      if (line?.merchandise?.product) {
+        cartNotificationCallback({
+          title: line.merchandise.product.title || 'Product',
+          image: line.merchandise.product.featuredImage?.url,
+          price: `${line.merchandise.price?.amount} ${line.merchandise.price?.currencyCode}`,
+          quantity
+        });
+      } else {
+        // Fallback if product not found
+        cartNotificationCallback({
+          title: 'Product added',
+          price: '',
+          quantity
+        });
+      }
+    } else {
+      // Desktop toast
+      toast.success('Added to cart', {
+        id: 'cart-add-success',
+        description: `${quantity} item${quantity > 1 ? 's' : ''} added`,
+        duration: 3000,
+      });
+    }
 
     try {
       // Check if item already exists in cart

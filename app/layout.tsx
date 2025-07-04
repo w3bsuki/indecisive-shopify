@@ -15,6 +15,7 @@ import { AnalyticsProvider } from '@/components/analytics/analytics-provider'
 import { WebVitals } from './web-vitals'
 import { ResourceHints } from './resource-hints'
 import { FlyToCartProvider } from '@/contexts/fly-to-cart-context'
+import { CartNotificationProvider } from '@/components/providers/cart-notification-provider'
 
 // Noto Sans - Updated 2024 with proper Bulgarian Cyrillic support (loclBGR)
 const notoSans = Noto_Sans({
@@ -78,12 +79,14 @@ export default async function RootLayout({
               <AuthProvider initialCustomer={customer}>
                 <IndecisiveProvider>
                   <FlyToCartProvider>
-                    <AnalyticsProvider>
-                      {children}
-                      <WebVitals />
-                      <Toaster />
-                      <CookieConsent />
-                    </AnalyticsProvider>
+                    <CartNotificationProvider>
+                      <AnalyticsProvider>
+                        {children}
+                        <WebVitals />
+                        <Toaster />
+                        <CookieConsent />
+                      </AnalyticsProvider>
+                    </CartNotificationProvider>
                   </FlyToCartProvider>
                 </IndecisiveProvider>
               </AuthProvider>

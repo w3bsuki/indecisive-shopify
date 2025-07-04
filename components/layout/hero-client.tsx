@@ -33,16 +33,6 @@ interface HeroClientProps {
 
 export function HeroClient({ slides, translations }: HeroClientProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  const [customerCount, setCustomerCount] = React.useState(4876);
-  
-  // Increment customer count randomly
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setCustomerCount(prev => prev + Math.floor(Math.random() * 3));
-    }, 15000); // Every 15 seconds
-    
-    return () => clearInterval(interval);
-  }, []);
 
   // Auto-play functionality
   React.useEffect(() => {
@@ -75,16 +65,17 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               fill
               className="object-contain object-center"
               sizes="100vw"
-              priority={index < 2}
+              priority={index === 0}
+              loading={index === 0 ? 'eager' : 'lazy'}
               style={{
-                transform: 'scale(0.85)',
+                transform: 'scale(0.95)',
                 objectPosition: 'center center'
               }}
             />
             
             {/* Content overlay with gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
-              {/* CTA button - better spacing from bottom */}
+              {/* CTA button */}
               <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
                 {/* CTA Button */}
@@ -104,7 +95,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           </div>
         ))}
         
-        {/* Progress indicator - better spacing above CTA */}
+        {/* Progress indicator */}
         <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-30">
           {slides.map((_, index) => (
             <button
@@ -131,11 +122,12 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
       {[...Array(6)].map((_, i) => (
         <span key={i} className="flex">
           <MarqueeItem className="text-white">{translations.brand.name}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.followInstagram}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.beMinimalBold}</MarqueeItem>
           <MarqueeItem className="text-white">{translations.marquee.freeShipping}</MarqueeItem>
           <MarqueeItem className="text-white">{translations.marquee.returns}</MarqueeItem>
-          <MarqueeItem className="text-white">{translations.marquee.joinCustomers.replace('{count}', customerCount.toLocaleString())}</MarqueeItem>
           <MarqueeItem className="text-white">{translations.brand.socialHandle}</MarqueeItem>
-          <MarqueeItem className="text-white">{translations.marquee.newArrivals}</MarqueeItem>
+          <MarqueeItem className="text-white">{translations.marquee.stayIndecisive}</MarqueeItem>
         </span>
       ))}
     </Marquee>

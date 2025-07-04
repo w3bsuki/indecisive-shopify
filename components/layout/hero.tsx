@@ -41,6 +41,9 @@ export async function Hero() {
       returns: t('marquee.returns'),
       joinCustomers: t('marquee.joinCustomers', { count: '4876' }),
       newArrivals: t('marquee.newArrivals'),
+      followInstagram: t('marquee.followInstagram'),
+      beMinimalBold: t('marquee.beMinimalBold'),
+      stayIndecisive: t('marquee.stayIndecisive'),
     },
     brand: {
       name: tb('name'),

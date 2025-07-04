@@ -519,3 +519,44 @@
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* === MOBILE ANIMATIONS === */
+@keyframes menu-rotate-open {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(-5deg) scale(0.95); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+@keyframes menu-rotate-close {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(5deg) scale(0.95); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes slide-up-fade {
+  0% { 
+    transform: translateY(100%); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+.menu-open-animation {
+  animation: menu-rotate-open 0.3s ease-out;
+}
+
+.menu-close-animation {
+  animation: menu-rotate-close 0.3s ease-out;
+}
+
+.cart-icon-bounce {
+  animation: gentle-bounce 0.4s ease-in-out;
+}

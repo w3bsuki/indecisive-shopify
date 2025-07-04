@@ -55,10 +55,20 @@ export function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
       
       // Hide nav when on hero section (top of page)
       if (currentScrollY < 100) {
         setShowBottomNav(false)
+      }
+      // Hide nav when near footer/CTA (bottom 20% of page)
+      else if (currentScrollY + windowHeight > documentHeight * 0.8) {
+        setShowBottomNav(false)
+        // Auto-close menu when reaching footer area
+        if (isMenuOpen) {
+          setIsMenuOpen(false)
+        }
       } else {
         setShowBottomNav(true)
       }
@@ -84,6 +94,7 @@ export function Navigation() {
   }, [lastScrollY])
 
   const menuItems = [
+    { name: "ALL", href: "/products", badge: null },
     { name: t('new'), href: "/new", badge: "DROP 1" },
     { name: t('comingSoon'), href: "/coming-soon", badge: null },
     { name: t('sale'), href: "/sale", badge: "50% OFF" },
@@ -94,9 +105,16 @@ export function Navigation() {
       {/* Desktop Navigation */}
       <div className="hidden md:block">
         {/* Top Banner */}
-        <div className="bg-black text-white py-2 text-center text-sm">
-          <p>{t('banner')}</p>
-        </div>
+        <Link href="/become-partner" className="block bg-black hover:bg-gray-900 transition-colors">
+          <div className="py-2 text-center">
+            <p className="text-white text-sm">
+              <span className="font-medium">{t('banner')}</span>
+              <span className="ml-2 font-bold underline underline-offset-2">
+                {t('bannerLink')}
+              </span>
+            </p>
+          </div>
+        </Link>
 
         {/* Main Navigation */}
         <nav className="bg-white">
@@ -214,20 +232,33 @@ export function Navigation() {
         {/* Mobile Navigation Stack */}
         <div className="fixed-mobile-safe w-full z-50 md:hidden touch-optimized">
           {/* Newsletter Banner */}
-          <div className="bg-black text-white py-3 px-4 text-center">
-            <p className="text-sm font-mono">{t('banner')}</p>
-          </div>
+          <Link href="/become-partner" className="block bg-black active:bg-gray-900">
+            <div className="py-2 px-3 text-center border-b border-white/20">
+              <p className="text-white text-[11px] font-medium leading-tight mb-0.5">
+                {t('banner')}
+              </p>
+              <p className="text-white text-[11px] font-bold underline underline-offset-2">
+                {t('bannerLink')}
+              </p>
+            </div>
+          </Link>
 
           {/* Mobile Navigation Bar */}
-          <nav className="bg-white/95 backdrop-blur-md border-b border-gray-950 overscroll-contain">
+          <nav className="bg-white border-b border-black/20 shadow-sm">
             <div className="px-3 h-16 flex items-center justify-between">
               {/* Left Side: Menu + Logo */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 {/* Menu on LEFT */}
                 <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
-                    <button className="relative h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg -ml-2">
-                      {isMenuOpen ? <X className="h-6 w-6 stroke-[1.5] text-black" /> : <Menu className="h-6 w-6 stroke-[1.5] text-black" />}
+                    <button className={cn(
+                      "relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95 -ml-2",
+                      isMenuOpen ? "menu-close-animation" : "menu-open-animation"
+                    )}>
+                      {isMenuOpen ? 
+                        <X className="h-5 w-5 stroke-[1.5] transition-transform duration-200" /> : 
+                        <Menu className="h-5 w-5 stroke-[1.5] transition-transform duration-200" />
+                      }
                     </button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-full sm:w-[400px] p-0 border border-gray-950 bg-white">
@@ -330,15 +361,17 @@ export function Navigation() {
                 </Sheet>
                 
                 {/* Logo */}
-                <Link href="/" className="flex items-center">
-                  <span className="text-lg font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
+                <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90">
+                  <span className="text-lg font-bold font-mono tracking-wide text-black">INDECISIVE WEAR</span>
                 </Link>
               </div>
 
               {/* Right Actions - Search + Cart ONLY */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center">
                 {/* Search */}
-                <MobileSearchSheet />
+                <div className="-mr-2">
+                  <MobileSearchSheet />
+                </div>
 
                 {/* Cart */}
                 <MobileCartSheet />
@@ -354,24 +387,24 @@ export function Navigation() {
       {/* Mobile Bottom Navigation */}
       <div 
         className={cn(
-          "fixed-bottom-mobile-safe bg-white border-t border-gray-200 z-40 md:hidden touch-optimized",
+          "fixed-bottom-mobile-safe bg-white border-t border-black/10 z-40 md:hidden touch-optimized shadow-lg",
           "transition-transform duration-300 ease-in-out overscroll-contain",
           showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
         )}
       >
         <div className="flex items-center justify-around py-2 px-4 pb-safe">
-          {/* Shop */}
-          <Link href="/new">
+          {/* All Products */}
+          <Link href="/products">
             <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px]",
-                pathname === "/new" ? "text-black" : "text-gray-600"
+                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] transition-all duration-150",
+                pathname === "/products" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
               )}
             >
-              <ShoppingBag className="h-5 w-5" />
-              <span className="text-xs font-mono">SHOP</span>
+              <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+              <span className="text-[10px] font-medium">ALL</span>
             </Button>
           </Link>
 
@@ -381,16 +414,16 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] relative",
-                pathname === "/wishlist" ? "text-black" : "text-gray-600"
+                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] relative transition-all duration-150",
+                pathname === "/wishlist" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
               )}
             >
-              <Heart className={cn("h-5 w-5", wishlistCount > 0 && "fill-current")} />
-              <span className="text-xs font-mono">WISHLIST</span>
+              <Heart className={cn("h-5 w-5 stroke-[2.5]", wishlistCount > 0 && "fill-current")} />
+              <span className="text-[10px] font-medium">WISHLIST</span>
               {wishlistCount > 0 && (
                 <Badge
                   variant="secondary"
-                  className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-red-500 text-white"
+                  className="absolute -top-0.5 -right-0.5 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-red-500 text-white border-2 border-white shadow-lg scale-110"
                 >
                   {wishlistCount}
                 </Badge>
@@ -402,11 +435,11 @@ export function Navigation() {
           <Button
             variant="ghost"
             size="sm"
-            className="flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px] text-gray-600"
+            className="flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] text-gray-700 hover:text-black border border-transparent hover:border-black/30 transition-all duration-150"
             onClick={openRandomizer}
           >
-            <Dices className="h-5 w-5" />
-            <span className="text-xs font-mono">FLIP</span>
+            <Dices className="h-5 w-5 stroke-[2.5]" />
+            <span className="text-[10px] font-medium">FLIP</span>
           </Button>
 
           {/* Account */}
@@ -415,12 +448,12 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[48px]",
-                pathname === "/account" ? "text-black" : "text-gray-600"
+                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] transition-all duration-150",
+                pathname === "/account" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
               )}
             >
-              <User className="h-5 w-5" />
-              <span className="text-xs font-mono">ACCOUNT</span>
+              <User className="h-5 w-5 stroke-[2.5]" />
+              <span className="text-[10px] font-medium">ACCOUNT</span>
             </Button>
           </Link>
 

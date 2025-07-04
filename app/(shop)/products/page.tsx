@@ -35,23 +35,19 @@ export default async function ProductsPage() {
           </p>
         </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Filters Sidebar */}
-        <aside className="lg:col-span-1">
-          <SearchFilters />
-        </aside>
+      {/* Horizontal Filters */}
+      <SearchFilters />
 
-        {/* Virtual Scrolling Products Grid */}
-        <main className="lg:col-span-3">
-          {products.length > 0 ? (
-            <VirtualProductGrid products={products} />
-          ) : (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-mono mb-4">NO PRODUCTS FOUND</h2>
-              <p className="text-gray-600">Try adjusting your filters</p>
-            </div>
-          )}
-        </main>
+      {/* Products Grid - Full Width */}
+      <div className="mt-6">
+        {products.length > 0 ? (
+          <VirtualProductGrid products={products} />
+        ) : (
+          <div className="text-center py-16">
+            <h2 className="text-2xl font-mono mb-4">NO PRODUCTS FOUND</h2>
+            <p className="text-gray-600">Try adjusting your filters</p>
+          </div>
+        )}
       </div>
       </div>
     </div>

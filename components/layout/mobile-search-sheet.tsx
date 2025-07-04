@@ -50,8 +50,9 @@ export function MobileSearchSheet({ children }: MobileSearchSheetProps) {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         {children || (
-          <button className="h-12 w-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 rounded-lg">
-            <Search className="h-6 w-6 stroke-[1.5] text-black" />
+          <button className="relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95">
+            <Search className="h-5 w-5 stroke-[1.5]" />
+            <span className="sr-only">Search</span>
           </button>
         )}
       </SheetTrigger>

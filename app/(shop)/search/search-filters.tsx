@@ -1,20 +1,19 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 const sortOptions = [
   { value: 'relevance', label: 'Relevance' },
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'name-asc', label: 'Name: A to Z' },
-  { value: 'name-desc', label: 'Name: Z to A' },
+  { value: 'price-asc', label: 'Price ↑' },
+  { value: 'price-desc', label: 'Price ↓' },
+  { value: 'name-asc', label: 'A-Z' },
+  { value: 'name-desc', label: 'Z-A' },
 ]
 
 const categoryOptions = [
-  { value: '', label: 'All Categories' },
+  { value: '', label: 'All' },
   { value: 'T-Shirts', label: 'T-Shirts' },
   { value: 'Hoodies', label: 'Hoodies' },
   { value: 'Jackets', label: 'Jackets' },
@@ -37,65 +36,75 @@ export function SearchFilters() {
     } else {
       params.delete(key)
     }
-    router.push(`/search?${params.toString()}`)
+    const url = key === 'category' || key === 'sort' ? '/products' : '/search'
+    router.push(`${url}?${params.toString()}`)
   }
 
   const clearFilters = () => {
-    router.push(query ? `/search?q=${encodeURIComponent(query)}` : '/search')
+    router.push(query ? `/search?q=${encodeURIComponent(query)}` : '/products')
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="font-mono font-bold text-sm uppercase tracking-wider mb-3">
-          Sort By
-        </h3>
-        <RadioGroup
-          value={currentSort}
-          onValueChange={(value) => updateFilter('sort', value)}
-        >
+    <div className="bg-white border-b border-black/20 py-4 sticky top-0 z-40 shadow-sm">
+      <div className="space-y-4">
+        {/* Sort By */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-mono font-bold text-sm uppercase tracking-wider text-gray-700 mr-2">
+            Sort:
+          </span>
           {sortOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value={option.value} id={option.value} />
-              <Label htmlFor={option.value} className="font-mono text-sm cursor-pointer">
-                {option.label}
-              </Label>
-            </div>
+            <Button
+              key={option.value}
+              variant={currentSort === option.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => updateFilter('sort', option.value)}
+              className={cn(
+                "font-mono text-xs h-8 px-3 transition-all",
+                currentSort === option.value
+                  ? "bg-black text-white border-black"
+                  : "hover:border-black hover:bg-black/5"
+              )}
+            >
+              {option.label}
+            </Button>
           ))}
-        </RadioGroup>
-      </div>
-
-      <div className="border-t border-black/10 pt-6">
-        <h3 className="font-mono font-bold text-sm uppercase tracking-wider mb-3">
-          Category
-        </h3>
-        <RadioGroup
-          value={currentCategory}
-          onValueChange={(value) => updateFilter('category', value)}
-        >
-          {categoryOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value={option.value} id={`cat-${option.value}`} />
-              <Label htmlFor={`cat-${option.value}`} className="font-mono text-sm cursor-pointer">
-                {option.label}
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </div>
-
-      {(currentSort !== 'relevance' || currentCategory) && (
-        <div className="border-t border-black/10 pt-6">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={clearFilters}
-            className="w-full font-mono text-xs"
-          >
-            Clear Filters
-          </Button>
         </div>
-      )}
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-mono font-bold text-sm uppercase tracking-wider text-gray-700 mr-2">
+            Category:
+          </span>
+          {categoryOptions.map((option) => (
+            <Button
+              key={option.value}
+              variant={currentCategory === option.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => updateFilter('category', option.value)}
+              className={cn(
+                "font-mono text-xs h-8 px-3 transition-all",
+                currentCategory === option.value
+                  ? "bg-black text-white border-black"
+                  : "hover:border-black hover:bg-black/5"
+              )}
+            >
+              {option.label}
+            </Button>
+          ))}
+          
+          {/* Clear Filters */}
+          {(currentSort !== 'relevance' || currentCategory) && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearFilters}
+              className="font-mono text-xs h-8 px-3 text-gray-500 hover:text-black ml-4"
+            >
+              Clear All
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
