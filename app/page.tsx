@@ -7,7 +7,7 @@ import { ProductCardMinimalServer } from '@/components/commerce/product-card-min
 import { NewsletterSection } from '@/components/layout/newsletter-section'
 import { Footer } from '@/components/layout/footer'
 import { Navigation } from '@/components/layout/navigation'
-import { CommunitySection } from '@/components/commerce/community-section'
+import { CommunityCarousel } from '@/components/commerce/community-carousel'
 import { ComingSoonCarousel } from '@/components/commerce/coming-soon-carousel'
 import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
 
@@ -79,7 +79,7 @@ export default async function HomePage() {
       </section>
 
       {/* Community Section with Instagram/TikTok Tabs */}
-      <CommunitySection />
+      <CommunityCarousel />
 
       {/* Coming Soon Carousel */}
       <ComingSoonCarousel />

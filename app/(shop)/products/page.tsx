@@ -1,7 +1,7 @@
 import { getProducts } from '@/lib/shopify/api'
 import { VirtualProductGrid } from '@/components/commerce/virtual-product-grid'
-import { SearchFilters } from '@/app/(shop)/search/search-filters'
-import Link from 'next/link'
+import { SearchFiltersTranslated } from '@/app/(shop)/search/search-filters-translated'
+import { ProductsPageHeader, NoProductsFound } from './page-client'
 
 export const metadata = {
   title: 'All Products | Indecisive Wear',
@@ -15,38 +15,19 @@ export default async function ProductsPage() {
 
   return (
     <div className="pt-4 md:pt-8">
-      {/* Breadcrumb Navigation */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <nav className="flex items-center gap-2 text-sm text-gray-600">
-          <Link href="/" className="hover:text-black transition-colors font-medium">
-            Home
-          </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-black font-medium">All Products</span>
-        </nav>
-      </div>
+      <ProductsPageHeader productCount={products.length} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        {/* Page Header */}
-        <div className="mb-8 text-center lg:text-left">
-          <h1 className="text-4xl lg:text-5xl font-bold font-mono mb-2">ALL PRODUCTS</h1>
-          <p className="text-gray-600 text-lg">
-            {products.length} items to help you decide (or not)
-          </p>
-        </div>
 
-      {/* Horizontal Filters */}
-      <SearchFilters />
+      {/* Collapsible Filters */}
+      <SearchFiltersTranslated />
 
       {/* Products Grid - Full Width */}
       <div className="mt-6">
         {products.length > 0 ? (
           <VirtualProductGrid products={products} />
         ) : (
-          <div className="text-center py-16">
-            <h2 className="text-2xl font-mono mb-4">NO PRODUCTS FOUND</h2>
-            <p className="text-gray-600">Try adjusting your filters</p>
-          </div>
+          <NoProductsFound />
         )}
       </div>
       </div>

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { SearchResults } from './search-results'
-import { SearchFilters } from './search-filters'
+import { SearchFiltersResponsive } from './search-filters-responsive'
 
 export const metadata = {
   title: 'Search | Indecisive Wear',
@@ -21,14 +21,12 @@ export default async function SearchPage({
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Filters - Client Component */}
-        <aside className="lg:col-span-1">
-          <SearchFilters />
-        </aside>
+      {/* Filters - Full width responsive */}
+      <SearchFiltersResponsive />
 
+      <div className="mt-6">
         {/* Results - Server Component with Suspense */}
-        <main className="lg:col-span-3">
+        <main>
           <Suspense
             fallback={
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

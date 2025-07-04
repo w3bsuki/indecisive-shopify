@@ -20,7 +20,8 @@
     "comingSoon": "СКОРО",
     "sale": "РАЗПРОДАЖБА",
     "banner": "Стани наш партньор • Получаваш 15% комисионна",
-    "bannerLink": "Регистрирай се тук →"
+    "bannerLink": "Регистрирай се тук →",
+    "home": "Начало"
   },
   "hero": {
     "customers": "клиенти",
@@ -48,7 +49,7 @@
     "viewPost": "ВИЖ ПОСТ",
     "viewOnInstagram": "ВИЖ В INSTAGRAM",
     "shareYourStyle": "СПОДЕЛИ ТВОЯ СТИЛ",
-    "tagToBeFeature": "Маркирай @indecisivewear за да бъдеш показан",
+    "tagToBeFeature": "Тагни @indecisivewear за да бъдеш показан",
     "getFeaturedInCommunity": "Бъди част от нашата общност",
     "getFeatured": "БЪДИ ПОКАЗАН"
   },
@@ -124,7 +125,10 @@
     "addToWishlist": "Добави в любими",
     "removeFromWishlist": "Премахни от любими",
     "addingToCart": "Добавяне в кошницата",
-    "selectSize": "Избери размер"
+    "selectSize": "Избери размер",
+    "itemCount": "{count} продукта за да решиш (или не)",
+    "noProductsFound": "НЯМА НАМЕРЕНИ ПРОДУКТИ",
+    "tryAdjustingFilters": "Опитай да промениш филтрите"
   },
   "cart": {
     "title": "КОШНИЦА",
@@ -257,6 +261,29 @@
       "follow": "Следете ни"
     },
     "copyright": "© {year} Indecisive Wear. Всички права запазени."
+  },
+  "filters": {
+    "title": "Филтри и сортиране",
+    "subtitle": "Прецизирай търсенето на продукти",
+    "active": "Активни",
+    "sortBy": "Сортирай по",
+    "clearAll": "Изчисти всички филтри",
+    "sort": {
+      "relevance": "Подходящи",
+      "priceAsc": "Цена: От ниска към висока",
+      "priceDesc": "Цена: От висока към ниска",
+      "nameAsc": "Име: А-Я",
+      "nameDesc": "Име: Я-А"
+    },
+    "categories": {
+      "title": "Категории",
+      "all": "Всички категории",
+      "tshirts": "Тениски",
+      "hoodies": "Суичъри",
+      "jackets": "Якета",
+      "pants": "Панталони",
+      "accessories": "Аксесоари"
+    }
   },
   "messages": {
     "addedToCart": "Добавено в кошницата",
