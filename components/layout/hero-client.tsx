@@ -23,6 +23,9 @@ interface HeroClientProps {
       returns: string;
       joinCustomers: string;
       newArrivals: string;
+      followInstagram: string;
+      beMinimalBold: string;
+      stayIndecisive: string;
     };
     brand: {
       name: string;
