@@ -91,7 +91,7 @@ export function Navigation() {
     handleScroll()
 
     return () => window.removeEventListener("scroll", throttledHandleScroll)
-  }, [lastScrollY])
+  }, [lastScrollY, isMenuOpen])
 
   const menuItems = [
     { name: "ALL", href: "/products", badge: null },

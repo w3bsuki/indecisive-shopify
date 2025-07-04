@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Instagram, Hash, Users, Heart, Camera, Share2, Star, Sparkles, TrendingUp } from 'lucide-react'
+import { Users, Camera, Share2, Star, Sparkles, TrendingUp } from 'lucide-react'
 
 export function CommunitySectionIcons() {
   const t = useTranslations('community')

@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Camera, Heart, Share2, Instagram } from 'lucide-react'
+import { Camera, Heart } from 'lucide-react'
 
 export function CommunitySectionMinimal() {
   const t = useTranslations('community')

@@ -6,7 +6,7 @@ export async function Footer() {
   const currentYear = new Date().getFullYear()
   const t = await getTranslations('footer')
   const tb = await getTranslations('brand')
-  const tn = await getTranslations('nav')
+  const _tn = await getTranslations('nav')
   
   return (
     <>

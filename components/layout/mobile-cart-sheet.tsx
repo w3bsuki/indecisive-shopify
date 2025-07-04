@@ -25,7 +25,7 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
   const { setCartIconRef } = useFlyToCart()
   const cartIconRef = useRef<HTMLButtonElement>(null)
   const [isAnimating, setIsAnimating] = useState(false)
-  const router = useRouter()
+  const _router = useRouter()
   
   const totalItems = totalQuantity || 0
   const prevTotalItems = useRef(totalItems)
