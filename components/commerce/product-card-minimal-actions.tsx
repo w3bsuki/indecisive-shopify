@@ -41,10 +41,7 @@ export function ProductCardMinimalActions({
     // Get the first available variant
     const firstVariant = product.variants?.edges?.[0]?.node
     if (firstVariant) {
-      addItem({
-        merchandiseId: firstVariant.id,
-        quantity: 1
-      }, product)
+      addItem(firstVariant.id, 1)
     }
   }
 
