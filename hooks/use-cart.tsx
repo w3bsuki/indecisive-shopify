@@ -26,7 +26,7 @@ type OptimisticAction =
 // Export for external use
 export let cartNotificationCallback: ((product: any) => void) | null = null;
 
-export function setCartNotificationCallback(callback: (product: any) => void) {
+export function setCartNotificationCallback(callback: ((product: any) => void) | null) {
   cartNotificationCallback = callback;
 }
 
