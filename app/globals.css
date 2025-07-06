@@ -45,7 +45,7 @@
   --color-border-focus: var(--color-gray-950);
   
   /* Typography - Next.js fonts provide font variables */
-  --font-family-sans: var(--font-noto), var(--font-source), var(--font-roboto), system-ui, -apple-system, sans-serif;
+  --font-family-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-family-mono: var(--font-mono), 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
   
   /* Bulgarian-specific typography settings */
@@ -144,8 +144,6 @@
     @apply bg-background text-foreground;
     font-family: var(--font-family-sans);
     font-feature-settings: var(--font-feature-settings-default);
-    /* Prevent iOS Safari bounce scrolling */
-    overscroll-behavior-y: contain;
     /* Disable blue highlight on tap in WebKit */
     -webkit-tap-highlight-color: transparent;
     /* Force smooth scrolling */
@@ -180,8 +178,17 @@
   html[lang="bg"] h5, 
   html[lang="bg"] h6 {
     font-family: var(--font-family-sans);
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     @apply tracking-normal;
+  }
+  
+  /* Bulgarian specific headline styling */
+  html[lang="bg"] .text-2xl,
+  html[lang="bg"] .text-3xl,
+  html[lang="bg"] .text-4xl {
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -272,6 +279,48 @@
     @apply text-xs uppercase tracking-wider text-muted-foreground;
   }
   
+  /* Drawer/Sheet Typography Standards */
+  .text-drawer-title {
+    font-family: var(--font-family-sans);
+    @apply text-lg font-semibold text-foreground tracking-tight;
+  }
+  
+  .text-drawer-subtitle {
+    font-family: var(--font-family-sans);
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .text-drawer-label {
+    font-family: var(--font-family-sans);
+    @apply text-xs font-medium text-muted-foreground uppercase tracking-wider;
+  }
+  
+  .text-drawer-value {
+    font-family: var(--font-family-sans);
+    @apply text-sm font-medium text-foreground;
+  }
+  
+  .text-drawer-price {
+    font-family: var(--font-family-mono);
+    @apply text-sm font-bold tracking-tight;
+  }
+  
+  .text-drawer-total {
+    font-family: var(--font-family-mono);
+    @apply text-base font-bold tracking-tight;
+  }
+  
+  /* Empty State Typography */
+  .text-empty-title {
+    font-family: var(--font-family-sans);
+    @apply text-base font-semibold text-foreground;
+  }
+  
+  .text-empty-subtitle {
+    font-family: var(--font-family-sans);
+    @apply text-sm text-muted-foreground;
+  }
+  
   /* Bulgarian-specific typography utilities */
   html[lang="bg"] .text-price {
     font-family: var(--font-family-sans);
@@ -288,6 +337,20 @@
   html[lang="bg"] .text-product-brand {
     letter-spacing: 0.05em;
     font-weight: 500;
+  }
+  
+  /* Bulgarian product description styling */
+  html[lang="bg"] .text-product-description,
+  html[lang="bg"] .prose {
+    font-family: var(--font-family-sans);
+    line-height: 1.6;
+    letter-spacing: 0.015em;
+    font-weight: 400;
+  }
+  
+  html[lang="bg"] .prose p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
   }
   
   /* Modern Button Styles */
@@ -307,7 +370,58 @@
     transform: translateY(-1px);
   }
   
+  /* Drawer/Sheet Layout Standards */
+  .drawer-header {
+    @apply flex items-center justify-between px-6 py-4 border-b border-gray-200;
+    min-height: 3.5rem; /* 56px */
+  }
   
+  .drawer-content {
+    @apply flex-1 overflow-y-auto px-6 py-4;
+  }
+  
+  .drawer-footer {
+    @apply border-t border-gray-200 bg-gray-50 px-6 py-4 space-y-3;
+  }
+  
+  .drawer-close-button {
+    @apply w-11 h-11 flex items-center justify-center border border-gray-300 hover:border-gray-950 bg-white hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none touch-manipulation;
+  }
+  
+  /* Product Display in Drawers */
+  .drawer-product-card {
+    @apply flex gap-4 pb-4 border-b border-gray-100 last:border-0;
+  }
+  
+  .drawer-product-image {
+    @apply relative w-20 h-20 md:w-24 md:h-24 bg-gray-100 overflow-hidden flex-shrink-0;
+  }
+  
+  .drawer-product-info {
+    @apply flex-1 min-w-0 space-y-2;
+  }
+  
+  /* Empty State Styling */
+  .drawer-empty-state {
+    @apply flex flex-col items-center justify-center h-full text-center py-16 px-6;
+  }
+  
+  .drawer-empty-icon {
+    @apply h-12 w-12 text-gray-400 mb-4;
+  }
+  
+  /* Drawer Button Standards */
+  .drawer-button-primary {
+    @apply w-full bg-black text-white hover:bg-gray-800 font-medium h-12 transition-colors;
+  }
+  
+  .drawer-button-secondary {
+    @apply w-full border-2 border-black bg-white hover:bg-gray-50 text-black font-medium h-12 transition-colors;
+  }
+  
+  .drawer-button-ghost {
+    @apply w-full hover:bg-gray-100 font-medium h-12 transition-colors;
+  }
 }
 
 /* Sharp Design System */

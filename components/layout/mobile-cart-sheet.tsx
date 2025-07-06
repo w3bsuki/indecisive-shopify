@@ -2,9 +2,10 @@
 
 import type React from "react"
 import { useRef, useEffect, useState } from "react"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { DrawerEmptyState } from "@/components/ui/drawer-empty-state"
 import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useCart } from "@/hooks/use-cart"
@@ -12,6 +13,8 @@ import { useMarket } from "@/hooks/use-market"
 import { useTranslations } from "next-intl"
 import { useFlyToCart } from "@/contexts/fly-to-cart-context"
 import { FreeShippingProgress } from "@/components/commerce/free-shipping-progress"
+import { CartRecommendations } from "@/components/commerce/cart-recommendations"
+import { CartTrustElements } from "@/components/commerce/cart-trust-elements"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 
@@ -105,7 +108,7 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="px-6 py-4 border-b">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-lg font-bold font-mono">
+            <SheetTitle className="text-lg font-semibold">
               {t('title')} {totalItems > 0 && `(${totalItems})`}
             </SheetTitle>
             <SheetClose asChild>
@@ -119,20 +122,24 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {!lines || lines.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <ShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
-              <p className="text-lg font-medium mb-2">{t('empty.title')}</p>
-              <p className="text-sm text-gray-600 mb-6">{t('empty.subtitle')}</p>
-              <Button variant="outline" className="w-full max-w-xs">
-                {t('continueShopping')}
-              </Button>
+            <div className="space-y-8">
+              <DrawerEmptyState
+                icon={ShoppingBag}
+                title={t('empty.title')}
+                subtitle={t('empty.subtitle')}
+                actionLabel={t('continueShopping')}
+                onAction={() => window.location.href = '/products'}
+              />
+              
+              {/* Trust elements when cart is empty */}
+              <CartTrustElements variant="minimal" />
             </div>
           ) : (
             <div className="space-y-4">
               {lines.map((item) => 
                 item ? (
-                <div key={item.id} className="flex gap-4 border-b pb-4">
-                  <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
+                <div key={item.id} className="flex gap-4 pb-4 border-b last:border-0">
+                  <div className="relative w-20 h-20 bg-gray-100 overflow-hidden flex-shrink-0">
                     {item.merchandise?.product?.featuredImage ? (
                       <Image
                         src={item.merchandise.product.featuredImage.url || ''}
@@ -147,14 +154,14 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
                     )}
                   </div>
 
-                  <div className="flex-1 space-y-2">
+                  <div className="flex-1 min-w-0 space-y-2">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="font-medium text-sm line-clamp-1">
+                        <h4 className="text-sm font-medium line-clamp-1">
                           {item.merchandise?.product?.title || 'Product'}
                         </h4>
                         {item.merchandise?.title && item.merchandise.title !== 'Default Title' && (
-                          <p className="text-xs text-gray-600">{item.merchandise.title}</p>
+                          <p className="text-xs text-muted-foreground">{item.merchandise.title}</p>
                         )}
                       </div>
                       <Button
@@ -190,13 +197,20 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
-                      <span className="font-medium text-sm">
+                      <span className="text-sm font-semibold">
                         {formatPrice(item.cost?.totalAmount?.amount || '0', item.cost?.totalAmount?.currencyCode || 'USD')}
                       </span>
                     </div>
                   </div>
                 </div>
               ) : null
+              )}
+              
+              {/* Smart Product Recommendations - Only with items in cart */}
+              {lines.length > 0 && (
+                <div className="pt-6 border-t">
+                  <CartRecommendations maxItems={4} title="Complete your look" />
+                </div>
               )}
             </div>
           )}
@@ -219,28 +233,28 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
               <input
                 type="text"
                 placeholder={t('discountCode')}
-                className="flex-1 px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                className="flex-1 px-3 py-2 text-sm border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-colors"
               />
-              <Button variant="outline" size="sm">
+              <Button variant="outline" className="h-auto py-2 px-4 border-2">
                 {t('apply')}
               </Button>
             </div>
 
             {/* Totals */}
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2">
               <div className="flex justify-between">
-                <span>{t('subtotal')}</span>
-                <span>{subtotal?.amount && subtotal?.currencyCode ? formatPrice(subtotal.amount, subtotal.currencyCode) : '$0.00'}</span>
+                <span className="text-sm">{t('subtotal')}</span>
+                <span className="text-sm font-semibold">{subtotal?.amount && subtotal?.currencyCode ? formatPrice(subtotal.amount, subtotal.currencyCode) : '$0.00'}</span>
               </div>
               {cost?.totalTaxAmount?.amount && cost?.totalTaxAmount?.currencyCode && parseFloat(cost.totalTaxAmount.amount) > 0 && (
                 <div className="flex justify-between">
-                  <span>{t('tax')}</span>
-                  <span>{formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode)}</span>
+                  <span className="text-sm">{t('tax')}</span>
+                  <span className="text-sm font-semibold">{formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode)}</span>
                 </div>
               )}
-              <div className="flex justify-between font-medium text-base pt-2 border-t">
-                <span>{t('total')}</span>
-                <span>{total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}</span>
+              <div className="flex justify-between pt-2 border-t">
+                <span className="font-medium">{t('total')}</span>
+                <span className="font-bold">{total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}</span>
               </div>
             </div>
 
@@ -275,10 +289,10 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
               </Button>
             </SheetClose>
 
-            {/* Security Notice */}
-            <p className="text-xs text-center text-gray-600 mt-2">
-              Secure checkout powered by Shopify
-            </p>
+            {/* Enhanced Trust Elements */}
+            <div className="pt-2">
+              <CartTrustElements variant="minimal" />
+            </div>
             </div>
           </div>
         )}

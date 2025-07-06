@@ -2,12 +2,17 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Package, Ruler, Truck } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { ShippingCalculator } from '@/components/checkout/shipping-calculator'
 
 interface ProductTabsProps {
   description?: string
 }
 
 export function ProductTabs({ description }: ProductTabsProps) {
+  const t = useTranslations('products')
+  const tc = useTranslations('common')
+  
   return (
     <Tabs defaultValue="details" className="w-full">
       <TabsList>
@@ -26,7 +31,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
       </TabsList>
       
       <TabsContent value="details" className="space-y-6">
-        <div className="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed">
+        <div className="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed text-product-description">
           {description ? (
             <p>{description}</p>
           ) : (
@@ -35,23 +40,23 @@ export function ProductTabs({ description }: ProductTabsProps) {
         </div>
         
         <div className="space-y-3">
-          <h4 className="font-semibold font-mono uppercase tracking-wide text-black">Care Instructions</h4>
+          <h4 className="font-semibold font-mono uppercase tracking-wide text-black">{t('careInstructions')}</h4>
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start gap-2">
               <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-              Machine wash cold with like colors
+              {t('care.machineWash')}
             </li>
             <li className="flex items-start gap-2">
               <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-              Do not bleach
+              {t('care.noBleach')}
             </li>
             <li className="flex items-start gap-2">
               <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-              Tumble dry low
+              {t('care.tumbleDry')}
             </li>
             <li className="flex items-start gap-2">
               <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-              Cool iron if needed
+              {t('care.coolIron')}
             </li>
           </ul>
         </div>
@@ -59,41 +64,41 @@ export function ProductTabs({ description }: ProductTabsProps) {
       
       <TabsContent value="size" className="space-y-6">
         <div className="space-y-4">
-          <h4 className="font-semibold font-mono uppercase tracking-wide text-black">Size Chart</h4>
+          <h4 className="font-semibold font-mono uppercase tracking-wide text-black">{t('sizeGuide')}</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-2 border-gray-200">
               <thead>
                 <tr className="border-b-2 border-gray-200 bg-gray-50">
-                  <th className="text-left py-3 px-4 font-mono font-medium">Size</th>
-                  <th className="text-center py-3 px-4 font-mono font-medium">Head Circumference</th>
-                  <th className="text-center py-3 px-4 font-mono font-medium">Fit</th>
+                  <th className="text-left py-3 px-4 font-mono font-medium">{tc('size')}</th>
+                  <th className="text-center py-3 px-4 font-mono font-medium">{t('size.headCircumference')}</th>
+                  <th className="text-center py-3 px-4 font-mono font-medium">{t('size.fit')}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b border-gray-200">
                   <td className="py-3 px-4 font-medium">S/M</td>
                   <td className="text-center py-3 px-4">56-58 cm</td>
-                  <td className="text-center py-3 px-4">Snug</td>
+                  <td className="text-center py-3 px-4">{t('size.snug')}</td>
                 </tr>
                 <tr className="border-b border-gray-200">
                   <td className="py-3 px-4 font-medium">L/XL</td>
                   <td className="text-center py-3 px-4">58-60 cm</td>
-                  <td className="text-center py-3 px-4">Relaxed</td>
+                  <td className="text-center py-3 px-4">{t('size.relaxed')}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           
           <div className="text-sm text-gray-700 space-y-3">
-            <h5 className="font-semibold font-mono uppercase tracking-wide text-black">How to Measure</h5>
+            <h5 className="font-semibold font-mono uppercase tracking-wide text-black">{t('size.howToMeasure')}</h5>
             <ul className="space-y-2">
               <li className="flex items-start gap-2">
                 <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                <span><strong>Head Circumference:</strong> Measure around your head just above your ears</span>
+                <span>{t('size.headMeasurement')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                <span><strong>Fit:</strong> Choose based on your preferred comfort level</span>
+                <span>{t('size.fitPreference')}</span>
               </li>
             </ul>
           </div>
@@ -102,44 +107,58 @@ export function ProductTabs({ description }: ProductTabsProps) {
       
       <TabsContent value="shipping" className="space-y-6">
         <div className="space-y-4">
-          <h4 className="font-semibold font-mono uppercase tracking-wide text-black">Shipping & Returns</h4>
+          <h4 className="font-semibold font-mono uppercase tracking-wide text-black">{t('shippingReturns')}</h4>
           
           <div className="space-y-4 text-sm text-gray-700">
             <div className="space-y-2">
-              <h5 className="font-medium text-black">Shipping Options</h5>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>Free Standard Shipping:</strong> 5-7 business days on orders over $50</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>Express Shipping:</strong> 2-3 business days ($9.99)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>Overnight Shipping:</strong> Next business day ($19.99)</span>
-                </li>
-              </ul>
+              <h5 className="font-medium text-black">{t('shipping.deliveryPartners')}</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="border-2 border-black p-4">
+                  <h6 className="font-semibold mb-2">Econt Express</h6>
+                  <ul className="space-y-1 text-xs">
+                    <li>• Nationwide coverage in Bulgaria</li>
+                    <li>• Home delivery & office pickup</li>
+                    <li>• 1-2 business days delivery</li>
+                    <li>• Real-time tracking</li>
+                  </ul>
+                </div>
+                <div className="border-2 border-black p-4">
+                  <h6 className="font-semibold mb-2">Speedy</h6>
+                  <ul className="space-y-1 text-xs">
+                    <li>• Express delivery service</li>
+                    <li>• Home delivery & office pickup</li>
+                    <li>• 1-2 business days delivery</li>
+                    <li>• SMS notifications</li>
+                  </ul>
+                </div>
+              </div>
+              <p className="text-xs text-gray-600 mt-2">
+                * Office pickup available with 20% discount on shipping
+              </p>
             </div>
             
             <div className="space-y-2">
-              <h5 className="font-medium text-black">Returns & Exchanges</h5>
+              <h5 className="font-medium text-black">{t('shipping.returnsExchanges')}</h5>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>30-day return window:</strong> Items must be unworn with tags attached</span>
+                  <span>{t('shipping.returnWindow')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>Free returns:</strong> Prepaid return label included</span>
+                  <span>{t('shipping.freeReturns')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>Exchanges:</strong> Size exchanges processed within 2-3 business days</span>
+                  <span>{t('shipping.exchanges')}</span>
                 </li>
               </ul>
             </div>
+          </div>
+          
+          {/* Shipping Calculator */}
+          <div className="border-t pt-6">
+            <ShippingCalculator weight={0.3} />
           </div>
         </div>
       </TabsContent>

@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'Manage your personal information and preferences',
 }
 
+import { AccountPageWrapper } from '../components/account-page-wrapper'
+
 export default async function ProfilePage() {
   const customer = await getCurrentCustomer()
   
@@ -19,7 +21,8 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AccountPageWrapper>
+      <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold font-mono">Profile Information</h2>
       </div>
@@ -28,8 +31,8 @@ export default async function ProfilePage() {
         {/* Current Profile Information */}
         <Card className="border-2 border-black">
           <CardHeader>
-            <CardTitle className="font-mono flex items-center gap-2">
-              <User className="h-5 w-5" />
+            <CardTitle className="font-mono flex items-center gap-3">
+              <User className="h-5 w-5 flex-shrink-0" />
               Current Information
             </CardTitle>
           </CardHeader>
@@ -161,5 +164,6 @@ export default async function ProfilePage() {
         </CardContent>
       </Card>
     </div>
+    </AccountPageWrapper>
   )
 }

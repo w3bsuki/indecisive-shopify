@@ -45,7 +45,7 @@ export function SearchFilters() {
   }
 
   return (
-    <div className="bg-white border-b border-black/20 py-4 sticky top-0 z-40 shadow-sm">
+    <div className="bg-white border-b border-black/20 py-4 z-40 shadow-sm">
       <div className="space-y-4">
         {/* Sort By */}
         <div className="flex flex-wrap items-center gap-2">

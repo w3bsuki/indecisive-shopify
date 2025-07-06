@@ -66,23 +66,50 @@ export function useWishlistEnhanced() {
 
         if (isAuthenticated) {
           // Load from Shopify metafields for authenticated users
-          await loadFromShopify();
-        } else {
-          // Load from localStorage for anonymous users
-          loadFromLocalStorage();
+          try {
+            const token = await getCustomerTokenFromAPI();
+            if (token) {
+              const result = await getCustomerMetafield(token, WISHLIST_NAMESPACE, WISHLIST_KEY);
+              if (result.success && result.metafield?.value) {
+                const items = JSON.parse(result.metafield.value) as WishlistItem[];
+                if (mounted) {
+                  setState(prev => ({ 
+                    ...prev, 
+                    items, 
+                    lastSyncAt: result.metafield?.updatedAt,
+                    isAuthenticated,
+                    isLoading: false
+                  }));
+                }
+                return;
+              }
+            }
+          } catch (error) {
+            // Fall through to localStorage
+          }
         }
-
-        if (mounted) {
-          setState(prev => ({ 
-            ...prev, 
-            isAuthenticated, 
-            isLoading: false 
-          }));
+        
+        // Load from localStorage for anonymous users or as fallback
+        try {
+          const saved = localStorage.getItem(LOCALSTORAGE_KEY);
+          if (saved) {
+            const items = JSON.parse(saved) as WishlistItem[];
+            if (mounted) {
+              setState(prev => ({ ...prev, items, isAuthenticated, isLoading: false }));
+            }
+          } else {
+            if (mounted) {
+              setState(prev => ({ ...prev, isAuthenticated, isLoading: false }));
+            }
+          }
+        } catch (error) {
+          if (mounted) {
+            setState(prev => ({ ...prev, isAuthenticated, isLoading: false }));
+          }
         }
       } catch (error) {
-        // Fallback to localStorage on error
+        // Final fallback
         if (mounted) {
-          loadFromLocalStorage();
           setState(prev => ({ 
             ...prev, 
             isAuthenticated: false, 
@@ -105,10 +132,14 @@ export function useWishlistEnhanced() {
       const saved = localStorage.getItem(LOCALSTORAGE_KEY);
       if (saved) {
         const items = JSON.parse(saved) as WishlistItem[];
-        setState(prev => ({ ...prev, items }));
+        setState(prev => ({ ...prev, items, isLoading: false }));
+        return items;
       }
+      setState(prev => ({ ...prev, isLoading: false }));
+      return [];
     } catch (error) {
-      // Silent error - localStorage fallback
+      setState(prev => ({ ...prev, isLoading: false }));
+      return [];
     }
   }, []);
 
@@ -181,19 +212,19 @@ export function useWishlistEnhanced() {
   }, []);
 
   // Sync items to persistent storage
-  const syncItems = useCallback(async (newItems: WishlistItem[]) => {
+  const syncItems = useCallback(async (newItems: WishlistItem[], isAuthenticated: boolean) => {
     // Always save to localStorage as fallback
     saveToLocalStorage(newItems);
 
     // Save to Shopify if authenticated
-    if (state.isAuthenticated) {
+    if (isAuthenticated) {
       try {
         await saveToShopify(newItems);
       } catch (error) {
         // Non-blocking error - localStorage serves as fallback
       }
     }
-  }, [state.isAuthenticated, saveToLocalStorage, saveToShopify]);
+  }, [saveToLocalStorage, saveToShopify]);
 
   // Add item to wishlist
   const addItem = useCallback(async (item: WishlistItem) => {
@@ -213,7 +244,7 @@ export function useWishlistEnhanced() {
       });
 
       // Sync in background
-      syncItems(newItems);
+      syncItems(newItems, prev.isAuthenticated);
 
       return { ...prev, items: newItems };
     });
@@ -233,7 +264,7 @@ export function useWishlistEnhanced() {
       });
 
       // Sync in background
-      syncItems(newItems);
+      syncItems(newItems, prev.isAuthenticated);
 
       return { ...prev, items: newItems };
     });
@@ -254,7 +285,7 @@ export function useWishlistEnhanced() {
       }
 
       // Sync in background
-      syncItems(newItems);
+      syncItems(newItems, prev.isAuthenticated);
 
       return { ...prev, items: newItems };
     });
@@ -271,8 +302,8 @@ export function useWishlistEnhanced() {
     toast.success('Wishlist cleared', { id: 'wishlist-update' });
     
     // Sync empty wishlist
-    await syncItems([]);
-  }, [syncItems]);
+    await syncItems([], state.isAuthenticated);
+  }, [syncItems, state.isAuthenticated]);
 
   // Migrate localStorage to Shopify when user logs in
   const migrateToShopify = useCallback(async () => {

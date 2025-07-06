@@ -27,14 +27,37 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
   }, [state.success])
 
   // Show error toast if there's an error
-  if (state.error && !isPending) {
-    toast.error(state.error)
+  useEffect(() => {
+    if (state.error && !isPending) {
+      toast.error(state.error)
+    }
+  }, [state.error, isPending])
+
+  const handleLogin = () => {
+    const email = (document.getElementById('email') as HTMLInputElement)?.value
+    const password = (document.getElementById('password') as HTMLInputElement)?.value
+    
+    if (email && password) {
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('password', password)
+      if (redirectTo) {
+        formData.append('redirectTo', redirectTo)
+      }
+      formAction(formData)
+    }
   }
 
   return (
-    <form action={formAction} className="space-y-6">
+    <div id="login-form" className="space-y-6">
       {redirectTo && (
         <input type="hidden" name="redirectTo" value={redirectTo} />
+      )}
+      
+      {state.error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+          {state.error}
+        </div>
       )}
       
       <div className="space-y-2">
@@ -95,12 +118,13 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
       </div>
 
       <Button
-        type="submit"
+        type="button"
         disabled={isPending}
         className="w-full font-mono"
+        onClick={handleLogin}
       >
         {isPending ? 'SIGNING IN...' : 'SIGN IN'}
       </Button>
-    </form>
+    </div>
   )
 }

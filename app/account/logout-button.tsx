@@ -23,12 +23,12 @@ export function AccountLogoutButton() {
   return (
     <Button 
       variant="outline" 
-      className="font-mono border-2 border-black text-red-600 hover:bg-red-50"
+      className="w-full justify-start border-2 border-black text-red-600 hover:bg-red-50 h-12"
       onClick={handleLogout}
       disabled={isLoading}
     >
-      <LogOut className="h-4 w-4 mr-2" />
-      {isLoading ? 'LOGGING OUT...' : 'LOGOUT'}
+      <LogOut className="h-5 w-5 mr-3 flex-shrink-0" />
+      {isLoading ? 'Logging out...' : 'Logout'}
     </Button>
   )
 }

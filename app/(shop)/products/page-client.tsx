@@ -21,8 +21,8 @@ export function ProductsPageHeader({ productCount }: { productCount: number }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
-        <div className="mb-8 text-center lg:text-left">
-          <h1 className="text-4xl lg:text-5xl font-bold font-mono mb-2">{t('products.title')}</h1>
+        <div className="mb-6 text-center lg:text-left">
+          <h1 className="text-2xl lg:text-3xl font-bold mb-2">{t('products.title')}</h1>
           <p className="text-gray-600 text-lg">
             {t('products.itemCount', { count: productCount }) || `${productCount} items to help you decide (or not)`}
           </p>
@@ -37,7 +37,7 @@ export function NoProductsFound() {
   
   return (
     <div className="text-center py-16">
-      <h2 className="text-2xl font-mono mb-4">{t('products.noProductsFound') || 'NO PRODUCTS FOUND'}</h2>
+      <h2 className="text-2xl font-bold mb-4">{t('products.noProductsFound') || 'NO PRODUCTS FOUND'}</h2>
       <p className="text-gray-600">{t('products.tryAdjustingFilters') || 'Try adjusting your filters'}</p>
     </div>
   )

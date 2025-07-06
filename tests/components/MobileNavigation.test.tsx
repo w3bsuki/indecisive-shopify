@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { MobileNavigation } from '@/components/layout/mobile-navigation'
+import { Navigation } from '@/components/layout/navigation'
 import { useIsMobile } from '@/hooks/use-mobile'
 
 // Mock the mobile detection hook
@@ -13,14 +13,14 @@ jest.mock('next/link', () => {
   return ({ children, href }: any) => <a href={href}>{children}</a>
 })
 
-describe('MobileNavigation', () => {
+describe('Navigation', () => {
   beforeEach(() => {
     // Default to mobile view
     (useIsMobile as jest.Mock).mockReturnValue(true)
   })
 
   it('renders mobile navigation on mobile devices', () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     expect(screen.getByRole('navigation')).toBeInTheDocument()
     expect(screen.getByLabelText(/menu/i)).toBeInTheDocument()
@@ -29,12 +29,12 @@ describe('MobileNavigation', () => {
   it('does not render on desktop', () => {
     (useIsMobile as jest.Mock).mockReturnValue(false)
     
-    const { container } = render(<MobileNavigation />)
+    const { container } = render(<Navigation />)
     expect(container.firstChild).toBeNull()
   })
 
   it('opens and closes menu sheet', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const menuButton = screen.getByLabelText(/menu/i)
     
@@ -54,7 +54,7 @@ describe('MobileNavigation', () => {
   })
 
   it('navigates to different pages', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     // Open menu
     fireEvent.click(screen.getByLabelText(/menu/i))
@@ -72,7 +72,7 @@ describe('MobileNavigation', () => {
   })
 
   it('shows cart icon with item count', () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const cartButton = screen.getByLabelText(/cart/i)
     expect(cartButton).toBeInTheDocument()
@@ -85,7 +85,7 @@ describe('MobileNavigation', () => {
   })
 
   it('has search functionality', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const searchButton = screen.getByLabelText(/search/i)
     fireEvent.click(searchButton)
@@ -105,7 +105,7 @@ describe('MobileNavigation', () => {
   })
 
   it('has proper touch target sizes', () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const buttons = screen.getAllByRole('button')
     
@@ -121,7 +121,7 @@ describe('MobileNavigation', () => {
   })
 
   it('handles user account menu', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const accountButton = screen.getByLabelText(/account/i)
     fireEvent.click(accountButton)
@@ -133,7 +133,7 @@ describe('MobileNavigation', () => {
   })
 
   it('shows categories in menu', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     // Open menu
     fireEvent.click(screen.getByLabelText(/menu/i))
@@ -153,7 +153,7 @@ describe('MobileNavigation', () => {
   })
 
   it('maintains focus management', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const menuButton = screen.getByLabelText(/menu/i)
     menuButton.focus()
@@ -170,7 +170,7 @@ describe('MobileNavigation', () => {
   })
 
   it('handles swipe gestures', async () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     const nav = screen.getByRole('navigation')
     
@@ -198,7 +198,7 @@ describe('MobileNavigation', () => {
       usePathname: () => '/shop',
     }))
     
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     fireEvent.click(screen.getByLabelText(/menu/i))
     
@@ -209,7 +209,7 @@ describe('MobileNavigation', () => {
   })
 
   it('is accessible with screen readers', () => {
-    render(<MobileNavigation />)
+    render(<Navigation />)
     
     // Check ARIA labels
     expect(screen.getByRole('navigation')).toHaveAttribute('aria-label')

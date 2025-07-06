@@ -68,8 +68,8 @@ export function formatPriceForMarket(amount: string, market: Market): string {
   
   // Format number without currency symbol
   const formattedNumber = new Intl.NumberFormat(market.locale, {
-    minimumFractionDigits: market.currencyCode === 'JPY' ? 0 : 2,
-    maximumFractionDigits: market.currencyCode === 'JPY' ? 0 : 2,
+    minimumFractionDigits: (market.currencyCode === 'JPY' || market.currencyCode === 'BGN') ? 0 : 2,
+    maximumFractionDigits: (market.currencyCode === 'JPY' || market.currencyCode === 'BGN') ? 0 : 2,
   }).format(value)
   
   // Place symbol based on currency convention

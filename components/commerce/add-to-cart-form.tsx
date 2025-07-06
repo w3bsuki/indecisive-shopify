@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { ShoppingCart, Heart, Minus, Plus } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart'
+import { useWishlist } from '@/hooks/use-wishlist'
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useTranslations } from 'next-intl'
@@ -20,6 +21,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   const [isAdding, setIsAdding] = useState(false)
   const [showSizeGuide, setShowSizeGuide] = useState(false)
   const { addItem, cartReady } = useCart()
+  const { toggleItem, isInWishlist } = useWishlist()
   const t = useTranslations('products')
   const tc = useTranslations('common')
 
@@ -354,10 +356,24 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           type="button"
           variant="outline"
           size="lg"
-          className="px-4 h-14 touch-manipulation border-2 border-black hover:bg-black hover:text-white transition-all"
-          title={t('addToWishlist')}
+          className={cn(
+            "px-4 h-14 touch-manipulation border-2 transition-all",
+            isInWishlist(product.id)
+              ? "bg-black text-white border-black hover:bg-gray-800"
+              : "border-black hover:bg-black hover:text-white"
+          )}
+          title={isInWishlist(product.id) ? t('removeFromWishlist') : t('addToWishlist')}
+          onClick={() => {
+            toggleItem({
+              id: product.id,
+              handle: product.handle,
+              title: product.title,
+              image: product.featuredImage?.url,
+              price: selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount
+            })
+          }}
         >
-          <Heart className="h-5 w-5" />
+          <Heart className={cn("h-5 w-5", isInWishlist(product.id) && "fill-current")} />
         </Button>
       </div>
 

@@ -82,7 +82,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
                 {/* CTA Button */}
-                <Link href={slide.handle ? `/products/${slide.handle}` : "/new"}>
+                <Link href="/products">
                   <Button 
                     variant="white-sharp" 
                     size="lg" 

@@ -13,6 +13,7 @@ import {
   Building2
 } from 'lucide-react'
 import { AddressActionButtons } from './address-action-buttons'
+import { AccountPageWrapper } from '../components/account-page-wrapper'
 
 export const metadata: Metadata = {
   title: 'Addresses - My Account - Indecisive Wear',
@@ -57,7 +58,8 @@ export default async function AddressesPage() {
   const defaultAddressId = customer.defaultAddress?.id
 
   return (
-    <div className="space-y-6">
+    <AccountPageWrapper>
+      <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold font-mono">Shipping Addresses</h2>
         <Link href="/account/addresses/add">
@@ -187,5 +189,6 @@ export default async function AddressesPage() {
         </CardContent>
       </Card>
     </div>
+    </AccountPageWrapper>
   )
 }

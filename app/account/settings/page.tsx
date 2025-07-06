@@ -15,15 +15,19 @@ import {
   MapPin,
   AlertTriangle,
   Eye,
-  Bell
+  Bell,
+  Heart
 } from 'lucide-react'
 import { PasswordResetSection } from './password-reset-section'
+import { WishlistLink } from '@/components/commerce/wishlist-link'
 import { DataPrivacySection } from './data-privacy-section'
 
 export const metadata: Metadata = {
   title: 'Settings - My Account - Indecisive Wear',
   description: 'Manage your account settings and preferences',
 }
+
+import { AccountPageWrapper } from '../components/account-page-wrapper'
 
 export default async function SettingsPage() {
   const customer = await getCurrentCustomer()
@@ -34,7 +38,8 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AccountPageWrapper>
+      <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold font-mono">Account Settings</h2>
       </div>
@@ -42,8 +47,8 @@ export default async function SettingsPage() {
       {/* Account Overview */}
       <Card className="border-2 border-black">
         <CardHeader>
-          <CardTitle className="font-mono flex items-center gap-2">
-            <User className="h-5 w-5" />
+          <CardTitle className="font-mono flex items-center gap-3">
+            <User className="h-5 w-5 flex-shrink-0" />
             Account Overview
           </CardTitle>
         </CardHeader>
@@ -71,8 +76,8 @@ export default async function SettingsPage() {
 
             <div>
               <p className="text-sm text-gray-600 mb-2">Default Address</p>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-gray-500" />
+              <div className="flex items-center gap-3">
+                <MapPin className="h-5 w-5 text-gray-500 flex-shrink-0" />
                 <span className="text-sm">
                   {customer.defaultAddress 
                     ? `${customer.defaultAddress.city}, ${customer.defaultAddress.country}`
@@ -84,8 +89,8 @@ export default async function SettingsPage() {
 
             <div>
               <p className="text-sm text-gray-600 mb-2">Marketing</p>
-              <div className="flex items-center gap-2">
-                <Bell className="h-4 w-4 text-gray-500" />
+              <div className="flex items-center gap-3">
+                <Bell className="h-5 w-5 text-gray-500 flex-shrink-0" />
                 <span className="text-sm">
                   {customer.acceptsMarketing ? 'Subscribed' : 'Not subscribed'}
                 </span>
@@ -96,15 +101,15 @@ export default async function SettingsPage() {
           <div className="border-t pt-4">
             <div className="flex flex-wrap gap-3">
               <Link href="/account/profile">
-                <Button variant="outline" size="sm" className="font-mono border-2 border-black">
-                  <User className="h-4 w-4 mr-2" />
+                <Button variant="outline" size="sm" className="font-mono border-2 border-black h-10">
+                  <User className="h-4 w-4 mr-2 flex-shrink-0" />
                   Edit Profile
                 </Button>
               </Link>
               
               <Link href="/account/addresses">
-                <Button variant="outline" size="sm" className="font-mono border-2 border-black">
-                  <MapPin className="h-4 w-4 mr-2" />
+                <Button variant="outline" size="sm" className="font-mono border-2 border-black h-10">
+                  <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                   Manage Addresses
                 </Button>
               </Link>
@@ -116,8 +121,8 @@ export default async function SettingsPage() {
       {/* Security Settings */}
       <Card className="border-2 border-black">
         <CardHeader>
-          <CardTitle className="font-mono flex items-center gap-2">
-            <Shield className="h-5 w-5" />
+          <CardTitle className="font-mono flex items-center gap-3">
+            <Shield className="h-5 w-5 flex-shrink-0" />
             Security Settings
           </CardTitle>
         </CardHeader>
@@ -134,8 +139,8 @@ export default async function SettingsPage() {
             <h4 className="font-mono font-medium mb-2">Account Security</h4>
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-blue-600" />
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 w-5 text-blue-600 flex-shrink-0" />
                   <span>Email: {customer.email}</span>
                 </div>
                 <Badge variant="outline" className="border-blue-300 text-blue-700">
@@ -144,8 +149,8 @@ export default async function SettingsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Key className="h-4 w-4 text-green-600" />
+                <div className="flex items-center gap-3">
+                  <Key className="h-5 w-5 text-green-600 flex-shrink-0" />
                   <span>Password</span>
                 </div>
                 <Badge variant="outline" className="border-green-300 text-green-700">
@@ -163,37 +168,37 @@ export default async function SettingsPage() {
       {/* Quick Actions */}
       <Card className="border-2 border-black">
         <CardHeader>
-          <CardTitle className="font-mono flex items-center gap-2">
-            <Settings className="h-5 w-5" />
+          <CardTitle className="font-mono flex items-center gap-3">
+            <Settings className="h-5 w-5 flex-shrink-0" />
             Quick Actions
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Link href="/account/orders">
-              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black">
-                <Eye className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black h-12">
+                <Eye className="h-5 w-5 mr-3 flex-shrink-0" />
                 View Order History
               </Button>
             </Link>
 
-            <Link href="/wishlist">
-              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black">
-                <Eye className="h-4 w-4 mr-2" />
+            <WishlistLink>
+              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black h-12">
+                <Heart className="h-5 w-5 mr-3 flex-shrink-0" />
                 View Wishlist
               </Button>
-            </Link>
+            </WishlistLink>
 
             <Link href="/support">
-              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black">
-                <ExternalLink className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black h-12">
+                <ExternalLink className="h-5 w-5 mr-3 flex-shrink-0" />
                 Contact Support
               </Button>
             </Link>
 
             <Link href="/privacy-policy" target="_blank">
-              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black">
-                <ExternalLink className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="w-full justify-start font-mono border-2 border-black h-12">
+                <ExternalLink className="h-5 w-5 mr-3 flex-shrink-0" />
                 Privacy Policy
               </Button>
             </Link>
@@ -204,8 +209,8 @@ export default async function SettingsPage() {
       {/* Danger Zone */}
       <Card className="border-2 border-red-300">
         <CardHeader>
-          <CardTitle className="font-mono flex items-center gap-2 text-red-700">
-            <AlertTriangle className="h-5 w-5" />
+          <CardTitle className="font-mono flex items-center gap-3 text-red-700">
+            <AlertTriangle className="h-5 w-5 flex-shrink-0" />
             Danger Zone
           </CardTitle>
         </CardHeader>
@@ -217,10 +222,10 @@ export default async function SettingsPage() {
             </p>
             <Button 
               variant="outline" 
-              className="font-mono border-2 border-red-300 text-red-600 hover:bg-red-50"
+              className="font-mono border-2 border-red-300 text-red-600 hover:bg-red-50 h-12"
               disabled
             >
-              <Trash2 className="h-4 w-4 mr-2" />
+              <Trash2 className="h-5 w-5 mr-3 flex-shrink-0" />
               Request Account Deletion
             </Button>
             <p className="text-xs text-gray-500 mt-2">
@@ -272,5 +277,6 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
     </div>
+    </AccountPageWrapper>
   )
 }

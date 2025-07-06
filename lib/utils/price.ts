@@ -60,3 +60,30 @@ export function calculateDiscountPercentage(originalPrice: number | string, sale
 export function isProductOnSale(price: string | null, comparePrice: string | null): boolean {
   return !!(comparePrice && comparePrice !== price)
 }
+
+/**
+ * Format a price with currency symbol
+ */
+export function formatPrice(amount: number | string, currencyCode: string = 'BGN'): string {
+  const value = typeof amount === 'string' ? parseFloat(amount) : amount
+  
+  // Map currency codes to symbols
+  const currencySymbols: Record<string, string> = {
+    'USD': '$',
+    'EUR': '€',
+    'BGN': 'лв',
+    'GBP': '£',
+    'JPY': '¥'
+  }
+  
+  const symbol = currencySymbols[currencyCode] || currencyCode
+  const formattedNumber = formatPriceNumber(value, currencyCode)
+  
+  // For BGN, symbol goes after the number
+  if (currencyCode === 'BGN') {
+    return `${formattedNumber} ${symbol}`
+  }
+  
+  // For other currencies, symbol goes before
+  return `${symbol}${formattedNumber}`
+}

@@ -37,16 +37,20 @@ export async function ProductCardServer({ product, priority = false }: ProductCa
       available: variant.availableForSale
     })) || []
 
+  // Get second image for subtle hover effect
+  const productImages = product.images?.edges?.map(edge => edge.node) || []
+  const secondImage = productImages.length > 1 ? productImages[1] : null
+
   return (
     <div className="group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200">
-      {/* Sale Badge */}
+      {/* Sale Badge Only */}
       {isOnSale && (
-        <div className="absolute top-2 left-2 z-10 bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase">
-          {t('sale')}
+        <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1 text-xs font-bold font-mono">
+          SALE
         </div>
       )}
 
-      {/* Product Image */}
+      {/* Product Image with Subtle Hover Effect */}
       <Link 
         href={`/products/${product.handle}`}
         className="block relative aspect-square overflow-hidden bg-gray-50"
@@ -66,6 +70,19 @@ export async function ProductCardServer({ product, priority = false }: ProductCa
               <div className="text-2xl mb-1">👕</div>
               <div className="text-xs">{t('noImage')}</div>
             </div>
+          </div>
+        )}
+
+        {/* Second Image on Hover (Desktop Only) */}
+        {secondImage && (
+          <div className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+            <Image
+              src={secondImage.url}
+              alt={secondImage.altText || `${product.title} - view 2`}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              className="object-cover"
+            />
           </div>
         )}
       </Link>

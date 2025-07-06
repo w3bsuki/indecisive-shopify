@@ -1,7 +1,8 @@
 import { getCurrentCustomer } from '@/app/actions/auth'
 import { redirect } from 'next/navigation'
-import { AccountSidebar } from './components/account-sidebar'
-import { AccountBreadcrumb } from './components/account-breadcrumb'
+import { Navigation } from '@/components/layout/navigation'
+import { Footer } from '@/components/layout/footer'
+import { PersistentAccountBottomNav } from '@/components/account/persistent-account-bottom-nav'
 
 export default async function AccountLayout({
   children,
@@ -16,32 +17,19 @@ export default async function AccountLayout({
   }
 
   return (
-    <div className="min-h-screen-dynamic bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold font-mono">MY ACCOUNT</h1>
-          <p className="text-gray-600 mt-1">
-            Welcome back, {customer.displayName || customer.firstName || customer.email}
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex flex-col">
+      {/* Main Navigation */}
+      <Navigation />
+      {/* Account Content - Beautiful card, shadow, rounded, max width, centered */}
+      <main className="flex-1 flex flex-col items-center justify-start pt-4 px-1 sm:px-2 pb-24">
+        <div className="w-full max-w-4xl bg-white/95 rounded-2xl shadow-xl border border-gray-200 p-2 sm:p-6 md:p-12 mt-0 mb-4 animate-fade-in transition-all duration-300">
+          {children}
         </div>
-
-        {/* Breadcrumb */}
-        <AccountBreadcrumb />
-
-        {/* Main Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <AccountSidebar customer={customer} />
-          </div>
-
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            {children}
-          </div>
-        </div>
-      </div>
+        {/* Persistent bottom nav for mobile */}
+        <PersistentAccountBottomNav />
+      </main>
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }

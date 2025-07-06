@@ -3,30 +3,24 @@ import { ProductCardServer } from '@/components/commerce/product-card-server'
 import { SearchFilters } from '@/app/(shop)/search/search-filters'
 
 export const metadata = {
-  title: 'DROP 1: ХУЛИГАНКА | Indecisive Wear',
-  description: 'Shop our first drop - limited edition bucket hats for the indecisive. ХУЛИГАНКА collection available now.',
+  title: 'New Products | Indecisive Wear',
+  description: 'Shop our newest arrivals at Indecisive Wear. Fresh styles for the indecisive.',
 }
 
 export default async function NewArrivalsPage() {
-  // Fetch newest products (sorted by created date)
-  const productsData = await getProducts(24, 'created_at:desc')
+  // For now, show all products since they're all new
+  const productsData = await getProducts(24)
   const products = productsData.edges.map(edge => edge.node)
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Page Header */}
-      <div className="mb-8 text-center lg:text-left">
-        <div className="inline-block bg-black text-white px-4 py-1 font-mono text-sm mb-4">FIRST DROP</div>
-        <h1 className="text-4xl lg:text-5xl font-bold font-mono mb-2">DROP 1: ХУЛИГАНКА</h1>
-        <p className="text-gray-600 text-lg">Limited edition bucket hats for the indecisive</p>
-        <div className="mt-4 flex flex-wrap gap-4 justify-center lg:justify-start">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span className="font-mono text-sm">AVAILABLE NOW</span>
-          </div>
-          <div className="font-mono text-sm text-gray-600">
-            LIMITED QUANTITIES
-          </div>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold font-mono mb-2">NEW ARRIVALS</h1>
+        <p className="text-gray-600">Fresh styles for the indecisive</p>
+        <div className="mt-4 flex items-center gap-2">
+          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          <span className="font-mono text-sm">JUST DROPPED</span>
         </div>
       </div>
 
@@ -50,8 +44,8 @@ export default async function NewArrivalsPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <h2 className="text-2xl font-mono mb-4">DROP SOLD OUT</h2>
-              <p className="text-gray-600">Subscribe to be notified about restocks</p>
+              <h2 className="text-2xl font-mono mb-4">NO NEW PRODUCTS</h2>
+              <p className="text-gray-600">Check back soon for fresh drops</p>
             </div>
           )}
         </main>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
@@ -26,6 +27,7 @@ export function SearchFiltersTranslated() {
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
   const t = useTranslations()
+  const [accordionValue, setAccordionValue] = useState<string | undefined>("filters")
   
   const currentSort = searchParams.get('sort') || 'relevance'
   const currentCategory = searchParams.get('category') || ''
@@ -64,6 +66,33 @@ export function SearchFiltersTranslated() {
   }
 
   const hasActiveFilters = currentSort !== 'relevance' || currentCategory
+
+  // Auto-collapse filters on scroll (desktop only)
+  useEffect(() => {
+    if (isMobile) return
+
+    let scrollTimer: NodeJS.Timeout
+
+    const handleScroll = () => {
+      // Clear previous timer
+      clearTimeout(scrollTimer)
+
+      // Close accordion immediately on scroll
+      setAccordionValue(undefined)
+
+      // Reopen accordion after scrolling stops (300ms delay)
+      scrollTimer = setTimeout(() => {
+        setAccordionValue("filters")
+      }, 300)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(scrollTimer)
+    }
+  }, [isMobile])
 
   const FilterContent = () => (
     <div className="space-y-6">
@@ -171,7 +200,13 @@ export function SearchFiltersTranslated() {
   // Desktop: Use Accordion
   return (
     <div className="bg-white border-2 border-black/10 shadow-sm mb-6">
-      <Accordion type="single" collapsible defaultValue="filters" className="w-full">
+      <Accordion 
+        type="single" 
+        collapsible 
+        value={accordionValue} 
+        onValueChange={setAccordionValue}
+        className="w-full"
+      >
         <AccordionItem value="filters" className="border-none">
           <AccordionTrigger className="px-4 hover:no-underline">
             <div className="flex items-center gap-2">

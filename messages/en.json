@@ -7,6 +7,24 @@
       "hashtag": "#IndecisiveWear"
     }
   },
+  "announcements": {
+    "freeShipping": {
+      "title": "FREE SHIPPING ON ORDERS $75+",
+      "subtitle": "No code needed • Fast delivery"
+    },
+    "earlyAccess": {
+      "title": "EARLY ACCESS: 25% OFF NEW ARRIVALS",
+      "subtitle": "Use code EARLY25 • Limited time"
+    },
+    "newDrop": {
+      "title": "NEW DROP: STREET ESSENTIALS COLLECTION",
+      "subtitle": "Minimal designs • Premium quality"
+    },
+    "returns": {
+      "title": "BECOME AN AFFILIATE, GET 15%",
+      "subtitle": "Join our partner program"
+    }
+  },
   "nav": {
     "products": "PRODUCTS",
     "collections": "COLLECTIONS",
@@ -16,6 +34,7 @@
     "account": "ACCOUNT",
     "login": "LOGIN",
     "logout": "LOGOUT",
+    "all": "ALL",
     "new": "NEW",
     "comingSoon": "COMING SOON",
     "sale": "SALE",
@@ -101,7 +120,7 @@
     },
     "featured": {
       "title": "FEATURED COLLECTION",
-      "subtitle": "ХУЛИГАНКА"
+      "subtitle": "STREETWEAR COLLECTION"
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -113,6 +132,14 @@
   },
   "products": {
     "title": "ALL PRODUCTS",
+    "subtitle": "Browse our complete collection",
+    "itemCount": "{count} items",
+    "promoBanner": "FREE SHIPPING ON ORDERS OVER $100 • USE CODE: INDECISIVE20",
+    "breadcrumb": {
+      "home": "Home",
+      "collections": "Collections",
+      "allProducts": "All Products"
+    },
     "addToCart": "ADD TO CART",
     "quickView": "QUICK VIEW",
     "viewAll": "VIEW ALL PRODUCTS",
@@ -128,7 +155,61 @@
     "selectSize": "Select Size",
     "itemCount": "{count} items to help you decide (or not)",
     "noProductsFound": "NO PRODUCTS FOUND",
-    "tryAdjustingFilters": "Try adjusting your filters"
+    "tryAdjustingFilters": "Try adjusting your filters",
+    "filters": {
+      "title": "Advanced Filters & Sort",
+      "filtersAndSort": "Filters & Sort",
+      "activeCount": "{count} Active",
+      "clearAll": "Clear All Filters",
+      "sortBy": "Sort By",
+      "priceRange": "Price Range",
+      "categories": "Categories",
+      "colors": "Colors",
+      "sizes": "Sizes",
+      "availability": "Availability",
+      "sort": {
+        "relevance": "Relevance",
+        "priceAsc": "Price: Low to High",
+        "priceDesc": "Price: High to Low",
+        "nameAsc": "Name: A-Z",
+        "nameDesc": "Name: Z-A",
+        "createdDesc": "Newest First"
+      },
+      "category": {
+        "all": "All Categories",
+        "tshirts": "T-Shirts",
+        "hoodies": "Hoodies",
+        "jackets": "Jackets",
+        "pants": "Pants",
+        "accessories": "Accessories",
+        "hats": "Hats",
+        "bags": "Bags"
+      },
+      "color": {
+        "black": "Black",
+        "white": "White",
+        "gray": "Gray",
+        "navy": "Navy",
+        "blue": "Blue",
+        "red": "Red",
+        "green": "Green",
+        "beige": "Beige"
+      },
+      "size": {
+        "xs": "XS",
+        "s": "S",
+        "m": "M",
+        "l": "L",
+        "xl": "XL",
+        "xxl": "XXL"
+      },
+      "availabilityOptions": {
+        "inStock": "In Stock",
+        "lowStock": "Low Stock",
+        "preOrder": "Pre-Order"
+      },
+      "refineSearch": "Refine your product search with advanced filters"
+    }
   },
   "cart": {
     "title": "CART",
@@ -234,7 +315,8 @@
         "newArrivals": "New Arrivals",
         "essentials": "Essentials",
         "streetwear": "Streetwear",
-        "sale": "Sale"
+        "sale": "Sale",
+        "comingSoon": "Coming Soon"
       },
       "support": {
         "title": "SUPPORT",

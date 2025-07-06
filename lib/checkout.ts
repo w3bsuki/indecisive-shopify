@@ -131,14 +131,14 @@ export async function prepareCheckout(
 
           return {
             success: true,
-            checkoutUrl: updatedCheckoutUrl,
+            checkoutUrl: transformCheckoutUrl(updatedCheckoutUrl),
             customer
           }
         } catch (_updateError) {
           // Fall back to original checkout URL
           return {
             success: true,
-            checkoutUrl,
+            checkoutUrl: transformCheckoutUrl(checkoutUrl),
             customer
           }
         }
@@ -148,7 +148,7 @@ export async function prepareCheckout(
     // Return original checkout URL for guest checkout
     return {
       success: true,
-      checkoutUrl,
+      checkoutUrl: transformCheckoutUrl(checkoutUrl),
       customer: customer || null
     }
   } catch (error) {
@@ -157,6 +157,28 @@ export async function prepareCheckout(
       error: error instanceof Error ? error.message : 'Failed to prepare checkout',
       customer: null
     }
+  }
+}
+
+// Transform checkout URL to use custom subdomain
+function transformCheckoutUrl(checkoutUrl: string): string {
+  try {
+    const customDomain = process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN
+    if (!customDomain) {
+      return checkoutUrl
+    }
+
+    const url = new URL(checkoutUrl)
+    // Replace the myshopify.com domain with our custom domain
+    if (url.hostname.includes('myshopify.com')) {
+      url.hostname = customDomain
+      // Ensure HTTPS
+      url.protocol = 'https:'
+    }
+    
+    return url.toString()
+  } catch {
+    return checkoutUrl
   }
 }
 
@@ -184,8 +206,9 @@ export async function navigateToCheckout(
       throw new Error('No checkout URL available')
     }
 
-    // Navigate to Shopify hosted checkout
-    window.location.href = result.checkoutUrl
+    // Transform to use custom subdomain and navigate to Shopify hosted checkout
+    const finalCheckoutUrl = transformCheckoutUrl(result.checkoutUrl)
+    window.location.href = finalCheckoutUrl
   } catch (error) {
     throw error
   }

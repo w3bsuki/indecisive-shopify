@@ -1,8 +1,10 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useInstagram } from '@/hooks/use-instagram'
 import { useTranslations } from 'next-intl'
+import { Instagram } from 'lucide-react'
 
 interface SocialPost {
   id: string
@@ -22,7 +24,7 @@ export function CommunitySection() {
   // Convert Instagram API posts to SocialPost format
   const convertedInstagramPosts: SocialPost[] = instagramPosts.map(post => ({
     id: post.id,
-    username: post.username || '@indecisivewear',
+    username: post.username || '@indecisive_wear',
     likes: post.likes_count?.toString() || '0',
     image: post.media_url,
     platform: 'instagram' as const,
@@ -44,6 +46,19 @@ export function CommunitySection() {
         
         {/* Instagram Feed */}
         <InstagramFeed posts={convertedInstagramPosts} loading={instagramLoading} />
+        
+        {/* Instagram Follow Button */}
+        <div className="flex justify-center mt-6">
+          <Link 
+            href="https://www.instagram.com/indecisive_wear/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 font-mono text-sm font-medium hover:bg-gray-800 transition-all duration-200 border-2 border-black hover:scale-[1.02]"
+          >
+            <Instagram className="w-4 h-4" />
+            Последвай ни в Instagram
+          </Link>
+        </div>
       </div>
     </section>
   )
@@ -141,7 +156,7 @@ function InstagramFeed({ posts, loading }: { posts: SocialPost[]; loading?: bool
                       if (post.permalink) {
                         window.open(post.permalink, '_blank', 'noopener,noreferrer')
                       } else {
-                        window.open('https://instagram.com/indecisivewear', '_blank', 'noopener,noreferrer')
+                        window.open('https://www.instagram.com/indecisive_wear/', '_blank', 'noopener,noreferrer')
                       }
                     }}
                     className="w-full bg-black text-white py-2 sm:py-1.5 px-2 font-mono text-xs font-medium hover:bg-gray-800 transition-colors min-h-[44px] sm:min-h-0 touch-manipulation"
@@ -183,7 +198,7 @@ function CallToActionCard() {
         {/* Card Info - matching other cards */}
         <div className="p-3 border-t border-black/20">
           <div className="flex items-center justify-between mb-2">
-            <p className="font-mono font-medium text-xs">@indecisivewear</p>
+            <p className="font-mono font-medium text-xs">@indecisive_wear</p>
             <div className="flex items-center gap-1">
               <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

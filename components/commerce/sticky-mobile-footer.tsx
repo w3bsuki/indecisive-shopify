@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { ShoppingCart, ChevronUp } from 'lucide-react'
+import { ShoppingCart, ChevronUp, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useMarket } from '@/hooks/use-market'
+import { useWishlist } from '@/hooks/use-wishlist'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 
 interface StickyMobileFooterProps {
@@ -24,6 +25,7 @@ export function StickyMobileFooter({
 }: StickyMobileFooterProps) {
   const [isVisible, setIsVisible] = useState(true)
   const { formatPrice } = useMarket()
+  const { toggleItem, isInWishlist } = useWishlist()
   
   // Keep footer always visible for e-commerce conversion
   useEffect(() => {
@@ -47,8 +49,32 @@ export function StickyMobileFooter({
         isVisible ? "translate-y-0" : "translate-y-full"
       )}
     >
-      <div className="flex items-center gap-3">
-        {/* Single Add to Cart Button - Full Width */}
+      <div className="flex items-center gap-2">
+        {/* Wishlist Button */}
+        <Button
+          onClick={() => {
+            toggleItem({
+              id: product.id,
+              handle: product.handle,
+              title: product.title,
+              image: product.featuredImage?.url,
+              price: selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount
+            })
+          }}
+          size="lg"
+          variant="outline"
+          className={cn(
+            "h-14 px-4 touch-manipulation border-2 transition-all",
+            isInWishlist(product.id)
+              ? "bg-black text-white border-black"
+              : "border-black hover:bg-black hover:text-white"
+          )}
+          aria-label={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart className={cn("h-5 w-5", isInWishlist(product.id) && "fill-current")} />
+        </Button>
+        
+        {/* Add to Cart Button - Takes remaining space */}
         <div className="flex-1">
           {needsSizeSelection ? (
             <Button

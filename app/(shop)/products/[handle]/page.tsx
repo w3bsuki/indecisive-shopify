@@ -9,8 +9,9 @@ import { ProductCardMinimalServer } from '@/components/commerce/product-card-min
 import { RecentlyViewedSection } from '@/components/commerce/recently-viewed-section'
 import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
-import Link from 'next/link'
 import { ArrowLeft, Truck, RotateCcw, Shield } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
+import { BreadcrumbNavigation, BreadcrumbHelpers, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
 
 interface ProductPageProps {
   params: Promise<{ handle: string }>
@@ -52,6 +53,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params
   const product = await getProduct(handle)
+  const t = await getTranslations('products')
   
   if (!product) {
     notFound()
@@ -68,38 +70,38 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = product.images?.edges.map(edge => edge.node) || 
     (product.featuredImage ? [product.featuredImage] : [])
 
+  // Generate breadcrumb items
+  const breadcrumbItems = BreadcrumbHelpers.product(
+    product.title,
+    product.tags?.[0] || undefined, // Use first tag as category
+    undefined // No vendor field available
+  )
+
   return (
     <>
+      {/* Structured Data for SEO */}
+      <BreadcrumbStructuredData items={breadcrumbItems} />
+      
       {/* Client-side tracking and mobile footer */}
       <ProductPageClient product={product} />
       
       <div className="pt-10 md:pt-12">
-        {/* Breadcrumb Navigation with Return Arrow */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-            <Link 
-              href="/products"
-              className="flex items-center gap-1 hover:text-black transition-colors"
-              aria-label="Back to products"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Link>
-            <Link href="/" className="hover:text-black transition-colors font-medium">
-              Home
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link href="/products" className="hover:text-black transition-colors font-medium">
-              All Products
-            </Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-black font-medium">{product.title}</span>
-          </nav>
+        {/* Professional Breadcrumb Navigation */}
+        <BreadcrumbNavigation 
+          items={breadcrumbItems}
+          showBackButton={true}
+          backButtonLabel="Back to Products"
+          backButtonHref="/products"
+        />
           
-          {/* Product Header - Desktop Only */}
+        {/* Product Header - Desktop Only */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="hidden md:flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-black">{product.title}</h1>
-              <p className="text-sm text-gray-600">Premium collection</p>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-black truncate">{product.title}</h1>
+                <span className="text-sm text-gray-600 whitespace-nowrap">Premium collection</span>
+              </div>
             </div>
             
             {/* Product Navigation - Previous/Next placeholder for future */}
@@ -182,7 +184,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         </span>
                       </summary>
                       <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        <div className="prose prose-sm md:prose-base max-w-none">
+                        <div className="prose prose-sm md:prose-base max-w-none text-product-description">
                           {product.description}
                         </div>
                       </div>
@@ -250,7 +252,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {relatedProducts.length > 0 && (
           <div className="mt-8 md:mt-12 border-t">
             <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
-              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">You May Also Like</h2>
+              <h2 className="text-lg md:text-xl font-medium mb-4 md:mb-6 text-gray-800">{t('youMayAlsoLike')}</h2>
               
               {/* Mobile: Horizontal scroll */}
               <div className="md:hidden -mx-4">

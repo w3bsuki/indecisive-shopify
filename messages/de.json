@@ -16,6 +16,7 @@
     "account": "KONTO",
     "login": "ANMELDEN",
     "logout": "ABMELDEN",
+    "all": "ALLE",
     "new": "NEU",
     "comingSoon": "DEMNÄCHST",
     "sale": "SALE",
@@ -226,7 +227,8 @@
         "newArrivals": "Neuheiten",
         "essentials": "Essentials",
         "streetwear": "Streetwear",
-        "sale": "Sale"
+        "sale": "Sale",
+        "comingSoon": "Demnächst"
       },
       "support": {
         "title": "SUPPORT",

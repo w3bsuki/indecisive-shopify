@@ -49,7 +49,8 @@ export async function Footer() {
               links: [
                 { key: 'all', label: 'ALL', href: '/products' },
                 { key: 'newArrivals', label: t('sections.shop.newArrivals'), href: '/new' },
-                { key: 'sale', label: t('sections.shop.sale'), href: '/sale' }
+                { key: 'sale', label: t('sections.shop.sale'), href: '/sale' },
+                { key: 'comingSoon', label: t('sections.shop.comingSoon'), href: '/coming-soon' }
               ] 
             },
             { 
@@ -64,7 +65,7 @@ export async function Footer() {
             { 
               title: t('sections.connect.title'), 
               links: [
-                { key: 'instagram', label: t('sections.connect.instagram'), href: 'https://instagram.com/indecisivewear' },
+                { key: 'instagram', label: t('sections.connect.instagram'), href: 'https://www.instagram.com/indecisive_wear/' },
                 { key: 'newsletter', label: t('sections.connect.newsletter'), href: '#newsletter' }
               ] 
             },
@@ -101,7 +102,8 @@ export async function Footer() {
                 links: [
                   { key: 'all', label: 'ALL', href: '/products' },
                   { key: 'new', label: t('sections.shop.newArrivals'), href: '/new' },
-                  { key: 'sale', label: t('sections.shop.sale'), href: '/sale' }
+                  { key: 'sale', label: t('sections.shop.sale'), href: '/sale' },
+                  { key: 'comingSoon', label: t('sections.shop.comingSoon'), href: '/coming-soon' }
                 ] 
               },
               { 
@@ -114,7 +116,7 @@ export async function Footer() {
               { 
                 title: t('sections.connect.title'), 
                 links: [
-                  { key: 'instagram', label: 'Instagram', href: 'https://instagram.com/indecisivewear' }
+                  { key: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/indecisive_wear/' }
                 ] 
               },
             ].map((col) => (

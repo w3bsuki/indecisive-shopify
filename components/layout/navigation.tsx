@@ -3,13 +3,16 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Search, ShoppingBag, Heart, User, Dices } from "lucide-react"
+import { Menu, X, Search, ShoppingBag, Heart, User, Dices, Instagram, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { SearchBar } from "@/components/layout/search-bar"
+import { SearchFiltersTranslated } from "@/app/(shop)/search/search-filters-translated"
+import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
+import { AnnouncementBanner } from "@/components/layout/announcement-banner"
 import { useCart } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { useIndecisive } from "@/components/providers/indecisive-provider"
@@ -30,8 +33,7 @@ export function Navigation() {
   const tf = useTranslations('footer')
   const pathname = usePathname()
   const { totalItems } = useCart()
-  const { items: wishlistItems } = useWishlist()
-  const wishlistCount = wishlistItems.length
+  const { totalItems: wishlistCount } = useWishlist()
   const { openRandomizer } = useIndecisive()
   const { setCartIconRef } = useFlyToCart()
   
@@ -40,6 +42,7 @@ export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showBottomNav, setShowBottomNav] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const [showWishlistDrawer, setShowWishlistDrawer] = useState(false)
   
   // Refs
   const cartIconRef = useRef<HTMLButtonElement>(null)
@@ -94,27 +97,18 @@ export function Navigation() {
   }, [lastScrollY, isMenuOpen])
 
   const menuItems = [
-    { name: "ALL", href: "/products", badge: null },
-    { name: t('new'), href: "/new", badge: "DROP 1" },
-    { name: t('comingSoon'), href: "/coming-soon", badge: null },
+    { name: t('all'), href: "/products", badge: null },
+    { name: t('new'), href: "/new", badge: null },
     { name: t('sale'), href: "/sale", badge: "50% OFF" },
+    { name: t('comingSoon'), href: "/coming-soon", badge: null },
   ]
 
   return (
     <>
       {/* Desktop Navigation */}
       <div className="hidden md:block">
-        {/* Top Banner */}
-        <Link href="/become-partner" className="block bg-black hover:bg-gray-900 transition-colors">
-          <div className="py-2 text-center">
-            <p className="text-white text-sm">
-              <span className="font-medium">{t('banner')}</span>
-              <span className="ml-2 font-bold underline underline-offset-2">
-                {t('bannerLink')}
-              </span>
-            </p>
-          </div>
-        </Link>
+        {/* Professional Announcement Banner */}
+        <AnnouncementBanner />
 
         {/* Main Navigation */}
         <nav className="bg-white">
@@ -188,19 +182,22 @@ export function Navigation() {
                 </Link>
 
                 {/* Wishlist */}
-                <Link href="/wishlist">
-                  <Button variant="ghost" size="icon" className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors">
-                    <Heart className="h-5 w-5 stroke-[1.5]" />
-                    {wishlistCount > 0 && (
-                      <Badge
-                        variant="secondary"
-                        className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-black text-white border-2 border-white"
-                      >
-                        {wishlistCount}
-                      </Badge>
-                    )}
-                  </Button>
-                </Link>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                  onClick={() => setShowWishlistDrawer(true)}
+                >
+                  <Heart className="h-5 w-5 stroke-[1.5]" />
+                  {wishlistCount > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-black text-white border-2 border-white"
+                    >
+                      {wishlistCount}
+                    </Badge>
+                  )}
+                </Button>
 
                 {/* Cart */}
                 <MobileCartSheet>
@@ -231,28 +228,19 @@ export function Navigation() {
       <>
         {/* Mobile Navigation Stack */}
         <div className="fixed-mobile-safe w-full z-50 md:hidden touch-optimized">
-          {/* Newsletter Banner */}
-          <Link href="/become-partner" className="block bg-black active:bg-gray-900">
-            <div className="py-2 px-3 text-center border-b border-white/20">
-              <p className="text-white text-[11px] font-medium leading-tight mb-0.5">
-                {t('banner')}
-              </p>
-              <p className="text-white text-[11px] font-bold underline underline-offset-2">
-                {t('bannerLink')}
-              </p>
-            </div>
-          </Link>
+          {/* Professional Mobile Announcement Banner */}
+          <AnnouncementBanner className="text-xs" />
 
           {/* Mobile Navigation Bar */}
           <nav className="bg-white border-b border-black/20 shadow-sm">
             <div className="px-3 h-16 flex items-center justify-between">
               {/* Left Side: Menu + Logo */}
-              <div className="flex items-center gap-0.5">
+              <div className="flex items-center gap-0">
                 {/* Menu on LEFT */}
                 <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
                     <button className={cn(
-                      "relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95 -ml-2",
+                      "relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95 -ml-1",
                       isMenuOpen ? "menu-close-animation" : "menu-open-animation"
                     )}>
                       {isMenuOpen ? 
@@ -266,8 +254,17 @@ export function Navigation() {
                       {/* Menu Header - Logo + Icons Row */}
                       <div className="px-6 py-6 border-b border-gray-950">
                         <div className="flex items-center justify-between mb-6">
-                          <div className="flex items-center">
+                          <div className="flex items-center gap-3">
                             <span className="text-xl font-bold font-mono tracking-wider">INDECISIVE WEAR</span>
+                            <Link 
+                              href="https://www.instagram.com/indecisive_wear/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 hover:bg-gray-100 rounded transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Instagram className="w-5 h-5 text-gray-600" />
+                            </Link>
                           </div>
                         </div>
                         
@@ -319,7 +316,7 @@ export function Navigation() {
                               <Link
                                 key={item.href}
                                 href={item.href}
-                                className="flex items-center justify-between py-4 text-lg font-medium hover:text-gray-600 transition-colors border-b border-gray-100 last:border-b-0"
+                                className="flex items-center justify-between py-3 text-base font-medium hover:text-gray-600 transition-colors border-b border-gray-100 last:border-b-0"
                                 onClick={() => setIsMenuOpen(false)}
                               >
                                 <span className="font-mono tracking-wide">{item.name}</span>
@@ -361,9 +358,19 @@ export function Navigation() {
                 </Sheet>
                 
                 {/* Logo */}
-                <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90">
-                  <span className="text-lg font-bold font-mono tracking-wide text-black">INDECISIVE WEAR</span>
-                </Link>
+                <div className="flex items-center gap-1">
+                  <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90">
+                    <span className="text-lg font-bold font-mono tracking-wide text-black">INDECISIVE</span>
+                  </Link>
+                  <Link 
+                    href="https://www.instagram.com/indecisive_wear/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  >
+                    <Instagram className="w-4 h-4 text-gray-600" />
+                  </Link>
+                </div>
               </div>
 
               {/* Right Actions - Search + Cart ONLY */}
@@ -404,43 +411,62 @@ export function Navigation() {
               )}
             >
               <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
-              <span className="text-[10px] font-medium">ALL</span>
+              <span className="text-[10px] font-medium">{t('all').toUpperCase()}</span>
             </Button>
           </Link>
 
           {/* Wishlist */}
-          <Link href="/wishlist">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] relative transition-all duration-150",
-                pathname === "/wishlist" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
-              )}
-            >
-              <Heart className={cn("h-5 w-5 stroke-[2.5]", wishlistCount > 0 && "fill-current")} />
-              <span className="text-[10px] font-medium">WISHLIST</span>
-              {wishlistCount > 0 && (
-                <Badge
-                  variant="secondary"
-                  className="absolute -top-0.5 -right-0.5 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-red-500 text-white border-2 border-white shadow-lg scale-110"
-                >
-                  {wishlistCount}
-                </Badge>
-              )}
-            </Button>
-          </Link>
-
-          {/* Flip - Can't Decide */}
           <Button
             variant="ghost"
             size="sm"
-            className="flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] text-gray-700 hover:text-black border border-transparent hover:border-black/30 transition-all duration-150"
-            onClick={openRandomizer}
+            className={cn(
+              "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] relative transition-all duration-150",
+              showWishlistDrawer ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
+            )}
+            onClick={() => setShowWishlistDrawer(true)}
           >
-            <Dices className="h-5 w-5 stroke-[2.5]" />
-            <span className="text-[10px] font-medium">FLIP</span>
+            <Heart className={cn("h-5 w-5 stroke-[2.5]", wishlistCount > 0 && "fill-current")} />
+            <span className="text-[10px] font-medium">{tc('wishlist').toUpperCase()}</span>
+            {wishlistCount > 0 && (
+              <Badge
+                variant="secondary"
+                className="absolute -top-0.5 -right-0.5 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-red-500 text-white border-2 border-white shadow-lg scale-110"
+              >
+                {wishlistCount}
+              </Badge>
+            )}
           </Button>
+
+          {/* Flip - Can't Decide OR Filters on products page */}
+          {pathname === '/products' ? (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] text-gray-700 hover:text-black border border-transparent hover:border-black/30 transition-all duration-150"
+                >
+                  <SlidersHorizontal className="h-5 w-5 stroke-[2.5]" />
+                  <span className="text-[10px] font-medium">{tc('filter').toUpperCase()}S</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[80vh]">
+                <div className="pt-6">
+                  <SearchFiltersTranslated />
+                </div>
+              </SheetContent>
+            </Sheet>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] text-gray-700 hover:text-black border border-transparent hover:border-black/30 transition-all duration-150"
+              onClick={openRandomizer}
+            >
+              <Dices className="h-5 w-5 stroke-[2.5]" />
+              <span className="text-[10px] font-medium">FLIP</span>
+            </Button>
+          )}
 
           {/* Account */}
           <Link href="/account">
@@ -453,7 +479,7 @@ export function Navigation() {
               )}
             >
               <User className="h-5 w-5 stroke-[2.5]" />
-              <span className="text-[10px] font-medium">ACCOUNT</span>
+              <span className="text-[10px] font-medium">{t('account').toUpperCase()}</span>
             </Button>
           </Link>
 
@@ -461,6 +487,12 @@ export function Navigation() {
           <MobileCartSheet isBottomNav />
         </div>
       </div>
+      
+      {/* Wishlist Drawer */}
+      <WishlistDrawer 
+        open={showWishlistDrawer} 
+        onOpenChange={setShowWishlistDrawer} 
+      />
     </>
   )
 }

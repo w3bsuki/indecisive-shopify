@@ -170,7 +170,8 @@ export async function authenticateCustomer(
       success: true,
       customerAccessToken: customerAccessTokenCreate.customerAccessToken
     };
-  } catch (_error) {
+  } catch (error) {
+    console.error('Shopify authentication error:', error);
     return {
       success: false,
       errors: [{ message: 'Authentication failed. Please try again.' }]

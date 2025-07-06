@@ -7,7 +7,6 @@ import {
 } from 'lucide-react'
 import { AccountLogoutButton } from '../logout-button'
 import type { Customer } from '@/lib/shopify/customer-auth'
-import { AccountNavigation } from './account-navigation'
 
 interface AccountSidebarProps {
   customer: Customer
@@ -19,51 +18,48 @@ export function AccountSidebar({ customer }: AccountSidebarProps) {
       {/* Customer Info Card */}
       <Card className="border-2 border-black">
         <CardHeader className="pb-3">
-          <CardTitle className="font-mono text-lg">Account</CardTitle>
+          <CardTitle className="text-drawer-title">Account</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div>
-            <p className="font-mono font-medium">
+            <p className="text-drawer-value font-semibold">
               {customer.displayName || `${customer.firstName} ${customer.lastName}`.trim() || 'Customer'}
             </p>
-            <p className="text-sm text-gray-600">{customer.email}</p>
+            <p className="text-drawer-subtitle">{customer.email}</p>
           </div>
           
           {customer.phone && (
             <div>
-              <p className="text-xs text-gray-500">Phone</p>
-              <p className="text-sm font-mono">{customer.phone}</p>
+              <p className="text-drawer-label">Phone</p>
+              <p className="text-drawer-value">{customer.phone}</p>
             </div>
           )}
           
           <div>
-            <p className="text-xs text-gray-500">Member since</p>
-            <p className="text-sm font-mono">
+            <p className="text-drawer-label">Member since</p>
+            <p className="text-drawer-value">
               {new Date(customer.id.split('/').pop()?.split('?')[0] || '').toLocaleDateString() || 'Recently'}
             </p>
           </div>
         </CardContent>
       </Card>
 
-      {/* Navigation */}
-      <AccountNavigation />
-
       {/* Quick Actions */}
       <Card className="border-2 border-black">
         <CardHeader className="pb-3">
-          <CardTitle className="font-mono text-lg">Quick Actions</CardTitle>
+          <CardTitle className="text-drawer-title">Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Link href="/" className="block">
-            <Button variant="outline" className="w-full justify-start font-mono border-2 border-black">
-              <Home className="h-4 w-4 mr-2" />
+            <Button variant="outline" className="w-full justify-start border-2 border-black hover:bg-gray-50 h-12">
+              <Home className="h-5 w-5 mr-3 flex-shrink-0" />
               Continue Shopping
             </Button>
           </Link>
           
-          <Link href="/wishlist" className="block">
-            <Button variant="outline" className="w-full justify-start font-mono border-2 border-black">
-              <Heart className="h-4 w-4 mr-2" />
+          <Link href="/account/wishlist" className="block">
+            <Button variant="outline" className="w-full justify-start border-2 border-black hover:bg-gray-50 h-12">
+              <Heart className="h-5 w-5 mr-3 flex-shrink-0" />
               View Wishlist
             </Button>
           </Link>

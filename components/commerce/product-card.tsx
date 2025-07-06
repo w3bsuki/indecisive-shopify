@@ -176,9 +176,39 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <QuickViewDialog product={product}>
             <div ref={productImageRef} className="relative aspect-square md:aspect-[4/5] overflow-hidden bg-gray-50 cursor-pointer">
               {imageContent}
-              {/* Desktop hover overlay */}
-              <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
-                <Eye className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+              {/* Desktop hover overlay with add to cart at bottom */}
+              <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-200 flex flex-col">
+                {/* Eye icon centered */}
+                <div className="flex-1 flex items-center justify-center">
+                  <Eye className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                </div>
+                
+                {/* Add to Cart button at bottom - only show on hover */}
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent quick view from opening
+                      handleAddToCart();
+                    }}
+                    disabled={isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady}
+                    className={cn(
+                      "w-full h-11 flex items-center justify-center transition-all duration-200",
+                      "bg-white text-black border-2 border-black font-medium text-sm",
+                      isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-black hover:text-white"
+                    )}
+                    aria-label={isLoading ? t('addingToCart') : t('addToCart')}
+                  >
+                    {isLoading ? (
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    ) : !product.variants?.edges?.[0]?.node.availableForSale ? (
+                      <>Sold Out</>
+                    ) : (
+                      <>Add to Cart</>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </QuickViewDialog>
@@ -197,73 +227,112 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               </Link>
             </h3>
 
-            {/* Triple Split Button: Wishlist + Price + Add to Cart */}
+            {/* Triple Split Button: Wishlist + Price + Add to Cart (mobile only) */}
             {product.variants?.edges?.[0]?.node ? (
               <div className="relative w-full">
-                <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
-                  {/* Left - Wishlist */}
-                  <button
-                    onClick={handleWishlist}
-                    className={cn(
-                      "relative w-11 flex items-center justify-center transition-all duration-200",
-                      "border-r-2 border-black",
-                      isWishlisted 
-                        ? "bg-black text-white" 
-                        : "bg-white text-black hover:bg-black hover:text-white"
-                    )}
-                    aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
-                  >
-                    <Heart 
+                {/* Mobile: Show all three buttons */}
+                {isMobile ? (
+                  <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
+                    {/* Left - Wishlist */}
+                    <button
+                      onClick={handleWishlist}
                       className={cn(
-                        "absolute w-[18px] h-[18px] transition-all duration-200",
-                        isWishlisted && "fill-current"
-                      )} 
-                    />
-                  </button>
-                  
-                  {/* Middle - Price */}
-                  <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
-                    {currency === 'лв' ? (
-                      <span className="text-[11px] font-normal tracking-tight text-black">
-                        {priceNumber} <span className="text-[8px]">{currency}</span>
-                      </span>
-                    ) : (
-                      <span className="text-[11px] font-normal tracking-tight text-black">
-                        {rawPrice}
-                      </span>
-                    )}
+                        "relative w-11 flex items-center justify-center transition-all duration-200",
+                        "border-r-2 border-black",
+                        isWishlisted 
+                          ? "bg-black text-white" 
+                          : "bg-white text-black hover:bg-black hover:text-white"
+                      )}
+                      aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
+                    >
+                      <Heart 
+                        className={cn(
+                          "absolute w-[18px] h-[18px] transition-all duration-200",
+                          isWishlisted && "fill-current"
+                        )} 
+                      />
+                    </button>
+                    
+                    {/* Middle - Price */}
+                    <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
+                      {currency === 'лв' ? (
+                        <span className="text-[11px] font-normal tracking-tight text-black">
+                          {priceNumber} <span className="text-[8px]">{currency}</span>
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-normal tracking-tight text-black">
+                          {rawPrice}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Right - Add to Cart */}
+                    <button
+                      onClick={() => handleAddToCart()}
+                      disabled={isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady}
+                      className={cn(
+                        "relative w-11 flex items-center justify-center transition-all duration-200",
+                        "border-l-2 border-black",
+                        isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-black text-white hover:bg-gray-900"
+                      )}
+                      aria-label={isLoading ? t('addingToCart') : t('addToCart')}
+                    >
+                      {isLoading ? (
+                        <div className="absolute w-[18px] h-[18px] border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : !product.variants?.edges?.[0]?.node.availableForSale ? (
+                        <X className="absolute w-[18px] h-[18px]" />
+                      ) : (
+                        <svg 
+                          className="absolute w-[18px] h-[18px]" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth={2}
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                      )}
+                    </button>
                   </div>
-                  
-                  {/* Right - Add to Cart */}
-                  <button
-                    onClick={() => handleAddToCart()}
-                    disabled={isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady}
-                    className={cn(
-                      "relative w-11 flex items-center justify-center transition-all duration-200",
-                      "border-l-2 border-black",
-                      isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady
-                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        : "bg-black text-white hover:bg-gray-900"
-                    )}
-                    aria-label={isLoading ? t('addingToCart') : t('addToCart')}
-                  >
-                    {isLoading ? (
-                      <div className="absolute w-[18px] h-[18px] border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : !product.variants?.edges?.[0]?.node.availableForSale ? (
-                      <X className="absolute w-[18px] h-[18px]" />
-                    ) : (
-                      <svg 
-                        className="absolute w-[18px] h-[18px]" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
+                ) : (
+                  /* Desktop: Only show wishlist and price */
+                  <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
+                    {/* Left - Wishlist */}
+                    <button
+                      onClick={handleWishlist}
+                      className={cn(
+                        "relative w-11 flex items-center justify-center transition-all duration-200",
+                        "border-r-2 border-black",
+                        isWishlisted 
+                          ? "bg-black text-white" 
+                          : "bg-white text-black hover:bg-black hover:text-white"
+                      )}
+                      aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
+                    >
+                      <Heart 
+                        className={cn(
+                          "absolute w-[18px] h-[18px] transition-all duration-200",
+                          isWishlisted && "fill-current"
+                        )} 
+                      />
+                    </button>
+                    
+                    {/* Right - Price (takes remaining space) */}
+                    <div className="flex-1 flex items-center justify-center px-4 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
+                      {currency === 'лв' ? (
+                        <span className="text-sm font-medium tracking-tight text-black">
+                          {priceNumber} <span className="text-[10px]">{currency}</span>
+                        </span>
+                      ) : (
+                        <span className="text-sm font-medium tracking-tight text-black">
+                          {rawPrice}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="relative w-full opacity-50">

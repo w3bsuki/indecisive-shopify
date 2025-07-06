@@ -15,20 +15,20 @@ export default getRequestConfig(async () => {
   const cookieStore = await cookies()
   const storedMarket = cookieStore.get('indecisive-wear-market')
   
-  let locale = 'bg' // Default to Bulgarian
-  let marketId = 'bg'
+  let locale = 'en' // Default to English
+  let marketId = 'gb'
   
   // Cookie check performed
   
   if (storedMarket) {
     try {
       marketId = JSON.parse(storedMarket.value)
-      locale = marketToLocale[marketId] || 'bg'
+      locale = marketToLocale[marketId] || 'en'
       // Market parsed successfully
     } catch (error) {
       // Failed to parse market cookie, using default
-      locale = 'bg'
-      marketId = 'bg'
+      locale = 'en'
+      marketId = 'gb'
     }
   } else {
     // No market cookie found, using default Bulgarian
@@ -45,12 +45,12 @@ export default getRequestConfig(async () => {
       messages
     }
   } catch (error) {
-    console.error(`❌ [I18N] Failed to load messages for ${locale}, falling back to Bulgarian:`, error)
+    console.error(`❌ [I18N] Failed to load messages for ${locale}, falling back to English:`, error)
     
-    // Fallback to Bulgarian if the locale file doesn't exist
-    const fallbackMessages = (await import(`../messages/bg.json`)).default
+    // Fallback to English if the locale file doesn't exist
+    const fallbackMessages = (await import(`../messages/en.json`)).default
     return {
-      locale: 'bg',
+      locale: 'en',
       messages: fallbackMessages
     }
   }

@@ -101,8 +101,8 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       
       // Format number without currency symbol
       const formattedNumber = new Intl.NumberFormat(market.locale, {
-        minimumFractionDigits: currencyCode === 'JPY' ? 0 : 2,
-        maximumFractionDigits: currencyCode === 'JPY' ? 0 : 2,
+        minimumFractionDigits: (currencyCode === 'JPY' || currencyCode === 'BGN') ? 0 : 2,
+        maximumFractionDigits: (currencyCode === 'JPY' || currencyCode === 'BGN') ? 0 : 2,
       }).format(value)
       
       // Place symbol based on currency convention

@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { Package, Eye, Calendar, DollarSign, Truck } from 'lucide-react'
 import { formatPriceServer } from '@/lib/shopify/server-market'
 import { ReorderButton } from './reorder-button'
+import { AccountPageWrapper } from '../components/account-page-wrapper'
 
 export const metadata: Metadata = {
   title: 'Orders - My Account - Indecisive Wear',
@@ -59,31 +60,32 @@ export default async function OrdersPage() {
 
   if (!ordersData || ordersData.orders.length === 0) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold font-mono">Order History</h2>
-        </div>
+      <AccountPageWrapper>
+        <div className="space-y-6">
+        <h1 className="text-2xl font-semibold mb-6">Order History</h1>
 
         <Card className="border-2 border-black">
           <CardContent className="py-12 text-center">
             <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="font-mono font-medium mb-2">No Orders Yet</h3>
+            <h3 className="font-semibold mb-2">No Orders Yet</h3>
             <p className="text-gray-600 mb-6">
               You haven&apos;t placed any orders yet. Start shopping to see your orders here.
             </p>
             <Link href="/products">
-              <Button className="font-mono">Start Shopping</Button>
+              <Button>Start Shopping</Button>
             </Link>
           </CardContent>
         </Card>
       </div>
+      </AccountPageWrapper>
     )
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold font-mono">Order History</h2>
+    <AccountPageWrapper>
+      <div className="space-y-6">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold">Order History</h1>
         <p className="text-sm text-gray-600">
           {ordersData.orders.length} {ordersData.orders.length === 1 ? 'order' : 'orders'}
         </p>
@@ -94,19 +96,19 @@ export default async function OrdersPage() {
           <Card key={order.id} className="border-2 border-black hover:shadow-lg transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="font-mono">
+                <CardTitle className="text-lg">
                   Order #{order.orderNumber}
                 </CardTitle>
                 <div className="flex gap-2">
                   <Badge 
                     variant="outline" 
-                    className={`font-mono text-xs border-2 ${getStatusColor(order.fulfillmentStatus, order.financialStatus)}`}
+                    className={`text-xs border-2 ${getStatusColor(order.fulfillmentStatus, order.financialStatus)}`}
                   >
                     {formatStatus(order.fulfillmentStatus)}
                   </Badge>
                   <Badge 
                     variant="outline" 
-                    className={`font-mono text-xs border-2 ${getStatusColor(order.fulfillmentStatus, order.financialStatus)}`}
+                    className={`text-xs border-2 ${getStatusColor(order.fulfillmentStatus, order.financialStatus)}`}
                   >
                     {formatStatus(order.financialStatus)}
                   </Badge>
@@ -166,7 +168,7 @@ export default async function OrdersPage() {
 
               <div className="flex justify-between items-center pt-3 border-t">
                 <Link href={`/account/orders/${order.id}`}>
-                  <Button variant="outline" size="sm" className="font-mono border-2 border-black">
+                  <Button variant="outline" size="sm" className="border-2 border-black">
                     <Eye className="h-4 w-4 mr-2" />
                     View Details
                   </Button>
@@ -176,7 +178,7 @@ export default async function OrdersPage() {
                 <ReorderButton 
                   orderId={order.id}
                   size="sm"
-                  className="font-mono border-2 border-black"
+                  className="border-2 border-black"
                 />
               </div>
             </CardContent>
@@ -187,11 +189,12 @@ export default async function OrdersPage() {
       {/* Pagination - for future implementation */}
       {ordersData.pageInfo.hasNextPage && (
         <div className="text-center pt-6">
-          <Button variant="outline" className="font-mono border-2 border-black" disabled>
+          <Button variant="outline" className="border-2 border-black" disabled>
             Load More Orders
           </Button>
         </div>
       )}
     </div>
+    </AccountPageWrapper>
   )
 }

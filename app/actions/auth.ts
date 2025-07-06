@@ -78,6 +78,14 @@ export async function loginAction(
   if (!result.success || !result.customerAccessToken) {
     // Map Shopify errors to user-friendly messages
     const errorMessage = result.errors?.[0]?.message || 'Invalid email or password';
+    
+    // Log for debugging
+    console.error('Login failed:', {
+      success: result.success,
+      errors: result.errors,
+      hasToken: !!result.customerAccessToken
+    });
+    
     return {
       error: errorMessage,
     };
@@ -298,6 +306,92 @@ export async function getCurrentCustomer() {
   } catch (_error) {
     // Token might be invalid, clear it
     await clearCustomerToken();
+    return null;
+  }
+}
+
+/**
+ * Server Action to update customer profile
+ */
+export async function updateCustomerProfileAction(
+  prevState: AuthState,
+  formData: FormData
+): Promise<AuthState> {
+  const token = await getCustomerToken();
+  
+  if (!token) {
+    return {
+      error: 'Not authenticated',
+    };
+  }
+
+  // Validate form data
+  const updateSchema = z.object({
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
+    email: z.string().email('Invalid email address'),
+    phone: z.string().optional(),
+    acceptsMarketing: z.boolean().optional(),
+  });
+
+  const validatedFields = updateSchema.safeParse({
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    email: formData.get('email'),
+    phone: formData.get('phone') || undefined,
+    acceptsMarketing: formData.get('acceptsMarketing') === 'on',
+  });
+
+  if (!validatedFields.success) {
+    return {
+      error: 'Invalid form data',
+      fieldErrors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  // Import here to avoid circular dependency
+  const { updateCustomer } = await import('@/lib/shopify/customer-auth');
+  
+  try {
+    const result = await updateCustomer(token, validatedFields.data);
+    
+    if (!result.success) {
+      return {
+        error: result.errors?.[0]?.message || 'Failed to update profile',
+      };
+    }
+
+    // Revalidate account page
+    revalidatePath('/account');
+
+    return {
+      success: true,
+      error: undefined,
+    };
+  } catch (_error) {
+    return {
+      error: 'Failed to update profile. Please try again.',
+    };
+  }
+}
+
+/**
+ * Server Action to get customer orders
+ */
+export async function getCustomerOrdersAction(first: number = 10, after?: string) {
+  const token = await getCustomerToken();
+  
+  if (!token) {
+    return null;
+  }
+
+  // Import here to avoid circular dependency
+  const { getCustomerOrders } = await import('@/lib/shopify/customer-auth');
+  
+  try {
+    const orders = await getCustomerOrders(token, first, after);
+    return orders;
+  } catch (_error) {
     return null;
   }
 }
