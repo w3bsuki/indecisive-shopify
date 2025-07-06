@@ -389,7 +389,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
               )}
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+          <SheetContent side="bottom" className="h-[75vh] max-h-[600px] overflow-y-auto">
             <SheetHeader>
               <SheetTitle className="font-mono uppercase">{t('filtersAndSort')}</SheetTitle>
               <SheetDescription>

@@ -5,11 +5,9 @@ import { ChevronRight, Home, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-export interface BreadcrumbItem {
-  label: string
-  href: string
-  current?: boolean
-}
+import type { BreadcrumbItem } from '@/lib/breadcrumb-helpers'
+
+export type { BreadcrumbItem }
 
 interface BreadcrumbNavigationProps {
   items: BreadcrumbItem[]
@@ -68,7 +66,7 @@ export function BreadcrumbNavigation({
                   </Link>
                 ) : item.current ? (
                   <span 
-                    className="text-black font-medium truncate max-w-[150px] md:max-w-none"
+                    className="text-black font-medium truncate max-w-[120px] sm:max-w-[180px] md:max-w-none"
                     aria-current="page"
                   >
                     {item.label}
@@ -76,7 +74,7 @@ export function BreadcrumbNavigation({
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-gray-600 hover:text-black transition-colors font-medium truncate max-w-[100px] md:max-w-none"
+                    className="text-gray-600 hover:text-black transition-colors font-medium truncate max-w-[80px] sm:max-w-[120px] md:max-w-none"
                   >
                     {item.label}
                   </Link>
@@ -104,61 +102,8 @@ export function BreadcrumbNavigation({
   )
 }
 
-// Helper functions to generate breadcrumbs for common page types
-export const BreadcrumbHelpers = {
-  // For product pages: Home → Collections → Category → Product
-  product: (productTitle: string, category?: string, collection?: string): BreadcrumbItem[] => [
-    { label: 'Home', href: '/' },
-    { label: 'Products', href: '/products' },
-    ...(collection ? [{ label: collection, href: `/collections/${collection.toLowerCase().replace(/\s+/g, '-')}` }] : []),
-    ...(category && category !== collection ? [{ label: category, href: `/collections/${category.toLowerCase().replace(/\s+/g, '-')}` }] : []),
-    { label: productTitle, href: '#', current: true }
-  ],
-
-  // For collection pages: Home → Collections → Category
-  collection: (collectionName: string): BreadcrumbItem[] => [
-    { label: 'Home', href: '/' },
-    { label: 'Collections', href: '/products' },
-    { label: collectionName, href: '#', current: true }
-  ],
-
-  // For search results: Home → Products → Search Results
-  search: (query?: string): BreadcrumbItem[] => [
-    { label: 'Home', href: '/' },
-    { label: 'Products', href: '/products' },
-    { label: query ? `Search: "${query}"` : 'Search Results', href: '#', current: true }
-  ],
-
-  // For account pages: Home → Account → Section
-  account: (section?: string): BreadcrumbItem[] => [
-    { label: 'Home', href: '/' },
-    { label: 'My Account', href: '/account' },
-    ...(section ? [{ label: section, href: '#', current: true }] : [])
-  ],
-
-  // For cart/checkout: Home → Shopping Cart / Checkout
-  checkout: (step: 'cart' | 'checkout' | 'confirmation' = 'cart'): BreadcrumbItem[] => {
-    const steps = [
-      { label: 'Home', href: '/' },
-      { label: 'Shopping Cart', href: '/cart', current: step === 'cart' },
-      { label: 'Checkout', href: '/checkout', current: step === 'checkout' },
-      { label: 'Order Confirmation', href: '#', current: step === 'confirmation' }
-    ]
-    
-    return steps.filter(item => {
-      if (step === 'cart') return item.href !== '/checkout' && item.href !== '#'
-      if (step === 'checkout') return item.href !== '#'
-      return true
-    })
-  },
-
-  // For static pages: Home → Page
-  page: (pageTitle: string, parentPage?: { title: string; href: string }): BreadcrumbItem[] => [
-    { label: 'Home', href: '/' },
-    ...(parentPage ? [{ label: parentPage.title, href: parentPage.href }] : []),
-    { label: pageTitle, href: '#', current: true }
-  ]
-}
+// Re-export BreadcrumbHelpers for backward compatibility
+export { BreadcrumbHelpers } from '@/lib/breadcrumb-helpers'
 
 // Structured data component for SEO
 export function BreadcrumbStructuredData({ items }: { items: BreadcrumbItem[] }) {

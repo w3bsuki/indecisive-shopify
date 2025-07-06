@@ -142,13 +142,13 @@ export default async function ProductsPage({
       {/* Simple Promotional Banner */}
       <ProductsPromoBanner />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-4xl font-bold font-mono mb-2">{t('title')}</h1>
-          <p className="text-gray-600">{t('subtitle')}</p>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="font-mono text-sm text-gray-600">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-mono mb-1 sm:mb-2">{t('title')}</h1>
+          <p className="text-sm sm:text-base text-gray-600">{t('subtitle')}</p>
+          <div className="mt-2 sm:mt-4 flex items-center gap-2">
+            <span className="font-mono text-xs sm:text-sm text-gray-600">
               {t('itemCount', { count: products.length })}
               {(searchQuery || params.sort || params.minPrice || params.maxPrice || params.colors || params.sizes || params.availability) && (
                 <span className="ml-2 text-xs text-gray-500">
@@ -164,7 +164,7 @@ export default async function ProductsPage({
 
         {/* Products Grid - Full Width */}
         {products.length > 0 ? (
-          <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4 lg:gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
             {products.map((product, index) => (
               <ProductCardServer 
                 key={product.id} 

@@ -240,7 +240,7 @@ export function Navigation() {
                 <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
                     <button className={cn(
-                      "relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95 -ml-1",
+                      "relative min-h-[44px] min-w-[44px] flex items-center justify-center transition-all duration-200 active:scale-95 -ml-1",
                       isMenuOpen ? "menu-close-animation" : "menu-open-animation"
                     )}>
                       {isMenuOpen ? 

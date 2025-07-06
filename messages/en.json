@@ -9,20 +9,24 @@
   },
   "announcements": {
     "freeShipping": {
-      "title": "FREE SHIPPING ON ORDERS $75+",
-      "subtitle": "No code needed • Fast delivery"
+      "title": "FREE SHIPPING $75+",
+      "cta": "Learn More"
     },
     "earlyAccess": {
-      "title": "EARLY ACCESS: 25% OFF NEW ARRIVALS",
-      "subtitle": "Use code EARLY25 • Limited time"
+      "title": "15% OFF: CODE \"INDECISIVE\"",
+      "cta": "Shop Now"
     },
     "newDrop": {
-      "title": "NEW DROP: STREET ESSENTIALS COLLECTION",
-      "subtitle": "Minimal designs • Premium quality"
+      "title": "NEW DROP: ХУЛИГАНКА",
+      "cta": "Shop Now"
     },
     "returns": {
-      "title": "BECOME AN AFFILIATE, GET 15%",
-      "subtitle": "Join our partner program"
+      "title": "AFFILIATE PROGRAM: GET 15%",
+      "cta": "Sign Up"
+    },
+    "social": {
+      "title": "FOLLOW @INDECISIVEWEAR",
+      "cta": "Instagram"
     }
   },
   "nav": {
@@ -153,6 +157,7 @@
     "removeFromWishlist": "Remove from wishlist",
     "addingToCart": "Adding to cart",
     "selectSize": "Select Size",
+    "viewProduct": "View Product",
     "itemCount": "{count} items to help you decide (or not)",
     "noProductsFound": "NO PRODUCTS FOUND",
     "tryAdjustingFilters": "Try adjusting your filters",

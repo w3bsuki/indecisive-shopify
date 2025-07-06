@@ -98,12 +98,12 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
     <>
       {/* Triple Split Button: Wishlist + Price + Add to Cart */}
       <div className="relative w-full">
-        <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
+        <div className="flex items-stretch min-h-[44px] bg-white border-2 border-black overflow-hidden">
           {/* Left - Wishlist */}
           <button
             onClick={handleWishlist}
             className={cn(
-              "relative w-11 flex items-center justify-center transition-all duration-200",
+              "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
               "border-r-2 border-black",
               isWishlisted 
                 ? "bg-black text-white" 
@@ -138,7 +138,7 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
               onClick={() => handleAddToCart()}
               disabled={isLoading || !isAvailable || !cartReady}
               className={cn(
-                "relative w-11 flex items-center justify-center transition-all duration-200",
+                "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
                 "border-l-2 border-black",
                 isLoading || !isAvailable || !cartReady
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
@@ -165,7 +165,7 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
             <QuickViewDialog product={product}>
               <button
                 className={cn(
-                  "relative w-11 flex items-center justify-center transition-all duration-200",
+                  "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
                   "border-l-2 border-black",
                   "bg-black text-white hover:bg-gray-900"
                 )}

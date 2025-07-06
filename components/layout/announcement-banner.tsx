@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ChevronLeft, ChevronRight, X, Truck, RotateCcw, Zap, Gift } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X, Truck, RotateCcw, Zap, Gift, Instagram } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
@@ -11,7 +11,7 @@ interface AnnouncementItem {
   id: string
   type: 'shipping' | 'sale' | 'launch' | 'return' | 'promo'
   title: string
-  subtitle?: string
+  cta?: string
   href?: string
   icon?: React.ComponentType<{ className?: string }>
   variant: 'default' | 'urgent' | 'success' | 'premium'
@@ -22,7 +22,7 @@ interface AnnouncementItemBase {
   id: string
   type: 'shipping' | 'sale' | 'launch' | 'return' | 'promo'
   titleKey: string
-  subtitleKey: string
+  ctaKey: string
   href?: string
   icon?: React.ComponentType<{ className?: string }>
   variant: 'default' | 'urgent' | 'success' | 'premium'
@@ -34,7 +34,7 @@ const announcementConfig: AnnouncementItemBase[] = [
     id: 'free-shipping',
     type: 'shipping',
     titleKey: 'freeShipping.title',
-    subtitleKey: 'freeShipping.subtitle',
+    ctaKey: 'freeShipping.cta',
     href: '/shipping',
     icon: Truck,
     variant: 'default',
@@ -44,8 +44,8 @@ const announcementConfig: AnnouncementItemBase[] = [
     id: 'early-access',
     type: 'sale', 
     titleKey: 'earlyAccess.title',
-    subtitleKey: 'earlyAccess.subtitle',
-    href: '/new',
+    ctaKey: 'earlyAccess.cta',
+    href: '/products',
     icon: Zap,
     variant: 'urgent',
     dismissible: true
@@ -54,20 +54,30 @@ const announcementConfig: AnnouncementItemBase[] = [
     id: 'new-drop',
     type: 'launch',
     titleKey: 'newDrop.title',
-    subtitleKey: 'newDrop.subtitle',
-    href: '/collections/street-essentials',
+    ctaKey: 'newDrop.cta',
+    href: '/collections/hooliganka',
     icon: Gift,
     variant: 'premium',
     dismissible: false
   },
   {
-    id: 'returns',
-    type: 'return',
+    id: 'affiliate',
+    type: 'promo',
     titleKey: 'returns.title',
-    subtitleKey: 'returns.subtitle',
-    href: '/returns',
+    ctaKey: 'returns.cta',
+    href: '/account',
     icon: RotateCcw,
     variant: 'success',
+    dismissible: false
+  },
+  {
+    id: 'social',
+    type: 'promo',
+    titleKey: 'social.title',
+    ctaKey: 'social.cta',
+    href: 'https://instagram.com/indecisivewear',
+    icon: Instagram,
+    variant: 'default',
     dismissible: false
   }
 ]
@@ -87,7 +97,7 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
   const announcements: AnnouncementItem[] = announcementConfig.map(config => ({
     ...config,
     title: t(config.titleKey),
-    subtitle: t(config.subtitleKey)
+    cta: t(config.ctaKey)
   }))
 
   // Filter out dismissed announcements
@@ -146,18 +156,26 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
   }
 
   const Content = () => (
-    <div className="flex items-center justify-center gap-2 py-2.5 px-4">
+    <div className="flex items-center justify-center gap-2 sm:gap-3 py-3 px-4">
       {/* Icon */}
       {currentAnnouncement.icon && (
-        <currentAnnouncement.icon className="w-4 h-4 flex-shrink-0" />
+        <currentAnnouncement.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
       )}
       
-      {/* Content */}
-      <div className="text-center">
-        <span className="font-bold text-sm tracking-wide">
-          {currentAnnouncement.title}
-        </span>
-      </div>
+      {/* Title */}
+      <span className="font-bold text-xs sm:text-sm tracking-wide">
+        {currentAnnouncement.title}
+      </span>
+      
+      {/* CTA */}
+      {currentAnnouncement.cta && (
+        <>
+          <span className="text-xs sm:text-sm opacity-50">→</span>
+          <span className="text-xs sm:text-sm underline underline-offset-2 font-medium whitespace-nowrap">
+            {currentAnnouncement.cta}
+          </span>
+        </>
+      )}
     </div>
   )
 
@@ -177,7 +195,7 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10"
+            className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10 hidden sm:flex"
             onClick={handlePrevious}
             aria-label="Previous announcement"
           >
@@ -187,7 +205,7 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-12 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10"
+            className="absolute right-10 sm:right-12 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10 hidden sm:flex"
             onClick={handleNext}
             aria-label="Next announcement"
           >
@@ -211,9 +229,15 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
 
       {/* Content - wrapped in Link if href provided */}
       {currentAnnouncement.href ? (
-        <Link href={currentAnnouncement.href} className="block">
-          <Content />
-        </Link>
+        currentAnnouncement.href.startsWith('http') ? (
+          <a href={currentAnnouncement.href} target="_blank" rel="noopener noreferrer" className="block">
+            <Content />
+          </a>
+        ) : (
+          <Link href={currentAnnouncement.href} className="block">
+            <Content />
+          </Link>
+        )
       ) : (
         <Content />
       )}

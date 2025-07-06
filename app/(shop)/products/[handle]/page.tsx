@@ -11,7 +11,8 @@ import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
 import { ArrowLeft, Truck, RotateCcw, Shield } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import { BreadcrumbNavigation, BreadcrumbHelpers, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
+import { BreadcrumbNavigation, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
+import { BreadcrumbHelpers } from '@/lib/breadcrumb-helpers'
 
 interface ProductPageProps {
   params: Promise<{ handle: string }>
