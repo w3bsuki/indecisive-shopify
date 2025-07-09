@@ -69,11 +69,6 @@ export function ProductPageLayout({
         <ProductPageBanner
           title={title}
           variant={variant}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalCount={totalCount}
-          showingCount={products.length}
-          hasFilters={hasFilters}
           currentCategory={currentCategory}
         />
       )}

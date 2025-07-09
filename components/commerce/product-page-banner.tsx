@@ -1,16 +1,9 @@
-import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Link from 'next/link'
 
 interface ProductPageBannerProps {
   title: string
-  showStats?: boolean
-  currentPage?: number
-  totalPages?: number
-  totalCount?: number
-  showingCount?: number
-  hasFilters?: boolean
   className?: string
   variant?: 'all' | 'new' | 'sale' | 'collection'
   showTabs?: boolean
@@ -19,19 +12,11 @@ interface ProductPageBannerProps {
 
 export function ProductPageBanner({
   title,
-  showStats = true,
-  currentPage = 1,
-  totalPages = 1,
-  totalCount = 0,
-  showingCount = 0,
-  hasFilters = false,
   className = '',
   variant = 'all',
   showTabs = true,
   currentCategory = 'all'
 }: ProductPageBannerProps) {
-  const t = useTranslations('products')
-  const common = useTranslations('common')
 
   const getBannerStyles = () => {
     switch (variant) {
