@@ -157,7 +157,7 @@ export function ComingSoonCarousel() {
                               ...prev,
                               [product.id]: e.target.value
                             }))}
-                            className="font-mono text-sm"
+                            className="font-mono text-sm min-h-[44px] touch-optimized"
                             style={{ fontSize: '14px' }}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
@@ -169,8 +169,9 @@ export function ComingSoonCarousel() {
                         
                         <Button 
                           onClick={() => handleNotifyMe(product.id)}
-                          className="w-full font-mono text-xs"
+                          className="w-full font-mono text-xs min-h-[44px] touch-optimized"
                           variant="default"
+                          size="touch"
                         >
                           {t('notifyButton')}
                         </Button>
@@ -255,7 +256,7 @@ export function ComingSoonCarousel() {
                               ...prev,
                               [product.id]: e.target.value
                             }))}
-                            className="font-mono text-sm"
+                            className="font-mono text-sm min-h-[44px] touch-optimized"
                             style={{ fontSize: '14px' }}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
@@ -267,8 +268,9 @@ export function ComingSoonCarousel() {
                         
                         <Button 
                           onClick={() => handleNotifyMe(product.id)}
-                          className="w-full font-mono text-xs"
+                          className="w-full font-mono text-xs min-h-[44px] touch-optimized"
                           variant="default"
+                          size="touch"
                         >
                           {t('notifyButton')}
                         </Button>

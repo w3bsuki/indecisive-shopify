@@ -1,7 +1,7 @@
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { Badge } from '@/components/ui/badge'
-import { formatPriceServer } from '@/lib/shopify/server-market'
 import { getTranslations } from 'next-intl/server'
+import { MoneyServer, PriceRangeServer } from './money-server'
 
 interface ProductInfoProps {
   product: ShopifyProduct
@@ -11,13 +11,6 @@ interface ProductInfoProps {
 export async function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
   const t = await getTranslations('products')
   
-  // Use selected variant price if available, otherwise show price range
-  const price = selectedVariant
-    ? await formatPriceServer(selectedVariant.price.amount, selectedVariant.price.currencyCode)
-    : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount
-    ? await formatPriceServer(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
-    : `${await formatPriceServer(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)} - ${await formatPriceServer(product.priceRange.maxVariantPrice.amount, product.priceRange.maxVariantPrice.currencyCode)}`
-
   const inStock = selectedVariant ? selectedVariant.availableForSale : true
 
   return (
@@ -26,7 +19,18 @@ export async function ProductInfo({ product, selectedVariant }: ProductInfoProps
       <div>
         <h1 className="text-xl md:text-3xl font-bold leading-tight">{product.title}</h1>
         <div className="mt-1 flex items-center gap-3">
-          <p className="text-xl md:text-2xl font-semibold">{price}</p>
+          <p className="text-xl md:text-2xl font-semibold">
+            {selectedVariant ? (
+              <MoneyServer data={selectedVariant.price} />
+            ) : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount ? (
+              <MoneyServer data={product.priceRange.minVariantPrice} />
+            ) : (
+              <PriceRangeServer 
+                minPrice={product.priceRange.minVariantPrice} 
+                maxPrice={product.priceRange.maxVariantPrice}
+              />
+            )}
+          </p>
           {!inStock && (
             <Badge variant="destructive" className="text-xs">{t('soldOut')}</Badge>
           )}

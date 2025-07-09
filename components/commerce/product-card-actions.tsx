@@ -2,13 +2,14 @@
 
 import { useState, useCallback } from 'react'
 import type { ShopifyProduct } from '@/lib/shopify/types'
+import type { Money as ShopifyMoney } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
-import { parsePriceString } from '@/lib/utils/price'
 import { Heart, X, Eye } from 'lucide-react'
 import { QuickViewDialog } from './quick-view-dialog'
+import { ProductPrice } from '@/components/commerce/product-price'
 import {
   Dialog,
   DialogContent,
@@ -18,7 +19,7 @@ import {
 
 interface ProductCardActionsProps {
   product: ShopifyProduct
-  rawPrice: string
+  price?: ShopifyMoney
   sizes: Array<{ id: string; size: string; available: boolean }>
   translations: {
     addToWishlist: string
@@ -30,7 +31,7 @@ interface ProductCardActionsProps {
   }
 }
 
-export function ProductCardActions({ product, rawPrice, sizes, translations }: ProductCardActionsProps) {
+export function ProductCardActions({ product, price: _price, sizes, translations }: ProductCardActionsProps) {
   const { addItem, cartReady } = useCart()
   const { toggleItem, isInWishlist } = useWishlist()
   const isMobile = useIsMobile()
@@ -38,9 +39,6 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
   const [showSizeSelector, setShowSizeSelector] = useState(false)
   const [_selectedSize, setSelectedSize] = useState<string | null>(null)
   const isWishlisted = isInWishlist(product.id)
-
-  // Split price and currency for display
-  const { number: priceNumber, currency } = parsePriceString(rawPrice)
 
   const handleAddToCart = useCallback(async (variantId?: string) => {
     if (!cartReady || isLoading) return
@@ -98,13 +96,13 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
     <>
       {/* Triple Split Button: Wishlist + Price + Add to Cart */}
       <div className="relative w-full">
-        <div className="flex items-stretch min-h-[44px] bg-white border-2 border-black overflow-hidden">
+        <div className="flex items-stretch min-h-[44px] bg-white border border-gray-300 overflow-hidden">
           {/* Left - Wishlist */}
           <button
             onClick={handleWishlist}
             className={cn(
               "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
-              "border-r-2 border-black",
+              "border-r border-gray-300",
               isWishlisted 
                 ? "bg-black text-white" 
                 : "bg-white text-black hover:bg-black hover:text-white"
@@ -120,16 +118,15 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
           </button>
           
           {/* Middle - Price */}
-          <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
-            {currency === 'лв' ? (
-              <span className="text-[11px] font-normal tracking-tight text-black">
-                {priceNumber} <span className="text-[8px]">{currency}</span>
-              </span>
-            ) : (
-              <span className="text-[11px] font-normal tracking-tight text-black">
-                {rawPrice}
-              </span>
-            )}
+          <div className="flex-1 flex items-center justify-center px-2 bg-gray-50">
+            <ProductPrice 
+              priceRange={product.priceRange as any}
+              compareAtPriceRange={product.compareAtPriceRange as any}
+              size="sm"
+              showCompareAt={false}
+              showRange={false}
+              className="text-[11px] font-normal tracking-tight text-black"
+            />
           </div>
           
           {/* Right - Add to Cart / Quick View */}
@@ -139,7 +136,7 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
               disabled={isLoading || !isAvailable || !cartReady}
               className={cn(
                 "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
-                "border-l-2 border-black",
+                "border-l border-gray-300",
                 isLoading || !isAvailable || !cartReady
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-black text-white hover:bg-gray-900"
@@ -166,7 +163,7 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
               <button
                 className={cn(
                   "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
-                  "border-l-2 border-black",
+                  "border-l border-gray-300",
                   "bg-black text-white hover:bg-gray-900"
                 )}
                 aria-label={translations.viewProduct}
@@ -194,7 +191,7 @@ export function ProductCardActions({ product, rawPrice, sizes, translations }: P
                 }}
                 disabled={!size.available}
                 className={cn(
-                  "p-3 border-2 border-black text-sm font-medium transition-all",
+                  "p-3 border border-gray-300 text-sm font-medium transition-all",
                   size.available 
                     ? "bg-white hover:bg-black hover:text-white" 
                     : "bg-gray-100 text-gray-400 cursor-not-allowed"

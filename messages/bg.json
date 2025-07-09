@@ -137,7 +137,14 @@
   "products": {
     "title": "ВСИЧКИ ПРОДУКТИ",
     "subtitle": "Разгледайте нашата пълна колекция",
+    "saleSubtitle": "Ограничени оферти - До 50% отстъпка",
+    "newSubtitle": "Свежи стилове за нерешителните",
     "itemCount": "{count} артикула",
+    "itemCountPaginated": "Показани {showing} от {total} артикула (Страница {page} от {totalPages})",
+    "showingItems": "Показани {count} артикула",
+    "pageOf": "Страница {current} от {total}",
+    "productsLabel": "продукта",
+    "itemsLabel": "артикула",
     "promoBanner": "БЕЗПЛАТНА ДОСТАВКА НАД 150 ЛВ • ИЗПОЛЗВАЙ КОД: INDECISIVE20",
     "breadcrumb": {
       "home": "Начало",
@@ -331,7 +338,8 @@
     "outOfStock": "В момента няма наличност",
     "close": "Затвори",
     "wishlist": "Любими",
-    "categories": "КАТЕГОРИИ"
+    "categories": "КАТЕГОРИИ",
+    "filtered": "Филтриран"
   },
   "footer": {
     "customerService": "Клиентско обслужване",

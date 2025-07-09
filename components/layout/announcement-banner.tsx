@@ -156,22 +156,22 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
   }
 
   const Content = () => (
-    <div className="flex items-center justify-center gap-2 sm:gap-3 py-3 px-4">
+    <div className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-3 sm:px-4 px-safe min-h-[44px] touch-optimized">
       {/* Icon */}
       {currentAnnouncement.icon && (
-        <currentAnnouncement.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+        <currentAnnouncement.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
       )}
       
       {/* Title */}
-      <span className="font-bold text-xs sm:text-sm tracking-wide">
+      <span className="font-bold text-xs sm:text-sm tracking-wide truncate">
         {currentAnnouncement.title}
       </span>
       
       {/* CTA */}
       {currentAnnouncement.cta && (
         <>
-          <span className="text-xs sm:text-sm opacity-50">→</span>
-          <span className="text-xs sm:text-sm underline underline-offset-2 font-medium whitespace-nowrap">
+          <span className="text-xs sm:text-sm opacity-50 hidden sm:inline">→</span>
+          <span className="text-xs sm:text-sm underline underline-offset-2 font-medium whitespace-nowrap hidden sm:inline">
             {currentAnnouncement.cta}
           </span>
         </>
@@ -195,21 +195,21 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10 hidden sm:flex"
+            className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10 z-10 touch-optimized"
             onClick={handlePrevious}
             aria-label="Previous announcement"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
 
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-10 sm:right-12 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10 hidden sm:flex"
+            className="absolute right-10 sm:right-12 top-1/2 -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10 z-10 touch-optimized"
             onClick={handleNext}
             aria-label="Next announcement"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
         </>
       )}
@@ -219,11 +219,11 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-white hover:bg-white/10 z-10"
+          className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10 z-10 touch-optimized"
           onClick={() => handleDismiss(currentAnnouncement.id)}
           aria-label="Dismiss announcement"
         >
-          <X className="h-4 w-4" />
+          <X className="h-3 w-3 sm:h-4 sm:w-4" />
         </Button>
       )}
 

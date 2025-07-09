@@ -110,6 +110,15 @@
   },
   "products": {
     "title": "ALLE PRODUKTE",
+    "subtitle": "Durchsuchen Sie unsere komplette Kollektion",
+    "saleSubtitle": "Zeitlich begrenzte Angebote - Bis zu 50% Rabatt",
+    "newSubtitle": "Frische Styles für Unentschlossene",
+    "itemCount": "{count} Artikel",
+    "itemCountPaginated": "Zeige {showing} von {total} Artikeln (Seite {page} von {totalPages})",
+    "showingItems": "Zeige {count} Produkte",
+    "pageOf": "Seite {current} von {total}",
+    "productsLabel": "Produkte",
+    "itemsLabel": "Artikel",
     "addToCart": "IN DEN WARENKORB",
     "quickView": "SCHNELLANSICHT",
     "viewAll": "ALLE PRODUKTE ANZEIGEN",
@@ -208,7 +217,8 @@
     "outOfStock": "Derzeit nicht auf Lager",
     "close": "Schließen",
     "wishlist": "Wunschliste",
-    "categories": "KATEGORIEN"
+    "categories": "KATEGORIEN",
+    "filtered": "Gefiltert"
   },
   "footer": {
     "customerService": "Kundenservice",

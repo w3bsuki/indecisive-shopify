@@ -1,55 +1,87 @@
-import { getProducts } from '@/lib/shopify/api'
-import { ProductCardServer } from '@/components/commerce/product-card-server'
-import { SearchFilters } from '@/app/(shop)/search/search-filters'
+import { getProductsPaginated } from '@/lib/shopify/api-enhanced'
+import { getTranslations } from 'next-intl/server'
+import { ProductPageLayout } from '@/components/layouts/product-page-layout'
 
 export const metadata = {
   title: 'New Products | Indecisive Wear',
   description: 'Shop our newest arrivals at Indecisive Wear. Fresh styles for the indecisive.',
 }
 
-export default async function NewArrivalsPage() {
-  // For now, show all products since they're all new
-  const productsData = await getProducts(24)
-  const products = productsData.edges.map(edge => edge.node)
+export default async function NewArrivalsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ 
+    sort?: string
+    category?: string
+    colors?: string
+    sizes?: string
+    availability?: string
+    minPrice?: string
+    maxPrice?: string
+    page?: string
+  }>
+}) {
+  // Get translations
+  const t = await getTranslations('products')
+  const nav = await getTranslations('nav')
+  const params = await searchParams
+  
+  // Parse pagination
+  const currentPage = parseInt(params.page || '1', 10)
+  const perPage = 20 // Show 20 products per page
+  
+  // Build filters object with NEW filter (tag-based filtering)
+  const filters = {
+    category: params.category,
+    minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
+    maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : undefined,
+    colors: params.colors ? params.colors.split(',') : undefined,
+    sizes: params.sizes ? params.sizes.split(',') : undefined,
+    availability: params.availability ? params.availability.split(',') : undefined,
+    sort: params.sort as any,
+    tags: ['new'] // Filter for products tagged with 'new'
+  }
+  
+  // Fetch products with server-side filtering and pagination
+  const { products, pageInfo, totalCount } = await getProductsPaginated(
+    currentPage,
+    perPage,
+    filters
+  )
+  
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCount / perPage)
+  
+  // Check if filters are applied (excluding the NEW tag filter)
+  const hasFilters = !!(
+    params.category || 
+    params.sort || 
+    params.minPrice || 
+    params.maxPrice || 
+    params.colors || 
+    params.sizes || 
+    params.availability
+  )
+
+  // Generate breadcrumb items
+  const breadcrumbItems = [
+    { label: t('breadcrumb.home'), href: '/' },
+    { label: t('breadcrumb.collections'), href: '/products' },
+    { label: 'New Arrivals', href: '#', current: true }
+  ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-mono mb-2">NEW ARRIVALS</h1>
-        <p className="text-gray-600">Fresh styles for the indecisive</p>
-        <div className="mt-4 flex items-center gap-2">
-          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-          <span className="font-mono text-sm">JUST DROPPED</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Filters Sidebar */}
-        <aside className="lg:col-span-1">
-          <SearchFilters />
-        </aside>
-
-        {/* Products Grid */}
-        <main className="lg:col-span-3">
-          {products.length > 0 ? (
-            <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3 lg:gap-4">
-              {products.map((product, index) => (
-                <ProductCardServer 
-                  key={product.id} 
-                  product={product} 
-                  priority={index < 6} // Priority for first 6 products
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-mono mb-4">NO NEW PRODUCTS</h2>
-              <p className="text-gray-600">Check back soon for fresh drops</p>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <ProductPageLayout
+      title={nav('new')}
+      variant="new"
+      products={products}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      totalCount={totalCount}
+      pageInfo={pageInfo}
+      hasFilters={hasFilters}
+      currentCategory={params.category || 'all'}
+      breadcrumbItems={breadcrumbItems}
+    />
   )
 }

@@ -137,7 +137,14 @@
   "products": {
     "title": "ALL PRODUCTS",
     "subtitle": "Browse our complete collection",
+    "saleSubtitle": "Limited time offers - Up to 50% off",
+    "newSubtitle": "Fresh styles for the indecisive",
     "itemCount": "{count} items",
+    "showingItems": "Showing {count} products",
+    "pageOf": "Page {current} of {total}",
+    "productsLabel": "products",
+    "itemsLabel": "items",
+    "itemCountPaginated": "Showing {showing} of {total} items (Page {page} of {totalPages})",
     "promoBanner": "FREE SHIPPING ON ORDERS OVER $100 • USE CODE: INDECISIVE20",
     "breadcrumb": {
       "home": "Home",
@@ -301,7 +308,8 @@
     "outOfStock": "Currently out of stock",
     "close": "Close",
     "wishlist": "Wishlist",
-    "categories": "CATEGORIES"
+    "categories": "CATEGORIES",
+    "filtered": "Filtered"
   },
   "footer": {
     "customerService": "Customer Service",

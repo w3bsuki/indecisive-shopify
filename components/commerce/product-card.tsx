@@ -7,9 +7,8 @@ import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useIsMobile } from '@/hooks/use-mobile'
-import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
-import { parsePriceString, isProductOnSale } from '@/lib/utils/price'
+import { Money } from '@/components/commerce/money'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Heart, Eye, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -29,7 +28,6 @@ interface ProductCardProps {
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const { addItem, cartReady } = useCart()
   const { toggleItem, isInWishlist } = useWishlist()
-  const { formatPrice } = useMarket()
   const isMobile = useIsMobile()
   const [isLoading, setIsLoading] = useState(false)
   const [showSizeSelector, setShowSizeSelector] = useState(false)
@@ -40,22 +38,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const { flyToCart } = useFlyToCart()
   const productImageRef = useRef<HTMLDivElement>(null)
 
-  const rawPrice = formatPrice(
-    product.priceRange.minVariantPrice.amount,
-    product.priceRange.minVariantPrice.currencyCode
-  )
+  const price = product.priceRange.minVariantPrice
+  const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
-  // Split price and currency for display
-  const { number: priceNumber, currency } = parsePriceString(rawPrice)
-
-  const comparePrice = product.compareAtPriceRange?.maxVariantPrice
-    ? formatPrice(
-        product.compareAtPriceRange.maxVariantPrice.amount,
-        product.compareAtPriceRange.maxVariantPrice.currencyCode
-      )
-    : null
-
-  const isOnSale = isProductOnSale(rawPrice, comparePrice)
+  const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
 
   // Extract sizes from variants
   const sizes = product.variants?.edges
@@ -255,15 +241,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     
                     {/* Middle - Price */}
                     <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
-                      {currency === 'лв' ? (
-                        <span className="text-[11px] font-normal tracking-tight text-black">
-                          {priceNumber} <span className="text-[8px]">{currency}</span>
-                        </span>
-                      ) : (
-                        <span className="text-[11px] font-normal tracking-tight text-black">
-                          {rawPrice}
-                        </span>
-                      )}
+                      <Money 
+                        data={price as any} 
+                        className="text-[11px] font-normal tracking-tight text-black"
+                      />
                     </div>
                     
                     {/* Right - Add to Cart */}
@@ -321,15 +302,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     
                     {/* Right - Price (takes remaining space) */}
                     <div className="flex-1 flex items-center justify-center px-4 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
-                      {currency === 'лв' ? (
-                        <span className="text-sm font-medium tracking-tight text-black">
-                          {priceNumber} <span className="text-[10px]">{currency}</span>
-                        </span>
-                      ) : (
-                        <span className="text-sm font-medium tracking-tight text-black">
-                          {rawPrice}
-                        </span>
-                      )}
+                      <Money 
+                        data={price as any} 
+                        className="text-sm font-medium tracking-tight text-black"
+                      />
                     </div>
                   </div>
                 )}
@@ -341,15 +317,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     <Heart className="absolute w-[18px] h-[18px] text-gray-400" />
                   </div>
                   <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
-                    {currency === 'лв' ? (
-                      <span className="text-[11px] font-normal tracking-tight text-gray-500">
-                        {priceNumber} <span className="text-[8px]">{currency}</span>
-                      </span>
-                    ) : (
-                      <span className="text-[11px] font-normal tracking-tight text-gray-500">
-                        {rawPrice}
-                      </span>
-                    )}
+                    <Money 
+                      data={price as any} 
+                      className="text-[11px] font-normal tracking-tight text-gray-500"
+                    />
                   </div>
                   <div className="relative w-11 flex items-center justify-center bg-gray-100 border-l-2 border-black">
                     <X className="absolute w-[18px] h-[18px] text-gray-400" />

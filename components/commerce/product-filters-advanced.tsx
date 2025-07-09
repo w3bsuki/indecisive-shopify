@@ -192,7 +192,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
     <div className="space-y-6">
       {/* Sort Options */}
       <div className="space-y-3">
-        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-700">
+        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('sortBy')}
         </h3>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
@@ -200,13 +200,13 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
             <Button
               key={option.value}
               variant={currentSort === option.value ? "default" : "outline"}
-              size="sm"
+              size="touch"
               onClick={() => updateFilter('sort', option.value)}
               className={cn(
-                "font-mono text-xs h-9 px-3 transition-all justify-start",
+                "font-mono text-xs min-h-[44px] px-3 transition-all justify-start touch-optimized",
                 currentSort === option.value
-                  ? "bg-black text-white border-black"
-                  : "hover:border-black hover:bg-black/5"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "hover:border-primary hover:bg-accent"
               )}
             >
               {option.label}
@@ -217,7 +217,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
 
       {/* Price Range */}
       <div className="space-y-3">
-        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-700">
+        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('priceRange')}
         </h3>
         <div className="px-3">
@@ -230,7 +230,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
             step={5}
             className="w-full"
           />
-          <div className="flex justify-between mt-2 text-sm text-gray-600 font-mono">
+          <div className="flex justify-between mt-2 text-sm text-muted-foreground font-mono">
             <span>{formatPrice(priceRange[0], 'USD')}</span>
             <span>{formatPrice(priceRange[1], 'USD')}</span>
           </div>
@@ -239,7 +239,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
 
       {/* Category Filter */}
       <div className="space-y-3">
-        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-700">
+        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('categories')}
         </h3>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
@@ -247,13 +247,13 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
             <Button
               key={option.value}
               variant={currentCategory === option.value ? "default" : "outline"}
-              size="sm"
+              size="touch"
               onClick={() => updateFilter('category', option.value)}
               className={cn(
-                "font-mono text-xs h-9 px-3 transition-all justify-start",
+                "font-mono text-xs min-h-[44px] px-3 transition-all justify-start touch-optimized",
                 currentCategory === option.value
-                  ? "bg-black text-white border-black"
-                  : "hover:border-black hover:bg-black/5"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "hover:border-primary hover:bg-accent"
               )}
             >
               {option.label}
@@ -264,7 +264,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
 
       {/* Color Filter */}
       <div className="space-y-3">
-        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-700">
+        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('colors')}
         </h3>
         <div className="grid grid-cols-4 gap-3">
@@ -303,7 +303,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
 
       {/* Size Filter */}
       <div className="space-y-3">
-        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-700">
+        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('sizes')}
         </h3>
         <div className="grid grid-cols-3 gap-2">
@@ -311,13 +311,13 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
             <Button
               key={size.value}
               variant={currentSizes.includes(size.value) ? "default" : "outline"}
-              size="sm"
+              size="touch"
               onClick={() => toggleArrayFilter('sizes', size.value, currentSizes)}
               className={cn(
                 "font-mono text-xs h-9 px-3 transition-all",
                 currentSizes.includes(size.value)
-                  ? "bg-black text-white border-black"
-                  : "hover:border-black hover:bg-black/5"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "hover:border-primary hover:bg-accent"
               )}
             >
               {size.label}
@@ -328,7 +328,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
 
       {/* Availability Filter */}
       <div className="space-y-3">
-        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-700">
+        <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('availability')}
         </h3>
         <div className="space-y-2">

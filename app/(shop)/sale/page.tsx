@@ -1,52 +1,87 @@
-import { getProducts } from '@/lib/shopify/api'
-import { ProductCardServer } from '@/components/commerce/product-card-server'
-import { SearchFilters } from '@/app/(shop)/search/search-filters'
+import { getProductsPaginated } from '@/lib/shopify/api-enhanced'
+import { getTranslations } from 'next-intl/server'
+import { ProductPageLayout } from '@/components/layouts/product-page-layout'
 
 export const metadata = {
   title: 'Sale | Indecisive Wear',
   description: 'Shop sale items and special offers. Get the best deals on fashion at Indecisive Wear.',
 }
 
-export default async function SalePage() {
-  // Fetch products with sale tag or compare at price
-  const productsData = await getProducts(24, 'tag:sale OR tag:discount OR tag:clearance')
-  const products = productsData.edges.map(edge => edge.node)
+export default async function SalePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ 
+    sort?: string
+    category?: string
+    colors?: string
+    sizes?: string
+    availability?: string
+    minPrice?: string
+    maxPrice?: string
+    page?: string
+  }>
+}) {
+  // Get translations
+  const t = await getTranslations('products')
+  const nav = await getTranslations('nav')
+  const params = await searchParams
+  
+  // Parse pagination
+  const currentPage = parseInt(params.page || '1', 10)
+  const perPage = 20 // Show 20 products per page
+  
+  // Build filters object with SALE filter (tag-based filtering)
+  const filters = {
+    category: params.category,
+    minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
+    maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : undefined,
+    colors: params.colors ? params.colors.split(',') : undefined,
+    sizes: params.sizes ? params.sizes.split(',') : undefined,
+    availability: params.availability ? params.availability.split(',') : undefined,
+    sort: params.sort as any,
+    tags: ['sale', 'discount', 'clearance'] // Filter for sale products
+  }
+  
+  // Fetch products with server-side filtering and pagination
+  const { products, pageInfo, totalCount } = await getProductsPaginated(
+    currentPage,
+    perPage,
+    filters
+  )
+  
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCount / perPage)
+  
+  // Check if filters are applied (excluding the SALE tag filter)
+  const hasFilters = !!(
+    params.category || 
+    params.sort || 
+    params.minPrice || 
+    params.maxPrice || 
+    params.colors || 
+    params.sizes || 
+    params.availability
+  )
+
+  // Generate breadcrumb items
+  const breadcrumbItems = [
+    { label: t('breadcrumb.home'), href: '/' },
+    { label: t('breadcrumb.collections'), href: '/products' },
+    { label: 'Sale', href: '#', current: true }
+  ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-mono mb-2">SALE</h1>
-        <p className="text-gray-600">Limited time offers</p>
-        <div className="mt-4 p-4 bg-red-50 border-2 border-red-200">
-          <p className="text-sm text-red-800 font-medium">
-            🔥 Up to 50% off selected items. While stocks last!
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Filters Sidebar */}
-        <aside className="lg:col-span-1">
-          <SearchFilters />
-        </aside>
-
-        {/* Products Grid */}
-        <main className="lg:col-span-3">
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <ProductCardServer key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-mono mb-4">Sale starting soon</h2>
-              <p className="text-gray-600">Check back for amazing deals!</p>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <ProductPageLayout
+      title={nav('sale')}
+      variant="sale"
+      products={products}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      totalCount={totalCount}
+      pageInfo={pageInfo}
+      hasFilters={hasFilters}
+      currentCategory={params.category || 'all'}
+      breadcrumbItems={breadcrumbItems}
+    />
   )
 }

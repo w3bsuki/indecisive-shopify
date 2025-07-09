@@ -1,35 +1,24 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
-import { formatPriceServer } from '@/lib/shopify/server-market'
 import { getTranslations } from 'next-intl/server'
 import { ProductCardActions } from './product-card-actions'
+import { HydrogenImageServer } from './hydrogen-image'
+import { extractNodes } from '@/lib/shopify/flatten-connection'
 
 interface ProductCardServerProps {
   product: ShopifyProduct
   priority?: boolean
 }
 
-export async function ProductCardServer({ product, priority = false }: ProductCardServerProps) {
+export async function ProductCardServer({ product, priority: _priority = false }: ProductCardServerProps) {
   const t = await getTranslations('products')
   
-  const rawPrice = await formatPriceServer(
-    product.priceRange.minVariantPrice.amount,
-    product.priceRange.minVariantPrice.currencyCode
-  )
-  
-  const comparePrice = product.compareAtPriceRange?.maxVariantPrice
-    ? await formatPriceServer(
-        product.compareAtPriceRange.maxVariantPrice.amount,
-        product.compareAtPriceRange.maxVariantPrice.currencyCode
-      )
-    : null
+  const isOnSale = product.compareAtPriceRange && 
+    parseFloat(product.compareAtPriceRange.maxVariantPrice.amount) > parseFloat(product.priceRange.minVariantPrice.amount)
 
-  const isOnSale = comparePrice && comparePrice !== rawPrice
-
-  // Extract sizes from variants
-  const sizes = product.variants?.edges
-    ?.map(edge => edge.node)
+  // Extract sizes from variants using flattenConnection
+  const variants = extractNodes(product.variants)
+  const sizes = variants
     ?.filter(variant => variant.availableForSale)
     ?.map(variant => ({
       id: variant.id,
@@ -37,8 +26,8 @@ export async function ProductCardServer({ product, priority = false }: ProductCa
       available: variant.availableForSale
     })) || []
 
-  // Get second image for subtle hover effect
-  const productImages = product.images?.edges?.map(edge => edge.node) || []
+  // Get second image for subtle hover effect using flattenConnection
+  const productImages = extractNodes(product.images)
   const secondImage = productImages.length > 1 ? productImages[1] : null
 
   return (
@@ -50,38 +39,23 @@ export async function ProductCardServer({ product, priority = false }: ProductCa
         </div>
       )}
 
-      {/* Product Image with Subtle Hover Effect */}
+      {/* Product Image with Hydrogen React */}
       <Link 
         href={`/products/${product.handle}`}
-        className="block relative aspect-square overflow-hidden bg-gray-50"
+        className="block relative aspect-square overflow-hidden bg-gray-50 group"
       >
-        {product.featuredImage ? (
-          <Image
-            src={product.featuredImage.url}
-            alt={product.featuredImage.altText || product.title}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            priority={priority}
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex items-center justify-center h-full text-gray-400 bg-gray-100">
-            <div className="text-center">
-              <div className="text-2xl mb-1">👕</div>
-              <div className="text-xs">{t('noImage')}</div>
-            </div>
-          </div>
-        )}
+        <HydrogenImageServer
+          data={product.featuredImage}
+          alt={product.title}
+          className="transition-transform duration-300 group-hover:scale-105"
+        />
 
         {/* Second Image on Hover (Desktop Only) */}
         {secondImage && (
           <div className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-            <Image
-              src={secondImage.url}
-              alt={secondImage.altText || `${product.title} - view 2`}
-              fill
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-              className="object-cover"
+            <HydrogenImageServer
+              data={secondImage}
+              alt={`${product.title} - view 2`}
             />
           </div>
         )}
@@ -103,7 +77,6 @@ export async function ProductCardServer({ product, priority = false }: ProductCa
           {/* Actions Component */}
           <ProductCardActions 
             product={product}
-            rawPrice={rawPrice}
             sizes={sizes}
             translations={{
               addToWishlist: t('addToWishlist'),

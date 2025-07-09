@@ -3,6 +3,7 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
 import { ShopifyProvider, CartProvider } from '@shopify/hydrogen-react';
 import { useMarket } from '@/hooks/use-market';
+import { ShopifyAnalyticsWrapper } from '@/components/providers/shopify-analytics';
 
 // OFFICIAL HYDROGEN REACT PATTERN - with CartProvider and seamless market updates
 export function HydrogenProvider({ children }: { children: ReactNode }) {
@@ -53,7 +54,12 @@ export function HydrogenProvider({ children }: { children: ReactNode }) {
         countryCode={market.countryCode as Parameters<typeof CartProvider>[0]['countryCode']}
         key={`cart-${market.id}`} // Force cart re-initialization with new market
       >
-        {children}
+        <ShopifyAnalyticsWrapper 
+          shopId={storeDomain}
+          key={`analytics-${market.id}`}
+        >
+          {children}
+        </ShopifyAnalyticsWrapper>
       </CartProvider>
     </ShopifyProvider>
   );

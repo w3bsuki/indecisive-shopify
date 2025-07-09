@@ -4,16 +4,15 @@
 export const dynamic = 'force-dynamic'
 
 import { useCart } from '@/hooks/use-cart'
-import { useMarket } from '@/hooks/use-market'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Minus, Plus, X, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Money } from '@/components/commerce/money'
 
 export default function CartPage() {
   const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading } = useCart()
-  const { formatPrice } = useMarket()
 
   const handleCheckout = () => {
     // Navigate to our enhanced checkout page for smooth experience
@@ -107,10 +106,11 @@ export default function CartPage() {
 
                     {/* Line Total */}
                     <p className="font-mono font-medium">
-                      {line.cost?.totalAmount?.amount && line.cost?.totalAmount?.currencyCode 
-                        ? formatPrice(line.cost.totalAmount.amount, line.cost.totalAmount.currencyCode)
-                        : '$0.00'
-                      }
+                      {line.cost?.totalAmount?.amount && line.cost?.totalAmount?.currencyCode ? (
+                        <Money data={line.cost.totalAmount as any} />
+                      ) : (
+                        '$0.00'
+                      )}
                     </p>
                   </div>
                 </div>
@@ -140,10 +140,11 @@ export default function CartPage() {
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <span className="font-mono">
-                  {cost?.subtotalAmount?.amount && cost?.subtotalAmount?.currencyCode
-                    ? formatPrice(cost.subtotalAmount.amount, cost.subtotalAmount.currencyCode)
-                    : '$0.00'
-                  }
+                  {cost?.subtotalAmount?.amount && cost?.subtotalAmount?.currencyCode ? (
+                    <Money data={cost.subtotalAmount as any} />
+                  ) : (
+                    '$0.00'
+                  )}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -160,10 +161,11 @@ export default function CartPage() {
               <div className="flex justify-between items-center mb-6">
                 <span className="text-lg font-bold">Total</span>
                 <span className="text-lg font-bold font-mono">
-                  {cost?.totalAmount?.amount && cost?.totalAmount?.currencyCode
-                    ? formatPrice(cost.totalAmount.amount, cost.totalAmount.currencyCode)
-                    : '$0.00'
-                  }
+                  {cost?.totalAmount?.amount && cost?.totalAmount?.currencyCode ? (
+                    <Money data={cost.totalAmount as any} />
+                  ) : (
+                    '$0.00'
+                  )}
                 </span>
               </div>
 

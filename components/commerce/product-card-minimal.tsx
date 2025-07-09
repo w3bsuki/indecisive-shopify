@@ -5,10 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useWishlist } from '@/hooks/use-wishlist'
-import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
-import { parsePriceString, isProductOnSale } from '@/lib/utils/price'
 import { QuickViewDialog } from './quick-view-dialog'
+import { Money, SalePrice } from '@/components/commerce/money'
 import { Heart, Eye } from 'lucide-react'
 
 interface ProductCardMinimalProps {
@@ -19,27 +18,14 @@ interface ProductCardMinimalProps {
 
 export function ProductCardMinimal({ product, priority = false, size = 'default' }: ProductCardMinimalProps) {
   const { toggleItem, isInWishlist } = useWishlist()
-  const { formatPrice } = useMarket()
   const [imageLoading, setImageLoading] = useState(true)
   const [showOverlay, setShowOverlay] = useState(false)
   const isWishlisted = isInWishlist(product.id)
 
-  const rawPrice = formatPrice(
-    product.priceRange.minVariantPrice.amount,
-    product.priceRange.minVariantPrice.currencyCode
-  )
+  const price = product.priceRange.minVariantPrice
+  const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
-  // Split price and currency for display
-  const { number: priceNumber, currency } = parsePriceString(rawPrice)
-
-  const comparePrice = product.compareAtPriceRange?.maxVariantPrice
-    ? formatPrice(
-        product.compareAtPriceRange.maxVariantPrice.amount,
-        product.compareAtPriceRange.maxVariantPrice.currencyCode
-      )
-    : null
-
-  const isOnSale = isProductOnSale(rawPrice, comparePrice)
+  const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
 
   const handleWishlist = (event: React.MouseEvent) => {
     event.preventDefault()
@@ -205,28 +191,27 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
           "text-center",
           size === 'mobile' ? "mt-1" : "mt-2"
         )} style={{ fontFamily: 'var(--font-mono)' }}>
-          {currency === 'лв' ? (
-            <span className={cn(
-              "font-normal tracking-tight text-black",
-              size === 'mobile' ? "text-xs" : "text-sm"
-            )}>
-              {priceNumber} <span className={size === 'mobile' ? "text-[8px]" : "text-[10px]"}>{currency}</span>
-            </span>
+          {isOnSale ? (
+            <SalePrice 
+              price={price as any}
+              compareAtPrice={compareAtPrice as any}
+              className={cn(
+                "font-normal tracking-tight text-black",
+                size === 'mobile' ? "text-xs" : "text-sm"
+              )}
+              compareClassName={cn(
+                "line-through text-gray-400",
+                size === 'mobile' ? "text-[10px]" : "text-xs"
+              )}
+            />
           ) : (
-            <span className={cn(
-              "font-normal tracking-tight text-black",
-              size === 'mobile' ? "text-xs" : "text-sm"
-            )}>
-              {rawPrice}
-            </span>
-          )}
-          {isOnSale && comparePrice && (
-            <span className={cn(
-              "ml-2 line-through text-gray-400",
-              size === 'mobile' ? "text-[10px]" : "text-xs"
-            )}>
-              {comparePrice}
-            </span>
+            <Money 
+              data={price as any} 
+              className={cn(
+                "font-normal tracking-tight text-black",
+                size === 'mobile' ? "text-xs" : "text-sm"
+              )}
+            />
           )}
         </div>
       </div>

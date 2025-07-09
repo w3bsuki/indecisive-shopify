@@ -71,13 +71,13 @@ export function PromotionalBanner({
         <div className="absolute inset-0 bg-black/10" />
       )}
       
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 px-safe">
         <div className="text-center">
           {/* Badge */}
           {badge && (
             <Badge 
               variant={variant === 'dark' || variant === 'gradient' ? 'secondary' : 'default'}
-              className="mb-4 px-3 py-1 text-xs font-mono font-bold tracking-wider"
+              className="mb-3 sm:mb-4 px-3 py-1 text-xs font-mono font-bold tracking-wider"
             >
               {badge}
             </Badge>
@@ -85,27 +85,27 @@ export function PromotionalBanner({
 
           {/* Icon */}
           {Icon && (
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-3 sm:mb-4">
               <div className={cn(
-                'p-3 rounded-full',
+                'p-3 sm:p-4',
                 variant === 'dark' || variant === 'gradient' 
                   ? 'bg-white/10' 
                   : 'bg-black/5'
               )}>
-                <Icon className="w-6 h-6" />
+                <Icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
               </div>
             </div>
           )}
 
-          {/* Title */}
-          <h2 className="text-2xl lg:text-4xl font-bold font-mono tracking-tight mb-4">
+          {/* Title - Proper desktop size, reasonable mobile */}
+          <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold font-mono tracking-tight mb-3 sm:mb-4 lg:mb-6">
             {title}
           </h2>
 
           {/* Subtitle */}
           {subtitle && (
             <p className={cn(
-              'text-lg lg:text-xl font-medium mb-4',
+              'text-sm sm:text-base lg:text-lg xl:text-xl font-medium mb-3 sm:mb-4 lg:mb-6',
               variant === 'dark' || variant === 'gradient' 
                 ? 'text-white/90' 
                 : 'text-gray-700'
@@ -117,7 +117,7 @@ export function PromotionalBanner({
           {/* Description */}
           {description && (
             <p className={cn(
-              'text-base max-w-2xl mx-auto mb-6',
+              'text-sm sm:text-base lg:text-lg max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto mb-4 sm:mb-6 lg:mb-8 leading-relaxed',
               variant === 'dark' || variant === 'gradient' 
                 ? 'text-white/80' 
                 : 'text-gray-600'
@@ -128,10 +128,10 @@ export function PromotionalBanner({
 
           {/* Urgency */}
           {urgency && (
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <Clock className="w-4 h-4" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6 lg:mb-8">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className={cn(
-                'text-sm font-medium',
+                'text-sm sm:text-base font-medium',
                 variant === 'dark' || variant === 'gradient' 
                   ? 'text-white/90' 
                   : 'text-gray-700'
@@ -147,12 +147,12 @@ export function PromotionalBanner({
               <Button 
                 size="lg"
                 className={cn(
-                  'px-8 py-3 font-mono font-bold tracking-wide group',
+                  'px-6 sm:px-8 lg:px-10 py-3 sm:py-4 font-mono font-bold tracking-wide group min-h-[44px] touch-optimized text-sm sm:text-base lg:text-lg',
                   buttonVariants[variant]
                 )}
               >
                 {buttonText}
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           )}

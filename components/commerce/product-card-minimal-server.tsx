@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
-import { formatPriceServer } from '@/lib/shopify/server-market'
 import { cn } from '@/lib/utils'
-import { parsePriceString, isProductOnSale } from '@/lib/utils/price'
 import { ProductCardMinimalActions } from './product-card-minimal-actions'
+import { MoneyServer, SalePriceServer } from './money-server'
 
 interface ProductCardMinimalServerProps {
   product: ShopifyProduct
@@ -17,23 +16,10 @@ export async function ProductCardMinimalServer({
   priority = false, 
   size = 'default' 
 }: ProductCardMinimalServerProps) {
-  // Server-side price formatting
-  const rawPrice = await formatPriceServer(
-    product.priceRange.minVariantPrice.amount,
-    product.priceRange.minVariantPrice.currencyCode
-  )
+  const price = product.priceRange.minVariantPrice
+  const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
-  // Split price and currency for display
-  const { number: priceNumber, currency } = parsePriceString(rawPrice)
-
-  const comparePrice = product.compareAtPriceRange?.maxVariantPrice
-    ? await formatPriceServer(
-        product.compareAtPriceRange.maxVariantPrice.amount,
-        product.compareAtPriceRange.maxVariantPrice.currencyCode
-      )
-    : null
-
-  const isOnSale = isProductOnSale(rawPrice, comparePrice)
+  const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
 
   return (
     <div 
@@ -112,28 +98,27 @@ export async function ProductCardMinimalServer({
           "text-center",
           size === 'mobile' ? "mt-1" : "mt-2"
         )} style={{ fontFamily: 'var(--font-mono)' }}>
-          {currency === 'лв' ? (
-            <span className={cn(
-              "font-normal tracking-tight text-black",
-              size === 'mobile' ? "text-xs" : "text-sm"
-            )}>
-              {priceNumber} <span className={size === 'mobile' ? "text-[8px]" : "text-[10px]"}>{currency}</span>
-            </span>
+          {isOnSale ? (
+            <SalePriceServer 
+              price={price}
+              compareAtPrice={compareAtPrice}
+              className={cn(
+                "font-normal tracking-tight text-black",
+                size === 'mobile' ? "text-xs" : "text-sm"
+              )}
+              compareClassName={cn(
+                "line-through text-gray-400",
+                size === 'mobile' ? "text-[10px]" : "text-xs"
+              )}
+            />
           ) : (
-            <span className={cn(
-              "font-normal tracking-tight text-black",
-              size === 'mobile' ? "text-xs" : "text-sm"
-            )}>
-              {rawPrice}
-            </span>
-          )}
-          {isOnSale && comparePrice && (
-            <span className={cn(
-              "ml-2 line-through text-gray-400",
-              size === 'mobile' ? "text-[10px]" : "text-xs"
-            )}>
-              {comparePrice}
-            </span>
+            <MoneyServer 
+              data={price} 
+              className={cn(
+                "font-normal tracking-tight text-black",
+                size === 'mobile' ? "text-xs" : "text-sm"
+              )}
+            />
           )}
         </div>
       </div>
