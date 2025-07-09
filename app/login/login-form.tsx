@@ -70,7 +70,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
             type="email"
             autoComplete="email"
             required
-            className="pl-10 border-2 border-black"
+            className="pl-10 border border-gray-300 focus:border-gray-500"
             placeholder="your@email.com"
             disabled={isPending}
           />
@@ -90,7 +90,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
             type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
             required
-            className="pl-10 pr-10 border-2 border-black"
+            className="pl-10 pr-10 border border-gray-300 focus:border-gray-500"
             placeholder="Enter your password"
             disabled={isPending}
           />

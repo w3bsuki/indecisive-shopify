@@ -16,8 +16,8 @@ const buttonVariants = cva(
         // Destructive - Red accent for dangerous actions
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive border border-transparent",
         
-        // Outline - Sharp bordered button
-        outline: "border border-gray-950 bg-transparent text-text-primary hover:bg-gray-950 hover:text-text-inverse active:bg-gray-900 active:text-text-inverse",
+        // Outline - Subtle bordered button
+        outline: "border border-gray-300 bg-transparent text-text-primary hover:bg-gray-900 hover:text-text-inverse hover:border-gray-900 active:bg-gray-800 active:border-gray-800",
         
         // Secondary - Subtle gray button
         secondary: "bg-gray-100 text-text-primary hover:bg-gray-200 active:bg-gray-300 border border-transparent",
@@ -31,14 +31,14 @@ const buttonVariants = cva(
         // Sharp variants for e-commerce
         "primary-sharp": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border border-gray-950 hover:border-gray-800 active:border-gray-900",
         
-        "outline-sharp": "border border-gray-950 bg-transparent text-gray-950 hover:bg-gray-950 hover:text-text-inverse active:bg-gray-800 active:border-gray-800",
+        "outline-sharp": "border border-gray-400 bg-transparent text-gray-950 hover:bg-gray-900 hover:text-text-inverse hover:border-gray-900 active:bg-gray-800 active:border-gray-800",
         
         "white-sharp": "bg-gray-0 text-gray-950 hover:bg-gray-50 active:bg-gray-100 border border-gray-300 hover:border-gray-400",
         
         // E-commerce specific variants
         "add-to-cart": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border border-gray-950 font-semibold tracking-wide",
         
-        "wishlist": "bg-transparent text-gray-600 hover:text-wishlist hover:bg-gray-50 active:bg-gray-100 border border-gray-300 hover:border-wishlist/30",
+        "wishlist": "bg-transparent text-gray-600 hover:text-wishlist hover:bg-gray-50 active:bg-gray-100 border border-gray-200 hover:border-wishlist/30",
         
         "sale": "bg-sale-price text-text-inverse hover:bg-red-600 active:bg-red-700 border border-transparent font-bold tracking-wider",
       },

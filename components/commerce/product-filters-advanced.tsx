@@ -281,9 +281,9 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
               >
                 <div
                   className={cn(
-                    "w-8 h-8 rounded-full border-2 transition-all",
+                    "w-8 h-8 rounded-full border transition-all",
                     isSelected 
-                      ? "border-black ring-2 ring-black ring-offset-2" 
+                      ? "border-gray-900 ring-2 ring-gray-900 ring-offset-2" 
                       : "border-gray-300 group-hover:border-gray-400",
                     color.value === 'white' && "border-gray-400"
                   )}
@@ -360,7 +360,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
             variant="outline"
             size="sm"
             onClick={clearFilters}
-            className="font-mono text-xs h-9 px-4 border-black hover:bg-black hover:text-white transition-all w-full"
+            className="font-mono text-xs h-9 px-4 border border-gray-300 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all w-full"
           >
             <X className="w-4 h-4 mr-2" />
             {t('clearAll')}
@@ -378,7 +378,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
           <SheetTrigger asChild>
             <Button 
               variant="outline" 
-              className="w-full h-12 font-mono text-sm uppercase tracking-wider border-2 border-black hover:bg-black hover:text-white transition-all"
+              className="w-full h-12 font-mono text-sm uppercase tracking-wider border border-gray-300 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all"
             >
               <Filter className="h-4 w-4 mr-2" />
               {t('filtersAndSort')}
@@ -407,7 +407,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
 
   // Desktop: Use Accordion
   return (
-    <div className={cn("bg-white border-2 border-black/10 shadow-sm mb-6", className)}>
+    <div className={cn("bg-white border border-gray-200 shadow-sm mb-6", className)}>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="filters" className="border-none">
           <AccordionTrigger className="px-4 hover:no-underline">

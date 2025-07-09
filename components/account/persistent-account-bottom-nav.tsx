@@ -18,7 +18,7 @@ export function PersistentAccountBottomNav() {
 
   // Only show on mobile
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg flex md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 shadow-lg flex md:hidden">
       {navTabs.map(tab => {
         const isActive =
           (tab.href === '/account' && pathname === '/account') ||

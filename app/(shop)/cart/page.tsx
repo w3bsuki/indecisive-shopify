@@ -44,7 +44,7 @@ export default function CartPage() {
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
           {lines?.map((line) => line && line.merchandise && line.merchandise.product ? (
-            <div key={line.id} className="border-2 border-black p-4">
+            <div key={line.id} className="border border-gray-200 hover:border-gray-300 transition-colors p-4 bg-white">
               <div className="flex gap-4">
                 {/* Product Image */}
                 <div className="w-24 h-24 bg-gray-100 relative">
@@ -90,7 +90,7 @@ export default function CartPage() {
                       <button
                         onClick={() => line.id && line.quantity && updateItem(line.id, Math.max(1, line.quantity - 1))}
                         disabled={!line.quantity || line.quantity <= 1 || isLoading}
-                        className="w-8 h-8 border-2 border-black flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-8 h-8 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
@@ -98,7 +98,7 @@ export default function CartPage() {
                       <button
                         onClick={() => line.id && line.quantity && updateItem(line.id, line.quantity + 1)}
                         disabled={isLoading}
-                        className="w-8 h-8 border-2 border-black flex items-center justify-center hover:bg-gray-100 disabled:opacity-50"
+                        className="w-8 h-8 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                       </button>

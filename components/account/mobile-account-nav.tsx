@@ -40,7 +40,7 @@ export function MobileAccountNav({ activeTab, onTabChange }: MobileAccountNavPro
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between font-mono border-2 border-black h-14 px-4"
+          className="w-full justify-between font-mono border border-gray-300 hover:border-gray-400 h-14 px-4"
         >
           <div className="flex items-center">
             <ActiveIcon className="w-4 h-4 mr-3" />
@@ -49,7 +49,7 @@ export function MobileAccountNav({ activeTab, onTabChange }: MobileAccountNavPro
           <ChevronUp className="w-4 h-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[60vh] border-t-2 border-black">
+      <SheetContent side="bottom" className="h-[60vh] border-t border-gray-200">
         <SheetHeader className="pb-6">
           <SheetTitle className="font-mono text-center">ACCOUNT SECTIONS</SheetTitle>
         </SheetHeader>
@@ -62,10 +62,10 @@ export function MobileAccountNav({ activeTab, onTabChange }: MobileAccountNavPro
               <Button
                 key={tab.id}
                 variant={isActive ? "default" : "outline"}
-                className={`h-20 flex flex-col gap-2 font-mono border-2 ${
+                className={`h-20 flex flex-col gap-2 font-mono border ${
                   isActive 
-                    ? 'bg-black text-white border-black' 
-                    : 'border-black hover:bg-gray-50'
+                    ? 'bg-gray-900 text-white border-gray-900' 
+                    : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                 }`}
                 onClick={() => handleTabChange(tab.id)}
               >
