@@ -106,7 +106,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
   if (isEmpty && !isLoading && !isCheckingAuth) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <Card className="max-w-md mx-auto border-2 border-black">
+        <Card className="max-w-md mx-auto border border-gray-200">
           <CardContent className="py-12 text-center">
             <ShoppingBag className="h-16 w-16 mx-auto text-gray-400 mb-4" />
             <h2 className="text-xl font-bold font-mono mb-2">Your Cart is Empty</h2>
@@ -132,7 +132,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <Link href="/cart">
-              <Button variant="outline" size="sm" className="font-mono border-2 border-black">
+              <Button variant="outline" size="sm" className="font-mono border border-gray-300 hover:border-gray-400">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Cart
               </Button>
@@ -156,7 +156,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <Card className="border-2 border-black sticky top-8">
+              <Card className="border border-gray-200 shadow-sm sticky top-8">
                 <CardHeader>
                   <CardTitle className="font-mono flex items-center gap-2">
                     <ShoppingBag className="h-5 w-5" />
@@ -233,7 +233,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <Card className="max-w-2xl mx-auto border-2 border-red-300">
+        <Card className="max-w-2xl mx-auto border border-red-200">
           <CardHeader>
             <CardTitle className="font-mono flex items-center gap-2 text-red-700">
               <AlertCircle className="h-5 w-5" />
@@ -258,7 +258,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                 )}
               </Button>
               <Link href="/cart">
-                <Button variant="outline" className="font-mono border-2 border-black">
+                <Button variant="outline" className="font-mono border border-gray-300 hover:border-gray-400">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Cart
                 </Button>
@@ -292,7 +292,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Order Summary */}
-          <Card className="border-2 border-black">
+          <Card className="border border-gray-200 shadow-sm">
             <CardHeader>
               <CardTitle className="font-mono flex items-center gap-2">
                 <ShoppingBag className="h-5 w-5" />
@@ -305,7 +305,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
               <div className="space-y-3 max-h-60 overflow-y-auto">
                 {lines?.map((item) => 
                   item ? (
-                    <div key={item.id} className="flex gap-3 p-3 border rounded">
+                    <div key={item.id} className="flex gap-3 p-3 border border-gray-100 rounded">
                       <div className="relative w-16 h-16 bg-gray-100 rounded overflow-hidden">
                         {item.merchandise?.product?.featuredImage ? (
                           <Image
@@ -360,7 +360,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
           </Card>
 
           {/* Checkout Status */}
-          <Card className="border-2 border-black">
+          <Card className="border border-gray-200 shadow-sm">
             <CardHeader>
               <CardTitle className="font-mono flex items-center gap-2">
                 <CreditCard className="h-5 w-5" />
@@ -420,7 +420,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
               </div>
 
               {/* Security Notice */}
-              <div className="bg-green-50 border-2 border-green-200 p-4 rounded">
+              <div className="bg-green-50 border border-green-200 p-4 rounded">
                 <div className="flex items-center gap-2 mb-2">
                   <Shield className="h-4 w-4 text-green-600" />
                   <span className="font-medium text-green-800">Secure Checkout</span>

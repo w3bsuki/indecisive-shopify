@@ -37,8 +37,7 @@ export function ProductPageBanner({
   const categories = [
     { id: 'all', label: 'All', href: variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products' },
     { id: 'hats', label: 'Hats', href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=hats` },
-    { id: 'tshirts', label: 'T-shirts', href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=tshirts` },
-    { id: 'accessories', label: 'Accessories', href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=accessories` }
+    { id: 'tshirts', label: 'T-shirts', href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=tshirts` }
   ]
 
   return (
@@ -52,21 +51,21 @@ export function ProductPageBanner({
         </h1>
         
         {showTabs && (
-          <Tabs value={currentCategory} className="w-full max-w-lg">
-            <TabsList className="grid w-full grid-cols-4 bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 rounded-lg p-1">
+          <Tabs value={currentCategory} className="w-full max-w-md">
+            <TabsList className="grid w-full grid-cols-3 bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 rounded-lg p-1">
               {categories.map((category) => (
                 <TabsTrigger
                   key={category.id}
                   value={category.id}
                   asChild
                   className={cn(
-                    "relative px-3 py-2 text-sm font-medium rounded-md",
+                    "relative px-2 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-md",
                     "text-gray-700 hover:text-gray-900 hover:bg-gray-50",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2",
                     "data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm",
                     "data-[state=active]:hover:bg-gray-800",
-                    "min-h-[40px] touch-optimized flex items-center justify-center",
-                    "transform active:scale-95 transition-transform duration-75"
+                    "min-h-[36px] sm:min-h-[40px] touch-optimized flex items-center justify-center",
+                    "transform active:scale-95 transition-none"
                   )}
                 >
                   <Link href={category.href} className="w-full h-full flex items-center justify-center">

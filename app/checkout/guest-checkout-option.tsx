@@ -43,8 +43,8 @@ export function GuestCheckoutOption({ onGuestCheckout, isLoading = false }: Gues
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Guest Checkout Option */}
-        <Card className={`border-2 cursor-pointer transition-all ${
-          selectedOption === 'guest' ? 'border-blue-500 bg-blue-50' : 'border-black hover:border-gray-600'
+        <Card className={`border cursor-pointer transition-all ${
+          selectedOption === 'guest' ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
         }`}>
           <CardHeader className="pb-3">
             <CardTitle className="font-mono flex items-center gap-2">
@@ -97,8 +97,8 @@ export function GuestCheckoutOption({ onGuestCheckout, isLoading = false }: Gues
         </Card>
 
         {/* Account Login Option */}
-        <Card className={`border-2 cursor-pointer transition-all ${
-          selectedOption === 'login' ? 'border-blue-500 bg-blue-50' : 'border-black hover:border-gray-600'
+        <Card className={`border cursor-pointer transition-all ${
+          selectedOption === 'login' ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
         }`}>
           <CardHeader className="pb-3">
             <CardTitle className="font-mono flex items-center gap-2">
@@ -166,7 +166,7 @@ export function GuestCheckoutOption({ onGuestCheckout, isLoading = false }: Gues
       </div>
 
       {/* Additional Information */}
-      <Card className="border-2 border-gray-200 bg-gray-50">
+      <Card className="border border-gray-200 bg-gray-50">
         <CardContent className="py-4">
           <div className="text-center text-sm text-gray-600 space-y-1">
             <p>

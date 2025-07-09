@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { useMarket } from '@/hooks/use-market'
+import { SUPPORTED_MARKETS } from '@/lib/shopify/markets'
+import { Globe, ChevronDown } from 'lucide-react'
 
 interface CookiePreferences {
   essential: boolean
@@ -14,11 +17,13 @@ interface CookiePreferences {
 export function CookieConsent() {
   const [showBanner, setShowBanner] = useState(false)
   const [showPreferences, setShowPreferences] = useState(false)
+  const [showRegionSelector, setShowRegionSelector] = useState(false)
   const [preferences, setPreferences] = useState<CookiePreferences>({
     essential: true, // Always required
     analytics: false,
     marketing: false
   })
+  const { market, setMarket } = useMarket()
 
   useEffect(() => {
     // Check if user has already made a choice
@@ -104,14 +109,24 @@ export function CookieConsent() {
     <>
       {/* Main Cookie Banner */}
       <div className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-black p-4 md:p-6",
+        "fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-300 shadow-lg p-4 md:p-6",
         "transform transition-transform duration-300",
         showBanner ? "translate-y-0" : "translate-y-full"
       )}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
             <div className="flex-1">
-              <h3 className="font-mono font-bold text-sm mb-1">WE VALUE YOUR PRIVACY</h3>
+              <div className="flex items-center gap-3 mb-2">
+                <h3 className="font-mono font-bold text-sm">WE VALUE YOUR PRIVACY</h3>
+                <button
+                  onClick={() => setShowRegionSelector(!showRegionSelector)}
+                  className="flex items-center gap-1 px-2 py-1 text-xs font-mono border border-gray-300 hover:border-gray-400 rounded transition-colors"
+                >
+                  <Globe className="h-3 w-3" />
+                  {market.flag} {market.name}
+                  <ChevronDown className="h-3 w-3" />
+                </button>
+              </div>
               <p className="text-xs text-gray-600 leading-relaxed">
                 We use cookies to enhance your shopping experience, analyze site traffic, and personalize content. 
                 By clicking &quot;Accept All&quot;, you consent to our use of cookies. 
@@ -154,7 +169,7 @@ export function CookieConsent() {
       {/* Preferences Modal */}
       {showPreferences && (
         <div className="fixed inset-0 z-[51] bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-black max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white border border-gray-300 shadow-xl rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h3 className="font-mono font-bold text-lg mb-4">COOKIE PREFERENCES</h3>
               
@@ -173,7 +188,7 @@ export function CookieConsent() {
                         type="checkbox"
                         checked={preferences.essential}
                         disabled
-                        className="w-5 h-5 text-black border-2 border-black rounded-none cursor-not-allowed"
+                        className="w-5 h-5 text-black border border-gray-400 rounded cursor-not-allowed"
                       />
                     </div>
                   </div>
@@ -193,7 +208,7 @@ export function CookieConsent() {
                         type="checkbox"
                         checked={preferences.analytics}
                         onChange={(e) => setPreferences(prev => ({ ...prev, analytics: e.target.checked }))}
-                        className="w-5 h-5 text-black border-2 border-black rounded-none cursor-pointer"
+                        className="w-5 h-5 text-black border border-gray-400 rounded cursor-pointer"
                       />
                     </div>
                   </div>
@@ -213,7 +228,7 @@ export function CookieConsent() {
                         type="checkbox"
                         checked={preferences.marketing}
                         onChange={(e) => setPreferences(prev => ({ ...prev, marketing: e.target.checked }))}
-                        className="w-5 h-5 text-black border-2 border-black rounded-none cursor-pointer"
+                        className="w-5 h-5 text-black border border-gray-400 rounded cursor-pointer"
                       />
                     </div>
                   </div>
@@ -238,6 +253,32 @@ export function CookieConsent() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Region Selector Dropdown */}
+      {showRegionSelector && (
+        <div className="fixed bottom-20 left-4 z-[52] bg-white border border-gray-300 shadow-lg rounded-lg p-2 min-w-[200px]">
+          <div className="text-xs font-mono font-bold text-gray-600 px-2 py-1 mb-1">
+            SELECT REGION
+          </div>
+          {SUPPORTED_MARKETS.map((marketOption) => (
+            <button
+              key={marketOption.id}
+              onClick={() => {
+                setMarket(marketOption)
+                setShowRegionSelector(false)
+              }}
+              className={cn(
+                "w-full text-left px-2 py-2 text-sm hover:bg-gray-100 rounded transition-colors flex items-center gap-2",
+                market.id === marketOption.id && "bg-gray-100 font-medium"
+              )}
+            >
+              <span>{marketOption.flag}</span>
+              <span>{marketOption.name}</span>
+              <span className="text-xs text-gray-500 ml-auto">{marketOption.currencyCode}</span>
+            </button>
+          ))}
         </div>
       )}
     </>
