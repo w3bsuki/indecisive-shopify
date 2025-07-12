@@ -21,7 +21,10 @@ export default function CartPage() {
     
     // Redirect directly to Shopify checkout
     if (checkoutUrl) {
-      window.location.href = checkoutUrl
+      // Transform the URL to use Shopify's domain instead of our custom domain
+      const shopifyUrl = checkoutUrl.replace('https://www.indecisivewear.com', 'https://indecisive-wear.myshopify.com')
+      console.log('Transformed URL:', shopifyUrl)
+      window.location.href = shopifyUrl
     } else {
       // Fallback - navigate to checkout page if no direct URL
       console.error('No checkout URL available, using fallback')
