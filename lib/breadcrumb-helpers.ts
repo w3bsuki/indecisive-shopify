@@ -9,7 +9,7 @@ export const BreadcrumbHelpers = {
   // For product pages: Home → Collections → Category → Product
   product: (productTitle: string, category?: string, collection?: string): BreadcrumbItem[] => [
     { label: 'Home', href: '/' },
-    { label: 'Products', href: '/products' },
+    { label: 'Продукти', href: '/products' },
     ...(collection ? [{ label: collection, href: `/collections/${collection.toLowerCase().replace(/\s+/g, '-')}` }] : []),
     ...(category && category !== collection ? [{ label: category, href: `/collections/${category.toLowerCase().replace(/\s+/g, '-')}` }] : []),
     { label: productTitle, href: '#', current: true }

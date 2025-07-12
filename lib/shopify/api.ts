@@ -1,6 +1,7 @@
 import { storefront, type Product, type Collection } from './storefront-client';
 import { PRODUCTS_QUERY, PRODUCT_QUERY, COLLECTIONS_QUERY, COLLECTION_QUERY } from './queries';
 import type { Market } from './markets';
+import { mapStorefrontProductToShopifyProduct } from './type-mappers';
 
 // Product APIs with market context
 export async function getProducts(
@@ -62,7 +63,7 @@ export async function getProduct(handle: string, market?: Market) {
       buyerContext
     );
 
-    return data.product;
+    return data.product ? mapStorefrontProductToShopifyProduct(data.product) : null;
   } catch (_error) {
     return null;
   }

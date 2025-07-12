@@ -64,6 +64,7 @@ export function getCSPHeader(): string {
     "'self'",
     "'unsafe-inline'", // Required for styled-jsx and inline styles
     'https://fonts.googleapis.com', // Google Fonts stylesheets
+    'https://rsms.me', // Inter font
   ]
   
   const imgSrc = [

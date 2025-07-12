@@ -8,8 +8,9 @@ import { NewsletterSection } from '@/components/layout/newsletter-section'
 import { Footer } from '@/components/layout/footer'
 import { Navigation } from '@/components/layout/navigation'
 import { CommunityCarousel } from '@/components/commerce/community-carousel'
-import { ComingSoonCarousel } from '@/components/commerce/coming-soon-carousel'
+import { TshirtsCarousel } from '@/components/commerce/tshirts-carousel'
 import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
+import { Badge } from '@/components/ui/badge'
 
 export default async function HomePage() {
   // Get translations for the home page
@@ -35,10 +36,15 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header with Modern Typography */}
           <div className="text-center mb-12">
-            <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">{t('featured.title')}</p>
+            <Badge variant="outline" className="mb-4 text-xs font-mono font-bold px-3 py-1 border-black">
+              {t('featured.title')}
+            </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 font-mono tracking-tight text-center">
               {t('featured.subtitle')}
             </h2>
+            <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+              {t('featured.description')}
+            </p>
           </div>
           
           {/* Mobile: Horizontal Carousel */}
@@ -78,11 +84,11 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* T-shirts Section */}
+      <TshirtsCarousel />
+
       {/* Community Section with Instagram/TikTok Tabs */}
       <CommunityCarousel />
-
-      {/* Coming Soon Carousel */}
-      <ComingSoonCarousel />
 
       {/* Newsletter Section */}
       <NewsletterSection />

@@ -33,6 +33,13 @@ export interface ShopifyProduct {
   };
   tags?: string[];
   featuredImage?: ShopifyImage;
+  metafields?: Array<{
+    key: string;
+    namespace: string;
+    value: string;
+    type: string;
+  }>;
+  totalInventory?: number;
 }
 
 export interface ShopifyProductVariant {

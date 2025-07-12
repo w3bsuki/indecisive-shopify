@@ -28,7 +28,7 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
       setIsVisible(true)
       const timer = setTimeout(() => {
         onClose()
-      }, 4000) // Auto-close after 4 seconds
+      }, 6000) // Auto-close after 6 seconds
       return () => clearTimeout(timer)
     } else {
       const timer = setTimeout(() => setIsVisible(false), 300)
@@ -43,7 +43,7 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
     return (
       <div
         className={cn(
-          "fixed top-24 right-4 z-50 bg-white border-2 border-black shadow-xl p-4 max-w-sm transition-all duration-300",
+          "fixed top-24 right-4 z-50 bg-white border border-gray-200 shadow-lg p-4 max-w-sm transition-all duration-500 ease-out",
           isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         )}
       >
@@ -56,7 +56,7 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
         
         <div className="flex gap-4">
           {product.image && (
-            <div className="w-16 h-16 border border-gray-200 relative">
+            <div className="w-16 h-16 border border-gray-200 rounded-md overflow-hidden relative">
               <Image
                 src={product.image}
                 alt={product.title}
@@ -67,9 +67,9 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
           )}
           
           <div className="flex-1">
-            <p className="font-mono text-sm font-medium mb-1">Added to cart!</p>
+            <p className="font-semibold text-sm mb-1">Added to cart!</p>
             <p className="text-sm text-gray-600 line-clamp-1">{product.title}</p>
-            <p className="text-sm font-mono font-bold">{product.price}</p>
+            <p className="text-sm font-mono">{product.price}</p>
           </div>
         </div>
         
@@ -96,9 +96,8 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
   return (
     <div
       className={cn(
-        "fixed bottom-20 left-4 right-4 z-50 bg-white border-2 border-black shadow-xl transition-all duration-300",
-        isOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
-        "animate-slide-up-fade"
+        "fixed bottom-20 left-4 right-4 z-50 bg-white border border-gray-200 shadow-lg transition-all duration-500 ease-out",
+        isOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
       )}
       style={{
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
@@ -114,7 +113,7 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
         
         <div className="flex gap-3 mb-3">
           {product.image && (
-            <div className="w-14 h-14 border border-gray-200 relative flex-shrink-0">
+            <div className="w-14 h-14 border border-gray-200 rounded-md overflow-hidden relative flex-shrink-0">
               <Image
                 src={product.image}
                 alt={product.title}
@@ -125,9 +124,9 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
           )}
           
           <div className="flex-1 min-w-0">
-            <p className="font-mono text-sm font-bold mb-0.5">Added to cart!</p>
+            <p className="font-semibold text-sm mb-0.5">Added to cart!</p>
             <p className="text-xs text-gray-600 line-clamp-1">{product.title}</p>
-            <p className="text-sm font-mono font-bold mt-0.5">
+            <p className="text-sm font-mono mt-0.5">
               {product.quantity} × {product.price}
             </p>
           </div>

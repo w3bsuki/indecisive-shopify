@@ -1,6 +1,7 @@
 'use client'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Package, Ruler, Truck } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { ShippingCalculator } from '@/components/checkout/shipping-calculator'
@@ -18,15 +19,15 @@ export function ProductTabs({ description }: ProductTabsProps) {
       <TabsList>
         <TabsTrigger value="details" className="flex items-center gap-2">
           <Package className="h-4 w-4" />
-          Details
+          Детайли
         </TabsTrigger>
         <TabsTrigger value="size" className="flex items-center gap-2">
           <Ruler className="h-4 w-4" />
-          Size Guide
+          Размер
         </TabsTrigger>
         <TabsTrigger value="shipping" className="flex items-center gap-2">
           <Truck className="h-4 w-4" />
-          Shipping
+          Доставки
         </TabsTrigger>
       </TabsList>
       
@@ -109,57 +110,69 @@ export function ProductTabs({ description }: ProductTabsProps) {
         <div className="space-y-4">
           <h4 className="font-semibold font-mono uppercase tracking-wide text-black">{t('shippingReturns')}</h4>
           
-          <div className="space-y-4 text-sm text-gray-700">
-            <div className="space-y-2">
-              <h5 className="font-medium text-black">{t('shipping.deliveryPartners')}</h5>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="border-2 border-black p-4">
-                  <h6 className="font-semibold mb-2">Econt Express</h6>
-                  <ul className="space-y-1 text-xs">
-                    <li>• Nationwide coverage in Bulgaria</li>
-                    <li>• Home delivery & office pickup</li>
-                    <li>• 1-2 business days delivery</li>
-                    <li>• Real-time tracking</li>
-                  </ul>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="delivery-partners">
+              <AccordionTrigger className="text-left font-medium">
+                Партньори за доставка
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-3">
+                  <div className="border border-gray-200 p-3 rounded">
+                    <h6 className="font-semibold mb-2">Econt Express</h6>
+                    <ul className="space-y-1 text-xs text-gray-700">
+                      <li>• Nationwide coverage in Bulgaria</li>
+                      <li>• Home delivery & office pickup</li>
+                      <li>• 1-2 business days delivery</li>
+                      <li>• Real-time tracking</li>
+                    </ul>
+                  </div>
+                  <div className="border border-gray-200 p-3 rounded">
+                    <h6 className="font-semibold mb-2">Speedy</h6>
+                    <ul className="space-y-1 text-xs text-gray-700">
+                      <li>• Express delivery service</li>
+                      <li>• Home delivery & office pickup</li>
+                      <li>• 1-2 business days delivery</li>
+                      <li>• SMS notifications</li>
+                    </ul>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-2">
+                    * Office pickup available with 20% discount on shipping
+                  </p>
                 </div>
-                <div className="border-2 border-black p-4">
-                  <h6 className="font-semibold mb-2">Speedy</h6>
-                  <ul className="space-y-1 text-xs">
-                    <li>• Express delivery service</li>
-                    <li>• Home delivery & office pickup</li>
-                    <li>• 1-2 business days delivery</li>
-                    <li>• SMS notifications</li>
-                  </ul>
-                </div>
-              </div>
-              <p className="text-xs text-gray-600 mt-2">
-                * Office pickup available with 20% discount on shipping
-              </p>
-            </div>
+              </AccordionContent>
+            </AccordionItem>
             
-            <div className="space-y-2">
-              <h5 className="font-medium text-black">{t('shipping.returnsExchanges')}</h5>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span>{t('shipping.returnWindow')}</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span>{t('shipping.freeReturns')}</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
-                  <span>{t('shipping.exchanges')}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          {/* Shipping Calculator */}
-          <div className="border-t pt-6">
-            <ShippingCalculator weight={0.3} />
-          </div>
+            <AccordionItem value="returns-exchanges">
+              <AccordionTrigger className="text-left font-medium">
+                {t('shipping.returnsExchanges')}
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{t('shipping.returnWindow')}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{t('shipping.freeReturns')}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{t('shipping.exchanges')}</span>
+                  </li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="shipping-calculator">
+              <AccordionTrigger className="text-left font-medium">
+                Калкулатор за доставка
+              </AccordionTrigger>
+              <AccordionContent>
+                <ShippingCalculator weight={0.3} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </TabsContent>
     </Tabs>

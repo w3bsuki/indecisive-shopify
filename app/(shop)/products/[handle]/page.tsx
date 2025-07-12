@@ -4,11 +4,13 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { ProductImageGallery } from '@/components/commerce/product-image-gallery'
 import { AddToCartForm } from '@/components/commerce/add-to-cart-form'
-import { ProductInfo } from '@/components/commerce/product-info'
+// import { ProductInfo } from '@/components/commerce/product-info'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
 import { RecentlyViewedSection } from '@/components/commerce/recently-viewed-section'
 import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
+import { ProductDetailsSection } from '@/components/commerce/product-details-section'
+import { ProductInfoWrapper } from '@/components/commerce/product-info-wrapper'
 import { ArrowLeft, Truck, RotateCcw, Shield } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { BreadcrumbNavigation, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
@@ -20,11 +22,16 @@ interface ProductPageProps {
 
 // Generate static paths for all products at build time
 export async function generateStaticParams() {
-  const products = await getProducts(100) // Fetch up to 100 products
-  
-  return products.edges.map(({ node }) => ({
-    handle: node.handle,
-  }))
+  try {
+    const products = await getProducts(100) // Fetch up to 100 products
+    
+    return products.edges.map(({ node }) => ({
+      handle: node.handle,
+    }))
+  } catch (error) {
+    console.error('Error generating static params:', error);
+    return []
+  }
 }
 
 // Revalidate product pages every hour to keep them fresh
@@ -86,13 +93,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Client-side tracking and mobile footer */}
       <ProductPageClient product={product} />
       
-      <div className="pt-10 md:pt-12">
+      <div className="pt-4 md:pt-6">
         {/* Professional Breadcrumb Navigation */}
         <BreadcrumbNavigation 
           items={breadcrumbItems}
           showBackButton={true}
           backButtonLabel="Back to Products"
           backButtonHref="/products"
+          variant="compact"
         />
           
         {/* Product Header - Desktop Only */}
@@ -137,9 +145,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Product Details */}
-            <div className="px-4 md:px-0 py-4 md:py-0 pb-8 md:pb-6">
-              {/* Product Info */}
-              <ProductInfo product={product} />
+            <div className="px-4 md:px-0 py-2 md:py-0 pb-6 md:pb-6">
+              {/* Enhanced Product Info with ratings and inventory */}
+              <ProductInfoWrapper product={product} />
               
               {/* Add to Cart Form */}
               <div className="mt-6">
@@ -150,18 +158,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="grid grid-cols-3 gap-4 mt-8 py-6 border-t">
                 <div className="text-center">
                   <Truck className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-xs">Free Shipping</p>
-                  <p className="text-xs text-gray-600">On orders over $50</p>
+                  <p className="text-xs font-semibold">Безплатна доставка</p>
+                  <p className="text-xs text-gray-600">При поръчки над 150 лв</p>
                 </div>
                 <div className="text-center">
                   <RotateCcw className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-xs">Easy Returns</p>
-                  <p className="text-xs text-gray-600">30 days return</p>
+                  <p className="text-xs font-semibold">Лесни връщания</p>
+                  <p className="text-xs text-gray-600">30 дни връщане</p>
                 </div>
                 <div className="text-center">
                   <Shield className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-xs">Secure Payment</p>
-                  <p className="text-xs text-gray-600">100% secure</p>
+                  <p className="text-xs font-semibold">Сигурно плащане</p>
+                  <p className="text-xs text-gray-600">100% сигурно</p>
                 </div>
               </div>
 
@@ -172,75 +180,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <ProductTabs description={product.description} />
                 </div>
 
-                {/* Desktop: Collapsible Sections */}
-                {product.description && (
-                  <div className="hidden md:block space-y-4">
-                    <details className="group">
-                      <summary className="flex items-center justify-between cursor-pointer py-4 border-t">
-                        <span className="font-medium">Description</span>
-                        <span className="text-gray-400 group-open:rotate-180 transition-transform">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </span>
-                      </summary>
-                      <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        <div className="prose prose-sm md:prose-base max-w-none text-product-description">
-                          {product.description}
-                        </div>
-                      </div>
-                    </details>
-
-                    <details className="group">
-                      <summary className="flex items-center justify-between cursor-pointer py-4 border-t">
-                        <span className="font-medium">Shipping & Returns</span>
-                        <span className="text-gray-400 group-open:rotate-180 transition-transform">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </span>
-                      </summary>
-                      <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed space-y-3">
-                        <p>• Free standard shipping on orders over $50</p>
-                        <p>• Express shipping available at checkout</p>
-                        <p>• 30-day return policy</p>
-                        <p>• Items must be unworn with tags attached</p>
-                      </div>
-                    </details>
-
-                    <details className="group">
-                      <summary className="flex items-center justify-between cursor-pointer py-4 border-t">
-                        <span className="font-medium">Size Guide</span>
-                        <span className="text-gray-400 group-open:rotate-180 transition-transform">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </span>
-                      </summary>
-                      <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed">
-                        <p className="mb-4">Bucket hats run true to size.</p>
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b">
-                              <th className="text-left py-2">Size</th>
-                              <th className="text-center py-2">Head Circumference</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="border-b">
-                              <td className="py-2">S/M</td>
-                              <td className="text-center py-2">56-58 cm</td>
-                            </tr>
-                            <tr className="border-b">
-                              <td className="py-2">L/XL</td>
-                              <td className="text-center py-2">58-60 cm</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </details>
-                  </div>
-                )}
+                {/* Desktop: Product Details with Metafields */}
+                <div className="hidden md:block">
+                  <ProductDetailsSection 
+                    product={product} 
+                    description={product.description}
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -16,28 +16,28 @@ export function AccountSidebar({ customer }: AccountSidebarProps) {
   return (
     <div className="space-y-6">
       {/* Customer Info Card */}
-      <Card className="border-2 border-black">
+      <Card className="border border-gray-200 shadow-sm">
         <CardHeader className="pb-3">
-          <CardTitle className="text-drawer-title">Account</CardTitle>
+          <CardTitle className="text-lg">Account</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-3 text-sm">
           <div>
-            <p className="text-drawer-value font-semibold">
+            <p className="font-semibold text-gray-900">
               {customer.displayName || `${customer.firstName} ${customer.lastName}`.trim() || 'Customer'}
             </p>
-            <p className="text-drawer-subtitle">{customer.email}</p>
+            <p className="text-gray-600 text-xs">{customer.email}</p>
           </div>
           
           {customer.phone && (
             <div>
-              <p className="text-drawer-label">Phone</p>
-              <p className="text-drawer-value">{customer.phone}</p>
+              <p className="text-xs text-gray-500">Phone</p>
+              <p className="text-sm">{customer.phone}</p>
             </div>
           )}
           
           <div>
-            <p className="text-drawer-label">Member since</p>
-            <p className="text-drawer-value">
+            <p className="text-xs text-gray-500">Member since</p>
+            <p className="text-sm">
               {new Date(customer.id.split('/').pop()?.split('?')[0] || '').toLocaleDateString() || 'Recently'}
             </p>
           </div>
@@ -45,21 +45,21 @@ export function AccountSidebar({ customer }: AccountSidebarProps) {
       </Card>
 
       {/* Quick Actions */}
-      <Card className="border-2 border-black">
+      <Card className="border border-gray-200 shadow-sm">
         <CardHeader className="pb-3">
-          <CardTitle className="text-drawer-title">Quick Actions</CardTitle>
+          <CardTitle className="text-lg">Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Link href="/" className="block">
-            <Button variant="outline" className="w-full justify-start border-2 border-black hover:bg-gray-50 h-12">
-              <Home className="h-5 w-5 mr-3 flex-shrink-0" />
+            <Button variant="outline" className="w-full justify-start hover:bg-gray-50 h-10">
+              <Home className="h-4 w-4 mr-2 flex-shrink-0" />
               Continue Shopping
             </Button>
           </Link>
           
           <Link href="/account/wishlist" className="block">
-            <Button variant="outline" className="w-full justify-start border-2 border-black hover:bg-gray-50 h-12">
-              <Heart className="h-5 w-5 mr-3 flex-shrink-0" />
+            <Button variant="outline" className="w-full justify-start hover:bg-gray-50 h-10">
+              <Heart className="h-4 w-4 mr-2 flex-shrink-0" />
               View Wishlist
             </Button>
           </Link>

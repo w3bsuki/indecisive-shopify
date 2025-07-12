@@ -32,7 +32,7 @@ export function BreadcrumbNavigation({
   const variantStyles = {
     default: 'py-4 border-b border-gray-100',
     minimal: 'py-2',
-    compact: 'py-1 text-sm'
+    compact: 'py-2 md:py-3 text-sm'
   }
 
   return (
@@ -43,7 +43,7 @@ export function BreadcrumbNavigation({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Breadcrumb Trail */}
-          <ol className="flex items-center space-x-1 md:space-x-2">
+          <ol className="flex items-center space-x-1 md:space-x-2 min-w-0 flex-1">
             {items.map((item, index) => (
               <li key={item.href} className="flex items-center">
                 {index > 0 && (

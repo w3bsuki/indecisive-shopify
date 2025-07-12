@@ -49,69 +49,80 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
   }
 
   return (
-    <div id="login-form" className="space-y-6">
+    <div id="login-form" className="space-y-4 sm:space-y-5">
       {redirectTo && (
         <input type="hidden" name="redirectTo" value={redirectTo} />
       )}
       
       {state.error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 sm:px-4 sm:py-3 rounded-md text-xs sm:text-sm">
           {state.error}
         </div>
       )}
       
-      <div className="space-y-2">
-        <Label htmlFor="email" className="font-mono">Email</Label>
+      <div className="space-y-1.5 sm:space-y-2">
+        <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
         <div className="relative">
-          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Mail className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           <Input
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             required
-            className="pl-10 border border-gray-300 focus:border-gray-500"
+            className="pl-8 sm:pl-10 h-9 sm:h-10 text-sm sm:text-base"
             placeholder="your@email.com"
             disabled={isPending}
           />
         </div>
         {state.fieldErrors?.email && (
-          <p className="text-sm text-red-600">{state.fieldErrors.email[0]}</p>
+          <p className="text-xs sm:text-sm text-red-600">{state.fieldErrors.email[0]}</p>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password" className="font-mono">Password</Label>
+      <div className="space-y-1.5 sm:space-y-2">
+        <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
         <div className="relative">
-          <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Lock className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           <Input
             id="password"
             name="password"
             type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
             required
-            className="pl-10 pr-10 border border-gray-300 focus:border-gray-500"
+            className="pl-8 sm:pl-10 pr-8 sm:pr-10 h-9 sm:h-10 text-sm sm:text-base"
             placeholder="Enter your password"
             disabled={isPending}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
+            className="absolute right-2.5 top-2.5 sm:right-3 sm:top-3 text-gray-400 hover:text-gray-600"
             disabled={isPending}
           >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {showPassword ? <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" /> : <Eye className="h-3 w-3 sm:h-4 sm:w-4" />}
           </button>
         </div>
         {state.fieldErrors?.password && (
-          <p className="text-sm text-red-600">{state.fieldErrors.password[0]}</p>
+          <p className="text-xs sm:text-sm text-red-600">{state.fieldErrors.password[0]}</p>
         )}
       </div>
 
       <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <input
+            id="remember-me"
+            name="remember-me"
+            type="checkbox"
+            className="h-3 w-3 sm:h-4 sm:w-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+          />
+          <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-900">
+            Remember me
+          </label>
+        </div>
         <Link
           href="/forgot-password"
-          className="text-sm text-gray-600 hover:text-black font-mono"
+          className="text-xs sm:text-sm text-gray-600 hover:text-gray-900"
         >
           Forgot password?
         </Link>
@@ -120,10 +131,10 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
       <Button
         type="button"
         disabled={isPending}
-        className="w-full font-mono"
+        className="w-full h-10 sm:h-11 text-sm sm:text-base"
         onClick={handleLogin}
       >
-        {isPending ? 'SIGNING IN...' : 'SIGN IN'}
+        {isPending ? 'Signing in...' : 'Sign in'}
       </Button>
     </div>
   )

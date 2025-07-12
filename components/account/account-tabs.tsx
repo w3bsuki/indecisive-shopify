@@ -2,21 +2,28 @@
 
 import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { User, Package, MapPin, CreditCard } from 'lucide-react'
+import { User, Package, MapPin, CreditCard, LayoutDashboard } from 'lucide-react'
 import { ProfileSection } from './profile-section'
 import { OrdersSection } from './orders-section'
 import { AddressesSection } from './addresses-section'
 import { BillingSection } from './billing-section'
-import { MobileAccountNav } from './mobile-account-nav'
 import { AccountOverview } from './account-overview'
 import { getCurrentCustomer } from '@/app/actions/auth'
 import type { AccountTab } from './types'
 import type { Customer } from '@/lib/shopify/customer-auth'
 
+const tabs = [
+  { id: 'overview' as AccountTab, label: 'Overview', icon: LayoutDashboard },
+  { id: 'orders' as AccountTab, label: 'Orders', icon: Package },
+  { id: 'profile' as AccountTab, label: 'Profile', icon: User },
+  { id: 'addresses' as AccountTab, label: 'Addresses', icon: MapPin },
+  { id: 'billing' as AccountTab, label: 'Settings', icon: CreditCard }
+]
+
 export function AccountTabs() {
   const [activeTab, setActiveTab] = useState<AccountTab>('overview')
   const [customer, setCustomer] = useState<Customer | null>(null)
-  const [_isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadCustomer = async () => {
@@ -34,70 +41,75 @@ export function AccountTabs() {
   }, [])
 
   return (
-    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 md:py-8">
-      {/* Page Header */}
-      <div className="mb-6 md:mb-10 text-center">
-        <h1 className="text-2xl md:text-5xl font-extrabold font-mono mb-2 tracking-tight bg-gradient-to-r from-black via-gray-800 to-gray-500 bg-clip-text text-transparent drop-shadow-lg animate-gradient-x">
-          MY ACCOUNT
-        </h1>
-        <p className="text-base md:text-lg text-gray-500 font-medium">
-          Manage your profile, orders, and preferences
-        </p>
-      </div>
-
+    <div className="max-w-6xl mx-auto">
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as AccountTab)}>
-        {/* Mobile Navigation */}
-        <div className="block md:hidden mb-4">
-          <MobileAccountNav activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
-
-        {/* Desktop Tabs */}
-        <div className="hidden md:flex justify-center mb-8 md:mb-10">
-          <TabsList className="flex w-full max-w-3xl rounded-2xl bg-white/95 shadow-lg border border-gray-200 overflow-hidden">
-            <TabsTrigger value="overview" className="font-mono text-base py-4 flex-1 flex items-center justify-center gap-2 transition-colors data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md data-[state=inactive]:hover:bg-gray-100">
-              <User className="w-5 h-5" />
-              OVERVIEW
-            </TabsTrigger>
-            <TabsTrigger value="orders" className="font-mono text-base py-4 flex-1 flex items-center justify-center gap-2 transition-colors data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md data-[state=inactive]:hover:bg-gray-100">
-              <Package className="w-5 h-5" />
-              ORDERS
-            </TabsTrigger>
-            <TabsTrigger value="profile" className="font-mono text-base py-4 flex-1 flex items-center justify-center gap-2 transition-colors data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md data-[state=inactive]:hover:bg-gray-100">
-              <User className="w-5 h-5" />
-              PROFILE
-            </TabsTrigger>
-            <TabsTrigger value="addresses" className="font-mono text-base py-4 flex-1 flex items-center justify-center gap-2 transition-colors data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md data-[state=inactive]:hover:bg-gray-100">
-              <MapPin className="w-5 h-5" />
-              ADDRESSES
-            </TabsTrigger>
-            <TabsTrigger value="billing" className="font-mono text-base py-4 flex-1 flex items-center justify-center gap-2 transition-colors data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md data-[state=inactive]:hover:bg-gray-100">
-              <CreditCard className="w-5 h-5" />
-              BILLING
-            </TabsTrigger>
+        {/* Desktop Navigation */}
+        <div className="hidden md:block mb-6 border-b">
+          <TabsList className="h-auto p-0 bg-transparent rounded-none justify-start">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              return (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="relative px-6 py-4 text-sm font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent transition-all"
+                >
+                  <Icon className="h-4 w-4 mr-2 inline-block" />
+                  {tab.label}
+                </TabsTrigger>
+              )
+            })}
           </TabsList>
         </div>
 
-        {/* Content for both mobile and desktop */}
-        <TabsContent value="overview">
-          <AccountOverview customer={customer} onTabChange={(tab) => setActiveTab(tab)} />
-        </TabsContent>
+        {/* Mobile Navigation - Select Dropdown */}
+        <div className="md:hidden mb-6">
+          <select
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value as AccountTab)}
+            className="w-full px-4 py-3 text-sm font-medium border rounded-lg"
+          >
+            {tabs.map((tab) => (
+              <option key={tab.id} value={tab.id}>
+                {tab.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <TabsContent value="profile">
-          <ProfileSection customer={customer} />
-        </TabsContent>
+        {/* Tab Content */}
+        <div>
+          <TabsContent value="overview" className="mt-0">
+            <AccountOverview customer={customer} onTabChange={setActiveTab} />
+          </TabsContent>
 
-        <TabsContent value="orders">
-          <OrdersSection customer={customer} />
-        </TabsContent>
+          <TabsContent value="profile" className="mt-0">
+            <ProfileSection customer={customer} />
+          </TabsContent>
 
-        <TabsContent value="addresses">
-          <AddressesSection customer={customer} />
-        </TabsContent>
+          <TabsContent value="orders" className="mt-0">
+            <OrdersSection customer={customer} />
+          </TabsContent>
 
-        <TabsContent value="billing">
-          <BillingSection customer={customer} />
-        </TabsContent>
+          <TabsContent value="addresses" className="mt-0">
+            <AddressesSection customer={customer} />
+          </TabsContent>
+
+          <TabsContent value="billing" className="mt-0">
+            <BillingSection customer={customer} />
+          </TabsContent>
+        </div>
       </Tabs>
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="text-center">
+            <div className="h-8 w-8 border-2 border-muted border-t-foreground rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm text-muted-foreground">Loading your account...</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

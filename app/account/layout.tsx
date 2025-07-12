@@ -17,12 +17,12 @@ export default async function AccountLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Main Navigation */}
       <Navigation />
-      {/* Account Content - Beautiful card, shadow, rounded, max width, centered */}
-      <main className="flex-1 flex flex-col items-center justify-start pt-4 px-1 sm:px-2 pb-24">
-        <div className="w-full max-w-4xl bg-white/95 rounded-2xl shadow-xl border border-gray-200 p-2 sm:p-6 md:p-12 mt-0 mb-4 animate-fade-in transition-all duration-300">
+      {/* Account Content */}
+      <main className="flex-1">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {children}
         </div>
         {/* Persistent bottom nav for mobile */}

@@ -36,44 +36,46 @@ export async function ProductCardMinimalServer({
         </div>
       )}
 
-      {/* Product Image */}
-      <Link 
-        href={`/products/${product.handle}`}
-        className={cn(
-          "block relative overflow-hidden bg-gray-50",
-          size === 'large' ? 'aspect-square' : 'aspect-square md:aspect-[4/5]'
-        )}
-      >
-        {product.featuredImage ? (
-          <Image
-            src={product.featuredImage.url}
-            alt={product.featuredImage.altText || product.title}
-            fill
-            sizes={
-              size === 'mobile' 
-                ? "(max-width: 768px) 50vw, 25vw" 
-                : size === 'large' 
-                ? "(max-width: 768px) 80vw, 40vw" 
-                : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            }
-            priority={priority}
-            className="object-cover transition-all duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-100">
-            <div className="text-center">
-              <div className="text-2xl mb-1">👕</div>
-              <div className="text-xs">No image</div>
+      {/* Product Image with Actions */}
+      <div className="relative">
+        <Link 
+          href={`/products/${product.handle}`}
+          className={cn(
+            "block relative overflow-hidden bg-gray-50",
+            size === 'large' ? 'aspect-square' : 'aspect-square md:aspect-[4/5]'
+          )}
+        >
+          {product.featuredImage ? (
+            <Image
+              src={product.featuredImage.url}
+              alt={product.featuredImage.altText || product.title}
+              fill
+              sizes={
+                size === 'mobile' 
+                  ? "(max-width: 768px) 50vw, 25vw" 
+                  : size === 'large' 
+                  ? "(max-width: 768px) 80vw, 40vw" 
+                  : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              }
+              priority={priority}
+              className="object-cover transition-all duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-100">
+              <div className="text-center">
+                <div className="text-2xl mb-1">👕</div>
+                <div className="text-xs">No image</div>
+              </div>
             </div>
-          </div>
-        )}
-      </Link>
+          )}
+        </Link>
 
-      {/* Client-side Actions Overlay */}
-      <ProductCardMinimalActions 
-        product={product} 
-        size={size}
-      />
+        {/* Client-side Actions Overlay */}
+        <ProductCardMinimalActions 
+          product={product} 
+          size={size}
+        />
+      </div>
 
       {/* Product Information */}
       <div className={cn(

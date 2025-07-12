@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { useMarket } from '@/hooks/use-market'
 import { useWishlist } from '@/hooks/use-wishlist'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
+import { BackInStockForm } from './back-in-stock-form'
 
 interface StickyMobileFooterProps {
   product: ShopifyProduct
@@ -85,27 +86,24 @@ export function StickyMobileFooter({
               <span className="uppercase text-sm">Select Size</span>
               <ChevronUp className="w-4 h-4 ml-2" />
             </Button>
+          ) : isOutOfStock ? (
+            <BackInStockForm
+              productTitle={product.title}
+              variantTitle={selectedVariant?.title !== 'Default Title' ? selectedVariant?.title : undefined}
+              productId={product.id}
+              variantId={selectedVariant?.id}
+            />
           ) : (
             <Button
               onClick={onAddToCart}
-              disabled={isOutOfStock}
               size="lg"
-              className={cn(
-                "w-full h-14 touch-manipulation font-medium tracking-wide transition-all",
-                isOutOfStock 
-                  ? "bg-gray-100 text-gray-400 border-2 border-gray-200" 
-                  : "bg-black text-white border-2 border-black active:scale-[0.98]"
-              )}
+              className="w-full h-14 touch-manipulation font-medium tracking-wide transition-all bg-black text-white border-2 border-black active:scale-[0.98]"
             >
-              {isOutOfStock ? (
-                <span className="uppercase text-sm">Out of Stock</span>
-              ) : (
-                <div className="flex items-center justify-center">
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  <span className="uppercase text-sm">Add to Cart</span>
-                  <span className="ml-2 text-sm opacity-90">• {formattedPrice}</span>
-                </div>
-              )}
+              <div className="flex items-center justify-center">
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                <span className="uppercase text-sm">Add to Cart</span>
+                <span className="ml-2 text-sm opacity-90">• {formattedPrice}</span>
+              </div>
             </Button>
           )}
         </div>

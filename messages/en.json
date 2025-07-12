@@ -124,7 +124,8 @@
     },
     "featured": {
       "title": "FEATURED COLLECTION",
-      "subtitle": "STREETWEAR COLLECTION"
+      "subtitle": "STREETWEAR COLLECTION",
+      "description": "Street culture meets Bulgarian spirit. Bold designs for those who dare."
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -132,6 +133,14 @@
     },
     "comingSoon": {
       "title": "COMING SOON"
+    },
+    "tshirts": {
+      "badge": "NEW COLLECTION",
+      "title": "T-SHIRTS",
+      "subtitle": "Premium cotton tees with unique designs. Comfort meets style.",
+      "emptyMessage": "Our T-shirt collection is coming soon. Check back later!",
+      "browseAll": "Browse All Products",
+      "viewAll": "View All T-shirts"
     }
   },
   "products": {
@@ -379,6 +388,15 @@
       "pants": "Pants",
       "accessories": "Accessories"
     }
+  },
+  "newsletter": {
+    "stayMinimal": "STAY MINIMAL",
+    "stayBold": "STAY BOLD",
+    "minimalDesc": "Embrace simplicity and timeless style",
+    "boldDesc": "Make confident choices and express yourself",
+    "subscribe": "SUBSCRIBE",
+    "enterEmail": "Enter email",
+    "joinNewsletter": "JOIN OUR NEWSLETTER"
   },
   "messages": {
     "addedToCart": "Added to cart",

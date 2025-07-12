@@ -1,7 +1,8 @@
 'use client'
 
-import { Money as HydrogenMoney } from '@shopify/hydrogen-react'
+// import { Money as HydrogenMoney } from '@shopify/hydrogen-react'
 import type { MoneyV2 } from '@shopify/hydrogen-react/storefront-api-types'
+import { formatPriceForMarket, DEFAULT_MARKET } from '@/lib/shopify/markets'
 
 interface MoneyProps {
   data: MoneyV2
@@ -12,8 +13,8 @@ interface MoneyProps {
 }
 
 /**
- * Wrapper around hydrogen-react's Money component
- * Provides automatic locale-aware currency formatting with Shopify's best practices
+ * Bulgarian market-aware Money component
+ * Displays prices in BGN with Bulgarian formatting
  */
 export function Money({ 
   data, 
@@ -26,14 +27,21 @@ export function Money({
     return null
   }
 
+  // Format price using Bulgarian market formatting
+  const formattedPrice = formatPriceForMarket(data.amount, DEFAULT_MARKET)
+  
+  const Component = as || 'span'
+  
   return (
-    <HydrogenMoney
-      data={data}
-      as={as}
-      className={className}
-      withoutTrailingZeros={withoutTrailingZeros}
-      withoutCurrency={withoutCurrency}
-    />
+    <Component className={className}>
+      {withoutCurrency ? 
+        new Intl.NumberFormat(DEFAULT_MARKET.locale, {
+          minimumFractionDigits: withoutTrailingZeros ? 0 : 2,
+          maximumFractionDigits: 2,
+        }).format(parseFloat(data.amount)) : 
+        formattedPrice
+      }
+    </Component>
   )
 }
 

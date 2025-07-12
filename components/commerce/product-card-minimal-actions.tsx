@@ -67,43 +67,46 @@ export function ProductCardMinimalActions({
         </button>
       )}
 
-      {/* Desktop Add to Cart Button - Clean and Simple */}
+      {/* Desktop Actions */}
       {size !== 'mobile' && (
-        <div className="absolute bottom-3 left-3 right-3 z-10">
-          <button
-            onClick={handleAddToCart}
-            className={cn(
-              "w-full bg-black text-white py-2 px-3 font-mono text-xs font-medium transition-all duration-300 pointer-events-auto hover:bg-gray-800",
-              "opacity-0 translate-y-2",
-              "group-hover:opacity-100 group-hover:translate-y-0"
-            )}
-            aria-label={t('addToCart')}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <ShoppingCart className="w-4 h-4" />
-              {t('addToCart')}
-            </div>
-          </button>
-          
-          {/* Wishlist heart in top right */}
+        <>
+          {/* Add to Cart Button - Inside Image */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 p-3">
+            <button
+              onClick={handleAddToCart}
+              className={cn(
+                "w-full bg-black text-white py-2.5 px-3 font-mono text-xs font-medium transition-all duration-300 hover:bg-gray-800",
+                "opacity-0 translate-y-2",
+                "group-hover:opacity-100 group-hover:translate-y-0"
+              )}
+              aria-label={t('addToCart')}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <ShoppingCart className="w-4 h-4" />
+                {t('addToCart')}
+              </div>
+            </button>
+          </div>
+
+          {/* Wishlist Heart */}
           <button
             onClick={handleWishlist}
             className={cn(
-              "absolute -top-8 right-0 w-8 h-8 flex items-center justify-center transition-all duration-300 pointer-events-auto",
+              "absolute top-3 right-3 z-20 w-8 h-8 flex items-center justify-center transition-all duration-300",
               "opacity-0",
               "group-hover:opacity-100",
-              isWishlisted ? "text-red-500" : "text-white"
+              isWishlisted ? "text-red-500 bg-white rounded-full" : "text-white drop-shadow-md"
             )}
             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           >
             <Heart 
               className={cn(
-                "w-5 h-5 drop-shadow-sm",
+                "w-5 h-5",
                 isWishlisted && "fill-current"
               )} 
             />
           </button>
-        </div>
+        </>
       )}
     </>
   )

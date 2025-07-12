@@ -74,12 +74,12 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
       />
       
       {/* Quick Actions - Mobile Only */}
-      <div className="fixed top-20 right-4 z-30 md:hidden">
+      <div className="fixed bottom-24 right-4 z-30 md:hidden">
         <div className="flex flex-col gap-2">
           {/* Scroll to Top */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="w-10 h-10 bg-black/80 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-black transition-colors"
+            className="w-11 h-11 bg-black/90 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-black transition-colors backdrop-blur-sm"
             aria-label="Scroll to top"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

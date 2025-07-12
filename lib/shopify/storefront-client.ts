@@ -120,6 +120,10 @@ export interface Product {
     minVariantPrice: Money;
     maxVariantPrice: Money;
   };
+  compareAtPriceRange?: {
+    minVariantPrice: Money;
+    maxVariantPrice: Money;
+  };
   options: ProductOption[];
   variants: {
     edges: Array<{
@@ -131,6 +135,13 @@ export interface Product {
     description?: string;
   };
   tags?: string[];
+  metafields?: Array<{
+    key: string;
+    namespace: string;
+    value: string;
+    type: string;
+  }>;
+  totalInventory?: number;
 }
 
 export interface Collection {

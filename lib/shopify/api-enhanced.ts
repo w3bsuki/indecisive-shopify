@@ -2,6 +2,7 @@ import { storefront, type Product } from './storefront-client';
 import { getMarketFromCookies } from './server-market';
 import type { Market } from './markets';
 import { extractNodes } from './flatten-connection';
+import { mapStorefrontProductsToShopifyProducts } from './type-mappers';
 
 // Enhanced product query with proper filtering support
 const PRODUCTS_ENHANCED_QUERY = `
@@ -248,10 +249,10 @@ export async function getProductsPaginated(
     // Color filter (if not using tags)
     if (filters.colors && filters.colors.length > 0 && !searchQuery.includes('tag:color')) {
       const selectedColors = filters.colors.map(c => c.toLowerCase());
-      filteredProducts = filteredProducts.filter(product => {
-        return product.variants?.edges?.some(edge => {
+      filteredProducts = (filteredProducts as Product[]).filter((product: Product) => {
+        return product.variants?.edges?.some((edge: any) => {
           const variant = edge.node;
-          return variant.selectedOptions?.some(option => 
+          return variant.selectedOptions?.some((option: any) => 
             option.name.toLowerCase() === 'color' && 
             selectedColors.includes(option.value.toLowerCase())
           );
@@ -262,10 +263,10 @@ export async function getProductsPaginated(
     // Size filter (if not using tags)
     if (filters.sizes && filters.sizes.length > 0 && !searchQuery.includes('tag:size')) {
       const selectedSizes = filters.sizes.map(s => s.toUpperCase());
-      filteredProducts = filteredProducts.filter(product => {
-        return product.variants?.edges?.some(edge => {
+      filteredProducts = (filteredProducts as Product[]).filter((product: Product) => {
+        return product.variants?.edges?.some((edge: any) => {
           const variant = edge.node;
-          return variant.selectedOptions?.some(option => 
+          return variant.selectedOptions?.some((option: any) => 
             option.name.toLowerCase() === 'size' && 
             selectedSizes.includes(option.value.toUpperCase())
           );
@@ -274,7 +275,7 @@ export async function getProductsPaginated(
     }
     
     return {
-      products: filteredProducts,
+      products: mapStorefrontProductsToShopifyProducts(filteredProducts as Product[]),
       pageInfo: {
         hasNextPage: data?.products?.pageInfo?.hasNextPage || false,
         hasPreviousPage: page > 1,

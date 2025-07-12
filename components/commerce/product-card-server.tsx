@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { ShopifyProduct } from '@/lib/shopify/types'
+import type { ShopifyProduct, ShopifyProductVariant, ShopifyImage } from '@/lib/shopify/types'
 import { getTranslations } from 'next-intl/server'
 import { ProductCardActions } from './product-card-actions'
 import { HydrogenImageServer } from './hydrogen-image'
@@ -13,22 +13,27 @@ interface ProductCardServerProps {
 export async function ProductCardServer({ product, priority: _priority = false }: ProductCardServerProps) {
   const t = await getTranslations('products')
   
+  // Safety check for product data
+  if (!product || typeof product === 'string') {
+    return null
+  }
+  
   const isOnSale = product.compareAtPriceRange && 
     parseFloat(product.compareAtPriceRange.maxVariantPrice.amount) > parseFloat(product.priceRange.minVariantPrice.amount)
 
-  // Extract sizes from variants using flattenConnection
-  const variants = extractNodes(product.variants)
-  const sizes = variants
-    ?.filter(variant => variant.availableForSale)
-    ?.map(variant => ({
+  // Extract sizes from variants using flattenConnection - with safety check
+  const variants = product.variants ? extractNodes(product.variants) : []
+  const sizes = (variants as ShopifyProductVariant[])
+    ?.filter((variant: ShopifyProductVariant) => variant.availableForSale)
+    ?.map((variant: ShopifyProductVariant) => ({
       id: variant.id,
       size: variant.title,
       available: variant.availableForSale
     })) || []
 
-  // Get second image for subtle hover effect using flattenConnection
-  const productImages = extractNodes(product.images)
-  const secondImage = productImages.length > 1 ? productImages[1] : null
+  // Get second image for subtle hover effect using flattenConnection - with safety check
+  const productImages = product.images ? extractNodes(product.images) : []
+  const secondImage = (productImages as ShopifyImage[]).length > 1 ? (productImages as ShopifyImage[])[1] : null
 
   return (
     <div className="group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200">
@@ -54,7 +59,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
         {secondImage && (
           <div className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
             <HydrogenImageServer
-              data={secondImage}
+              data={secondImage as ShopifyImage}
               alt={`${product.title} - view 2`}
             />
           </div>

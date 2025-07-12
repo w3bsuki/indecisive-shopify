@@ -43,6 +43,12 @@ const PRODUCT_FRAGMENT = `
     title
     description
   }
+  tags
+  options {
+    id
+    name
+    values
+  }
 `;
 
 // Get products query with @inContext for market-specific data
@@ -78,6 +84,21 @@ export const PRODUCT_QUERY = `
           }
         }
       }
+      metafields(identifiers: [
+        {namespace: "custom", key: "materials"},
+        {namespace: "custom", key: "care_instructions"},
+        {namespace: "custom", key: "fit_guide"},
+        {namespace: "custom", key: "size_chart"},
+        {namespace: "reviews", key: "rating"},
+        {namespace: "reviews", key: "rating_count"},
+        {namespace: "inventory", key: "low_stock_threshold"}
+      ]) {
+        key
+        namespace
+        value
+        type
+      }
+      totalInventory
     }
   }
 `;

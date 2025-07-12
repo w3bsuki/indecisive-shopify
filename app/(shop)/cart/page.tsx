@@ -5,11 +5,11 @@ export const dynamic = 'force-dynamic'
 
 import { useCart } from '@/hooks/use-cart'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Minus, Plus, X, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Money } from '@/components/commerce/money'
+import { DiscountCodeForm } from '@/components/cart/discount-code-form'
 
 export default function CartPage() {
   const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading } = useCart()
@@ -38,16 +38,16 @@ export default function CartPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold font-mono mb-8">SHOPPING CART ({totalItems})</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Shopping Cart ({totalItems})</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
           {lines?.map((line) => line && line.merchandise && line.merchandise.product ? (
             <div key={line.id} className="border border-gray-200 hover:border-gray-300 transition-colors p-4 bg-white">
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 {/* Product Image */}
-                <div className="w-24 h-24 bg-gray-100 relative">
+                <div className="w-full sm:w-24 h-32 sm:h-24 bg-gray-100 relative">
                   {line.merchandise.product.featuredImage?.url ? (
                     <Image
                       src={line.merchandise.product.featuredImage.url}
@@ -77,35 +77,37 @@ export default function CartPage() {
                     </div>
                     <button
                       onClick={() => line.id && removeItem(line.id)}
-                      className="p-1 hover:bg-gray-100 transition-colors"
-                      aria-label="Remove item"
+                      className="p-2 hover:bg-gray-100 transition-colors rounded-md"
+                      aria-label={`Remove ${line.merchandise.product.title} from cart`}
                     >
                       <X className="w-5 h-5" />
                     </button>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                     {/* Quantity Selector */}
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => line.id && line.quantity && updateItem(line.id, Math.max(1, line.quantity - 1))}
                         disabled={!line.quantity || line.quantity <= 1 || isLoading}
-                        className="w-8 h-8 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="w-10 h-10 sm:w-8 sm:h-8 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors rounded-md"
+                        aria-label="Decrease quantity"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
-                      <span className="w-12 text-center font-mono">{line.quantity || 0}</span>
+                      <span className="w-14 text-center font-mono text-base sm:text-sm">{line.quantity || 0}</span>
                       <button
                         onClick={() => line.id && line.quantity && updateItem(line.id, line.quantity + 1)}
                         disabled={isLoading}
-                        className="w-8 h-8 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 transition-colors"
+                        className="w-10 h-10 sm:w-8 sm:h-8 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 transition-colors rounded-md"
+                        aria-label="Increase quantity"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
                     </div>
 
                     {/* Line Total */}
-                    <p className="font-mono font-medium">
+                    <p className="font-mono font-medium text-base sm:text-sm">
                       {line.cost?.totalAmount?.amount && line.cost?.totalAmount?.currencyCode ? (
                         <Money data={line.cost.totalAmount as any} />
                       ) : (
@@ -133,8 +135,8 @@ export default function CartPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="border-2 border-black p-6 space-y-4">
-            <h2 className="text-xl font-bold font-mono">ORDER SUMMARY</h2>
+          <div className="border border-gray-200 shadow-lg p-4 sm:p-6 space-y-4 sticky top-4">
+            <h2 className="text-base sm:text-lg font-bold">Order Summary</h2>
             
             <div className="space-y-2 py-4 border-t border-gray-200">
               <div className="flex justify-between">
@@ -171,15 +173,7 @@ export default function CartPage() {
 
               {/* Discount Code */}
               <div className="mb-4">
-                <div className="flex gap-2">
-                  <Input 
-                    placeholder="Discount code" 
-                    className="font-mono"
-                  />
-                  <Button variant="outline" className="font-mono">
-                    APPLY
-                  </Button>
-                </div>
+                <DiscountCodeForm />
               </div>
 
               {/* Checkout Button */}
@@ -194,8 +188,11 @@ export default function CartPage() {
             </div>
 
             {/* Security Notice */}
-            <div className="text-xs text-gray-600 pt-4">
-              <p>🔒 Secure checkout powered by Shopify</p>
+            <div className="text-xs text-gray-600 pt-4 text-center">
+              <p className="flex items-center justify-center gap-1">
+                <span aria-hidden="true">🔒</span>
+                <span>Secure checkout powered by Shopify</span>
+              </p>
             </div>
           </div>
         </div>

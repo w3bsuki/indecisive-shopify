@@ -156,7 +156,7 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
   }
 
   const Content = () => (
-    <div className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-3 sm:px-4 px-safe min-h-[44px] touch-optimized">
+    <div className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-3 sm:px-4 px-safe min-h-[40px] sm:min-h-[44px] touch-optimized">
       {/* Icon */}
       {currentAnnouncement.icon && (
         <currentAnnouncement.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />

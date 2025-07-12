@@ -52,8 +52,13 @@ export function flattenConnectionWithMetadata<T>(
 export function extractNodes<T>(
   connection: {
     edges?: Array<{ node: T }> | null
-  } | null | undefined
+  } | null | undefined | string | any
 ): T[] {
+  // Handle invalid inputs
+  if (!connection || typeof connection === 'string' || !connection.edges) {
+    return []
+  }
+  
   return (hydrogenFlattenConnection(connection as any) || []) as T[]
 }
 

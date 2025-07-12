@@ -10,7 +10,9 @@ import {
   ShoppingBag, 
   ArrowRight, 
   CheckCircle,
-  Clock
+  Clock,
+  Zap,
+  Shield
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -34,62 +36,70 @@ export function GuestCheckoutOption({ onGuestCheckout, isLoading = false }: Gues
 
   return (
     <div className="space-y-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-bold font-mono mb-2">Choose Your Checkout Method</h2>
-        <p className="text-gray-600">
-          Continue as a guest or log in to your account for faster checkout
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Guest Checkout Option */}
-        <Card className={`border cursor-pointer transition-all ${
-          selectedOption === 'guest' ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+        <Card className={`border cursor-pointer transition-all duration-200 ${
+          selectedOption === 'guest' 
+            ? 'border-gray-900 bg-gray-900 text-white shadow-lg' 
+            : 'border-gray-200 hover:border-gray-300 hover:shadow-md bg-white'
         }`}>
-          <CardHeader className="pb-3">
-            <CardTitle className="font-mono flex items-center gap-2">
-              <ShoppingBag className="h-5 w-5" />
-              Guest Checkout
-              <Badge variant="outline" className="ml-auto border-green-300 text-green-700">
-                Fastest
-              </Badge>
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-3 text-lg">
+              <div className={`p-2 rounded-full ${
+                selectedOption === 'guest' ? 'bg-white text-black' : 'bg-gray-100'
+              }`}>
+                <ShoppingBag className="h-5 w-5" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold">GUEST CHECKOUT</span>
+                  <Badge variant={selectedOption === 'guest' ? 'secondary' : 'outline'} 
+                         className={`text-xs ${selectedOption === 'guest' ? 'bg-white text-black' : 'border-green-300 text-green-700'}`}>
+                    <Zap className="h-3 w-3 mr-1" />
+                    FASTEST
+                  </Badge>
+                </div>
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>No account required</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">No account needed</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Quick and simple</span>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Quick and easy</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Email confirmation included</span>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Email confirmation</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-yellow-600" />
-                <span>Manual tracking via email</span>
+              <div className="flex items-center gap-3">
+                <Clock className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                <span className="text-sm">Track via email</span>
               </div>
             </div>
 
             <Button
               onClick={handleGuestProceed}
               disabled={isLoading}
-              className="w-full font-mono"
-              variant={selectedOption === 'guest' ? 'default' : 'outline'}
+              className={`w-full h-11 font-semibold transition-all ${
+                selectedOption === 'guest' 
+                  ? 'bg-white text-gray-900 hover:bg-gray-100' 
+                  : 'bg-gray-900 text-white hover:bg-gray-800'
+              }`}
             >
               {selectedOption === 'guest' && isLoading ? (
                 <>
                   <ArrowRight className="h-4 w-4 mr-2 animate-pulse" />
-                  Proceeding...
+                  PROCESSING...
                 </>
               ) : (
                 <>
                   <ArrowRight className="h-4 w-4 mr-2" />
-                  Continue as Guest
+                  CONTINUE AS GUEST
                 </>
               )}
             </Button>
@@ -97,67 +107,85 @@ export function GuestCheckoutOption({ onGuestCheckout, isLoading = false }: Gues
         </Card>
 
         {/* Account Login Option */}
-        <Card className={`border cursor-pointer transition-all ${
-          selectedOption === 'login' ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+        <Card className={`border cursor-pointer transition-all duration-200 ${
+          selectedOption === 'login' 
+            ? 'border-gray-900 bg-gray-900 text-white shadow-lg' 
+            : 'border-gray-200 hover:border-gray-300 hover:shadow-md bg-white'
         }`}>
-          <CardHeader className="pb-3">
-            <CardTitle className="font-mono flex items-center gap-2">
-              <User className="h-5 w-5" />
-              Account Login
-              <Badge variant="outline" className="ml-auto border-blue-300 text-blue-700">
-                Recommended
-              </Badge>
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-3 text-lg">
+              <div className={`p-2 rounded-full ${
+                selectedOption === 'login' ? 'bg-white text-black' : 'bg-gray-100'
+              }`}>
+                <User className="h-5 w-5" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold">SIGN IN</span>
+                  <Badge variant={selectedOption === 'login' ? 'secondary' : 'outline'} 
+                         className={`text-xs ${selectedOption === 'login' ? 'bg-white text-black' : 'border-blue-300 text-blue-700'}`}>
+                    <Shield className="h-3 w-3 mr-1" />
+                    RECOMMENDED
+                  </Badge>
+                </div>
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Pre-filled address info</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Pre-filled shipping details</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Order history tracking</span>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Order history</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Easy returns & exchanges</span>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Easy returns and exchanges</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Faster future checkouts</span>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Faster future checkouts</span>
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Button
                 onClick={handleLoginRedirect}
                 disabled={isLoading}
-                className="w-full font-mono"
-                variant={selectedOption === 'login' ? 'default' : 'outline'}
+                className={`w-full h-11 font-semibold transition-all ${
+                  selectedOption === 'login' 
+                    ? 'bg-white text-gray-900 hover:bg-gray-100' 
+                    : 'bg-gray-900 text-white hover:bg-gray-800'
+                }`}
               >
                 {selectedOption === 'login' && isLoading ? (
                   <>
                     <User className="h-4 w-4 mr-2 animate-pulse" />
-                    Redirecting...
+                    REDIRECTING...
                   </>
                 ) : (
                   <>
                     <User className="h-4 w-4 mr-2" />
-                    Log In to Account
+                    SIGN IN
                   </>
                 )}
               </Button>
 
               <Link href="/register?redirectTo=/checkout">
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full text-sm font-mono"
+                  variant="outline"
+                  className={`w-full h-10 font-medium transition-all ${
+                    selectedOption === 'login' 
+                      ? 'border-white text-white hover:bg-white hover:text-black' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
                   disabled={isLoading}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Create New Account
+                  CREATE ACCOUNT
                 </Button>
               </Link>
             </div>
@@ -165,19 +193,29 @@ export function GuestCheckoutOption({ onGuestCheckout, isLoading = false }: Gues
         </Card>
       </div>
 
-      {/* Additional Information */}
-      <Card className="border border-gray-200 bg-gray-50">
-        <CardContent className="py-4">
-          <div className="text-center text-sm text-gray-600 space-y-1">
-            <p>
-              <strong>Security:</strong> All payments are processed securely by Shopify using 256-bit SSL encryption
-            </p>
-            <p>
-              <strong>Guest Orders:</strong> You can create an account after checkout to track your order
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Security Information */}
+      <div className="mt-6">
+        <Card className="border border-gray-200 bg-blue-50">
+          <CardContent className="py-4">
+            <div className="text-center space-y-3">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Shield className="h-5 w-5 text-blue-600" />
+                <h3 className="font-semibold text-sm">Security & Information</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                  <span><strong>Security:</strong> All payments are securely processed by Shopify</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                  <span><strong>Guest orders:</strong> Create an account after checkout for easy tracking</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

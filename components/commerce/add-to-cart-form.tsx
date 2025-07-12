@@ -9,6 +9,7 @@ import { useWishlist } from '@/hooks/use-wishlist'
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useTranslations } from 'next-intl'
+import { BackInStockForm } from './back-in-stock-form'
 
 interface AddToCartFormProps {
   product: ShopifyProduct
@@ -329,37 +330,44 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
       {/* Action Buttons - Hide on mobile as mobile footer handles it */}
       <div className="hidden md:flex gap-3">
-        <Button
-          onClick={handleAddToCart}
-          disabled={isDisabled}
-          size="lg"
-          className="flex-1 h-14 touch-manipulation bg-black hover:bg-gray-900 text-white font-medium tracking-wide transition-all hover:scale-[1.02]"
-        >
-          {isAdding ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-              <span className="uppercase">{t('addingToCart')}</span>
-            </>
-          ) : !selectedVariant ? (
-            <span className="uppercase">{sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')}</span>
-          ) : !selectedVariant.availableForSale ? (
-            <span className="uppercase">{t('soldOut')}</span>
-          ) : (
-            <>
-              <ShoppingCart className="w-5 h-5 mr-2" />
-              <span className="uppercase">{t('addToCart')}</span>
-            </>
-          )}
-        </Button>
+        {selectedVariant && !selectedVariant.availableForSale ? (
+          <BackInStockForm
+            productTitle={product.title}
+            variantTitle={selectedVariant.title !== 'Default Title' ? selectedVariant.title : undefined}
+            productId={product.id}
+            variantId={selectedVariant.id}
+          />
+        ) : (
+          <Button
+            onClick={handleAddToCart}
+            disabled={isDisabled}
+            size="lg"
+            className="flex-1 h-14 touch-manipulation bg-black hover:bg-white text-white hover:text-black border-2 border-black font-medium tracking-wide transition-colors"
+          >
+            {isAdding ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                <span className="uppercase">{t('addingToCart')}</span>
+              </>
+            ) : !selectedVariant ? (
+              <span className="uppercase">{sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')}</span>
+            ) : (
+              <>
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                <span className="uppercase">{t('addToCart')}</span>
+              </>
+            )}
+          </Button>
+        )}
         
         <Button
           type="button"
           variant="outline"
           size="lg"
           className={cn(
-            "px-4 h-14 touch-manipulation border-2 transition-all",
+            "px-4 h-14 touch-manipulation border-2 transition-colors",
             isInWishlist(product.id)
-              ? "bg-black text-white border-black hover:bg-gray-800"
+              ? "bg-black text-white border-black hover:bg-white hover:text-black"
               : "border-black hover:bg-black hover:text-white"
           )}
           title={isInWishlist(product.id) ? t('removeFromWishlist') : t('addToWishlist')}

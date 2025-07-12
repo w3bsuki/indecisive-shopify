@@ -388,6 +388,9 @@ function ReviewCard({ review, onHelpful }: { review: Review; onHelpful: (id: num
       {selectedImage && (
         <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
           <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle className="sr-only">Review Photo</DialogTitle>
+            </DialogHeader>
             <div className="relative">
               <Image
                 src={selectedImage || "/placeholder.svg"}

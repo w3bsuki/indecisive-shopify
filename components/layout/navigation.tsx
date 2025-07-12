@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Search, ShoppingBag, Heart, User, Dices, Instagram, SlidersHorizontal } from "lucide-react"
+import { Menu, X, Search, ShoppingBag, Heart, User, Dices, Instagram, SlidersHorizontal, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -26,6 +26,12 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function Navigation() {
   const t = useTranslations('nav')
@@ -100,7 +106,11 @@ export function Navigation() {
     { name: t('all'), href: "/products", badge: null },
     { name: t('new'), href: "/new", badge: null },
     { name: t('sale'), href: "/sale", badge: "50% OFF" },
-    { name: t('comingSoon'), href: "/coming-soon", badge: null },
+  ]
+
+  const apparelItems = [
+    { name: "T-shirts", href: "/tshirts" },
+    { name: "Hats", href: "/hats" },
   ]
 
   return (
@@ -146,6 +156,27 @@ export function Navigation() {
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     ))}
+                    
+                    {/* Apparel Dropdown */}
+                    <NavigationMenuItem>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                            Apparel
+                            <ChevronDown className="ml-1 h-4 w-4" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="min-w-[160px]">
+                          {apparelItems.map((item) => (
+                            <DropdownMenuItem key={item.href} asChild>
+                              <Link href={item.href} className="w-full cursor-pointer">
+                                {item.name}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
               )}
@@ -233,7 +264,7 @@ export function Navigation() {
 
           {/* Mobile Navigation Bar */}
           <nav className="bg-white border-b border-black/20 shadow-sm">
-            <div className="px-3 h-16 flex items-center justify-between">
+            <div className="px-3 h-14 flex items-center justify-between">
               {/* Left Side: Menu + Logo */}
               <div className="flex items-center gap-0">
                 {/* Menu on LEFT */}
@@ -330,6 +361,24 @@ export function Navigation() {
                                 </svg>
                               </Link>
                             ))}
+                            
+                            {/* Apparel Section */}
+                            <div className="pt-4">
+                              <h4 className="font-mono text-xs font-bold text-gray-600 mb-2 tracking-wider">APPAREL</h4>
+                              {apparelItems.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  href={item.href}
+                                  className="flex items-center justify-between py-3 text-base font-medium hover:text-gray-600 transition-colors border-b border-gray-100 last:border-b-0"
+                                  onClick={() => setIsMenuOpen(false)}
+                                >
+                                  <span className="font-mono tracking-wide">{item.name}</span>
+                                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </Link>
+                              ))}
+                            </div>
                           </div>
                         </nav>
                       </div>
@@ -388,7 +437,7 @@ export function Navigation() {
         </div>
 
         {/* Spacer */}
-        <div className="h-[104px] md:hidden" />
+        <div className="h-[90px] md:hidden" />
       </>
 
       {/* Mobile Bottom Navigation */}

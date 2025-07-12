@@ -98,7 +98,7 @@
     "featured": {
       "title": "FEATURED KOLLEKTION",
       "subtitle": "ХУЛИГАНКА",
-      "description": "Limitierte Bucket Hats für die Unentschlossenen"
+      "description": "Straßenkultur trifft bulgarischen Geist. Mutige Designs für Mutige."
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -106,6 +106,14 @@
     },
     "comingSoon": {
       "title": "KOMMT BALD"
+    },
+    "tshirts": {
+      "badge": "NEUE KOLLEKTION",
+      "title": "T-SHIRTS",
+      "subtitle": "Premium Baumwoll-T-Shirts mit einzigartigen Designs. Komfort trifft Stil.",
+      "emptyMessage": "Unsere T-Shirt-Kollektion kommt bald. Schauen Sie später wieder vorbei!",
+      "browseAll": "Alle Produkte durchsuchen",
+      "viewAll": "Alle T-Shirts anzeigen"
     }
   },
   "products": {
@@ -265,6 +273,15 @@
       "follow": "Folgen Sie uns"
     },
     "copyright": "© {year} Indecisive Wear. Alle Rechte vorbehalten."
+  },
+  "newsletter": {
+    "stayMinimal": "BLEIB MINIMAL",
+    "stayBold": "BLEIB MUTIG",
+    "minimalDesc": "Umarme Einfachheit und zeitlosen Stil",
+    "boldDesc": "Treffe selbstbewusste Entscheidungen und drücke dich aus",
+    "subscribe": "ABONNIEREN",
+    "enterEmail": "E-Mail eingeben",
+    "joinNewsletter": "UNSEREM NEWSLETTER BEITRETEN"
   },
   "messages": {
     "addedToCart": "Zum Warenkorb hinzugefügt",
