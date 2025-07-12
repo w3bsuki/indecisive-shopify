@@ -12,11 +12,15 @@ import { Money } from '@/components/commerce/money'
 import { DiscountCodeForm } from '@/components/cart/discount-code-form'
 
 export default function CartPage() {
-  const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading } = useCart()
+  const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading, checkoutUrl } = useCart()
 
   const handleCheckout = () => {
-    // Navigate to our enhanced checkout page for smooth experience
-    window.location.href = '/checkout'
+    // Redirect directly to Shopify checkout
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl
+    } else {
+      console.error('No checkout URL available')
+    }
   }
 
   if (isEmpty) {
