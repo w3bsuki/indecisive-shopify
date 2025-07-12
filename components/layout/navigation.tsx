@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
+import { CartSlideout } from "@/components/cart/cart-slideout"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { SearchBar } from "@/components/layout/search-bar"
 import { SearchFiltersTranslated } from "@/app/(shop)/search/search-filters-translated"
 import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
 import { AnnouncementBanner } from "@/components/layout/announcement-banner"
-import { useCart } from "@/hooks/use-cart"
+import { useCart, setCartSlideoutCallback } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { useIndecisive } from "@/components/providers/indecisive-provider"
 import { MarketSwitcher } from "@/components/commerce/market-switcher"
@@ -49,14 +50,22 @@ export function Navigation() {
   const [showBottomNav, setShowBottomNav] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [showWishlistDrawer, setShowWishlistDrawer] = useState(false)
+  const [showCartSlideout, setShowCartSlideout] = useState(false)
   
   // Refs
   const cartIconRef = useRef<HTMLButtonElement>(null)
 
-  // Register cart icon ref for desktop
+  // Register cart icon ref and slideout callback for desktop
   useEffect(() => {
     if (cartIconRef.current) {
       setCartIconRef(cartIconRef.current)
+    }
+    
+    // Set slideout callback for desktop cart interactions
+    setCartSlideoutCallback(() => setShowCartSlideout(true))
+    
+    return () => {
+      setCartSlideoutCallback(null)
     }
   }, [setCartIconRef])
 
@@ -230,13 +239,14 @@ export function Navigation() {
                   )}
                 </Button>
 
-                {/* Cart */}
-                <MobileCartSheet>
+                {/* Cart - Desktop Slideout, Mobile Sheet */}
+                <div className="hidden lg:block">
                   <Button 
                     ref={cartIconRef}
                     variant="ghost" 
                     size="icon" 
                     className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                    onClick={() => setShowCartSlideout(true)}
                   >
                     <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
                     {totalItems > 0 && (
@@ -248,7 +258,26 @@ export function Navigation() {
                       </Badge>
                     )}
                   </Button>
-                </MobileCartSheet>
+                </div>
+                <div className="lg:hidden">
+                  <MobileCartSheet>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                    >
+                      <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+                      {totalItems > 0 && (
+                        <Badge
+                          variant="secondary"
+                          className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-black text-white border-2 border-white cart-icon-bounce"
+                        >
+                          {totalItems}
+                        </Badge>
+                      )}
+                    </Button>
+                  </MobileCartSheet>
+                </div>
               </div>
             </div>
           </div>
@@ -541,6 +570,12 @@ export function Navigation() {
       <WishlistDrawer 
         open={showWishlistDrawer} 
         onOpenChange={setShowWishlistDrawer} 
+      />
+      
+      {/* Desktop Cart Slideout */}
+      <CartSlideout 
+        isOpen={showCartSlideout} 
+        onClose={() => setShowCartSlideout(false)} 
       />
     </>
   )

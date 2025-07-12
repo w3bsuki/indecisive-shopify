@@ -25,9 +25,14 @@ type OptimisticAction =
 
 // Export for external use
 export let cartNotificationCallback: ((product: any) => void) | null = null;
+export let cartSlideoutCallback: (() => void) | null = null;
 
 export function setCartNotificationCallback(callback: ((product: any) => void) | null) {
   cartNotificationCallback = callback;
+}
+
+export function setCartSlideoutCallback(callback: (() => void) | null) {
+  cartSlideoutCallback = callback;
 }
 
 // Unified cart hook implementation using Hydrogen React
@@ -174,7 +179,7 @@ export function useCart() {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     
     if (isMobile && cartNotificationCallback) {
-      // Find product info for notification
+      // Mobile notification
       const line = lines?.find(l => l?.merchandise?.id === merchandiseId);
       if (line?.merchandise?.product) {
         cartNotificationCallback({
@@ -184,7 +189,6 @@ export function useCart() {
           quantity
         });
       } else {
-        // Fallback if product not found
         cartNotificationCallback({
           title: 'Product added',
           price: '',
@@ -192,12 +196,16 @@ export function useCart() {
         });
       }
     } else {
-      // Desktop toast
-      toast.success('Added to cart', {
-        id: 'cart-add-success',
-        description: `${quantity} item${quantity > 1 ? 's' : ''} added`,
-        duration: 3000,
-      });
+      // Desktop - show slideout if callback is available, otherwise toast
+      if (cartSlideoutCallback) {
+        cartSlideoutCallback();
+      } else {
+        toast.success('Added to cart', {
+          id: 'cart-add-success',
+          description: `${quantity} item${quantity > 1 ? 's' : ''} added`,
+          duration: 3000,
+        });
+      }
     }
 
     try {
