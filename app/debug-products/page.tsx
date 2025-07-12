@@ -3,28 +3,25 @@ import { getProducts } from '@/lib/shopify/api';
 export default async function DebugProductsPage() {
   try {
     // Fetch all products without any filters
-    const products = await getProducts({});
+    const productsData = await getProducts(100);
+    const products = productsData.edges.map(edge => edge.node);
     
-    // Extract unique product types
-    const productTypes = new Set<string>();
-    const productTypeCount: Record<string, number> = {};
+    // Extract unique tags
+    const allTags = new Set<string>();
     
     products.forEach(product => {
-      const type = product.productType || 'NO_TYPE';
-      productTypes.add(type);
-      productTypeCount[type] = (productTypeCount[type] || 0) + 1;
+      product.tags?.forEach(tag => allTags.add(tag));
     });
     
     // Log to server console
     console.log('=== PRODUCT DEBUG INFO ===');
     console.log('Total products:', products.length);
-    console.log('Unique product types:', Array.from(productTypes));
-    console.log('Product type counts:', productTypeCount);
+    console.log('Unique tags:', Array.from(allTags));
     console.log('=== SAMPLE PRODUCTS ===');
     products.slice(0, 5).forEach(product => {
       console.log({
         title: product.title,
-        productType: product.productType,
+        tags: product.tags,
         handle: product.handle,
         id: product.id
       });
@@ -37,18 +34,18 @@ export default async function DebugProductsPage() {
         <div className="bg-gray-100 p-4 rounded-lg mb-6">
           <h2 className="text-lg font-semibold mb-2">Summary</h2>
           <p>Total products: {products.length}</p>
-          <p>Unique product types: {productTypes.size}</p>
+          <p>Unique tags: {allTags.size}</p>
         </div>
         
         <div className="bg-gray-100 p-4 rounded-lg mb-6">
-          <h2 className="text-lg font-semibold mb-2">Product Types</h2>
-          <ul className="list-disc list-inside">
-            {Array.from(productTypes).map(type => (
-              <li key={type}>
-                <strong>{type || 'NO_TYPE'}</strong>: {productTypeCount[type]} products
-              </li>
+          <h2 className="text-lg font-semibold mb-2">All Tags</h2>
+          <div className="flex flex-wrap gap-2">
+            {Array.from(allTags).map(tag => (
+              <span key={tag} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                {tag}
+              </span>
             ))}
-          </ul>
+          </div>
         </div>
         
         <div className="bg-gray-100 p-4 rounded-lg">
@@ -57,7 +54,7 @@ export default async function DebugProductsPage() {
             {products.slice(0, 10).map(product => (
               <div key={product.id} className="border-b pb-2">
                 <p><strong>Title:</strong> {product.title}</p>
-                <p><strong>Type:</strong> {product.productType || 'NO_TYPE'}</p>
+                <p><strong>Tags:</strong> {product.tags?.join(', ') || 'No tags'}</p>
                 <p><strong>Handle:</strong> {product.handle}</p>
                 <p className="text-xs text-gray-500">ID: {product.id}</p>
               </div>
