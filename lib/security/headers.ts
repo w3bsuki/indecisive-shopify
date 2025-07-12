@@ -91,7 +91,14 @@ export function getCSPHeader(): string {
     isDev && 'wss://localhost:*',
   ].filter(Boolean)
   
-  const frameSrc = ["'none'"]
+  const frameSrc = [
+    "'self'",
+    'https://*.myshopify.com',
+    'https://checkout.shopify.com',
+    'https://checkout.shopifyplus.com',
+    'https://cdn.shopify.com',
+    'https://vercel.live', // Vercel Live feedback
+  ]
   const objectSrc = ["'none'"]
   const mediaSrc = ["'self'"]
   const workerSrc = ["'self'", 'blob:']
