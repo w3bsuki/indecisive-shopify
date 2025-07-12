@@ -15,11 +15,17 @@ export default function CartPage() {
   const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading, checkoutUrl } = useCart()
 
   const handleCheckout = () => {
+    console.log('Checkout URL:', checkoutUrl)
+    console.log('Cart lines:', lines)
+    console.log('Total items:', totalItems)
+    
     // Redirect directly to Shopify checkout
     if (checkoutUrl) {
       window.location.href = checkoutUrl
     } else {
-      console.error('No checkout URL available')
+      // Fallback - navigate to checkout page if no direct URL
+      console.error('No checkout URL available, using fallback')
+      window.location.href = '/checkout'
     }
   }
 
