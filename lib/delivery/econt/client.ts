@@ -62,6 +62,17 @@ export class EcontProvider extends BaseDeliveryProvider {
       password: process.env.ECONT_PASSWORD || ''
     })
   }
+
+  // Econt API is currently broken/unavailable - using placeholder implementation
+  private async makeEcontRequest<T>(_endpoint: string, _data: any): Promise<T> {
+    // TODO: Fix Econt API integration
+    // Current issues:
+    // - Test API returns HTML instead of JSON
+    // - Production API returns empty responses
+    // - Need proper API documentation from support_integrations@econt.com
+    
+    throw new Error('Econt API integration is currently unavailable. Please contact Econt support for proper API documentation.')
+  }
   
   async getOffices(city?: string): Promise<DeliveryOffice[]> {
     const data = {
@@ -72,7 +83,8 @@ export class EcontProvider extends BaseDeliveryProvider {
       ...(city ? { filter: { city_name: city } } : {})
     }
     
-    const response = await this.makeRequest<EcontOfficeResponse>('Nomenclatures', 'POST', data)
+    // Try different endpoint names for Econt API
+    const response = await this.makeEcontRequest<EcontOfficeResponse>('offices', data)
     
     return response.offices.map(office => ({
       id: office.id.toString(),
@@ -131,7 +143,7 @@ export class EcontProvider extends BaseDeliveryProvider {
       }
     }
     
-    const response = await this.makeRequest<EcontCalculationResponse>('Calculate', 'POST', data)
+    const response = await this.makeEcontRequest<EcontCalculationResponse>('calculate', data)
     
     if (response.errors && response.errors.length > 0) {
       return {

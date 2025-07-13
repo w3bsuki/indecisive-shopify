@@ -1,4 +1,4 @@
-import { getProducts } from '@/lib/shopify'
+import { getProductsPaginated } from '@/lib/shopify/api-enhanced'
 import { ProductCarousel } from '@/components/commerce/product-carousel'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
 import Link from 'next/link'
@@ -10,10 +10,10 @@ export async function TshirtsCarousel() {
   const tp = await getTranslations('products')
   
   try {
-    // Fetch T-shirt products - temporarily showing all products since tags are not set
-    // TODO: Update to use tags once products are properly tagged in Shopify
-    const productsData = await getProducts(12)
-    const products = productsData.edges.map(edge => edge.node)
+    // Fetch T-shirt products with proper tag filtering including crop tops
+    const { products } = await getProductsPaginated(1, 12, {
+      tags: ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees', 'crop top', 'crop-top', 'croptop']
+    })
     
     // If no T-shirts found, show a message
     if (products.length === 0) {

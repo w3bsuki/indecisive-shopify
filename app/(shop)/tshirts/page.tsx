@@ -39,8 +39,8 @@ export default async function TshirtsPage({
     sizes: params.sizes ? params.sizes.split(',') : undefined,
     availability: params.availability ? params.availability.split(',') : undefined,
     sort: params.sort as 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'created-desc' | undefined,
-    // Use the same tag query as tshirts-carousel
-    tags: ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees']
+    // Include crop tops as they are a type of t-shirt
+    tags: ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees', 'crop top', 'crop-top', 'croptop']
   }
   
   // Fetch products with server-side filtering and pagination

@@ -1,4 +1,4 @@
-import { EcontProvider } from './econt/client'
+// import { EcontProvider } from './econt/client'
 import { SpeedyProvider } from './speedy/client'
 import type { DeliveryProvider, DeliveryOffice, DeliveryCalculationRequest, DeliveryCalculationResponse } from './types'
 
@@ -9,7 +9,8 @@ export class DeliveryManager {
     this.providers = new Map()
     
     // Initialize providers
-    this.providers.set('econt', new EcontProvider())
+    // TODO: Re-enable Econt when API is fixed
+    // this.providers.set('econt', new EcontProvider())
     this.providers.set('speedy', new SpeedyProvider())
   }
   
@@ -46,7 +47,7 @@ export class DeliveryManager {
     const promises = this.getProviders().map(provider => 
       provider.calculatePrice(request).catch(error => ({
         provider: provider.code,
-        service: 'standard',
+        service: 'unavailable',
         price: 0,
         currency: 'BGN',
         deliveryDays: 0,

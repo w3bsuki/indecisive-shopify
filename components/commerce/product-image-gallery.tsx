@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCw, Maximize2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,6 +19,12 @@ interface TouchState {
   startTime: number
 }
 
+interface ZoomState {
+  scale: number
+  translateX: number
+  translateY: number
+}
+
 interface ProductImageGalleryProps {
   images: ShopifyImage[]
   productTitle: string
@@ -27,9 +33,34 @@ interface ProductImageGalleryProps {
 export function ProductImageGallery({ images, productTitle }: ProductImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [zoomState, setZoomState] = useState<ZoomState>({ scale: 1, translateX: 0, translateY: 0 })
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [autoplayEnabled, setAutoplayEnabled] = useState(false)
   const touchStateRef = useRef<TouchState | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const selectedImage = images[selectedIndex]
+
+  // Auto-advance images for galleries with multiple images
+  useEffect(() => {
+    if (autoplayEnabled && images.length > 1) {
+      autoplayIntervalRef.current = setInterval(() => {
+        setSelectedIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+      }, 4000)
+    }
+
+    return () => {
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current)
+      }
+    }
+  }, [autoplayEnabled, images.length])
+
+  // Reset zoom when changing images
+  useEffect(() => {
+    setZoomState({ scale: 1, translateX: 0, translateY: 0 })
+    setIsZoomed(false)
+  }, [selectedIndex])
 
   const handlePrevious = useCallback(() => {
     setSelectedIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
@@ -78,10 +109,56 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
     touchStateRef.current = null
   }, [images.length, handlePrevious, handleNext])
 
-  // Double tap to zoom
+  // Enhanced zoom functionality
+  const handleZoomIn = useCallback(() => {
+    setZoomState(prev => ({
+      ...prev,
+      scale: Math.min(prev.scale * 1.5, 3)
+    }))
+    setIsZoomed(true)
+  }, [])
+
+  const handleZoomOut = useCallback(() => {
+    setZoomState(prev => ({
+      ...prev,
+      scale: Math.max(prev.scale / 1.5, 1)
+    }))
+    if (zoomState.scale <= 1) {
+      setIsZoomed(false)
+    }
+  }, [zoomState.scale])
+
+  const resetZoom = useCallback(() => {
+    setZoomState({ scale: 1, translateX: 0, translateY: 0 })
+    setIsZoomed(false)
+  }, [])
+
+  // Double tap to zoom with enhanced control
   const handleDoubleClick = useCallback(() => {
-    setIsZoomed(!isZoomed)
-  }, [isZoomed])
+    if (zoomState.scale === 1) {
+      handleZoomIn()
+    } else {
+      resetZoom()
+    }
+  }, [zoomState.scale, handleZoomIn, resetZoom])
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        handlePrevious()
+      } else if (e.key === 'ArrowRight') {
+        handleNext()
+      } else if (e.key === 'Escape') {
+        resetZoom()
+      }
+    }
+
+    if (isFullscreen) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isFullscreen, handlePrevious, handleNext, resetZoom])
 
   if (!images.length) {
     return (
@@ -104,10 +181,15 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
         onTouchEnd={handleTouchEnd}
         onDoubleClick={handleDoubleClick}
       >
-        <div className={cn(
-          "w-full h-full transition-transform duration-300 ease-out",
-          isZoomed && "scale-150 cursor-move"
-        )}>
+        <div 
+          className={cn(
+            "w-full h-full transition-transform duration-300 ease-out product-image",
+            isZoomed && "cursor-move"
+          )}
+          style={{
+            transform: `scale(${zoomState.scale}) translate(${zoomState.translateX}px, ${zoomState.translateY}px)`
+          }}
+        >
           <OptimizedImage
             src={selectedImage.url}
             alt={selectedImage.altText || productTitle}
@@ -116,6 +198,58 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
             sizes="(max-width: 768px) 100vw, 50vw"
             className="rounded-lg select-none"
           />
+        </div>
+        
+        {/* Enhanced Controls Overlay */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          {/* Zoom Controls */}
+          <div className="absolute top-2 left-2 flex gap-1">
+            {zoomState.scale > 1 && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-white/90 hover:bg-white h-8 w-8"
+                  onClick={handleZoomOut}
+                >
+                  <ZoomOut className="h-3 w-3" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-white/90 hover:bg-white h-8 w-8"
+                  onClick={resetZoom}
+                >
+                  <RotateCw className="h-3 w-3" />
+                </Button>
+              </>
+            )}
+            {zoomState.scale < 3 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-white/90 hover:bg-white h-8 w-8"
+                onClick={handleZoomIn}
+              >
+                <ZoomIn className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+          
+          {/* Autoplay Toggle */}
+          {images.length > 1 && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 bg-white/90 hover:bg-white h-8 w-8"
+              onClick={() => setAutoplayEnabled(!autoplayEnabled)}
+            >
+              <div className={cn(
+                "w-3 h-3 rounded-full transition-colors",
+                autoplayEnabled ? "bg-green-500" : "bg-gray-400"
+              )} />
+            </Button>
+          )}
         </div>
         
         {/* Navigation Arrows - Desktop only */}
@@ -155,26 +289,80 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
           </div>
         )}
 
-        {/* Zoom Button - Desktop only */}
-        <Dialog>
+        {/* Enhanced Fullscreen Dialog */}
+        <Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
           <DialogTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-2 right-2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex"
+              className="absolute bottom-2 right-2 bg-white/90 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex h-8 w-8"
             >
-              <ZoomIn className="h-4 w-4" />
+              <Maximize2 className="h-3 w-3" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl w-full">
-            <div className="relative aspect-square">
-              <Image
-                src={selectedImage.url}
-                alt={selectedImage.altText || productTitle}
-                fill
-                className="object-contain"
-                sizes="100vw"
-              />
+          <DialogContent className="max-w-7xl w-full h-[90vh] p-0">
+            <div className="relative w-full h-full bg-black flex items-center justify-center">
+              {/* Fullscreen Image */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <Image
+                  src={selectedImage.url}
+                  alt={selectedImage.altText || productTitle}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                />
+              </div>
+              
+              {/* Fullscreen Controls */}
+              <div className="absolute top-4 left-4 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  onClick={handleZoomIn}
+                  disabled={zoomState.scale >= 3}
+                >
+                  <ZoomIn className="h-4 w-4 mr-1" />
+                  Zoom In
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  onClick={handleZoomOut}
+                  disabled={zoomState.scale <= 1}
+                >
+                  <ZoomOut className="h-4 w-4 mr-1" />
+                  Zoom Out
+                </Button>
+              </div>
+              
+              {/* Navigation in Fullscreen */}
+              {images.length > 1 && (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white"
+                    onClick={handlePrevious}
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white"
+                    onClick={handleNext}
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </Button>
+                  
+                  {/* Image Counter */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                    {selectedIndex + 1} / {images.length}
+                  </div>
+                </>
+              )}
             </div>
           </DialogContent>
         </Dialog>

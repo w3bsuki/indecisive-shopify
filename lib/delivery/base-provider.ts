@@ -55,15 +55,23 @@ export abstract class BaseDeliveryProvider implements DeliveryProvider {
       const response = await fetch(url, options)
       
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(
-          errorData.message || 
-          errorData.error || 
-          `HTTP ${response.status}: ${response.statusText}`
-        )
+        const responseText = await response.text()
+        
+        try {
+          const errorData = JSON.parse(responseText)
+          throw new Error(errorData.message || errorData.error || `HTTP ${response.status}: ${response.statusText}`)
+        } catch {
+          throw new Error(`HTTP ${response.status}: ${response.statusText} - ${responseText.substring(0, 200)}`)
+        }
       }
       
-      return await response.json()
+      const responseText = await response.text()
+      
+      try {
+        return JSON.parse(responseText)
+      } catch (_parseError) {
+        throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`)
+      }
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`${this.name} API Error: ${error.message}`)

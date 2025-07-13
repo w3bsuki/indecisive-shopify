@@ -24,8 +24,8 @@ export async function GET() {
       })
     })
     
-    // Find T-shirt related products
-    const tshirtTags = ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees']
+    // Find T-shirt related products (now includes crop tops as updated in tshirts page)
+    const tshirtTags = ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees', 'crop top', 'crop-top', 'croptop']
     const tshirtProducts = products.filter(product => 
       product.tags?.some((tag: string) => 
         tshirtTags.includes(tag.toLowerCase())
@@ -40,11 +40,27 @@ export async function GET() {
       )
     )
     
+    // Find crop top related products
+    const cropTopTags = ['crop top', 'crop-top', 'croptop', 'crop tops', 'crop-tops', 'croptops']
+    const cropTopProducts = products.filter(product => 
+      product.tags?.some((tag: string) => 
+        cropTopTags.includes(tag.toLowerCase())
+      )
+    )
+    
+    // Find products that could be t-shirts (including crop tops)
+    const potentialTshirtTags = [...tshirtTags, ...cropTopTags]
+    const potentialTshirtProducts = products.filter(product => 
+      product.tags?.some((tag: string) => 
+        potentialTshirtTags.includes(tag.toLowerCase())
+      )
+    )
+    
     return NextResponse.json({
       totalProducts: products.length,
       tshirtProducts: {
         count: tshirtProducts.length,
-        products: tshirtProducts.slice(0, 5).map(p => ({
+        products: tshirtProducts.map(p => ({
           title: p.title,
           tags: p.tags
         }))
@@ -56,10 +72,30 @@ export async function GET() {
           tags: p.tags
         }))
       },
+      cropTopProducts: {
+        count: cropTopProducts.length,
+        products: cropTopProducts.map(p => ({
+          title: p.title,
+          tags: p.tags
+        }))
+      },
+      potentialTshirtProducts: {
+        count: potentialTshirtProducts.length,
+        products: potentialTshirtProducts.map(p => ({
+          title: p.title,
+          tags: p.tags
+        }))
+      },
       allTags: Object.keys(productsByTag).sort(),
-      sampleProducts: products.slice(0, 10).map(p => ({
+      tagBreakdown: Object.entries(productsByTag).map(([tag, products]) => ({
+        tag,
+        count: products.length,
+        products: products.slice(0, 3).map(p => p.title)
+      })),
+      allProducts: products.map(p => ({
         title: p.title,
-        tags: p.tags
+        tags: p.tags,
+        handle: p.handle
       }))
     })
   } catch (_error) {

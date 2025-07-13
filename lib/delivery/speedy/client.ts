@@ -78,6 +78,43 @@ export class SpeedyProvider extends BaseDeliveryProvider {
       password: process.env.SPEEDY_PASSWORD || ''
     })
   }
+
+  // Custom GET request method for Speedy API
+  private async makeSpeedyGetRequest<T>(endpoint: string): Promise<T> {
+    const url = `${this.apiUrl}${endpoint}`
+    
+    const headers: HeadersInit = {
+      'Accept': 'application/json'
+      // Don't send Content-Type for GET requests
+    }
+    
+    const options: RequestInit = {
+      method: 'GET',
+      headers
+    }
+    
+    try {
+      const response = await fetch(url, options)
+      
+      if (!response.ok) {
+        const _errorText = await response.text()
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+      
+      const responseText = await response.text()
+      
+      try {
+        return JSON.parse(responseText)
+      } catch (_parseError) {
+        throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`${this.name} API Error: ${error.message}`)
+      }
+      throw error
+    }
+  }
   
   async getOffices(city?: string): Promise<DeliveryOffice[]> {
     const params = new URLSearchParams({
@@ -87,9 +124,9 @@ export class SpeedyProvider extends BaseDeliveryProvider {
       ...(city ? { siteName: city } : {})
     })
     
-    const response = await this.makeRequest<SpeedyOfficeResponse>(
-      `location/office?${params.toString()}`,
-      'GET'
+    // Use custom GET request without JSON headers for Speedy
+    const response = await this.makeSpeedyGetRequest<SpeedyOfficeResponse>(
+      `location/office?${params.toString()}`
     )
     
     return response.offices.map(office => ({
@@ -345,9 +382,8 @@ export class SpeedyProvider extends BaseDeliveryProvider {
       }>
     }
     
-    const response = await this.makeRequest<SiteResponse>(
-      `location/site?${params.toString()}`,
-      'GET'
+    const response = await this.makeSpeedyGetRequest<SiteResponse>(
+      `location/site?${params.toString()}`
     )
     
     if (response.sites.length === 0) {
