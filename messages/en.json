@@ -44,7 +44,8 @@
     "sale": "SALE",
     "banner": "Become an affiliate • Get 15% commission",
     "bannerLink": "Sign up here →",
-    "home": "Home"
+    "home": "Home",
+    "apparel": "Apparel"
   },
   "hero": {
     "customers": "customers",
@@ -230,7 +231,32 @@
         "preOrder": "Pre-Order"
       },
       "refineSearch": "Refine your product search with advanced filters"
-    }
+    },
+    "size": {
+      "howToMeasure": "How to Measure",
+      "headMeasurement": "Wrap measuring tape around your head, just above your ears",
+      "fitPreference": "Choose your preferred fit: snug or relaxed",
+      "snug": "Snug fit",
+      "relaxed": "Relaxed fit",
+      "headCircumference": "Head Circumference",
+      "fit": "Fit"
+    },
+    "shippingReturns": "Shipping & Returns",
+    "shipping": {
+      "returnsExchanges": "Returns & Exchanges",
+      "returnWindow": "30-day return window for all items",
+      "freeReturns": "Free returns within Bulgaria",
+      "exchanges": "Easy exchanges for different sizes"
+    },
+    "careInstructions": "Care Instructions",
+    "care": {
+      "machineWash": "Machine wash cold with similar colors",
+      "noBleach": "Do not bleach",
+      "tumbleDry": "Tumble dry low heat",
+      "coolIron": "Cool iron if needed"
+    },
+    "sizeGuide": "Size Guide",
+    "youMayAlsoLike": "You may also like"
   },
   "cart": {
     "title": "CART",
@@ -318,7 +344,8 @@
     "close": "Close",
     "wishlist": "Wishlist",
     "categories": "CATEGORIES",
-    "filtered": "Filtered"
+    "filtered": "Filtered",
+    "backToProducts": "Back to Products"
   },
   "footer": {
     "customerService": "Customer Service",

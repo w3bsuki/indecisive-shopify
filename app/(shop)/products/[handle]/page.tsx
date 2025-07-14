@@ -62,6 +62,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params
   const product = await getProduct(handle)
   const t = await getTranslations('products')
+  const tc = await getTranslations('common')
   
   if (!product) {
     notFound()
@@ -98,7 +99,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <BreadcrumbNavigation 
           items={breadcrumbItems}
           showBackButton={true}
-          backButtonLabel="Back to Products"
+          backButtonLabel={tc('backToProducts')}
           backButtonHref="/products"
           variant="compact"
         />

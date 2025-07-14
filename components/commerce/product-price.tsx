@@ -1,6 +1,6 @@
 'use client'
 
-import { Money } from '@shopify/hydrogen-react'
+import { Money } from '@/components/commerce/money'
 import { cn } from '@/lib/utils'
 import type { MoneyV2 } from '@shopify/hydrogen-react/storefront-api-types'
 

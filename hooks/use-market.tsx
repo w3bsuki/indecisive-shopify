@@ -82,35 +82,42 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
 
   const formatPrice = (amount: string, currencyCode?: string) => {
     // If currencyCode is provided and different from market currency,
-    // it means we're showing a product not available in this market
+    // convert the amount to market currency
     if (currencyCode && currencyCode !== market.currencyCode) {
       const value = parseFloat(amount)
       
-      // Compact currency symbols
-      const currencySymbols: Record<string, string> = {
-        'USD': '$',
-        'EUR': '€',
-        'GBP': '£',
-        'JPY': '¥',
-        'BGN': 'лв',
-        'CAD': 'C$',
-        'AUD': 'A$'
+      // Use approximate conversion rates for immediate display
+      const approximateRates: Record<string, Record<string, number>> = {
+        'BGN': {
+          'GBP': 0.42,
+          'EUR': 0.51,
+          'USD': 0.64,
+          'BGN': 1
+        },
+        'GBP': {
+          'BGN': 1 / 0.42, // ~2.38
+          'EUR': 0.51 / 0.42, // ~1.21
+          'USD': 0.64 / 0.42, // ~1.52
+          'GBP': 1
+        },
+        'EUR': {
+          'BGN': 1 / 0.51, // ~1.96
+          'GBP': 0.42 / 0.51, // ~0.82
+          'USD': 0.64 / 0.51, // ~1.25
+          'EUR': 1
+        },
+        'USD': {
+          'BGN': 1 / 0.64, // 1.5625 (16 USD = 25 BGN)
+          'GBP': 0.42 / 0.64, // ~0.66
+          'EUR': 0.51 / 0.64, // ~0.80
+          'USD': 1
+        }
       }
       
-      const symbol = currencySymbols[currencyCode] || currencyCode
+      const rate = approximateRates[currencyCode]?.[market.currencyCode] || 1
+      const convertedAmount = value * rate
       
-      // Format number without currency symbol
-      const formattedNumber = new Intl.NumberFormat(market.locale, {
-        minimumFractionDigits: (currencyCode === 'JPY' || currencyCode === 'BGN') ? 0 : 2,
-        maximumFractionDigits: (currencyCode === 'JPY' || currencyCode === 'BGN') ? 0 : 2,
-      }).format(value)
-      
-      // Place symbol based on currency convention
-      if (currencyCode === 'BGN') {
-        return `${formattedNumber} ${symbol}`
-      } else {
-        return `${symbol}${formattedNumber}`
-      }
+      return formatPriceForMarket(convertedAmount.toString(), market)
     }
     
     return formatPriceForMarket(amount, market)
@@ -130,7 +137,26 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       'BGN': {
         'GBP': 0.42,
         'EUR': 0.51,
+        'USD': 0.64,
         'BGN': 1
+      },
+      'GBP': {
+        'BGN': 1 / 0.42, // ~2.38
+        'EUR': 0.51 / 0.42, // ~1.21
+        'USD': 0.64 / 0.42, // ~1.52
+        'GBP': 1
+      },
+      'EUR': {
+        'BGN': 1 / 0.51, // ~1.96
+        'GBP': 0.42 / 0.51, // ~0.82
+        'USD': 0.64 / 0.51, // ~1.25
+        'EUR': 1
+      },
+      'USD': {
+        'BGN': 1 / 0.64, // 1.5625 (16 USD = 25 BGN)
+        'GBP': 0.42 / 0.64, // ~0.66
+        'EUR': 0.51 / 0.64, // ~0.80
+        'USD': 1
       }
     }
 

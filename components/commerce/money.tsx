@@ -3,6 +3,7 @@
 // import { Money as HydrogenMoney } from '@shopify/hydrogen-react'
 import type { MoneyV2 } from '@shopify/hydrogen-react/storefront-api-types'
 import { formatPriceForMarket, DEFAULT_MARKET } from '@/lib/shopify/markets'
+// import { currencyService } from '@/lib/currency/exchange-rates'
 
 interface MoneyProps {
   data: MoneyV2
@@ -27,8 +28,24 @@ export function Money({
     return null
   }
 
-  // Format price using Bulgarian market formatting
-  const formattedPrice = formatPriceForMarket(data.amount, DEFAULT_MARKET)
+  // Convert price to BGN if needed, then format
+  const formattedPrice = (() => {
+    if (data.currencyCode === 'BGN') {
+      return formatPriceForMarket(data.amount, DEFAULT_MARKET)
+    }
+    
+    // Convert from USD/GBP/EUR to BGN
+    const approximateRates: Record<string, number> = {
+      'USD': 1 / 0.64, // 1.5625 (16 USD = 25 BGN)
+      'GBP': 1 / 0.42, // ~2.38
+      'EUR': 1 / 0.51, // ~1.96
+    }
+    
+    const rate = approximateRates[data.currencyCode] || 1
+    const convertedAmount = parseFloat(data.amount) * rate
+    
+    return formatPriceForMarket(convertedAmount.toString(), DEFAULT_MARKET)
+  })()
   
   const Component = as || 'span'
   

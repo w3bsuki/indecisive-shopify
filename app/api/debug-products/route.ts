@@ -69,7 +69,9 @@ export async function GET() {
         count: hatProducts.length,
         products: hatProducts.slice(0, 5).map(p => ({
           title: p.title,
-          tags: p.tags
+          tags: p.tags,
+          price: p.priceRange?.minVariantPrice?.amount,
+          currencyCode: p.priceRange?.minVariantPrice?.currencyCode
         }))
       },
       cropTopProducts: {

@@ -138,7 +138,32 @@
     "addToWishlist": "Zur Wunschliste hinzufügen",
     "removeFromWishlist": "Von Wunschliste entfernen",
     "addingToCart": "Wird zum Warenkorb hinzugefügt",
-    "selectSize": "Größe wählen"
+    "selectSize": "Größe wählen",
+    "size": {
+      "howToMeasure": "Wie man misst",
+      "headMeasurement": "Maßband um den Kopf wickeln, knapp über den Ohren",
+      "fitPreference": "Wählen Sie Ihre bevorzugte Passform: eng oder entspannt",
+      "snug": "Eng",
+      "relaxed": "Entspannt",
+      "headCircumference": "Kopfumfang",
+      "fit": "Passform"
+    },
+    "shippingReturns": "Versand & Rückgaben",
+    "shipping": {
+      "returnsExchanges": "Rückgaben & Umtausch",
+      "returnWindow": "30-Tage-Rückgaberecht für alle Artikel",
+      "freeReturns": "Kostenlose Rückgaben innerhalb Deutschlands",
+      "exchanges": "Einfacher Umtausch für verschiedene Größen"
+    },
+    "careInstructions": "Pflegehinweise",
+    "care": {
+      "machineWash": "Maschinenwäsche kalt mit ähnlichen Farben",
+      "noBleach": "Nicht bleichen",
+      "tumbleDry": "Tumble dry niedrige Hitze",
+      "coolIron": "Kalt bügeln wenn nötig"
+    },
+    "sizeGuide": "Größentabelle",
+    "youMayAlsoLike": "Das könnte Ihnen auch gefallen"
   },
   "cart": {
     "title": "WARENKORB",

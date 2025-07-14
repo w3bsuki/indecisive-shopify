@@ -9,6 +9,7 @@ export interface ExchangeRates {
   BGN: number
   GBP: number  
   EUR: number
+  USD: number
   lastUpdated: string
 }
 
@@ -32,6 +33,7 @@ class CurrencyService {
     BGN: 1,      // Base currency
     GBP: 0.42,   // 1 BGN = ~0.42 GBP
     EUR: 0.51,   // 1 BGN = ~0.51 EUR
+    USD: 0.64,   // 1 BGN = 0.64 USD (so 16 USD = 25 BGN)
     lastUpdated: '2025-01-02T00:00:00Z'
   }
 
@@ -69,6 +71,7 @@ class CurrencyService {
           BGN: 1,
           GBP: data.rates.GBP || this.FALLBACK_RATES.GBP,
           EUR: data.rates.EUR || this.FALLBACK_RATES.EUR,
+          USD: data.rates.USD || this.FALLBACK_RATES.USD,
           lastUpdated: data.date || new Date().toISOString()
         }
         
@@ -109,12 +112,20 @@ class CurrencyService {
 
     const rates = await this.getExchangeRates()
     
-    // Convert from BGN to target currency
+    // Convert between currencies
     let exchangeRate = 1
     if (fromCurrency === 'BGN' && toCurrency === 'GBP') {
       exchangeRate = rates.GBP
     } else if (fromCurrency === 'BGN' && toCurrency === 'EUR') {
       exchangeRate = rates.EUR
+    } else if (fromCurrency === 'BGN' && toCurrency === 'USD') {
+      exchangeRate = rates.USD
+    } else if (fromCurrency === 'GBP' && toCurrency === 'BGN') {
+      exchangeRate = 1 / rates.GBP
+    } else if (fromCurrency === 'EUR' && toCurrency === 'BGN') {
+      exchangeRate = 1 / rates.EUR
+    } else if (fromCurrency === 'USD' && toCurrency === 'BGN') {
+      exchangeRate = 1 / rates.USD
     } else {
       // For other conversions, convert through BGN
       // Unsupported conversion
@@ -145,7 +156,8 @@ class CurrencyService {
       'BGN': new Intl.NumberFormat('bg-BG', { 
         style: 'currency', 
         currency: 'BGN',
-        minimumFractionDigits: 2
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
       }),
       'GBP': new Intl.NumberFormat('en-GB', { 
         style: 'currency', 
@@ -155,6 +167,11 @@ class CurrencyService {
       'EUR': new Intl.NumberFormat('de-DE', { 
         style: 'currency', 
         currency: 'EUR',
+        minimumFractionDigits: 2
+      }),
+      'USD': new Intl.NumberFormat('en-US', { 
+        style: 'currency', 
+        currency: 'USD',
         minimumFractionDigits: 2
       })
     }
