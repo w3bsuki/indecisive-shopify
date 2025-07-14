@@ -47,7 +47,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
       {/* Product Image with Hydrogen React */}
       <Link 
         href={`/products/${product.handle}`}
-        className="block relative aspect-square overflow-hidden bg-gray-50 group"
+        className="block relative aspect-square overflow-hidden group"
       >
         <HydrogenImageServer
           data={product.featuredImage}

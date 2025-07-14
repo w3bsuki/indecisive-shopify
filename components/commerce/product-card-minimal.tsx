@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { PrefetchLink } from './prefetch-link'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useWishlist } from '@/hooks/use-wishlist'
@@ -115,10 +116,10 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
       )}
 
       {/* Product Image */}
-      <Link 
+      <PrefetchLink 
         href={`/products/${product.handle}`}
         className={cn(
-          "block relative overflow-hidden bg-gray-50",
+          "block relative overflow-hidden",
           size === 'large' ? 'aspect-square' : 'aspect-square md:aspect-[4/5]'
         )}
       >
@@ -166,7 +167,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
             />
           </button>
         </div>
-      </Link>
+      </PrefetchLink>
 
       {/* Product Information */}
       <div className={cn(

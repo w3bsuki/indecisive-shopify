@@ -152,7 +152,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {isMobile ? (
           <Link 
             href={`/products/${product.handle}`}
-            className="block relative aspect-square overflow-hidden bg-gray-50"
+            className="block relative aspect-square overflow-hidden"
           >
             <div ref={productImageRef}>
               {imageContent}
@@ -160,7 +160,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </Link>
         ) : (
           <QuickViewDialog product={product}>
-            <div ref={productImageRef} className="relative aspect-square md:aspect-[4/5] overflow-hidden bg-gray-50 cursor-pointer">
+            <div ref={productImageRef} className="relative aspect-square md:aspect-[4/5] overflow-hidden cursor-pointer">
               {imageContent}
               {/* Desktop hover overlay with add to cart at bottom */}
               <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-200 flex flex-col">

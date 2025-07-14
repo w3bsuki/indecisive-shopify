@@ -1,6 +1,6 @@
 'use client'
 
-import { ProductInfoEnhanced } from './product-info-enhanced'
+import { ProductInfoCompact } from './product-info-compact'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 
 interface ProductInfoWrapperProps {
@@ -8,5 +8,5 @@ interface ProductInfoWrapperProps {
 }
 
 export function ProductInfoWrapper({ product }: ProductInfoWrapperProps) {
-  return <ProductInfoEnhanced product={product} />
+  return <ProductInfoCompact product={product} />
 }

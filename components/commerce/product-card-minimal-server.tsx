@@ -41,7 +41,7 @@ export async function ProductCardMinimalServer({
         <Link 
           href={`/products/${product.handle}`}
           className={cn(
-            "block relative overflow-hidden bg-gray-50",
+            "block relative overflow-hidden",
             size === 'large' ? 'aspect-square' : 'aspect-square md:aspect-[4/5]'
           )}
         >

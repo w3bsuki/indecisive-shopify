@@ -6,6 +6,7 @@ import { ProductImageGallery } from '@/components/commerce/product-image-gallery
 import { AddToCartForm } from '@/components/commerce/add-to-cart-form'
 // import { ProductInfo } from '@/components/commerce/product-info'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
+// import { MobileProductLayoutV2 } from './mobile-product-layout-v2'
 import { RecentlyViewedSection } from '@/components/commerce/recently-viewed-section'
 import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
@@ -15,6 +16,7 @@ import { ArrowLeft, Truck, RotateCcw, Shield } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { BreadcrumbNavigation, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
 import { BreadcrumbHelpers } from '@/lib/breadcrumb-helpers'
+import { getCategoryTranslationKey } from '@/lib/translate-category'
 
 interface ProductPageProps {
   params: Promise<{ handle: string }>
@@ -36,6 +38,8 @@ export async function generateStaticParams() {
 
 // Revalidate product pages every hour to keep them fresh
 export const revalidate = 3600 // 1 hour
+
+// Import ProductImageGallery normally since dynamic imports with ssr: false don't work in server components
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params
@@ -63,6 +67,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProduct(handle)
   const t = await getTranslations('products')
   const tc = await getTranslations('common')
+  const tf = await getTranslations('products.filters.category')
   
   if (!product) {
     notFound()
@@ -79,10 +84,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = product.images?.edges.map(edge => edge.node) || 
     (product.featuredImage ? [product.featuredImage] : [])
 
-  // Generate breadcrumb items
+  // Generate breadcrumb items with translated category
+  const categoryTag = product.tags?.[0]
+  const translatedCategory = categoryTag ? tf(getCategoryTranslationKey(categoryTag)) : undefined
+  
   const breadcrumbItems = BreadcrumbHelpers.product(
     product.title,
-    product.tags?.[0] || undefined, // Use first tag as category
+    translatedCategory || categoryTag || undefined,
     undefined // No vendor field available
   )
 
@@ -133,7 +141,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto md:px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-12">
-            {/* Product Images - Scaled down on mobile */}
+            {/* Product Images */}
             <div className="md:sticky md:top-20 md:self-start px-4 md:px-0">
               <Suspense fallback={
                 <div className="aspect-square bg-gray-100 animate-pulse" />
@@ -146,7 +154,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Product Details */}
-            <div className="px-4 md:px-0 py-2 md:py-0 pb-6 md:pb-6">
+            <div className="px-4 md:px-0 pb-6 md:pb-6">
               {/* Enhanced Product Info with ratings and inventory */}
               <ProductInfoWrapper product={product} />
               
@@ -155,22 +163,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <AddToCartForm product={product} showProductInfo={false} />
               </div>
 
-              {/* Product Benefits */}
-              <div className="grid grid-cols-3 gap-4 mt-8 py-6 border-t">
-                <div className="text-center">
-                  <Truck className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-xs font-semibold">Безплатна доставка</p>
-                  <p className="text-xs text-gray-600">При поръчки над 150 лв</p>
+              {/* Product Benefits - Compact Horizontal */}
+              <div className="flex items-center justify-around py-4 mt-6 border-y text-sm">
+                <div className="flex items-center gap-2">
+                  <Truck className="w-4 h-4" />
+                  <span className="hidden sm:inline">Free Shipping</span>
+                  <span className="sm:hidden">Free Ship</span>
                 </div>
-                <div className="text-center">
-                  <RotateCcw className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-xs font-semibold">Лесни връщания</p>
-                  <p className="text-xs text-gray-600">30 дни връщане</p>
+                <div className="flex items-center gap-2">
+                  <RotateCcw className="w-4 h-4" />
+                  <span>30 Days</span>
                 </div>
-                <div className="text-center">
-                  <Shield className="w-6 h-6 mx-auto mb-2" />
-                  <p className="text-xs font-semibold">Сигурно плащане</p>
-                  <p className="text-xs text-gray-600">100% сигурно</p>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4" />
+                  <span className="hidden sm:inline">Secure Payment</span>
+                  <span className="sm:hidden">Secure</span>
                 </div>
               </div>
 
@@ -192,37 +199,37 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Recently Viewed Products */}
-        <RecentlyViewedSection />
-        
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-8 md:mt-12 border-t">
-            <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
-              <h2 className="text-lg md:text-xl font-medium mb-4 md:mb-6 text-gray-800">{t('youMayAlsoLike')}</h2>
-              
-              {/* Mobile: Horizontal scroll */}
-              <div className="md:hidden -mx-4">
-                <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
-                  {relatedProducts.map((product) => (
-                    <div key={product.id} className="flex-none snap-start" style={{ width: 'calc(50% - 4px)' }}>
-                      <ProductCardMinimalServer product={product} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Desktop: Grid */}
-              <div className="hidden md:grid grid-cols-4 gap-4">
-                {relatedProducts.slice(0, 4).map((product) => (
-                  <ProductCardMinimalServer key={product.id} product={product} />
+      {/* Recently Viewed Products */}
+      <RecentlyViewedSection />
+      
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-8 md:mt-12 border-t">
+          <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
+            <h2 className="text-lg md:text-xl font-medium mb-4 md:mb-6 text-gray-800">{t('youMayAlsoLike')}</h2>
+            
+            {/* Mobile: Horizontal scroll */}
+            <div className="md:hidden -mx-4">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
+                {relatedProducts.map((product) => (
+                  <div key={product.id} className="flex-none snap-start" style={{ width: 'calc(50% - 4px)' }}>
+                    <ProductCardMinimalServer product={product} />
+                  </div>
                 ))}
               </div>
             </div>
+
+            {/* Desktop: Grid */}
+            <div className="hidden md:grid grid-cols-4 gap-4">
+              {relatedProducts.slice(0, 4).map((product) => (
+                <ProductCardMinimalServer key={product.id} product={product} />
+              ))}
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   )
 }
