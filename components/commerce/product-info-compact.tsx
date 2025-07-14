@@ -3,7 +3,7 @@
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { Badge } from '@/components/ui/badge'
 import { useTranslations } from 'next-intl'
-import { Money, PriceRange } from './money'
+import { Money } from './money'
 import { ProductRating } from './product-rating'
 import { Check } from 'lucide-react'
 
