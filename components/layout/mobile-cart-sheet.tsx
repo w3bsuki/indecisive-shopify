@@ -220,28 +220,28 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
         {lines && lines.length > 0 && (
           <div className="border-t bg-gray-50">
             {/* Free Shipping Progress */}
-            <div className="px-6 py-3 border-b bg-white">
+            <div className="px-4 py-2 border-b bg-white">
               <FreeShippingProgress 
                 currentAmount={parseFloat(subtotal?.amount || '0')} 
                 currency={subtotal?.currencyCode || 'USD'} 
               />
             </div>
             
-            <div className="px-6 py-4 space-y-4">
+            <div className="px-4 py-3 space-y-3">
             {/* Promo Code */}
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder={t('discountCode')}
-                className="flex-1 px-3 py-2 text-sm border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-colors"
+                className="flex-1 px-3 py-1.5 text-sm border border-gray-200 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors"
               />
-              <Button variant="outline" className="h-auto py-2 px-4 border-2">
+              <Button variant="outline" className="h-auto py-1.5 px-3 text-sm">
                 {t('apply')}
               </Button>
             </div>
 
             {/* Totals */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="flex justify-between">
                 <span className="text-sm">{t('subtotal')}</span>
                 <span className="text-sm font-semibold">{subtotal?.amount && subtotal?.currencyCode ? formatPrice(subtotal.amount, subtotal.currencyCode) : '$0.00'}</span>
@@ -252,16 +252,15 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
                   <span className="text-sm font-semibold">{formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode)}</span>
                 </div>
               )}
-              <div className="flex justify-between pt-2 border-t">
-                <span className="font-medium">{t('total')}</span>
-                <span className="font-bold">{total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}</span>
+              <div className="flex justify-between pt-1 border-t">
+                <span className="font-medium text-sm">{t('total')}</span>
+                <span className="font-bold text-sm">{total?.amount && total?.currencyCode ? formatPrice(total.amount, total.currencyCode) : '$0.00'}</span>
               </div>
             </div>
 
             {/* Checkout Button */}
             <Button
-              className="w-full bg-black text-white hover:bg-gray-800"
-              size="lg"
+              className="w-full bg-black text-white hover:bg-gray-800 h-11"
               onClick={handleCheckout}
               disabled={isLoading}
             >
@@ -282,15 +281,14 @@ export function MobileCartSheet({ children, isBottomNav = false }: { children?: 
             <SheetClose asChild>
               <Button
                 variant="outline"
-                className="w-full"
-                size="lg"
+                className="w-full h-10"
               >
                 {t('continueShopping')}
               </Button>
             </SheetClose>
 
             {/* Enhanced Trust Elements */}
-            <div className="pt-2">
+            <div className="pt-1">
               <CartTrustElements variant="minimal" />
             </div>
             </div>
