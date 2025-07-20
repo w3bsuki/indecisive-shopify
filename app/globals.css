@@ -1007,3 +1007,46 @@
   width: 100%;
   height: 100%;
 }
+
+/* === CRITICAL MOBILE SCROLL PERFORMANCE FIX === */
+/* Fix scrolling issues on mobile devices */
+html {
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: none !important;
+}
+
+/* Ensure body scrolls smoothly */
+body {
+  -webkit-overflow-scrolling: touch !important;
+  overflow-scrolling: touch !important;
+}
+
+/* Fix product grids blocking scroll */
+.grid,
+[class*="grid-cols"],
+[class*="product"],
+main {
+  touch-action: pan-y !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+/* Allow interaction but not scroll blocking */
+button,
+a,
+[role="button"] {
+  touch-action: manipulation !important;
+}
+
+/* Override any problematic touch-action settings */
+* {
+  touch-action: unset !important;
+}
+
+/* Specific overrides for scrollable areas */
+html,
+body,
+main,
+div {
+  touch-action: pan-y !important;
+}
