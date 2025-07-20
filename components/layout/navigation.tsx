@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Search, ShoppingBag, Heart, User, Instagram, ChevronDown, Star } from "lucide-react"
+import { Menu, X, Search, ShoppingBag, Heart, User, Instagram, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
