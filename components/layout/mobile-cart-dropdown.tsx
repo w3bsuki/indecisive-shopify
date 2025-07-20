@@ -4,7 +4,6 @@ import type React from "react"
 import { useRef, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { DrawerEmptyState } from "@/components/ui/drawer-empty-state"
 import { ShoppingBag, Plus, Minus, X, CreditCard, Loader2, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,7 +16,6 @@ import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -52,7 +50,6 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
   }, [totalItems])
 
   const subtotal = cost?.subtotalAmount
-  const total = cost?.totalAmount
   const isLoading = status === 'updating' || status === 'creating' || status === 'fetching'
 
   const handleCheckout = () => {

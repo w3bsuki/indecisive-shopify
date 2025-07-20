@@ -10,8 +10,8 @@ import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileCartDropdown } from "@/components/layout/mobile-cart-dropdown"
 import { CartSlideout } from "@/components/cart/cart-slideout"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
+import { MobileSearchDropdown } from "@/components/layout/mobile-search-dropdown"
 import { SearchBar } from "@/components/layout/search-bar"
-import { SearchFiltersTranslated } from "@/app/(shop)/search/search-filters-translated"
 import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
 import { AnnouncementBanner } from "@/components/layout/announcement-banner"
 import { useCart, setCartSlideoutCallback } from "@/hooks/use-cart"
@@ -312,7 +312,6 @@ export function Navigation() {
                     side="bottom"
                     className="w-[calc(100vw-24px)] sm:w-[calc(100vw-48px)] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-lg overflow-hidden animate-none"
                     sideOffset={5}
-                    forceMount={false}
                   >
                     {/* Navigation Categories */}
                     <div className="px-4 py-4 max-h-[70vh] overflow-y-auto">
@@ -440,7 +439,7 @@ export function Navigation() {
               <div className="flex items-center">
                 {/* Search */}
                 <div className="-mr-2">
-                  <MobileSearchSheet />
+                  <MobileSearchDropdown />
                 </div>
 
                 {/* Cart */}

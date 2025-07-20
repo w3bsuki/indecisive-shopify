@@ -8,6 +8,7 @@ interface FreeShippingProgressProps {
   currentAmount: number
   currency: string
   className?: string
+  compact?: boolean
 }
 
 const FREE_SHIPPING_THRESHOLDS: Record<string, number> = {

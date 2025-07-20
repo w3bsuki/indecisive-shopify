@@ -28,7 +28,7 @@ export default function CartPage() {
         console.error('No checkout URL available, using fallback')
         window.location.href = '/checkout'
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to proceed to checkout', {
         description: 'Please try again or contact support.'
       })
