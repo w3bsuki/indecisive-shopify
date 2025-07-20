@@ -26,19 +26,11 @@ export async function NewsletterSection() {
       </Marquee>
       
       <section className="min-h-[300px] md:h-96 flex relative">
-        <div className="w-1/2 bg-white flex flex-col justify-center items-center px-3 sm:px-6 md:px-12 py-8 md:py-0 border-l border-black">
-          <div className="text-center space-y-3 sm:space-y-6 md:space-y-8 max-w-xs sm:max-w-sm md:max-w-md w-full">
-            <h3 className="text-lg sm:text-3xl md:text-4xl font-bold">БЪДИ МИНИМАЛИСТИЧЕН</h3>
-            <p className="text-black/70 text-xs sm:text-base md:text-lg">{t('minimalDesc')}</p>
-          </div>
-        </div>
-
-        <div className="w-1/2 bg-black flex flex-col justify-center items-center px-3 sm:px-6 md:px-12 py-8 md:py-0">
-          <div className="text-center space-y-3 sm:space-y-6 md:space-y-8 max-w-xs sm:max-w-sm md:max-w-md w-full">
-            <h3 className="text-lg sm:text-3xl md:text-4xl font-bold text-white">БЪДИ СМЕЛ И НЕРЕШИТЕЛЕН</h3>
-            <p className="text-white/70 text-xs sm:text-base md:text-lg">Бъди уверен, изрази себе си</p>
-          </div>
-        </div>
+        {/* Left half - white background */}
+        <div className="w-1/2 bg-white border-l border-black"></div>
+        
+        {/* Right half - black background */}
+        <div className="w-1/2 bg-black"></div>
         
         {/* Centered Button spanning both columns */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -46,19 +38,28 @@ export async function NewsletterSection() {
             href="/products"
             className="pointer-events-auto relative group"
           >
-            <button className="relative overflow-hidden font-mono font-bold text-sm sm:text-base md:text-lg uppercase tracking-wider transition-all duration-300 hover:scale-105 group">
-              {/* Background split effect */}
+            <button className="relative font-mono font-bold text-sm sm:text-base md:text-lg uppercase tracking-wider transition-all duration-300 hover:scale-105 group overflow-hidden">
+              {/* Split background */}
               <div className="absolute inset-0 flex">
-                {/* Left half - black button on white background */}
-                <div className="w-1/2 bg-black group-hover:bg-gray-800"></div>
-                {/* Right half - white outline on black background */}
-                <div className="w-1/2 bg-transparent border-2 border-white group-hover:bg-white group-hover:border-transparent transition-colors duration-300"></div>
+                <div className="w-1/2 bg-black"></div>
+                <div className="w-1/2 bg-white"></div>
               </div>
               
-              {/* White text for visibility */}
+              {/* Border overlay for right side */}
+              <div className="absolute inset-0 left-1/2 border-2 border-white"></div>
+              
+              {/* Text */}
               <div className="relative px-8 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6">
-                <span className="text-white group-hover:text-black transition-colors duration-300">JOIN THE INDECISIVE CLUB</span>
+                <span className="relative z-10">
+                  {/* Left text - white on black */}
+                  <span className="text-white">JOIN THE IN</span>
+                  {/* Right text - black on white */}
+                  <span className="text-black">DECISIVE CLUB</span>
+                </span>
               </div>
+              
+              {/* Hover effect */}
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
             </button>
           </Link>
         </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 
@@ -68,30 +67,37 @@ export function ProductPageBanner({
         </h1>
         
         {showTabs && (
-          <Tabs value={currentCategory} className="w-full max-w-md">
-            <TabsList className="grid w-full grid-cols-3 bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 rounded-lg p-1">
+          <div className="w-full max-w-2xl mx-auto">
+            <div className="flex items-center justify-center gap-2 sm:gap-4">
               {categories.map((category) => (
-                <TabsTrigger
+                <Link
                   key={category.id}
-                  value={category.id}
-                  asChild
+                  href={category.href}
                   className={cn(
-                    "relative px-2 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-md",
-                    "text-gray-700 hover:text-gray-900 hover:bg-gray-50",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2",
-                    "data-[state=active]:bg-gray-900 data-[state=active]:text-white data-[state=active]:shadow-sm",
-                    "data-[state=active]:hover:bg-gray-800",
-                    "min-h-[36px] sm:min-h-[40px] touch-optimized flex items-center justify-center",
-                    "transform active:scale-95 transition-none"
+                    "relative px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3",
+                    "text-sm sm:text-base lg:text-lg font-black tracking-wider",
+                    "transition-all duration-200",
+                    "border-2 border-transparent",
+                    "hover:scale-105 active:scale-95",
+                    currentCategory === category.id ? [
+                      "bg-white text-black",
+                      "shadow-[0_0_20px_rgba(255,255,255,0.5)]",
+                      "border-white"
+                    ] : [
+                      "bg-black/20 text-white",
+                      "hover:bg-black/30",
+                      "hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                    ]
                   )}
                 >
-                  <Link href={category.href} className="w-full h-full flex items-center justify-center">
-                    {category.label}
-                  </Link>
-                </TabsTrigger>
+                  <span className="relative z-10">{category.label}</span>
+                  {currentCategory === category.id && (
+                    <div className="absolute inset-0 bg-white animate-pulse opacity-20" />
+                  )}
+                </Link>
               ))}
-            </TabsList>
-          </Tabs>
+            </div>
+          </div>
         )}
       </div>
     </div>
