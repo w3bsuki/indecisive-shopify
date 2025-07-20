@@ -54,7 +54,7 @@ const FALLBACK_HERO_IMAGES: HeroSlide[] = [
  */
 export async function getHeroSlides(maxSlides: number = 5): Promise<HeroSlide[]> {
   try {
-    // Try to fetch products from Shopify
+    // Try to fetch products from Shopify with caching
     const productsData = await getProducts(maxSlides);
     const products = productsData.edges.map(edge => edge.node);
     

@@ -44,8 +44,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
         throw new Error('No checkout URL available. Please try adding products to your cart again.')
       }
 
-      // Prepare and navigate to checkout with customer data pre-population
-      // Guest checkout is supported by default
+      // Navigate to checkout with return URL configured
       await navigateToCheckout(checkoutUrl, {
         redirectToLogin: false, // Allow guest checkout
         returnUrl: returnUrl || '/checkout'
@@ -58,7 +57,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
         description: 'Please try again or contact support if the problem persists.'
       })
     }
-  }, [cart, returnUrl])
+  }, [cart])
 
   // Check authentication status on mount
   useEffect(() => {

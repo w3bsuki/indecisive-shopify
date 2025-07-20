@@ -156,22 +156,22 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
   }
 
   const Content = () => (
-    <div className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-3 sm:px-4 px-safe min-h-[40px] sm:min-h-[44px] touch-optimized">
+    <div className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-12 sm:px-16 min-h-[40px] sm:min-h-[48px] relative">
       {/* Icon */}
       {currentAnnouncement.icon && (
-        <currentAnnouncement.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+        <currentAnnouncement.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
       )}
       
       {/* Title */}
-      <span className="font-bold text-xs sm:text-sm tracking-wide truncate">
+      <span className="font-semibold text-xs sm:text-sm tracking-wider">
         {currentAnnouncement.title}
       </span>
       
       {/* CTA */}
       {currentAnnouncement.cta && (
         <>
-          <span className="text-xs sm:text-sm opacity-50 hidden sm:inline">→</span>
-          <span className="text-xs sm:text-sm underline underline-offset-2 font-medium whitespace-nowrap hidden sm:inline">
+          <span className="text-xs sm:text-sm opacity-60 hidden sm:inline mx-1">·</span>
+          <span className="text-xs sm:text-sm underline underline-offset-4 decoration-1 font-medium whitespace-nowrap hidden sm:inline hover:opacity-80 transition-opacity">
             {currentAnnouncement.cta}
           </span>
         </>
@@ -182,50 +182,57 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
   return (
     <div 
       className={cn(
-        "relative transition-all duration-300 ease-in-out",
+        "relative transition-all duration-300 ease-in-out overflow-hidden",
         variantStyles[currentAnnouncement.variant],
         className
       )}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Navigation arrows - only show if multiple announcements */}
-      {visibleAnnouncements.length > 1 && (
-        <>
+      {/* Navigation controls container */}
+      <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none z-10">
+        {/* Left arrow - only show if multiple announcements */}
+        {visibleAnnouncements.length > 1 && (
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10 z-10 touch-optimized"
+            className="ml-1 sm:ml-2 h-8 w-8 sm:h-9 sm:w-9 text-white hover:bg-white/20 pointer-events-auto transition-all duration-200 opacity-80 hover:opacity-100 border-0 shadow-none"
             onClick={handlePrevious}
             aria-label="Previous announcement"
           >
-            <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+            <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </Button>
+        )}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-10 sm:right-12 top-1/2 -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10 z-10 touch-optimized"
-            onClick={handleNext}
-            aria-label="Next announcement"
-          >
-            <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-          </Button>
-        </>
-      )}
+        {/* Right side controls */}
+        <div className="flex items-center gap-1">
+          {/* Next arrow - only show if multiple announcements */}
+          {visibleAnnouncements.length > 1 && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 sm:h-9 sm:w-9 text-white hover:bg-white/20 pointer-events-auto transition-all duration-200 opacity-80 hover:opacity-100 border-0 shadow-none"
+              onClick={handleNext}
+              aria-label="Next announcement"
+            >
+              <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </Button>
+          )}
 
-      {/* Dismiss button - only for dismissible announcements */}
-      {currentAnnouncement.dismissible && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10 z-10 touch-optimized"
-          onClick={() => handleDismiss(currentAnnouncement.id)}
-          aria-label="Dismiss announcement"
-        >
-          <X className="h-3 w-3 sm:h-4 sm:w-4" />
-        </Button>
-      )}
+          {/* Dismiss button - only for dismissible announcements */}
+          {currentAnnouncement.dismissible && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="mr-1 sm:mr-2 h-8 w-8 sm:h-9 sm:w-9 text-white hover:bg-white/20 pointer-events-auto transition-all duration-200 opacity-80 hover:opacity-100 border-0 shadow-none"
+              onClick={() => handleDismiss(currentAnnouncement.id)}
+              aria-label="Dismiss announcement"
+            >
+              <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
 
       {/* Content - wrapped in Link if href provided */}
       {currentAnnouncement.href ? (
@@ -244,14 +251,11 @@ export function AnnouncementBanner({ className }: AnnouncementBannerProps) {
 
       {/* Progress indicator - only show if multiple announcements */}
       {visibleAnnouncements.length > 1 && (
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
-          <div 
-            className="h-full bg-white transition-all duration-300 ease-in-out"
-            style={{ 
-              width: `${((currentIndex + 1) / visibleAnnouncements.length) * 100}%` 
-            }}
-          />
-        </div>
+        <div className="absolute bottom-0 left-0 h-0.5 bg-white/70 transition-all duration-300 ease-in-out"
+          style={{ 
+            width: `${((currentIndex + 1) / visibleAnnouncements.length) * 100}%` 
+          }}
+        />
       )}
     </div>
   )

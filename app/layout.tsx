@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono, Comforter } from 'next/font/google'
 import './globals.css'
 import { MarketProvider } from '@/hooks/use-market'
 import { HydrogenProvider } from '@/lib/shopify/hydrogen-client'
@@ -28,6 +28,14 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 })
 
+// Comforter - More authentic handwritten font with Cyrillic support
+const comforter = Comforter({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400'],
+  display: 'swap',
+  variable: '--font-handwritten',
+})
+
 export const metadata: Metadata = {
   title: 'Indecisive Wear - Fashion for the Uncertain',
   description: 'Curated fashion for those who can\'t decide. Let us help you find your style.',
@@ -50,7 +58,7 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
         <ResourceHints />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${jetbrainsMono.variable} ${comforter.variable}`}>
         <NextIntlClientProvider messages={messages}>
           <MarketProvider>
             <HydrogenProvider>

@@ -17,6 +17,7 @@ import { getTranslations } from 'next-intl/server'
 import { BreadcrumbNavigation, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
 import { BreadcrumbHelpers } from '@/lib/breadcrumb-helpers'
 import { getCategoryTranslationKey } from '@/lib/translate-category'
+import { getMarketFromCookies } from '@/lib/shopify/server-market'
 
 interface ProductPageProps {
   params: Promise<{ handle: string }>
@@ -43,7 +44,8 @@ export const revalidate = 3600 // 1 hour
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params
-  const product = await getProduct(handle)
+  const market = await getMarketFromCookies()
+  const product = await getProduct(handle, market)
 
   if (!product) {
     return {
@@ -64,7 +66,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params
-  const product = await getProduct(handle)
+  const market = await getMarketFromCookies()
+  const product = await getProduct(handle, market)
   const t = await getTranslations('products')
   const tc = await getTranslations('common')
   const tf = await getTranslations('products.filters.category')
@@ -74,7 +77,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   // Get related products
-  const relatedProductsData = await getProducts(8)
+  const relatedProductsData = await getProducts(8, undefined, market)
   const relatedProducts = relatedProductsData.edges
     .map(edge => edge.node)
     .filter(p => p.handle !== product.handle)

@@ -1,27 +1,51 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 import { Camera, Heart, Star } from 'lucide-react'
 
 export function CommunityCarousel() {
   const t = useTranslations('community')
   
-  // Demo cards that will be replaced with real customer stars
-  const demoCards = Array.from({ length: 8 }, (_, i) => ({
+  // Indecisive stars images - using encodeURIComponent for filenames with spaces
+  const starImages = [
+    { filename: encodeURIComponent('emotionally unavailable green star.jpg'), displayName: 'emotionally unavailable green star.jpg', username: '@indecisive_wear' },
+    { filename: encodeURIComponent('emotionally unavailable star.jpg'), displayName: 'emotionally unavailable star.jpg', username: '@indecisive_wear' },
+    { filename: 'hooligan.jpg', displayName: 'hooligan.jpg', username: '@indecisive_wear' },
+    { filename: 'star1.jpg', displayName: 'star1.jpg', username: '@indecisive_wear' },
+    { filename: encodeURIComponent('the indecisive club.jpg'), displayName: 'the indecisive club.jpg', username: '@indecisive_wear' },
+    { filename: encodeURIComponent('emotionally unavailable green star.jpg'), displayName: 'emotionally unavailable green star.jpg', username: '@indecisive_wear' },
+    { filename: 'hooligan.jpg', displayName: 'hooligan.jpg', username: '@indecisive_wear' },
+    { filename: 'star1.jpg', displayName: 'star1.jpg', username: '@indecisive_wear' }
+  ]
+  
+  const demoCards = starImages.map((star, i) => ({
     id: i + 1,
-    username: '@indecisivewear',
+    username: star.username,
     caption: t('tagToBeFeature'),
-    likes: '∞'
+    likes: Math.floor(Math.random() * 500 + 100).toString(),
+    image: `/indecisive-stars/${star.filename}`
   }))
 
   return (
     <section className="py-8 md:py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="px-4 sm:px-6 lg:px-8 mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-mono tracking-wide">
+        <div className="px-4 sm:px-6 lg:px-8 mb-8 text-center">
+          <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1 inline-block relative">
             {t('title')}
+            {/* Rough underline effect */}
+            <svg className="absolute -bottom-3 left-0 w-full" height="8" viewBox="0 0 300 8" preserveAspectRatio="none">
+              <path 
+                d="M0,4 Q75,5 150,4 T300,4" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                fill="none"
+                className="text-black"
+                style={{ strokeDasharray: '0', strokeLinecap: 'round' }}
+              />
+            </svg>
           </h2>
-          <p className="text-gray-600 text-center font-mono text-sm">
+          <p className="text-gray-700 text-sm md:text-base font-medium">
             {t('subtitle')}
           </p>
         </div>
@@ -71,6 +95,7 @@ function StarCard({
     username: string
     caption: string
     likes: string
+    image?: string
   }
   index: number
 }) {
@@ -100,24 +125,36 @@ function StarCard({
   return (
     <div className="flex-shrink-0 w-48 mx-2">
       <div className="bg-white border border-gray-200 hover:border-black/40 hover:shadow-lg transition-all duration-300 group">
-        {/* Image area - will show customer photos in future */}
-        <div className={`aspect-[4/5] bg-gradient-to-br ${gradients[index % gradients.length]} relative overflow-hidden flex flex-col items-center justify-center p-4`}>
-          {/* Star icon overlay - represents "stars" (customers) */}
-          <div className="absolute top-3 right-3">
-            <Star className={`w-5 h-5 ${iconColors[index % iconColors.length]} fill-current`} />
+        {/* Image area - shows indecisive stars */}
+        <div className="aspect-[4/5] relative overflow-hidden bg-gray-100">
+          {/* Star icon overlay */}
+          <div className="absolute top-3 right-3 z-10">
+            <Star className="w-5 h-5 text-white drop-shadow-lg fill-current" />
           </div>
           
-          <div className="mb-4 relative">
-            <div className="absolute inset-0 bg-black/5 blur-xl"></div>
-            <Camera className={`w-10 h-10 ${iconColors[index % iconColors.length]} relative z-10 group-hover:scale-110 transition-transform`} strokeWidth={1.5} />
-          </div>
-          
-          <h3 className="font-mono font-bold text-sm text-gray-800 text-center mb-1">
-            INDECISIVE STAR
-          </h3>
-          <p className="font-mono text-xs text-gray-600 text-center">
-            Coming Soon
-          </p>
+          {card.image ? (
+            <Image
+              src={card.image}
+              alt={card.username}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 192px, 192px"
+            />
+          ) : (
+            <div className={`w-full h-full bg-gradient-to-br ${gradients[index % gradients.length]} flex flex-col items-center justify-center p-4`}>
+              <div className="mb-4 relative">
+                <div className="absolute inset-0 bg-black/5 blur-xl"></div>
+                <Camera className={`w-10 h-10 ${iconColors[index % iconColors.length]} relative z-10 group-hover:scale-110 transition-transform`} strokeWidth={1.5} />
+              </div>
+              
+              <h3 className="font-mono font-bold text-sm text-gray-800 text-center mb-1">
+                INDECISIVE STAR
+              </h3>
+              <p className="font-mono text-xs text-gray-600 text-center">
+                Coming Soon
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Card Info */}

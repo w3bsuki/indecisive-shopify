@@ -1,15 +1,27 @@
 import { getTranslations } from 'next-intl/server';
+import { unstable_cache } from 'next/cache';
 import { getHeroSlides } from '@/lib/shopify/hero-products';
 import { HeroClient } from './hero-client';
+import { CACHE_TIMES } from '@/lib/cache/config';
+
+// Cache hero slides data
+const getCachedHeroSlides = unstable_cache(
+  async () => getHeroSlides(5),
+  ['hero-slides'],
+  {
+    revalidate: CACHE_TIMES.HERO,
+    tags: ['hero']
+  }
+);
 
 export async function Hero() {
   const t = await getTranslations('hero');
   const tb = await getTranslations('brand');
   
-  // Fetch hero slides on the server
+  // Fetch hero slides on the server with caching
   let slides;
   try {
-    slides = await getHeroSlides(5);
+    slides = await getCachedHeroSlides();
   } catch (_error) {
     // Fallback slides if API fails
     slides = [

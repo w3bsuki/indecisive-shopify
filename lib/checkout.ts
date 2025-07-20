@@ -160,19 +160,19 @@ export async function prepareCheckout(
   }
 }
 
-// Transform checkout URL to use custom subdomain
+// Transform checkout URL to add return URL parameter
 function transformCheckoutUrl(checkoutUrl: string): string {
   try {
-    const customDomain = process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN
-    if (!customDomain) {
-      return checkoutUrl
-    }
-
     const url = new URL(checkoutUrl)
-    // Replace the myshopify.com domain with our custom domain
-    if (url.hostname.includes('myshopify.com')) {
+    
+    // Add return_url parameter to redirect back to our site after checkout
+    const returnUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.indecisivewear.com'
+    url.searchParams.set('return_url', `${returnUrl}/order-confirmation`)
+    
+    // If custom checkout domain is configured (Shopify Plus only)
+    const customDomain = process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN
+    if (customDomain && url.hostname.includes('myshopify.com')) {
       url.hostname = customDomain
-      // Ensure HTTPS
       url.protocol = 'https:'
     }
     

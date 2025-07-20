@@ -26,9 +26,12 @@ export function ProductCarousel({ products, title, className }: ProductCarouselP
       ? currentScroll - scrollAmount 
       : currentScroll + scrollAmount
     
+    // Use instant scrolling on touch devices for better performance
+    const isTouchDevice = 'ontouchstart' in window
+    
     scrollRef.current.scrollTo({
       left: targetScroll,
-      behavior: 'smooth'
+      behavior: isTouchDevice ? 'instant' : 'smooth'
     })
   }
 
@@ -62,26 +65,26 @@ export function ProductCarousel({ products, title, className }: ProductCarouselP
         <div 
           ref={scrollRef}
           className={cn(
-            "flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth",
+            "flex gap-2 overflow-x-auto scrollbar-hide",
             "snap-x snap-mandatory",
-            "md:gap-4"
+            "md:gap-4",
+            "will-change-scroll",
+            "touch-pan-x"
           )}
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch',
             scrollPaddingLeft: '16px',
             paddingLeft: '16px',
-            paddingRight: '16px'
+            paddingRight: '16px',
+            contain: 'layout style paint',
+            overscrollBehaviorX: 'contain'
           }}
         >
           {products.map((product, index) => (
             <div 
               key={product.id} 
-              className="flex-none snap-start"
-              style={{ 
-                width: 'calc(50% - 4px)' // Show 2 cards with 8px gap
-              }}
+              className="flex-none snap-start w-[calc(50%-4px)] md:w-auto"
             >
               <ProductCardMinimal
                 product={product}

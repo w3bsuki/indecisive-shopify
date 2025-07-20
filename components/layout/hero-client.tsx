@@ -36,10 +36,24 @@ interface HeroClientProps {
 
 export function HeroClient({ slides, translations }: HeroClientProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [imagesLoaded, setImagesLoaded] = React.useState(false);
 
-  // Auto-play functionality
+  // Preload next slide image
+  React.useEffect(() => {
+    if (slides.length <= 1) return;
+    
+    const nextIndex = (currentSlide + 1) % slides.length;
+    const img = new window.Image();
+    img.src = slides[nextIndex].image;
+  }, [currentSlide, slides]);
+
+  // Auto-play functionality with reduced motion support
   React.useEffect(() => {
     if (slides.length === 0) return;
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -47,6 +61,15 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
 
     return () => clearInterval(interval);
   }, [slides.length]);
+
+  // Track when first image loads
+  React.useEffect(() => {
+    if (slides.length === 0) return;
+    
+    const img = new window.Image();
+    img.onload = () => setImagesLoaded(true);
+    img.src = slides[0].image;
+  }, [slides]);
 
   // Removed dynamic viewport height adjustment to keep hero static
 
@@ -66,6 +89,11 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
           </h1>
         </div>
 
+        {/* Loading skeleton */}
+        {!imagesLoaded && (
+          <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+        )}
+
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -81,6 +109,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               sizes="100vw"
               priority={index === 0}
               loading={index === 0 ? 'eager' : 'lazy'}
+              quality={90}
               style={{
                 transform: 'scale(0.95)',
                 objectPosition: 'center center'

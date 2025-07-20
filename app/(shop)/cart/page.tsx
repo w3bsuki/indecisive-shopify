@@ -10,25 +10,28 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Money } from '@/components/commerce/money'
 import { DiscountCodeForm } from '@/components/cart/discount-code-form'
+import { navigateToCheckout } from '@/lib/checkout'
+import { toast } from 'sonner'
 
 export default function CartPage() {
   const { lines, cost, totalItems, updateItem, removeItem, clearCart, isEmpty, isLoading, checkoutUrl } = useCart()
 
-  const handleCheckout = () => {
-    console.log('Checkout URL:', checkoutUrl)
-    console.log('Cart lines:', lines)
-    console.log('Total items:', totalItems)
-    
-    // Redirect directly to Shopify checkout
-    if (checkoutUrl) {
-      // The checkoutUrl from Shopify should be used directly - it points to Shopify's domain
-      // Don't transform it since the lib/checkout.ts transformCheckoutUrl function may have already transformed it
-      console.log('Redirecting to checkout URL:', checkoutUrl)
-      window.location.href = checkoutUrl
-    } else {
-      // Fallback - navigate to checkout page if no direct URL
-      console.error('No checkout URL available, using fallback')
-      window.location.href = '/checkout'
+  const handleCheckout = async () => {
+    try {
+      if (checkoutUrl) {
+        // Navigate to checkout with return URL configured
+        await navigateToCheckout(checkoutUrl, {
+          redirectToLogin: false, // Allow guest checkout
+        })
+      } else {
+        // Fallback - navigate to checkout page if no direct URL
+        console.error('No checkout URL available, using fallback')
+        window.location.href = '/checkout'
+      }
+    } catch (error) {
+      toast.error('Failed to proceed to checkout', {
+        description: 'Please try again or contact support.'
+      })
     }
   }
 

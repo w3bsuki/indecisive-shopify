@@ -1,5 +1,5 @@
 export const PRODUCTS_QUERY = `
-  query Products($first: Int!, $after: String) {
+  query Products($first: Int!, $after: String, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
     products(first: $first, after: $after) {
       edges {
         node {
@@ -49,7 +49,7 @@ export const PRODUCTS_QUERY = `
 `;
 
 export const PRODUCT_QUERY = `
-  query Product($handle: String!) {
+  query Product($handle: String!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       id
       title

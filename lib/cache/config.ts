@@ -22,6 +22,9 @@ export const CACHE_TIMES = {
   
   // Search results (10 minutes)
   SEARCH: 600,
+  
+  // Hero carousel images (1 day)
+  HERO: 86400,
 } as const
 
 /**
