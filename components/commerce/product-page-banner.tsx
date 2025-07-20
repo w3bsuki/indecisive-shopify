@@ -1,6 +1,9 @@
+'use client'
+
 import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface ProductPageBannerProps {
   title: string
@@ -17,6 +20,8 @@ export function ProductPageBanner({
   showTabs = true,
   currentCategory = 'all'
 }: ProductPageBannerProps) {
+  const locale = useLocale()
+  const isBulgarian = locale === 'bg'
 
   const getBannerStyles = () => {
     switch (variant) {
@@ -35,9 +40,21 @@ export function ProductPageBanner({
   }
 
   const categories = [
-    { id: 'all', label: 'All', href: variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products' },
-    { id: 'hats', label: 'Hats', href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=hats` },
-    { id: 'tshirts', label: 'T-shirts', href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=tshirts` }
+    { 
+      id: 'all', 
+      label: isBulgarian ? 'ВСИЧКИ' : 'ALL', 
+      href: variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products' 
+    },
+    { 
+      id: 'hats', 
+      label: isBulgarian ? 'ХУЛИГАНКА' : 'HATS', 
+      href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=hats` 
+    },
+    { 
+      id: 'tshirts', 
+      label: isBulgarian ? 'БУНТАРКА' : 'T-SHIRTS', 
+      href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=tshirts` 
+    }
   ]
 
   return (
