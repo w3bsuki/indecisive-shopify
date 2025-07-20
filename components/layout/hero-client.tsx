@@ -82,7 +82,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
         <div className="absolute top-8 sm:top-12 lg:top-6 left-0 right-0 z-40 flex flex-col items-center gap-2">
           {/* New Collection Badge - Mobile Only */}
           <div className="sm:hidden bg-black text-white px-3 py-1 text-xs font-bold tracking-wider">
-            NEW COLLECTION
+            ДРОП №1
           </div>
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-black tracking-wider font-mono">
             "ХУЛИГАНКА"

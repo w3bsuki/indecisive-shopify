@@ -46,12 +46,12 @@ export function ProductPageBanner({
     },
     { 
       id: 'hats', 
-      label: isBulgarian ? 'ХУЛИГАНКА' : 'HATS', 
+      label: isBulgarian ? '#1 ХУЛИГАНКА' : '#1 HATS', 
       href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=hats` 
     },
     { 
       id: 'tshirts', 
-      label: isBulgarian ? 'БУНТАРКА' : 'T-SHIRTS', 
+      label: isBulgarian ? '#2 БУНТАРКА' : '#2 T-SHIRTS', 
       href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=tshirts` 
     }
   ]

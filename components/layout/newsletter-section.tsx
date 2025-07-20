@@ -72,12 +72,25 @@ export async function NewsletterSection() {
               </button>
             </Link>
             
-            {/* Description text */}
-            <p className="mt-4 text-xs sm:text-sm font-mono">
-              <span className="text-white">{locale === 'bg' ? 'Ексклузивни оферти' : 'Exclusive offers'}</span>
-              <span className="text-white mx-2">•</span>
-              <span className="text-black">{locale === 'bg' ? 'Ранен достъп' : 'Early access'}</span>
-            </p>
+            {/* Description text with split background matching button */}
+            <div className="mt-4 relative">
+              <div className="relative inline-block w-64 sm:w-80">
+                {/* Split background */}
+                <div className="absolute inset-0 flex">
+                  <div className="w-1/2 bg-white"></div>
+                  <div className="w-1/2 bg-black"></div>
+                </div>
+                {/* Text positioned in each half */}
+                <div className="relative flex text-xs sm:text-sm font-mono py-2">
+                  <div className="w-1/2 flex justify-center">
+                    <span className="text-black">{locale === 'bg' ? '♥ Яки оферти' : '♥ Exclusive offers'}</span>
+                  </div>
+                  <div className="w-1/2 flex justify-center">
+                    <span className="text-white">{locale === 'bg' ? 'Ранен достъп ♥' : 'Early access ♥'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
