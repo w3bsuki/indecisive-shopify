@@ -1,10 +1,11 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 import { Marquee, MarqueeItem } from '@/components/ui/marquee'
 import Link from 'next/link'
 
 export async function NewsletterSection() {
   const t = await getTranslations('newsletter')
   const tb = await getTranslations('brand')
+  const locale = await getLocale()
   
   return (
     <>
@@ -17,9 +18,9 @@ export async function NewsletterSection() {
       >
         {[...Array(6)].map((_, i) => (
           <span key={i} className="flex">
-            <MarqueeItem className="text-black">BE INDECISIVE</MarqueeItem>
-            <MarqueeItem className="text-black">JOIN THE CLUB</MarqueeItem>
-            <MarqueeItem className="text-black">MINIMAL DESIGN</MarqueeItem>
+            <MarqueeItem className="text-black">{t('beIndecisive')}</MarqueeItem>
+            <MarqueeItem className="text-black">{locale === 'bg' ? 'ПРИСЪЕДИНИ СЕ КЪМ КЛУБА' : 'JOIN THE CLUB'}</MarqueeItem>
+            <MarqueeItem className="text-black">{t('minimalDesign')}</MarqueeItem>
             <MarqueeItem className="text-black">{tb('name')}</MarqueeItem>
           </span>
         ))}
@@ -50,12 +51,19 @@ export async function NewsletterSection() {
               
               {/* Text */}
               <div className="relative px-8 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6">
-                <span className="relative z-10">
-                  {/* Left text - white on black */}
-                  <span className="text-white">JOIN THE IND</span>
-                  {/* Right text - black on white */}
-                  <span className="text-black">ECISIVE CLUB</span>
-                </span>
+                {locale === 'bg' ? (
+                  <span className="relative z-10">
+                    {/* Bulgarian text split */}
+                    <span className="text-white">ПРИСЪЕДИНИ СЕ КЪМ НЕР</span>
+                    <span className="text-black">ЕШИТЕЛНИЯ КЛУБ</span>
+                  </span>
+                ) : (
+                  <span className="relative z-10">
+                    {/* English text split */}
+                    <span className="text-white">JOIN THE IND</span>
+                    <span className="text-black">ECISIVE CLUB</span>
+                  </span>
+                )}
               </div>
               
               {/* Hover effect */}
