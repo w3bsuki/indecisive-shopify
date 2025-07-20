@@ -111,6 +111,9 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", throttledHandleScroll)
   }, [lastScrollY, isMenuOpen])
 
+  // Check if we're in Bulgarian locale
+  const isBulgarian = pathname.startsWith('/bg')
+
   const menuItems = [
     { name: t('all'), href: "/products", badge: null },
     { name: t('new'), href: "/new", badge: null },
@@ -119,8 +122,20 @@ export function Navigation() {
   ]
 
   const apparelItems = [
-    { name: "T-shirts", href: "/tshirts" },
-    { name: "Hats", href: "/hats" },
+    { 
+      name: isBulgarian ? "Шапки" : "Hats", 
+      href: "/hats",
+      collections: [
+        { name: "#1 Хулиганка", href: "/products?category=hats" }
+      ]
+    },
+    { 
+      name: isBulgarian ? "Тениски" : "T-shirts", 
+      href: "/tshirts",
+      collections: [
+        { name: "#2 Бунтарка", href: "/products?category=tshirts" }
+      ]
+    },
   ]
 
   return (
@@ -176,13 +191,22 @@ export function Navigation() {
                             <ChevronDown className="ml-1 h-4 w-4" />
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="min-w-[160px]">
+                        <DropdownMenuContent align="start" className="min-w-[200px]">
                           {apparelItems.map((item) => (
-                            <DropdownMenuItem key={item.href} asChild>
-                              <Link href={item.href} className="w-full cursor-pointer">
-                                {item.name}
-                              </Link>
-                            </DropdownMenuItem>
+                            <div key={item.href} className="relative">
+                              <DropdownMenuItem asChild>
+                                <Link href={item.href} className="w-full cursor-pointer font-medium">
+                                  {item.name}
+                                </Link>
+                              </DropdownMenuItem>
+                              {item.collections && item.collections.map((collection) => (
+                                <DropdownMenuItem key={collection.href} asChild>
+                                  <Link href={collection.href} className="w-full cursor-pointer pl-6 text-sm text-gray-600 hover:text-black">
+                                    {collection.name}
+                                  </Link>
+                                </DropdownMenuItem>
+                              ))}
+                            </div>
                           ))}
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -339,21 +363,37 @@ export function Navigation() {
                         </div>
                       </div>
                       
-                      {/* Apparel Section - 2 Column Grid */}
+                      {/* Collections Section */}
                       <div className="border-t border-gray-100 pt-4">
                         <h4 className="font-mono text-xs font-bold text-gray-600 mb-3 tracking-wider">{t('apparel').toUpperCase()}</h4>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-3">
                           {apparelItems.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="relative p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <div className="flex flex-col items-center text-center">
-                                <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
-                              </div>
-                            </Link>
+                            <div key={item.href} className="space-y-2">
+                              <Link
+                                href={item.href}
+                                className="block p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group"
+                                onClick={() => setIsMenuOpen(false)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
+                                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                                </div>
+                              </Link>
+                              {item.collections && (
+                                <div className="pl-4 space-y-1">
+                                  {item.collections.map((collection) => (
+                                    <Link
+                                      key={collection.href}
+                                      href={collection.href}
+                                      className="block p-2 text-sm text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+                                      onClick={() => setIsMenuOpen(false)}
+                                    >
+                                      {collection.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           ))}
                         </div>
                       </div>
