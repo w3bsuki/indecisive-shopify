@@ -52,9 +52,9 @@ export async function NewsletterSection() {
               <div className="relative px-8 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6">
                 <span className="relative z-10">
                   {/* Left text - white on black */}
-                  <span className="text-white">JOIN THE IN</span>
+                  <span className="text-white">JOIN THE IND</span>
                   {/* Right text - black on white */}
-                  <span className="text-black">DECISIVE CLUB</span>
+                  <span className="text-black">ECISIVE CLUB</span>
                 </span>
               </div>
               
