@@ -67,33 +67,21 @@ export function ProductPageBanner({
         </h1>
         
         {showTabs && (
-          <div className="w-full max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-2 sm:gap-4">
+          <div className="w-full max-w-md mx-auto">
+            <div className="flex items-center justify-center bg-white/95 backdrop-blur-sm rounded-lg p-1 shadow-lg">
               {categories.map((category) => (
                 <Link
                   key={category.id}
                   href={category.href}
                   className={cn(
-                    "relative px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3",
-                    "text-sm sm:text-base lg:text-lg font-black tracking-wider",
-                    "transition-all duration-200",
-                    "border-2 border-transparent",
-                    "hover:scale-105 active:scale-95",
-                    currentCategory === category.id ? [
-                      "bg-white text-black",
-                      "shadow-[0_0_20px_rgba(255,255,255,0.5)]",
-                      "border-white"
-                    ] : [
-                      "bg-black/20 text-white",
-                      "hover:bg-black/30",
-                      "hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-                    ]
+                    "flex-1 px-3 py-2.5 text-center text-xs sm:text-sm font-bold rounded-md transition-all duration-200",
+                    "min-h-[40px] flex items-center justify-center",
+                    currentCategory === category.id
+                      ? "bg-black text-white shadow-sm"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                   )}
                 >
-                  <span className="relative z-10">{category.label}</span>
-                  {currentCategory === category.id && (
-                    <div className="absolute inset-0 bg-white animate-pulse opacity-20" />
-                  )}
+                  {category.label}
                 </Link>
               ))}
             </div>

@@ -138,9 +138,33 @@ export async function getProductsPaginated(
     // Build search query from filters
     const queryParts: string[] = [];
     
-    // Category filter (using tags)
+    // Category filter (using collections, tags, and product type)
     if (filters.category) {
-      queryParts.push(`tag:category-${filters.category}`);
+      let categoryQueries: string[] = [];
+      
+      if (filters.category === 'hats') {
+        // For hats: collection "Bucket-hats" OR tag "hats"
+        categoryQueries = [
+          'collection:Bucket-hats',
+          'tag:hats'
+        ];
+      } else if (filters.category === 'tshirts') {
+        // For tshirts: collection "Tees" OR product_type "crop top"
+        categoryQueries = [
+          'collection:Tees',
+          'product_type:"crop top"',
+          'tag:tshirts'
+        ];
+      } else {
+        // Fallback for other categories
+        categoryQueries = [
+          `tag:${filters.category}`,
+          `collection:${filters.category}`,
+          `product_type:${filters.category}`
+        ];
+      }
+      
+      queryParts.push(`(${categoryQueries.join(' OR ')})`);
     }
     
     // Price range filter (Shopify supports variants.price)
