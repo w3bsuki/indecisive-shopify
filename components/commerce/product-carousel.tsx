@@ -68,8 +68,7 @@ export function ProductCarousel({ products, title, className }: ProductCarouselP
             "flex gap-2 overflow-x-auto scrollbar-hide",
             "snap-x snap-mandatory",
             "md:gap-4",
-            "will-change-scroll",
-            "touch-pan-x"
+            "will-change-scroll"
           )}
           style={{
             scrollbarWidth: 'none',

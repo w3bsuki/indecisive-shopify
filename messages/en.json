@@ -46,7 +46,9 @@
     "banner": "Become an affiliate • Get 15% commission",
     "bannerLink": "Sign up here →",
     "home": "Home",
-    "apparel": "Apparel"
+    "apparel": "Apparel",
+    "hats": "Hats", 
+    "tshirts": "T-shirts"
   },
   "hero": {
     "customers": "customers",

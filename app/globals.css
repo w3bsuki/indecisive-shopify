@@ -1021,41 +1021,8 @@ body {
   overflow-scrolling: touch !important;
 }
 
-/* Fix product grids blocking scroll */
-.grid,
-[class*="grid-cols"],
-[class*="product"],
-main {
-  touch-action: pan-y !important;
-  -webkit-user-select: none !important;
-  user-select: none !important;
+/* Simple horizontal scroll support */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Allow interaction but not scroll blocking */
-button,
-a,
-[role="button"] {
-  touch-action: manipulation !important;
-}
-
-/* Override any problematic touch-action settings */
-* {
-  touch-action: unset !important;
-}
-
-/* HORIZONTAL SCROLL FIXES - CRITICAL FOR MOBILE */
-[class*="overflow-x-auto"],
-[class*="overflow-x"],
-.scrollbar-hide,
-[class*="snap-x"] {
-  touch-action: pan-x !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-/* Specific overrides for scrollable areas */
-html,
-body,
-main,
-div:not([class*="overflow-x"]):not([class*="snap-x"]):not(.scrollbar-hide) {
-  touch-action: pan-y !important;
-}

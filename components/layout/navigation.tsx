@@ -123,18 +123,12 @@ export function Navigation() {
 
   const apparelItems = [
     { 
-      name: isBulgarian ? "Шапки" : "Hats", 
-      href: "/hats",
-      collections: [
-        { name: "#1 Хулиганка", href: "/products?category=hats" }
-      ]
+      name: t('hats'), 
+      href: "/products?category=hats"
     },
     { 
-      name: isBulgarian ? "Тениски" : "T-shirts", 
-      href: "/tshirts",
-      collections: [
-        { name: "#2 Бунтарка", href: "/products?category=tshirts" }
-      ]
+      name: t('tshirts'), 
+      href: "/products?category=tshirts"
     },
   ]
 
@@ -182,35 +176,19 @@ export function Navigation() {
                       </NavigationMenuItem>
                     ))}
                     
-                    {/* Apparel Dropdown */}
-                    <NavigationMenuItem>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium  hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
-{t('apparel')}
-                            <ChevronDown className="ml-1 h-4 w-4" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="min-w-[200px]">
-                          {apparelItems.map((item) => (
-                            <div key={item.href} className="relative">
-                              <DropdownMenuItem asChild>
-                                <Link href={item.href} className="w-full cursor-pointer font-medium">
-                                  {item.name}
-                                </Link>
-                              </DropdownMenuItem>
-                              {item.collections && item.collections.map((collection) => (
-                                <DropdownMenuItem key={collection.href} asChild>
-                                  <Link href={collection.href} className="w-full cursor-pointer pl-6 text-sm text-gray-600 hover:text-black">
-                                    {collection.name}
-                                  </Link>
-                                </DropdownMenuItem>
-                              ))}
-                            </div>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </NavigationMenuItem>
+                    {/* Simple Apparel Links */}
+                    {apparelItems.map((item) => (
+                      <NavigationMenuItem key={item.href}>
+                        <NavigationMenuLink asChild>
+                          <Link 
+                            href={item.href}
+                            className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium  hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                          >
+                            {item.name}
+                          </Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    ))}
                   </NavigationMenuList>
                 </NavigationMenu>
               )}
