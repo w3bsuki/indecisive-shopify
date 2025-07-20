@@ -349,25 +349,10 @@ export function Navigation() {
                                 className="block p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group"
                                 onClick={() => setIsMenuOpen(false)}
                               >
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-center">
                                   <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
-                                  <ChevronDown className="w-4 h-4 text-gray-400" />
                                 </div>
                               </Link>
-                              {item.collections && (
-                                <div className="pl-4 space-y-1">
-                                  {item.collections.map((collection) => (
-                                    <Link
-                                      key={collection.href}
-                                      href={collection.href}
-                                      className="block p-2 text-sm text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
-                                      onClick={() => setIsMenuOpen(false)}
-                                    >
-                                      {collection.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              )}
                             </div>
                           ))}
                         </div>
