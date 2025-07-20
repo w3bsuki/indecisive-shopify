@@ -30,7 +30,6 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -111,8 +110,6 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", throttledHandleScroll)
   }, [lastScrollY, isMenuOpen])
 
-  // Check if we're in Bulgarian locale
-  const isBulgarian = pathname.startsWith('/bg')
 
   const menuItems = [
     { name: t('all'), href: "/products", badge: null },
