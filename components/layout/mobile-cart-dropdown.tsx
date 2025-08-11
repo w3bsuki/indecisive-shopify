@@ -63,7 +63,7 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
       variant="ghost"
       size="sm"
       className={cn(
-        "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] relative text-gray-700 hover:text-black border border-transparent hover:border-black/30 transition-all duration-150",
+        "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] relative transition-all duration-150 rounded-lg text-gray-600 hover:text-black hover:bg-gray-50",
         isAnimating && "cart-icon-bounce"
       )}
     >

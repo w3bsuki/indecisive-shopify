@@ -456,15 +456,15 @@ export function Navigation() {
           showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
         )}
       >
-        <div className="flex items-center justify-around py-2 px-4 pb-safe">
+        <div className="flex items-center justify-evenly py-3 px-2 pb-safe">
           {/* Профил (Account) */}
           <Link href="/account">
             <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] transition-all duration-150",
-                pathname === "/account" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
+                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                pathname === "/account" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
               <User className="h-5 w-5 stroke-[2.5]" />
@@ -478,8 +478,8 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] transition-all duration-150",
-                pathname === "/#community" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
+                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                pathname === "/#community" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
               <Star className="h-5 w-5 stroke-[2.5]" />
@@ -493,8 +493,8 @@ export function Navigation() {
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] transition-all duration-150",
-                pathname === "/products" ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
+                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                pathname === "/products" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
               <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
@@ -507,8 +507,8 @@ export function Navigation() {
             variant="ghost"
             size="sm"
             className={cn(
-              "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[48px] relative transition-all duration-150",
-              showWishlistDrawer ? "text-black border border-black" : "text-gray-700 hover:text-black border border-transparent hover:border-black/30"
+              "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] relative transition-all duration-150 rounded-lg",
+              showWishlistDrawer ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
             )}
             onClick={() => setShowWishlistDrawer(true)}
           >
