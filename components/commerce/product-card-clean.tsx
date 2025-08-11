@@ -25,7 +25,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
   
   // Extract first variant for quick add
   const variants = product.variants ? extractNodes(product.variants) : []
-  const firstVariant = variants[0] as any
+  const firstVariant = variants[0]
   
   // Price data
   const minPrice = product.priceRange.minVariantPrice
@@ -120,12 +120,12 @@ export function ProductCardClean({ product, priority = false, className }: Produ
             </div>
             
             {/* Product Image */}
-            {(productImage as any)?.url ? (
+            {productImage?.url ? (
               <div className="relative w-full h-full">
                 {/* Main Image - Always visible */}
                 <Image
-                  src={(productImage as any).url}
-                  alt={(productImage as any).altText || product.title}
+                  src={productImage.url}
+                  alt={productImage.altText || product.title}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className={cn(
@@ -136,10 +136,10 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                 />
                 
                 {/* Hover Image - Only if different from main image */}
-                {hoverImage && (
+                {hoverImage?.url && (
                   <Image
-                    src={(hoverImage as any).url}
-                    alt={(hoverImage as any).altText || product.title}
+                    src={hoverImage.url}
+                    alt={hoverImage.altText || product.title}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className={cn(
