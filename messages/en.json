@@ -255,7 +255,7 @@
       "calculator": "Shipping Calculator"
     },
     "details": "Details",
-    "size": "Size",
+    "sizeTab": "Size",
     "shippingTab": "Shipping",
     "careInstructions": "Care Instructions",
     "care": {

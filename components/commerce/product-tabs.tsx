@@ -23,7 +23,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
         </TabsTrigger>
         <TabsTrigger value="size" className="flex items-center gap-2">
           <Ruler className="h-4 w-4" />
-          {t('size')}
+          {t('sizeTab')}
         </TabsTrigger>
         <TabsTrigger value="shipping" className="flex items-center gap-2">
           <Truck className="h-4 w-4" />
