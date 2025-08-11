@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
-import { Heart, ShoppingBag, Eye } from 'lucide-react'
+import { Heart, ShoppingBag } from 'lucide-react'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
 import { extractNodes } from '@/lib/shopify/flatten-connection'
@@ -20,7 +20,6 @@ interface ProductCardCleanProps {
 export function ProductCardClean({ product, priority = false, className }: ProductCardCleanProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
-  const [imageLoading, setImageLoading] = useState(true)
   const { addItem, isLoading } = useCart()
   const { formatPrice } = useMarket()
   
@@ -134,7 +133,6 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                     isHovered && hoverImage ? "scale-110" : "scale-100"
                   )}
                   priority={priority}
-                  onLoad={() => setImageLoading(false)}
                 />
                 
                 {/* Hover Image - Only if different from main image */}
