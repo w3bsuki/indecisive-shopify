@@ -247,14 +247,6 @@ export function ProductCardClean({ product, priority = false, className }: Produ
             </h3>
           </Link>
           
-          {/* Description */}
-          {product.description && (
-            <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-              {product.description.replace(/<[^>]*>/g, '').substring(0, 80)}
-              {product.description.length > 80 ? '...' : ''}
-            </p>
-          )}
-          
           {/* Price */}
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="text-base font-semibold text-gray-900">
