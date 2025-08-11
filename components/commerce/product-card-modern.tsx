@@ -209,7 +209,7 @@ export function ProductCardModern({
           <h3 className="text-sm text-gray-700 group-hover:text-black transition-colors line-clamp-1">
             {product.title}
           </h3>
-          <Money data={price} className="text-sm font-medium" />
+          <Money data={price as any} className="text-sm font-medium" />
         </div>
       </Link>
     )
@@ -373,12 +373,12 @@ export function ProductCardModern({
           {/* Price Section */}
           <div className="flex items-baseline gap-2">
             <Money 
-              data={price} 
+              data={price as any} 
               className="text-base font-semibold text-gray-900"
             />
             {isOnSale && compareAtPrice && (
               <Money 
-                data={compareAtPrice} 
+                data={compareAtPrice as any} 
                 className="text-sm text-gray-500 line-through"
               />
             )}

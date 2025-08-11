@@ -273,12 +273,12 @@ export function ProductCardV2({ product, priority = false }: ProductCardProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Money 
-                data={price} 
+                data={price as any} 
                 className="text-base font-semibold text-gray-900"
               />
               {isOnSale && compareAtPrice && (
                 <Money 
-                  data={compareAtPrice} 
+                  data={compareAtPrice as any} 
                   className="text-sm text-gray-400 line-through"
                 />
               )}

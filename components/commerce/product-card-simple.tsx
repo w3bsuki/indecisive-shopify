@@ -203,12 +203,12 @@ export function ProductCardSimple({ product, priority = false }: ProductCardProp
             {/* Price Row */}
             <div className="flex items-baseline gap-2">
               <Money 
-                data={price} 
+                data={price as any} 
                 className="text-sm font-semibold text-black"
               />
               {isOnSale && compareAtPrice && (
                 <Money 
-                  data={compareAtPrice} 
+                  data={compareAtPrice as any} 
                   className="text-xs text-gray-500 line-through"
                 />
               )}

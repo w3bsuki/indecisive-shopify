@@ -13,7 +13,6 @@ import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { MobileSearchDropdown } from "@/components/layout/mobile-search-dropdown"
 import { SearchBar } from "@/components/layout/search-bar"
 import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
-import { AnnouncementBanner } from "@/components/layout/announcement-banner"
 import { useCart, setCartSlideoutCallback } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { useIndecisive } from "@/components/providers/indecisive-provider"
@@ -133,8 +132,6 @@ export function Navigation() {
     <>
       {/* Desktop Navigation */}
       <div className="hidden md:block">
-        {/* Professional Announcement Banner */}
-        <AnnouncementBanner />
 
         {/* Main Navigation */}
         <nav className="bg-white">
@@ -288,8 +285,6 @@ export function Navigation() {
       <>
         {/* Mobile Navigation Stack */}
         <div className="fixed-mobile-safe w-full z-50 md:hidden touch-optimized">
-          {/* Professional Mobile Announcement Banner */}
-          <AnnouncementBanner className="text-xs" />
 
           {/* Mobile Navigation Bar */}
           <nav className="bg-white shadow-sm">

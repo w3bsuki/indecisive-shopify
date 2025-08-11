@@ -279,10 +279,10 @@ export async function getProductsPaginated(
 
       const products = extractNodes(data.collection.products);
       console.log(`[DEBUG] Found ${products.length} products in collection: ${filters.category}`);
-      console.log(`[DEBUG] First 3 products:`, products.slice(0, 3).map(p => p.title));
+      console.log(`[DEBUG] First 3 products:`, products.slice(0, 3).map((p: any) => p.title));
       
       // Map to ShopifyProduct type
-      const mappedProducts = mapStorefrontProductsToShopifyProducts(products);
+      const mappedProducts = mapStorefrontProductsToShopifyProducts(products as Product[]);
       
       return {
         products: mappedProducts,

@@ -219,12 +219,12 @@ export function ProductCardPerfect({ product, priority = false }: ProductCardPro
             {/* Price - Clear hierarchy */}
             <div className="flex items-baseline gap-2">
               <Money 
-                data={price} 
+                data={price as any} 
                 className="text-base font-bold text-gray-900"
               />
               {isOnSale && compareAtPrice && (
                 <Money 
-                  data={compareAtPrice} 
+                  data={compareAtPrice as any} 
                   className="text-sm text-gray-500 line-through"
                 />
               )}
@@ -374,12 +374,12 @@ export function ProductCardPerfect({ product, priority = false }: ProductCardPro
           {/* Price */}
           <div className="flex items-baseline gap-2">
             <Money 
-              data={price} 
+              data={price as any} 
               className="text-base font-bold text-gray-900"
             />
             {isOnSale && compareAtPrice && (
               <Money 
-                data={compareAtPrice} 
+                data={compareAtPrice as any} 
                 className="text-sm text-gray-500 line-through"
               />
             )}
