@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Search, ShoppingBag, Heart, User, Instagram, Star } from "lucide-react"
+import { Menu, X, Search, ShoppingBag, Heart, User, Instagram, Star, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
@@ -500,7 +500,7 @@ export function Navigation() {
               )}
               onClick={() => setShowFilterDrawer(true)}
             >
-              <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+              <SlidersHorizontal className="h-5 w-5 stroke-[2.5]" />
               <span className="text-[10px] font-medium">ФИЛТРИ</span>
             </Button>
           ) : (

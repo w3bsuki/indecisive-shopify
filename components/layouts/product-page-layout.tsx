@@ -64,15 +64,6 @@ export function ProductPageLayout({
         <BreadcrumbStructuredData items={breadcrumbItems} />
       )}
       
-      {/* Banner Header */}
-      {showBanner && (
-        <ProductPageBanner
-          title={title}
-          variant={variant}
-          currentCategory={currentCategory}
-        />
-      )}
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 px-safe">
         {/* Collection Tabs */}
         <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
