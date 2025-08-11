@@ -129,8 +129,8 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className={cn(
-                    "object-cover transition-transform duration-700 ease-out",
-                    isHovered && hoverImage ? "scale-110" : "scale-100"
+                    "object-contain transition-transform duration-700 ease-out",
+                    isHovered && hoverImage ? "scale-105" : "scale-100"
                   )}
                   priority={priority}
                 />
@@ -143,7 +143,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className={cn(
-                      "object-cover absolute inset-0 transition-opacity duration-500",
+                      "object-contain absolute inset-0 transition-opacity duration-500",
                       isHovered ? "opacity-100" : "opacity-0"
                     )}
                   />
@@ -152,6 +152,55 @@ export function ProductCardClean({ product, priority = false, className }: Produ
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <ShoppingBag className="h-10 w-10 text-gray-300" />
+              </div>
+            )}
+            
+            {/* Color Indicators - Bottom Left Overlay */}
+            {variants.length > 1 && (
+              <div className="absolute bottom-2 left-2 z-20 flex gap-1">
+                {variants.slice(0, 3).map((variant, index) => {
+                  // Try to get color from variant options
+                  const colorOption = variant.selectedOptions?.find(
+                    option => option.name.toLowerCase() === 'color'
+                  )
+                  const colorValue = colorOption?.value.toLowerCase() || ''
+                  
+                  // Simple color mapping
+                  const getColorStyle = (color: string) => {
+                    const colorMap: Record<string, string> = {
+                      black: '#000000',
+                      white: '#ffffff',
+                      red: '#ef4444',
+                      blue: '#3b82f6',
+                      green: '#10b981',
+                      yellow: '#f59e0b',
+                      pink: '#ec4899',
+                      purple: '#8b5cf6',
+                      gray: '#6b7280',
+                      grey: '#6b7280',
+                      navy: '#1e3a8a',
+                      brown: '#92400e',
+                      beige: '#f5f5dc',
+                      cream: '#fffdd0'
+                    }
+                    
+                    return colorMap[color] || '#d1d5db'
+                  }
+                  
+                  return (
+                    <div
+                      key={index}
+                      className="w-3 h-3 rounded-full border border-white/80 shadow-sm"
+                      style={{ backgroundColor: getColorStyle(colorValue) }}
+                      title={colorOption?.value || `Variant ${index + 1}`}
+                    />
+                  )
+                })}
+                {variants.length > 3 && (
+                  <div className="w-3 h-3 rounded-full bg-gray-500/70 border border-white/80 shadow-sm flex items-center justify-center">
+                    <span className="text-white text-[6px] font-bold">+</span>
+                  </div>
+                )}
               </div>
             )}
             
@@ -214,13 +263,6 @@ export function ProductCardClean({ product, priority = false, className }: Produ
               </>
             )}
           </div>
-          
-          {/* Colors/Variants indicator */}
-          {variants.length > 1 && (
-            <p className="text-xs text-gray-500">
-              {variants.length} colors available
-            </p>
-          )}
         </div>
         
         {/* Mobile Add to Cart Button */}
