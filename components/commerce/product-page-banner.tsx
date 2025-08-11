@@ -23,28 +23,28 @@ export function ProductPageBanner({
   const getPromoMessage = () => {
     const messages = {
       bg: [
-        '🔥 БЕЗПЛАТНА ДОСТАВКА НАД 50ЛВ • ВЪРНИ ДО 30 ДНИ',
-        '✨ НЕ МОЖЕШ ДА РЕШИШ? ВЗЕМИ И ДВЕТЕ',
-        '🎯 ЖИВОТЪТ Е КРАТЪК • ДРЕХИТЕ СА МНОГО',
-        '💫 ЗАЩО ДА ИЗБИРАШ, КОГАТО МОЖЕШ ВСИЧКО?',
-        '🌟 НЕРЕШИТЕЛНОСТ = НОВ СТИЛ НА ЖИВОТ',
-        '⚡ КУПИ СЕГА, МИСЛИ ПОСЛЕ • -20% С КОД "INDECISIVE20"'
+        '🔥 БЕЗПЛАТНА ДОСТАВКА НАД 50ЛВ',
+        '✨ НЕ МОЖЕШ ДА РЕШИШ? ВЗЕМИ ДВЕТЕ',
+        '🎯 ЖИВОТЪТ Е КРАТЪК • КУПИ ВСИЧКО',
+        '💫 ЗАЩО ДА ИЗБИРАШ?',
+        '🌟 НЕРЕШИТЕЛНОСТ = СТИЛ',
+        '⚡ -20% С КОД "INDECISIVE20"'
       ],
       en: [
-        '🔥 FREE SHIPPING OVER $75 • LIMITED QUANTITIES',
-        '✨ WEAR YOUR MOOD • STYLE FOR EVERY DECISION',
-        '🎯 DECISIONS ARE OVERRATED • JUST GET EVERYTHING',
-        '💫 WHY CHOOSE? LIFE\'S TOO SHORT',
-        '🌟 INDECISION IS THE NEW CONFIDENCE',
-        '⚡ LAST PIECES • DON\'T THINK, JUST WEAR'
+        '🔥 FREE SHIPPING OVER $75',
+        '✨ CAN\'T DECIDE? GET BOTH',
+        '🎯 LIFE\'S SHORT • BUY EVERYTHING',
+        '💫 WHY CHOOSE?',
+        '🌟 INDECISION = STYLE',
+        '⚡ 20% OFF CODE "INDECISIVE20"'
       ],
       de: [
-        '🔥 KOSTENLOSER VERSAND AB 75€ • LIMITIERTE MENGEN',
-        '✨ TRAGE DEINE STIMMUNG • STIL FÜR JEDEN TAG',
-        '🎯 ENTSCHEIDUNGEN SIND ÜBERBEWERTET • NIMM EINFACH ALLES',
-        '💫 WARUM WÄHLEN? DAS LEBEN IST ZU KURZ',
-        '🌟 UNENTSCHLOSSENHEIT IST DAS NEUE SELBSTVERTRAUEN',
-        '⚡ LETZTE STÜCKE • NICHT DENKEN, EINFACH TRAGEN'
+        '🔥 KOSTENLOSER VERSAND AB 75€',
+        '✨ KANNST NICHT ENTSCHEIDEN? NIMM BEIDE',
+        '🎯 LEBEN IST KURZ • KAUF ALLES',
+        '💫 WARUM WÄHLEN?',
+        '🌟 UNENTSCHLOSSENHEIT = STIL',
+        '⚡ -20% MIT CODE "INDECISIVE20"'
       ]
     }
     
