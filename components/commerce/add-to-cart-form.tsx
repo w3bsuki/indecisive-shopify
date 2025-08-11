@@ -210,16 +210,16 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Color Selector */}
       {colorOption && availableColors.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="text-sm font-medium">
-              {tc('color')}{selectedColor && <span className="ml-2 text-gray-600 font-normal">{selectedColor}</span>}
+              {tc('color')}{selectedColor && <span className="ml-2 text-gray-500 font-normal text-xs">{selectedColor}</span>}
             </Label>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {availableColors.map(({ value, available }) => {
               const isSelected = selectedColor === value
               return (
@@ -228,15 +228,15 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
                   onClick={() => available && handleColorSelect(value)}
                   disabled={!available}
                   className={cn(
-                    "relative w-12 h-12 border-2 transition-all touch-manipulation",
-                    isSelected ? "border-black scale-110 shadow-lg" : "border-gray-200 hover:border-gray-400",
+                    "relative w-8 h-8 border transition-all touch-manipulation rounded-full overflow-hidden",
+                    isSelected ? "border-black border-2 ring-2 ring-black ring-offset-2" : "border-gray-300 hover:border-gray-500",
                     !available && "opacity-40 cursor-not-allowed"
                   )}
                   title={value}
                   aria-label={`${tc('select')} ${value} ${tc('color')}`}
                 >
                   <span
-                    className="absolute inset-1 block"
+                    className="absolute inset-0.5 block rounded-full"
                     style={{ backgroundColor: getColorHex(value) }}
                   />
                   {!available && (
@@ -253,10 +253,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
       {/* Size Selector - Nike Style Grid */}
       {sizeOption && availableSizes.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="text-sm font-medium">
-              {tc('size')}{selectedSize && <span className="ml-2 text-gray-600 font-normal">{selectedSize}</span>}
+              {tc('size')}{selectedSize && <span className="ml-2 text-gray-500 font-normal text-xs">{selectedSize}</span>}
             </Label>
             <button
               onClick={() => setShowSizeGuide(true)}
@@ -267,7 +267,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           </div>
           
           {/* Size Grid */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex flex-wrap gap-2">
             {availableSizes.map(({ value, available }) => {
               const isSelected = selectedSize === value
               return (
@@ -276,12 +276,12 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
                   onClick={() => available && handleSizeSelect(value)}
                   disabled={!available}
                   className={cn(
-                    "relative h-12 border-2 text-sm font-medium transition-all touch-manipulation",
-                    "flex items-center justify-center",
+                    "relative h-10 px-4 min-w-[60px] border text-sm font-medium transition-all touch-manipulation",
+                    "flex items-center justify-center rounded-md",
                     isSelected 
                       ? "border-black bg-black text-white" 
-                      : "border-gray-200 hover:border-gray-400",
-                    !available && "opacity-40 cursor-not-allowed line-through bg-gray-50"
+                      : "border-gray-300 hover:border-black hover:bg-gray-50",
+                    !available && "opacity-40 cursor-not-allowed line-through bg-gray-50 text-gray-400"
                   )}
                   aria-label={`${tc('select')} ${tc('size')} ${value}`}
                 >

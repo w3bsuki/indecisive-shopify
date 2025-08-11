@@ -12,7 +12,7 @@ import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
 import { ProductDetailsSection } from '@/components/commerce/product-details-section'
 import { ProductInfoWrapper } from '@/components/commerce/product-info-wrapper'
-import { ArrowLeft, Truck, RotateCcw, Shield } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { BreadcrumbNavigation, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
 import { BreadcrumbHelpers } from '@/lib/breadcrumb-helpers'
@@ -91,10 +91,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const categoryTag = product.tags?.[0]
   const translatedCategory = categoryTag ? tf(getCategoryTranslationKey(categoryTag)) : undefined
   
+  const breadcrumbT = await getTranslations('products.breadcrumb')
   const breadcrumbItems = BreadcrumbHelpers.product(
     product.title,
     translatedCategory || categoryTag || undefined,
-    undefined // No vendor field available
+    undefined, // No vendor field available
+    {
+      home: breadcrumbT('home'),
+      products: breadcrumbT('allProducts')
+    }
   )
 
   return (
@@ -166,23 +171,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <AddToCartForm product={product} showProductInfo={false} />
               </div>
 
-              {/* Product Benefits - Compact Horizontal */}
-              <div className="flex items-center justify-around py-4 mt-6 border-y text-sm">
-                <div className="flex items-center gap-2">
-                  <Truck className="w-4 h-4" />
-                  <span className="hidden sm:inline">Free Shipping</span>
-                  <span className="sm:hidden">Free Ship</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <RotateCcw className="w-4 h-4" />
-                  <span>30 Days</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  <span className="hidden sm:inline">Secure Payment</span>
-                  <span className="sm:hidden">Secure</span>
-                </div>
-              </div>
 
               {/* Product Information - Mobile Tabs, Desktop Collapsible */}
               <div className="mt-8">

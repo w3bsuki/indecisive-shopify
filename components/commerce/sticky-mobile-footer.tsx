@@ -6,6 +6,7 @@ import { ShoppingCart, ChevronUp, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useMarket } from '@/hooks/use-market'
 import { useWishlist } from '@/hooks/use-wishlist'
+import { useTranslations } from 'next-intl'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { BackInStockForm } from './back-in-stock-form'
 
@@ -27,6 +28,7 @@ export function StickyMobileFooter({
   const [isVisible, setIsVisible] = useState(true)
   const { formatPrice } = useMarket()
   const { toggleItem, isInWishlist } = useWishlist()
+  const t = useTranslations('products')
   
   // Keep footer always visible for e-commerce conversion
   useEffect(() => {
@@ -83,7 +85,7 @@ export function StickyMobileFooter({
               size="lg"
               className="w-full h-14 touch-manipulation bg-black text-white font-medium tracking-wide border-2 border-black"
             >
-              <span className="uppercase text-sm">Select Size</span>
+              <span className="uppercase text-sm">{t('selectSize')}</span>
               <ChevronUp className="w-4 h-4 ml-2" />
             </Button>
           ) : isOutOfStock ? (
@@ -101,7 +103,7 @@ export function StickyMobileFooter({
             >
               <div className="flex items-center justify-center">
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                <span className="uppercase text-sm">Add to Cart</span>
+                <span className="uppercase text-sm">{t('addToCart')}</span>
                 <span className="ml-2 text-sm opacity-90">• {formattedPrice}</span>
               </div>
             </Button>

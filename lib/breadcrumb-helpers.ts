@@ -7,9 +7,9 @@ export interface BreadcrumbItem {
 // Helper functions to generate breadcrumbs for common page types
 export const BreadcrumbHelpers = {
   // For product pages: Home → Collections → Category → Product
-  product: (productTitle: string, category?: string, collection?: string): BreadcrumbItem[] => [
-    { label: 'Home', href: '/' },
-    { label: 'Продукти', href: '/products' },
+  product: (productTitle: string, category?: string, collection?: string, translations?: { home: string; products: string }): BreadcrumbItem[] => [
+    { label: translations?.home || 'Home', href: '/' },
+    { label: translations?.products || 'Products', href: '/products' },
     ...(collection ? [{ label: collection, href: `/collections/${collection.toLowerCase().replace(/\s+/g, '-')}` }] : []),
     ...(category && category !== collection ? [{ label: category, href: `/collections/${category.toLowerCase().replace(/\s+/g, '-')}` }] : []),
     { label: productTitle, href: '#', current: true }

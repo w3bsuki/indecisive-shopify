@@ -19,15 +19,15 @@ export function ProductTabs({ description }: ProductTabsProps) {
       <TabsList>
         <TabsTrigger value="details" className="flex items-center gap-2">
           <Package className="h-4 w-4" />
-          Детайли
+          {t('details')}
         </TabsTrigger>
         <TabsTrigger value="size" className="flex items-center gap-2">
           <Ruler className="h-4 w-4" />
-          Размер
+          {t('size')}
         </TabsTrigger>
         <TabsTrigger value="shipping" className="flex items-center gap-2">
           <Truck className="h-4 w-4" />
-          Доставки
+          {t('shippingTab')}
         </TabsTrigger>
       </TabsList>
       
@@ -113,7 +113,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="delivery-partners">
               <AccordionTrigger className="text-left font-medium">
-                Партньори за доставка
+                {t('shipping.deliveryPartners')}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-3">
@@ -166,7 +166,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
             
             <AccordionItem value="shipping-calculator">
               <AccordionTrigger className="text-left font-medium">
-                Калкулатор за доставка
+                {t('shipping.calculator')}
               </AccordionTrigger>
               <AccordionContent>
                 <ShippingCalculator weight={0.3} />

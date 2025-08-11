@@ -250,8 +250,13 @@
       "returnsExchanges": "Returns & Exchanges",
       "returnWindow": "30-day return window for all items",
       "freeReturns": "Free returns within Bulgaria",
-      "exchanges": "Easy exchanges for different sizes"
+      "exchanges": "Easy exchanges for different sizes",
+      "deliveryPartners": "Delivery Partners",
+      "calculator": "Shipping Calculator"
     },
+    "details": "Details",
+    "size": "Size",
+    "shippingTab": "Shipping",
     "careInstructions": "Care Instructions",
     "care": {
       "machineWash": "Machine wash cold with similar colors",
