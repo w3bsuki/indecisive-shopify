@@ -458,31 +458,34 @@ export function Navigation() {
           showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
         )}
       >
-        <div className="flex items-center justify-evenly py-3 px-2 pb-safe">
+        <div className="grid grid-cols-5 gap-0 py-2 px-2 pb-safe">
           {/* Профил (Account) */}
-          <Link href="/account">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
-                pathname === "/account" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
-              )}
+          <div className="flex justify-center">
+            <Link href="/account">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
+                  pathname === "/account" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                )}
             >
               <div className="relative">
                 <User className="h-5 w-5 stroke-[2.5]" />
               </div>
               <span className="text-[10px] font-medium">ПРОФИЛ</span>
-            </Button>
-          </Link>
+              </Button>
+            </Link>
+          </div>
 
           {/* Клуб (Community) */}
-          <Link href="/#community">
-            <Button
+          <div className="flex justify-center">
+            <Link href="/#community">
+              <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
                 pathname === "/#community" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
@@ -490,16 +493,18 @@ export function Navigation() {
                 <Star className="h-5 w-5 stroke-[2.5]" />
               </div>
               <span className="text-[10px] font-medium">КЛУБ</span>
-            </Button>
-          </Link>
+              </Button>
+            </Link>
+          </div>
 
           {/* Магазин (Shop) or Филтри (Filters) */}
-          {pathname === "/products" ? (
-            <Button
+          <div className="flex justify-center">
+            {pathname === "/products" ? (
+              <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
                 showFilterDrawer ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
               onClick={() => setShowFilterDrawer(true)}
@@ -508,14 +513,14 @@ export function Navigation() {
                 <SlidersHorizontal className="h-5 w-5 stroke-[2.5]" />
               </div>
               <span className="text-[10px] font-medium">ФИЛТРИ</span>
-            </Button>
-          ) : (
-            <Link href="/products">
+              </Button>
+            ) : (
+              <Link href="/products">
               <Button
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                  "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
                   "text-gray-600 hover:text-black hover:bg-gray-50"
                 )}
               >
@@ -524,11 +529,13 @@ export function Navigation() {
                 </div>
                 <span className="text-[10px] font-medium">МАГАЗИН</span>
               </Button>
-            </Link>
-          )}
+              </Link>
+            )}
+          </div>
 
           {/* Любими (Wishlist) */}
-          <Button
+          <div className="flex justify-center">
+            <Button
             variant="ghost"
             size="sm"
             className={cn(
@@ -549,10 +556,13 @@ export function Navigation() {
               )}
             </div>
             <span className="text-[10px] font-medium">ЛЮБИМИ</span>
-          </Button>
+            </Button>
+          </div>
 
           {/* Количка (Cart) */}
-          <MobileCartDropdown isBottomNav />
+          <div className="flex justify-center">
+            <MobileCartDropdown isBottomNav />
+          </div>
         </div>
       </div>
       
