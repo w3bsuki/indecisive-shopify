@@ -79,7 +79,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
           onMouseLeave={() => setIsHovered(false)}
         >
           {/* Image Container */}
-          <div className="relative aspect-[3/4] overflow-hidden rounded-md">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
             {/* Sale Badge */}
             {isOnSale && discountPercentage > 0 && (
               <div className="absolute top-2 left-2 z-20">
@@ -129,7 +129,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className={cn(
-                    "object-contain transition-transform duration-700 ease-out",
+                    "object-cover object-center transition-transform duration-700 ease-out",
                     isHovered && hoverImage ? "scale-105" : "scale-100"
                   )}
                   priority={priority}
@@ -143,7 +143,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className={cn(
-                      "object-contain absolute inset-0 transition-opacity duration-500",
+                      "object-cover object-center absolute inset-0 transition-opacity duration-500",
                       isHovered ? "opacity-100" : "opacity-0"
                     )}
                   />
@@ -239,7 +239,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
         </Link>
         
         {/* Product Info */}
-        <div className="space-y-1 px-1">
+        <div className="space-y-1">
           {/* Title */}
           <Link href={`/products/${product.handle}`} className="block">
             <h3 className="font-medium text-gray-900 text-sm hover:text-gray-700 transition-colors line-clamp-1 truncate">
