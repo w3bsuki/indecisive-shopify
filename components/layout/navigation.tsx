@@ -524,21 +524,23 @@ export function Navigation() {
             variant="ghost"
             size="sm"
             className={cn(
-              "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] relative transition-all duration-150 rounded-lg",
+              "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
               showWishlistDrawer ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
             )}
             onClick={() => setShowWishlistDrawer(true)}
           >
-            <Heart className={cn("h-5 w-5 stroke-[2.5]", wishlistCount > 0 && "fill-current")} />
+            <div className="relative">
+              <Heart className={cn("h-5 w-5 stroke-[2.5]", wishlistCount > 0 && "fill-current")} />
+              {wishlistCount > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="absolute -top-2 -right-2 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[9px] font-bold bg-red-500 text-white border border-white"
+                >
+                  {wishlistCount}
+                </Badge>
+              )}
+            </div>
             <span className="text-[10px] font-medium">ЛЮБИМИ</span>
-            {wishlistCount > 0 && (
-              <Badge
-                variant="secondary"
-                className="absolute -top-0.5 -right-0.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-red-500 text-white border-2 border-white shadow-lg"
-              >
-                {wishlistCount}
-              </Badge>
-            )}
           </Button>
 
           {/* Количка (Cart) */}

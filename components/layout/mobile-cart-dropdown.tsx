@@ -63,20 +63,22 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
       variant="ghost"
       size="sm"
       className={cn(
-        "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] relative transition-all duration-150 rounded-lg text-gray-600 hover:text-black hover:bg-gray-50",
+        "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg text-gray-600 hover:text-black hover:bg-gray-50",
         isAnimating && "cart-icon-bounce"
       )}
     >
-      <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+      <div className="relative">
+        <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+        {totalItems > 0 && (
+          <Badge
+            variant="secondary"
+            className="absolute -top-2 -right-2 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[9px] font-bold bg-red-500 text-white border border-white"
+          >
+            {totalItems}
+          </Badge>
+        )}
+      </div>
       <span className="text-[10px] font-medium">{t('title')}</span>
-      {totalItems > 0 && (
-        <Badge
-          variant="secondary"
-          className="absolute -top-0.5 -right-0.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white border-2 border-white shadow-lg"
-        >
-          {totalItems}
-        </Badge>
-      )}
     </Button>
   ) : (
     <button
