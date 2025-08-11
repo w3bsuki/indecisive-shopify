@@ -23,28 +23,22 @@ export function ProductPageBanner({
   const getPromoMessage = () => {
     const messages = {
       bg: [
-        '🔥 БЕЗПЛАТНА ДОСТАВКА НАД 50ЛВ',
         '✨ НЕ МОЖЕШ ДА РЕШИШ? ВЗЕМИ ДВЕТЕ',
         '🎯 ЖИВОТЪТ Е КРАТЪК • КУПИ ВСИЧКО',
         '💫 ЗАЩО ДА ИЗБИРАШ?',
-        '🌟 НЕРЕШИТЕЛНОСТ = СТИЛ',
-        '⚡ -20% С КОД "INDECISIVE20"'
+        '🌟 НЕРЕШИТЕЛНОСТ = СТИЛ'
       ],
       en: [
-        '🔥 FREE SHIPPING OVER $75',
         '✨ CAN\'T DECIDE? GET BOTH',
         '🎯 LIFE\'S SHORT • BUY EVERYTHING',
         '💫 WHY CHOOSE?',
-        '🌟 INDECISION = STYLE',
-        '⚡ 20% OFF CODE "INDECISIVE20"'
+        '🌟 INDECISION = STYLE'
       ],
       de: [
-        '🔥 KOSTENLOSER VERSAND AB 75€',
         '✨ KANNST NICHT ENTSCHEIDEN? NIMM BEIDE',
         '🎯 LEBEN IST KURZ • KAUF ALLES',
         '💫 WARUM WÄHLEN?',
-        '🌟 UNENTSCHLOSSENHEIT = STIL',
-        '⚡ -20% MIT CODE "INDECISIVE20"'
+        '🌟 UNENTSCHLOSSENHEIT = STIL'
       ]
     }
     
