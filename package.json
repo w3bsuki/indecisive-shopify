@@ -99,7 +99,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@21st-extension/toolbar": "^0.5.11",
     "@eslint/compat": "^1.2.1",
     "@eslint/eslintrc": "^3.3.1",
     "@playwright/test": "^1.53.2",

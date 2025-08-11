@@ -37,6 +37,36 @@ export function setCartSlideoutCallback(callback: (() => void) | null) {
 
 // Unified cart hook implementation using Hydrogen React
 export function useCart() {
+  // Defensive hook usage - handle cases where CartProvider might not be available
+  let hydrogenCart;
+  try {
+    hydrogenCart = useHydrogenCart();
+  } catch (error) {
+    // Return default values if CartProvider is not available
+    console.warn('Cart context not available, returning defaults');
+    return {
+      cart: { lines: [], cost: null, checkoutUrl: '', totalQuantity: 0 },
+      lines: [],
+      cost: null,
+      checkoutUrl: '',
+      totalQuantity: 0,
+      totalItems: 0,
+      cartReady: false,
+      status: 'uninitialized' as const,
+      error: null,
+      isLoading: false,
+      isEmpty: true,
+      addItem: async () => {},
+      updateItem: async () => {},
+      removeItem: async () => {},
+      clearCart: async () => {},
+      buyerIdentityUpdate: async () => {},
+      cartAttributesUpdate: async () => {},
+      discountCodesUpdate: async () => {},
+      noteUpdate: async () => {},
+    };
+  }
+
   const {
     // Cart state from Hydrogen React
     status,           // 'uninitialized' | 'creating' | 'fetching' | 'updating' | 'idle'
@@ -57,7 +87,7 @@ export function useCart() {
     
     // Error state
     error
-  } = useHydrogenCart();
+  } = hydrogenCart;
 
   // Optimistic updates for instant feedback
   const [optimisticLines, dispatchOptimistic] = useOptimistic(

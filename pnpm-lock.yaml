@@ -189,9 +189,6 @@ importers:
         specifier: ^3.24.1
         version: 3.25.67
     devDependencies:
-      '@21st-extension/toolbar':
-        specifier: ^0.5.11
-        version: 0.5.11(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@eslint/compat':
         specifier: ^1.2.1
         version: 1.3.1(eslint@9.30.0(jiti@2.4.2))

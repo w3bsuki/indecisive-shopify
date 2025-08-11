@@ -315,3 +315,123 @@ Complete audit of all directories and files in the codebase to identify:
 6. **Test/demo code** mixed with production
 
 Total estimated files/folders to remove: ~40-50 items
+
+---
+
+## FULL CODEBASE AUDIT — August 2025 (Production Cleanup Plan)
+
+Executive summary
+- Status: Production, feature-rich but bloated. Clear opportunities to remove dead code, demo/dev routes, and duplicated components without affecting customer flows.
+- High-priority removals are safe: empty dirs, unused components, dev/demo routes, duplicate shipping calculator, duplicate cookie banner.
+- Medium-priority items to quarantine/feature-flag: Instagram integration (currently unused in UI), Econt provider (disabled), debug APIs, bulky docs.
+- TODO/FIXME hygiene: 38+ occurrences detected (sampled), focus areas: delivery/econt, analytics placeholders, deprecated hooks.
+
+What was verified in this audit
+- Project root structure, app routes, components, hooks, lib, scripts, docs, messages, contexts, public. Cross-checked usage with workspace-wide search.
+- Confirmed live homepage composition in `app/page.tsx`.
+- Verified imports and live references for “questionable” modules.
+
+Key live surfaces (keep)
+- App shell and critical routes: `app/layout.tsx`, `app/page.tsx`, `(shop)/*`, `(content)/*`, checkout, account, login/register, legal pages, `robots.ts`, `sitemap.ts`, `web-vitals.tsx`.
+- Shopify integration: `lib/shopify/*`, product listing/detail, cart/checkout flows, rate limiting infra for admin monitoring.
+- Translations: `messages/bg.json`, `messages/de.json`, `messages/en.json` (active); `i18n/request.ts` used.
+- UI primitives and shared components: `components/ui/*`, `components/layout/*` (except noted duplicates).
+- Contexts in use: `contexts/fly-to-cart-context.tsx` (widely imported), `contexts/cart-slideout-context.tsx`.
+
+Immediate safe removals (no runtime references)
+Empty directories
+1) `app/account/enhanced/`
+2) `app/demo-tabs/`
+3) `components/commerce/client/`
+4) `components/commerce/server/`
+5) `components/demo/`
+6) `components/layout/client/`
+7) `components/layout/server/`
+8) `lib/actions/`
+9) `lib/stores/`
+10) `lib/validators/`
+
+Unused or duplicate components/hooks
+- `components/layout/cookie-banner.tsx` — duplicate of `cookie-consent.tsx` and not imported anywhere.
+- `components/commerce/shipping-calculator.tsx` — duplicate; the app uses `components/checkout/shipping-calculator.tsx` from `product-tabs.tsx`.
+- `components/dev/toolbar-setup.tsx` — marked deprecated, no imports; safe to remove.
+- `hooks/use-ab-test.tsx` — unused; safe to remove.
+- `hooks/use-products.tsx` — explicitly deprecated and throws; no imports; remove to avoid accidental usage.
+- `components/commerce/community-section-icons.tsx` and `components/commerce/community-section-minimal.tsx` — no imports; remove.
+
+Dev/demo routes and APIs (remove for production)
+- Routes: `app/auth-test/`, `app/demo-cards/`, `app/demo-cards-mobile/`, `app/demo-collection/`, `app/debug-products/`, `app/debug-collections/`.
+- APIs: `app/api/test/` (rate-limit test), `app/api/debug-collections/` (empty), evaluate `app/api/debug-products/route.ts` (dev-only).
+
+Medium-priority (quarantine or feature-flag)
+Instagram integration (currently unused by homepage UI)
+- UI: Homepage uses `components/commerce/CommunityCarousel` (static assets), not `CommunitySection` (Instagram-driven).
+- Code paths: `app/api/instagram/posts/route.ts`, `lib/instagram/client.ts`, `hooks/use-instagram.tsx`, `components/commerce/community-section.tsx` exist but aren’t wired into the homepage.
+- Action: move these to `experimental/` or behind an env flag. If social feed is not a near-term requirement, plan removal in Phase 2.
+
+Delivery providers
+- `lib/delivery/manager.ts` registers only Speedy and comments out Econt. Shopify carrier service lists `providers: ['speedy']`.
+- `lib/delivery/econt/*` contains placeholder methods that throw. No customer path should reach Econt today.
+- Action: quarantine `econt` under `experimental/` or remove with clear git tag for retrieval.
+
+Admin/monitoring
+- `app/admin/monitoring/page.tsx` uses `getRateLimitStats` from `lib/rate-limit`. If used by ops, keep; otherwise, feature-flag behind admin auth.
+- `app/api/admin/rate-limits/route.ts` — keep if monitoring is needed; confirm with stakeholders.
+
+Variants and consolidation recommendations
+- Product cards: in production, the following are used: `ProductCardServer`, `ProductCardMinimal`, `ProductCardMinimalServer`. Variants `simple`, `modern`, `perfect`, `refined`, `v2` appear used only by demo pages.
+  - Plan: remove demo pages first, then delete unused variants and their grids (`product-grid-modern`, `product-grid-perfect`).
+- Community sections: keep `CommunityCarousel` (used on homepage). Remove unused `community-section.tsx` only if Instagram is dropped; otherwise keep but quarantine.
+
+Scripts
+- `scripts/test-all-features.mjs` — test script; remove.
+- `scripts/configure-shopify*.mjs` — keep but review docs and ensure they are current.
+
+Docs hygiene
+- Many reports/plans are outdated. Archive under `docs/_archive/` or prune:
+  - Outdated: `performance-audit-report.md`, old migration reports in `docs/reports/`, old plans in `docs/plans/`.
+  - Update references that point to removed dev routes (e.g., `AUTHENTICATION_GUIDE.md` mentions `/auth-test`).
+  - `INSTAGRAM_INTEGRATION.md` should be archived if we drop Instagram.
+
+TODO/FIXME and deprecated markers (focus fixes)
+- Delivery: TODOs in `lib/delivery/econt/*` and `lib/delivery/manager.ts`.
+- Analytics placeholders in `components/providers/shopify-analytics.tsx`.
+- Deprecated hook file `hooks/use-products.tsx` (remove now).
+- Back-in-stock TODO in `components/commerce/back-in-stock-form.tsx`.
+- Count sampled: 38+ occurrences across code/docs; run a lint rule to prevent new TODO/FIXME in production code.
+
+Dependency and runtime notes
+- Next.js 15.3, React 19, Tailwind 4.1, next-intl 4.3 in use.
+- `@21st-extension/*` toolbar appears only in `components/layout/client-layout.tsx`; keep if used in production, otherwise feature-flag.
+
+Prioritized cleanup plan
+Phase 1 — No-risk removals (immediate)
+- Delete all listed empty directories (10).
+- Remove: `cookie-banner.tsx`, `components/commerce/shipping-calculator.tsx`, `components/dev/toolbar-setup.tsx`, `hooks/use-ab-test.tsx`, `hooks/use-products.tsx`, `community-section-icons.tsx`, `community-section-minimal.tsx`.
+- Remove dev/demo routes and test APIs: `app/auth-test/`, `app/api/test/`, `app/demo-*`, `app/debug-*`, `app/api/debug-collections/`.
+- Remove `scripts/test-all-features.mjs`.
+
+Phase 2 — Quarantine and flags
+- Move Instagram integration (`app/api/instagram`, `lib/instagram`, `hooks/use-instagram.tsx`, `components/commerce/community-section.tsx`) under `experimental/` or guard by `FEATURE_INSTAGRAM=false`.
+- Move `lib/delivery/econt/*` under `experimental/` or remove; keep Speedy only.
+- Gate `app/admin/monitoring/*` behind admin auth/flag.
+
+Phase 3 — Consolidation and docs
+- Remove unused product card/grid variants once demo routes are gone.
+- Sweep TODO/FIXME with owners, create issues, or implement.
+- Archive/prune stale docs and update guides to remove references to deleted routes.
+
+Risk assessment and rollback
+- All Phase 1 items have zero imports or are demo/dev-only; safe to delete without impacting storefront or checkout.
+- Phase 2 items are isolated; quarantine maintains easy rollback. Tag the repo before removal.
+
+Validation checklist after cleanup
+- `pnpm build` passes; `pnpm test` green; Playwright smoke of homepage, PDP, cart, checkout.
+- Lighthouse and Web Vitals checked via `web-vitals.tsx` and CI.
+- Sentry DSN configured and error rates monitored for 48h.
+
+Appendix — Evidence excerpts
+- Duplicate shipping calculator: imports point to `components/checkout/shipping-calculator.tsx`; `components/commerce/shipping-calculator.tsx` unused.
+- Cookie consent: `components/layout/client-layout.tsx` imports `cookie-consent`; no references to `cookie-banner`.
+- Instagram unused on homepage: `app/page.tsx` uses `CommunityCarousel` (static assets), not `CommunitySection`.
+- Econt disabled: `lib/delivery/manager.ts` and Shopify carrier-service restrict providers to Speedy.

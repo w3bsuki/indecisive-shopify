@@ -1,9 +1,10 @@
-import { ProductCardServer } from '@/components/commerce/product-card-server'
+import { ProductCardCleanServer } from '@/components/commerce/product-card-clean-server'
 import { NoProductsFound } from '@/app/(shop)/products/page-client'
 import { ProductPageBanner } from '@/components/commerce/product-page-banner'
 import { ProductFiltersAdvanced } from '@/components/commerce/product-filters-advanced'
 import { ProductsPagination } from '@/components/commerce/products-pagination'
 import { BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
+import { CollectionsPillsServer } from '@/components/commerce/collections-pills-server'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 
 interface ProductPageLayoutProps {
@@ -73,16 +74,19 @@ export function ProductPageLayout({
         />
       )}
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 px-safe">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 px-safe">
+        {/* Collection Tabs */}
+        <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
+
         {/* Advanced Filters */}
         {showFilters && <ProductFiltersAdvanced />}
 
         {/* Products Grid - Standardized 4-column responsive */}
         {products.length > 0 ? (
           <>
-            <div className={`grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 touch-optimized ${gridClassName}`}>
+            <div className={`grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 touch-optimized ${gridClassName}`}>
               {products.map((product, index) => (
-                <ProductCardServer 
+                <ProductCardCleanServer 
                   key={product.id} 
                   product={product} 
                   priority={index < 8} // Priority for first 8 products (above fold)

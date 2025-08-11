@@ -524,6 +524,24 @@
   to { opacity: 1; }
 }
 
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fade-in 0.8s ease-out 0.2s both;
+}
+
+/* Product Card Hover Effects */
+.product-card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.1);
+}
+
 @keyframes fade-out {
   from { opacity: 1; }
   to { opacity: 0; }

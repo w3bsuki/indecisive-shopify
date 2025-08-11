@@ -36,14 +36,10 @@ const sortOptionsValues = [
 ]
 
 const categoryOptionsValues = [
-  '',
-  'T-Shirts',
-  'Hoodies',
-  'Jackets',
-  'Pants',
-  'Accessories',
-  'Hats',
-  'Bags',
+  'hats',
+  'tshirts',
+  'bags',
+  'giftcards',
 ]
 
 const colorOptionsData = [
@@ -90,9 +86,11 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
   })
   
   const categoryOptions = categoryOptionsValues.map(value => {
-    if (value === '') return { value: '', label: t('category.all') }
-    const translationKey = value.toLowerCase().replace('-', '')
-    return { value, label: t(`category.${translationKey}`) }
+    if (value === 'hats') return { value, label: 'HATS' }
+    if (value === 'tshirts') return { value, label: 'TSHIRTS' }
+    if (value === 'bags') return { value, label: 'BAGS' }
+    if (value === 'giftcards') return { value, label: 'GIFTCARDS' }
+    return { value, label: value.toUpperCase() }
   })
   
   const colorOptions = colorOptionsData.map(({ value, hex }) => ({
@@ -242,7 +240,7 @@ export function ProductFiltersAdvanced({ className }: ProductFiltersAdvancedProp
         <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-muted-foreground">
           {t('categories')}
         </h3>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
           {categoryOptions.map((option) => (
             <Button
               key={option.value}

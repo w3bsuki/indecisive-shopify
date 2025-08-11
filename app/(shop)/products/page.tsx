@@ -21,6 +21,7 @@ export default async function ProductsPage({
     page?: string
   }>
 }) {
+  try {
   // Get translations
   const t = await getTranslations('products')
   const params = await searchParams
@@ -30,6 +31,9 @@ export default async function ProductsPage({
   const perPage = 20 // Show 20 products per page
   
   // Build filters object
+  console.log('URL PARAMS:', params)
+  console.log('CATEGORY FROM URL:', params.category)
+  
   const filters = {
     category: params.category,
     minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
@@ -46,6 +50,9 @@ export default async function ProductsPage({
     perPage,
     filters
   )
+  
+  console.log(`[DEBUG] Passing ${products.length} products to UI component for category: ${params.category}`)
+  console.log('FIRST 3 PRODUCT TITLES:', products.slice(0, 3).map(p => p.title))
   
   // Calculate total pages
   const totalPages = Math.ceil(totalCount / perPage)
@@ -82,4 +89,22 @@ export default async function ProductsPage({
       breadcrumbItems={breadcrumbItems}
     />
   )
+  } catch (error) {
+    console.error('Error loading products page:', error)
+    // Return a fallback UI or re-throw to show error boundary
+    return (
+      <ProductPageLayout
+        title="Products"
+        variant="all"
+        products={[]}
+        currentPage={1}
+        totalPages={0}
+        totalCount={0}
+        pageInfo={{ hasNextPage: false, hasPreviousPage: false }}
+        hasFilters={false}
+        currentCategory="all"
+        breadcrumbItems={[]}
+      />
+    )
+  }
 }

@@ -142,10 +142,10 @@ export const translations: Record<string, Translations> = {
     'home.coming-soon.title': 'СКОРО',
     
     // Products
-    'products.title': 'ВСИЧКИ ПРОДУКТИ',
+    'products.title': 'ПРОДУКТИ',
     'products.add-to-cart': 'ДОБАВИ В КОШНИЦАТА',
     'products.quick-view': 'БЪРЗ ПРЕГЛЕД',
-    'products.view-all': 'ВСИЧКИ ПРОДУКТИ',
+    'products.view-all': 'ПРОДУКТИ',
     'products.price-from': 'ОТ',
     'products.sold-out': 'ИЗЧЕРПАНО',
     'products.available': 'В НАЛИЧНОСТ',

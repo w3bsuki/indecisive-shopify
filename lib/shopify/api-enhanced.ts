@@ -4,6 +4,98 @@ import type { Market } from './markets';
 import { extractNodes } from './flatten-connection';
 import { mapStorefrontProductsToShopifyProducts } from './type-mappers';
 
+// Collection products query for fetching products from a specific collection
+const COLLECTION_PRODUCTS_QUERY = `
+  query GetCollectionProducts(
+    $handle: String!
+    $first: Int!
+    $after: String
+    $country: CountryCode!
+    $language: LanguageCode!
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      id
+      handle
+      title
+      products(first: $first, after: $after) {
+        edges {
+          node {
+            id
+            handle
+            title
+            description
+            availableForSale
+            tags
+            featuredImage {
+              url
+              altText
+              width
+              height
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            compareAtPriceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            variants(first: 100) {
+              edges {
+                node {
+                  id
+                  title
+                  availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
+            }
+            options {
+              id
+              name
+              values
+            }
+            seo {
+              title
+              description
+            }
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }
+`;
+
 // Enhanced product query with proper filtering support
 const PRODUCTS_ENHANCED_QUERY = `
   query GetProductsEnhanced(
@@ -135,37 +227,72 @@ export async function getProductsPaginated(
       language: marketContext.languageCode
     };
 
-    // Build search query from filters
-    const queryParts: string[] = [];
-    
-    // Category filter (using collections, tags, and product type)
-    if (filters.category) {
-      let categoryQueries: string[] = [];
+    // Check if we need to use collection-specific query
+    if (filters.category && filters.category !== 'all') {
+      console.log(`[DEBUG] Using collection-specific query for: ${filters.category}`);
       
-      if (filters.category === 'hats') {
-        // For hats: collection "Bucket-hats" OR tag "hats"
-        categoryQueries = [
-          'collection:Bucket-hats',
-          'tag:hats'
-        ];
-      } else if (filters.category === 'tshirts') {
-        // For tshirts: collection "Tees" OR product_type "crop top"
-        categoryQueries = [
-          'collection:Tees',
-          'product_type:"crop top"',
-          'tag:tshirts'
-        ];
-      } else {
-        // Fallback for other categories
-        categoryQueries = [
-          `tag:${filters.category}`,
-          `collection:${filters.category}`,
-          `product_type:${filters.category}`
-        ];
+      // Calculate cursor for pagination
+      const skip = (page - 1) * perPage;
+      
+      // Use collection products query
+      const data = await storefront<{
+        collection: {
+          id: string;
+          handle: string;
+          title: string;
+          products: {
+            edges: Array<{ 
+              node: Product;
+              cursor: string;
+            }>;
+            pageInfo: {
+              hasNextPage: boolean;
+              hasPreviousPage: boolean;
+              startCursor?: string;
+              endCursor?: string;
+            };
+          };
+        };
+      }>(
+        COLLECTION_PRODUCTS_QUERY,
+        {
+          handle: filters.category,
+          first: perPage,
+          after: skip > 0 ? btoa(`arrayconnection:${skip - 1}`) : undefined,
+          country: buyerContext.country,
+          language: buyerContext.language
+        },
+        buyerContext
+      );
+
+      if (!data?.collection) {
+        console.log(`[DEBUG] Collection '${filters.category}' not found`);
+        return {
+          products: [],
+          pageInfo: {
+            hasNextPage: false,
+            hasPreviousPage: false
+          },
+          totalCount: 0
+        };
       }
+
+      const products = extractNodes(data.collection.products);
+      console.log(`[DEBUG] Found ${products.length} products in collection: ${filters.category}`);
+      console.log(`[DEBUG] First 3 products:`, products.slice(0, 3).map(p => p.title));
       
-      queryParts.push(`(${categoryQueries.join(' OR ')})`);
+      // Map to ShopifyProduct type
+      const mappedProducts = mapStorefrontProductsToShopifyProducts(products);
+      
+      return {
+        products: mappedProducts,
+        pageInfo: data.collection.products.pageInfo,
+        totalCount: products.length * (data.collection.products.pageInfo.hasNextPage ? 5 : 1) // Approximate
+      };
     }
+
+    // Build search query from filters for general product search
+    const queryParts: string[] = [];
     
     // Price range filter (Shopify supports variants.price)
     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
@@ -197,6 +324,7 @@ export async function getProductsPaginated(
     }
     
     const searchQuery = queryParts.join(' ');
+    console.log(`[DEBUG] Final search query: "${searchQuery}"`);
     
     // Determine sort parameters
     let sortKey: string = 'CREATED_AT';
@@ -264,6 +392,10 @@ export async function getProductsPaginated(
     
     // Extract products for current page using flattenConnection
     const allProducts = extractNodes(data?.products);
+    console.log(`[DEBUG] Found ${allProducts.length} products for query: "${searchQuery}"`);
+    if (allProducts.length === 0) {
+      console.log('[DEBUG] NO PRODUCTS FOUND - Check if collection exists in Shopify');
+    }
     const pageProducts = skip > 0 ? allProducts.slice(skip) : allProducts;
     const products = pageProducts.slice(0, perPage);
     

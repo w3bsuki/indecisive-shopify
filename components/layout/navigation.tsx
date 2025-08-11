@@ -38,7 +38,7 @@ export function Navigation() {
   const tc = useTranslations('common')
   const tf = useTranslations('footer')
   const pathname = usePathname()
-  const { totalItems } = useCart()
+  const { totalItems, cartReady: _cartReady } = useCart()
   const { totalItems: wishlistCount } = useWishlist()
   const { } = useIndecisive()
   const { setCartIconRef } = useFlyToCart()

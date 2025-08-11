@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
 import { useLocale } from 'next-intl'
 
 interface ProductPageBannerProps {
@@ -15,78 +14,51 @@ interface ProductPageBannerProps {
 export function ProductPageBanner({
   title,
   className = '',
-  variant = 'all',
-  showTabs = true,
-  currentCategory = 'all'
+  variant: _variant = 'all',
+  showTabs: _showTabs = false,
+  currentCategory: _currentCategory = 'all'
 }: ProductPageBannerProps) {
   const locale = useLocale()
-  const isBulgarian = locale === 'bg'
-
-  const getBannerStyles = () => {
-    switch (variant) {
-      case 'new':
-        // Use design token gradient for new items - more subtle
-        return 'bg-gradient-to-br from-blue-600 to-blue-800 text-white'
-      case 'sale':
-        // Use design token destructive color for sales - more subtle
-        return 'bg-gradient-to-br from-red-600 to-red-800 text-white'
-      case 'collection':
-        return 'bg-gradient-to-br from-purple-600 to-purple-800 text-white'
-      default:
-        // Use design token primary color
-        return 'bg-primary text-primary-foreground'
+  
+  const getPromoMessage = () => {
+    const messages = {
+      bg: [
+        'Безплатна доставка над 50лв 🚚',
+        'Нови колекции всяка седмица ✨',
+        'Оригинални дизайни за индивидуалисти 🎨',
+        'Премиум качество • Устойчива мода 🌱'
+      ],
+      en: [
+        'Free shipping on orders over $75 🚚',
+        'New collections drop weekly ✨',
+        'Original designs for the indecisive 🎨',
+        'Premium quality • Sustainable fashion 🌱'
+      ],
+      de: [
+        'Kostenloser Versand ab 75€ 🚚',
+        'Neue Kollektionen jede Woche ✨',
+        'Originelle Designs für Unentschlossene 🎨',
+        'Premium Qualität • Nachhaltige Mode 🌱'
+      ]
     }
+    
+    const localMessages = messages[locale as keyof typeof messages] || messages.en
+    // Rotate message based on current date
+    const messageIndex = new Date().getDay() % localMessages.length
+    return localMessages[messageIndex]
   }
 
-  const categories = [
-    { 
-      id: 'all', 
-      label: isBulgarian ? 'ВСИЧКИ' : 'ALL', 
-      href: variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products' 
-    },
-    { 
-      id: 'hats', 
-      label: isBulgarian ? '#1 ХУЛИГАНКА' : '#1 HATS', 
-      href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=hats` 
-    },
-    { 
-      id: 'tshirts', 
-      label: isBulgarian ? '#2 БУНТАРКА' : '#2 T-SHIRTS', 
-      href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=tshirts` 
-    }
-  ]
-
   return (
-    <div className={cn(getBannerStyles(), 'shadow-card relative overflow-hidden min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]', className)}>
-      {/* Subtle overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/10" />
-      
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold font-mono tracking-tight text-center mb-4 sm:mb-6">
-          {title}
-        </h1>
-        
-        {showTabs && (
-          <div className="w-full max-w-md mx-auto">
-            <div className="flex items-center justify-center bg-white/95 backdrop-blur-sm rounded-lg p-1 shadow-lg">
-              {categories.map((category) => (
-                <Link
-                  key={category.id}
-                  href={category.href}
-                  className={cn(
-                    "flex-1 px-3 py-2.5 text-center text-xs sm:text-sm font-bold rounded-md transition-all duration-200",
-                    "min-h-[40px] flex items-center justify-center",
-                    currentCategory === category.id
-                      ? "bg-black text-white shadow-sm"
-                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                  )}
-                >
-                  {category.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+    <div className={cn('bg-gradient-to-b from-gray-50 to-white border-b border-gray-200', className)}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-bold font-mono tracking-tight animate-fade-in">
+            {title}
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 font-medium animate-fade-in-delay">
+            {getPromoMessage()}
+          </p>
+        </div>
       </div>
     </div>
   )
