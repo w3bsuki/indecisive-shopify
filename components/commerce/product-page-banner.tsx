@@ -23,22 +23,28 @@ export function ProductPageBanner({
   const getPromoMessage = () => {
     const messages = {
       bg: [
-        '🔥 БЕЗПЛАТНА ДОСТАВКА НАД 50ЛВ • КОД "INDECISIVE20" ЗА -20%',
-        '✨ НОВА КОЛЕКЦИЯ ВСЯКА СЕДМИЦА • 30 ДНИ ВРЪЩАНЕ',
-        '🎯 ЕКСКЛУЗИВНИ ДИЗАЙНИ • ПРЕМИУМ КАЧЕСТВО',
-        '💎 VIP КЛУБ: ПОЛУЧИ 15% ОТСТЪПКА ЗАВИНАГИ'
+        '🔥 БЕЗПЛАТНА ДОСТАВКА НАД 50ЛВ • ОГРАНИЧЕНИ КОЛИЧЕСТВА',
+        '✨ WEAR YOUR MOOD • СТИЛ ЗА ВСЕКИ ДЕН',
+        '🎯 РЕШЕНИЯТА СА ПРЕОЦЕНЕНИ • ПРОСТО ВЗЕМИ ВСИЧКО',
+        '💫 ЗАЩО ДА ИЗБИРАШ? ЖИВОТЪТ Е ТВЪРДЕ КРАТЪК',
+        '🌟 НЕРЕШИТЕЛНОСТТА Е НОВАТА УВЕРЕНОСТ',
+        '⚡ ПОСЛЕДНИ ПАРЧЕТА • НЕ МИСЛИ, ДЕЙСТВАЙ'
       ],
       en: [
-        '🔥 FREE SHIPPING OVER $75 • CODE "INDECISIVE20" FOR 20% OFF',
-        '✨ NEW DROPS WEEKLY • 30-DAY RETURNS',
-        '🎯 EXCLUSIVE DESIGNS • PREMIUM QUALITY',
-        '💎 VIP CLUB: GET 15% OFF FOREVER'
+        '🔥 FREE SHIPPING OVER $75 • LIMITED QUANTITIES',
+        '✨ WEAR YOUR MOOD • STYLE FOR EVERY DECISION',
+        '🎯 DECISIONS ARE OVERRATED • JUST GET EVERYTHING',
+        '💫 WHY CHOOSE? LIFE\'S TOO SHORT',
+        '🌟 INDECISION IS THE NEW CONFIDENCE',
+        '⚡ LAST PIECES • DON\'T THINK, JUST WEAR'
       ],
       de: [
-        '🔥 KOSTENLOSER VERSAND AB 75€ • CODE "INDECISIVE20" FÜR -20%',
-        '✨ NEUE KOLLEKTIONEN WÖCHENTLICH • 30 TAGE RÜCKGABE',
-        '🎯 EXKLUSIVE DESIGNS • PREMIUM QUALITÄT',
-        '💎 VIP CLUB: 15% RABATT FÜR IMMER'
+        '🔥 KOSTENLOSER VERSAND AB 75€ • LIMITIERTE MENGEN',
+        '✨ TRAGE DEINE STIMMUNG • STIL FÜR JEDEN TAG',
+        '🎯 ENTSCHEIDUNGEN SIND ÜBERBEWERTET • NIMM EINFACH ALLES',
+        '💫 WARUM WÄHLEN? DAS LEBEN IST ZU KURZ',
+        '🌟 UNENTSCHLOSSENHEIT IST DAS NEUE SELBSTVERTRAUEN',
+        '⚡ LETZTE STÜCKE • NICHT DENKEN, EINFACH TRAGEN'
       ]
     }
     
