@@ -53,7 +53,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
     try {
       await addItem(firstVariant.id, 1)
       toast.success(`${product.title} added to cart`)
-    } catch (error) {
+    } catch {
       toast.error('Failed to add to cart')
     }
   }
