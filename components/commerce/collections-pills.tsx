@@ -73,7 +73,7 @@ export function CollectionsPills({
   }, [router])
 
   return (
-    <div className={cn('w-full mb-6', className)}>
+    <div className={cn('w-full mb-4', className)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Desktop view - pill style */}
         <div className="hidden sm:flex justify-center">
