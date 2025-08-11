@@ -16,8 +16,8 @@ export function ProductGridModern({ products }: ProductGridModernProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
       {products.map((product, index) => {
-        const mainImage = product.images.edges[0]?.node
-        const hoverImage = product.images.edges[1]?.node || mainImage
+        const mainImage = product.images?.edges[0]?.node
+        const hoverImage = product.images?.edges[1]?.node || mainImage
         const price = product.priceRange.minVariantPrice
 
         return (
@@ -67,14 +67,14 @@ export function ProductGridModern({ products }: ProductGridModernProps) {
                 </div>
 
                 {/* Sale Badge */}
-                {product.tags.includes('sale') && (
+                {product.tags?.includes('sale') && (
                   <span className="absolute top-4 left-4 px-3 py-1 bg-red-500 text-white text-xs font-medium tracking-wide">
                     SALE
                   </span>
                 )}
 
                 {/* New Badge */}
-                {product.tags.includes('new') && !product.tags.includes('sale') && (
+                {product.tags?.includes('new') && !product.tags?.includes('sale') && (
                   <span className="absolute top-4 left-4 px-3 py-1 bg-black text-white text-xs font-medium tracking-wide">
                     NEW
                   </span>
@@ -87,7 +87,7 @@ export function ProductGridModern({ products }: ProductGridModernProps) {
                   {product.title}
                 </h3>
                 <p className="text-xs text-gray-500 line-clamp-1">
-                  {product.productType}
+                  {product.tags?.[0] || 'Product'}
                 </p>
                 <div className="flex items-center gap-2 pt-1">
                   <span className="text-sm font-medium text-gray-900">
@@ -101,11 +101,11 @@ export function ProductGridModern({ products }: ProductGridModernProps) {
                 </div>
 
                 {/* Color Options (if available) */}
-                {product.options.find((opt: any) => opt.name.toLowerCase() === 'color') && (
+                {product.options?.find(opt => opt.name.toLowerCase() === 'color') && (
                   <div className="flex gap-1 pt-2">
                     {product.options
-                      .find((opt: any) => opt.name.toLowerCase() === 'color')
-                      ?.values.slice(0, 4).map((color: any, idx: any) => (
+                      ?.find(opt => opt.name.toLowerCase() === 'color')
+                      ?.values.slice(0, 4).map((color, idx) => (
                         <span
                           key={idx}
                           className="w-4 h-4 rounded-full border border-gray-300"
@@ -116,9 +116,9 @@ export function ProductGridModern({ products }: ProductGridModernProps) {
                           title={color}
                         />
                       ))}
-                    {product.options.find((opt: any) => opt.name.toLowerCase() === 'color')?.values.length > 4 && (
+                    {(product.options?.find(opt => opt.name.toLowerCase() === 'color')?.values.length || 0) > 4 && (
                       <span className="text-xs text-gray-500">
-                        +{product.options.find((opt: any) => opt.name.toLowerCase() === 'color')?.values.length - 4}
+                        +{(product.options?.find(opt => opt.name.toLowerCase() === 'color')?.values.length || 0) - 4}
                       </span>
                     )}
                   </div>

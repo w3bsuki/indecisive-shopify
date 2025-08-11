@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Heart, ShoppingBag } from 'lucide-react'
-import type { ShopifyProduct } from '@/lib/shopify/types'
+import type { ShopifyProduct, ShopifyProductVariant, ShopifyImage } from '@/lib/shopify/types'
 import { useCart } from '@/hooks/use-cart'
 import { extractNodes } from '@/lib/shopify/flatten-connection'
 import { useMarket } from '@/hooks/use-market'
@@ -24,8 +24,8 @@ export function ProductCardClean({ product, priority = false, className }: Produ
   const { formatPrice } = useMarket()
   
   // Extract first variant for quick add
-  const variants = product.variants ? extractNodes(product.variants) : []
-  const firstVariant = variants[0]
+  const variants = product.variants ? extractNodes<ShopifyProductVariant>(product.variants) : []
+  const firstVariant = variants[0] || null
   
   // Price data
   const minPrice = product.priceRange.minVariantPrice
@@ -50,7 +50,7 @@ export function ProductCardClean({ product, priority = false, className }: Produ
     }
     
     try {
-      await addItem(firstVariant?.id, 1)
+      await addItem(firstVariant!.id, 1)
       toast.success(`${product.title} added to cart`)
     } catch {
       toast.error('Failed to add to cart')
@@ -66,8 +66,8 @@ export function ProductCardClean({ product, priority = false, className }: Produ
 
   // Get product images
   const productImage = product.featuredImage
-  const images = product.images ? extractNodes(product.images) : []
-  const hoverImage = images[1] // Only use second image if it exists
+  const images = product.images ? extractNodes<ShopifyImage>(product.images) : []
+  const hoverImage = images[1] || null // Only use second image if it exists
 
   return (
     <article className={cn("group relative", className)}>
