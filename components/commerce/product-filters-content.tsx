@@ -20,12 +20,13 @@ const sortOptionsValues = [
   'created-desc',
 ]
 
-const categoryOptionsValues = [
-  'hats',
-  'tshirts',
-  'bags',
-  'giftcards',
-]
+// Categories are handled via collection pills, not in filters
+// const categoryOptionsValues = [
+//   'hats',
+//   'tshirts',
+//   'bags',
+//   'giftcards',
+// ]
 
 const colorOptionsData = [
   { value: 'black', hex: '#000000' },
@@ -64,13 +65,14 @@ export function ProductFiltersContent() {
     return { value, label: t(`sort.${translationKey}`) }
   })
   
-  const categoryOptions = categoryOptionsValues.map(value => {
-    if (value === 'hats') return { value, label: 'HATS' }
-    if (value === 'tshirts') return { value, label: 'TSHIRTS' }
-    if (value === 'bags') return { value, label: 'BAGS' }
-    if (value === 'giftcards') return { value, label: 'GIFTCARDS' }
-    return { value, label: value.toUpperCase() }
-  })
+  // Category options are handled differently in this component
+  // const categoryOptions = categoryOptionsValues.map(value => {
+  //   if (value === 'hats') return { value, label: 'HATS' }
+  //   if (value === 'tshirts') return { value, label: 'TSHIRTS' }
+  //   if (value === 'bags') return { value, label: 'BAGS' }
+  //   if (value === 'giftcards') return { value, label: 'GIFTCARDS' }
+  //   return { value, label: value.toUpperCase() }
+  // })
   
   const colorOptions = colorOptionsData.map(({ value, hex }) => ({
     value,

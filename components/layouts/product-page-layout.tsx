@@ -50,7 +50,7 @@ export function ProductPageLayout({
   totalCount: _totalCount,
   pageInfo,
   hasFilters: _hasFilters = false,
-  showFilters = true,
+  showFilters: _showFilters = true,
   currentCategory = 'all',
   breadcrumbItems,
   className = '',
