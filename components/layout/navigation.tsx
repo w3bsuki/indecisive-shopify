@@ -469,7 +469,9 @@ export function Navigation() {
                 pathname === "/account" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
-              <User className="h-5 w-5 stroke-[2.5]" />
+              <div className="relative">
+                <User className="h-5 w-5 stroke-[2.5]" />
+              </div>
               <span className="text-[10px] font-medium">ПРОФИЛ</span>
             </Button>
           </Link>
@@ -484,7 +486,9 @@ export function Navigation() {
                 pathname === "/#community" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
-              <Star className="h-5 w-5 stroke-[2.5]" />
+              <div className="relative">
+                <Star className="h-5 w-5 stroke-[2.5]" />
+              </div>
               <span className="text-[10px] font-medium">КЛУБ</span>
             </Button>
           </Link>
@@ -500,7 +504,9 @@ export function Navigation() {
               )}
               onClick={() => setShowFilterDrawer(true)}
             >
-              <SlidersHorizontal className="h-5 w-5 stroke-[2.5]" />
+              <div className="relative">
+                <SlidersHorizontal className="h-5 w-5 stroke-[2.5]" />
+              </div>
               <span className="text-[10px] font-medium">ФИЛТРИ</span>
             </Button>
           ) : (
@@ -513,7 +519,9 @@ export function Navigation() {
                   "text-gray-600 hover:text-black hover:bg-gray-50"
                 )}
               >
-                <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+                <div className="relative">
+                  <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+                </div>
                 <span className="text-[10px] font-medium">МАГАЗИН</span>
               </Button>
             </Link>
