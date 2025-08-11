@@ -195,7 +195,11 @@ export function ProductFiltersContent() {
               key={option.value}
               variant={currentSort === option.value ? "default" : "outline"}
               size="sm"
-              onClick={() => updateFilter('sort', option.value)}
+              onClick={() => {
+                // Toggle: if already selected, reset to 'relevance', otherwise select this option
+                const newValue = currentSort === option.value ? 'relevance' : option.value
+                updateFilter('sort', newValue)
+              }}
               className={cn(
                 "font-mono text-xs h-10 px-2 transition-all justify-center gap-1.5",
                 currentSort === option.value
