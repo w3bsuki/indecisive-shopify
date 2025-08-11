@@ -418,11 +418,13 @@
     "categories": {
       "title": "Категории",
       "all": "ВСИЧКИ",
-      "tshirts": "Тениски",
-      "hoodies": "Суичъри",
-      "jackets": "Якета",
-      "pants": "Панталони",
-      "accessories": "Аксесоари"
+      "tshirts": "ТЕНИСКИ",
+      "hoodies": "СУИТШЪРТИ",
+      "jackets": "ЯКЕТА",
+      "pants": "ПАНТАЛОНИ",
+      "accessories": "АКСЕСОАРИ",
+      "hats": "ШАПКИ",
+      "bags": "ЧАНТИ"
     }
   },
   "newsletter": {

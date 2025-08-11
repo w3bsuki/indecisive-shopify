@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { useCallback } from 'react'
 
 interface Collection {
@@ -25,11 +25,29 @@ export function CollectionsPills({
   className = '',
   collections: dynamicCollections = []
 }: CollectionsPillsProps) {
-  const locale = useLocale()
   const router = useRouter()
-  const _isBulgarian = locale === 'bg'
+  const filtersT = useTranslations('filters.categories')
 
-  // No static collections - we'll use dynamic collections from Shopify
+  // Translation mapping for collection handles
+  const getCollectionTitle = (handle: string, originalTitle: string): string => {
+    const handleMap: Record<string, string> = {
+      'bucket-hats': filtersT('hats'),
+      'tees': filtersT('tshirts'), 
+      'tote-bags': filtersT('bags'),
+      'tees-1': filtersT('tshirts'),
+      'caps': filtersT('hats'),
+      'crop-tops': filtersT('tshirts'),
+      'hats': filtersT('hats'),
+      'tshirts': filtersT('tshirts'),
+      'accessories': filtersT('accessories'),
+      'hoodies': filtersT('hoodies'),
+      'jackets': filtersT('jackets'),
+      'pants': filtersT('pants')
+    }
+    
+    // Return translated version if available, otherwise use original title
+    return handleMap[handle] || originalTitle.toUpperCase()
+  }
 
   // Always use dynamic collections with "ALL" as first option
   const collections = [
@@ -37,14 +55,14 @@ export function CollectionsPills({
     {
       id: 'all',
       handle: 'all', 
-      title: locale === 'bg' ? 'ВСИЧКИ' : 'ALL',
+      title: filtersT('all'),
       href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}`
     },
-    // Add dynamic collections with proper filter URLs
+    // Add dynamic collections with proper filter URLs and translations
     ...dynamicCollections.map(collection => ({
       id: collection.handle,
       handle: collection.handle,
-      title: collection.title.toUpperCase(),
+      title: getCollectionTitle(collection.handle, collection.title),
       href: `${variant === 'new' ? '/new' : variant === 'sale' ? '/sale' : '/products'}?category=${collection.handle}`
     }))
   ]
