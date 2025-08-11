@@ -48,7 +48,8 @@
     "home": "Home",
     "apparel": "Apparel",
     "hats": "Hats", 
-    "tshirts": "T-shirts"
+    "tshirts": "T-shirts",
+    "bags": "Bags"
   },
   "hero": {
     "customers": "customers",
@@ -396,29 +397,6 @@
       "follow": "Follow Us"
     },
     "copyright": "© {year} Indecisive Wear. All rights reserved."
-  },
-  "filters": {
-    "title": "Filters & Sort",
-    "subtitle": "Refine your product search",
-    "active": "Active",
-    "sortBy": "Sort By",
-    "clearAll": "Clear All Filters",
-    "sort": {
-      "relevance": "Relevance",
-      "priceAsc": "Price: Low to High",
-      "priceDesc": "Price: High to Low",
-      "nameAsc": "Name: A-Z",
-      "nameDesc": "Name: Z-A"
-    },
-    "categories": {
-      "title": "Categories",
-      "all": "All Categories",
-      "tshirts": "T-Shirts",
-      "hoodies": "Hoodies",
-      "jackets": "Jackets",
-      "pants": "Pants",
-      "accessories": "Accessories"
-    }
   },
   "newsletter": {
     "stayMinimal": "STAY MINIMAL",

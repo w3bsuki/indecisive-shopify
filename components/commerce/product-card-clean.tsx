@@ -67,10 +67,10 @@ export function ProductCardClean({ product, priority = false, className }: Produ
   // Get product images
   const productImage = product.featuredImage
   const images = product.images ? extractNodes<ShopifyImage>(product.images) : []
-  const hoverImage = images[1] || null // Only use second image if it exists
+  const hoverImage = images[1] || null
 
   return (
-    <article className={cn("group relative", className)}>
+    <article className={cn("group", className)}>
       <div className="space-y-3">
         <Link 
           href={`/products/${product.handle}`}
@@ -79,11 +79,11 @@ export function ProductCardClean({ product, priority = false, className }: Produ
           onMouseLeave={() => setIsHovered(false)}
         >
           {/* Image Container */}
-          <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-gray-50">
             {/* Sale Badge */}
             {isOnSale && discountPercentage > 0 && (
               <div className="absolute top-2 left-2 z-20">
-                <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded">
                   -{discountPercentage}%
                 </span>
               </div>
@@ -96,46 +96,41 @@ export function ProductCardClean({ product, priority = false, className }: Produ
               </div>
             )}
             
-            {/* Action Buttons - Always visible on mobile, hover on desktop */}
+            {/* Action Buttons */}
             <div className={cn(
-              "absolute top-2 right-2 z-20 flex flex-col gap-1.5 transition-all duration-200",
-              "md:opacity-0 md:group-hover:opacity-100"
+              "absolute top-2 right-2 z-20 flex flex-col gap-1",
+              "md:opacity-0 md:group-hover:opacity-100 transition-opacity"
             )}>
-              {/* Wishlist Button */}
               <button
                 onClick={handleWishlist}
-                className={cn(
-                  "p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm transition-all duration-200",
-                  "hover:bg-white hover:shadow-md hover:scale-110",
-                  isWishlisted ? "text-red-500" : "text-gray-700 hover:text-gray-900"
-                )}
-                aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all"
               >
-                <Heart 
-                  className="h-4 w-4" 
-                  fill={isWishlisted ? "currentColor" : "none"}
-                  strokeWidth={isWishlisted ? 0 : 2}
-                />
+                <Heart className={cn("w-4 h-4", isWishlisted ? "fill-red-500 text-red-500" : "text-gray-700")} />
               </button>
+              
+              {product.availableForSale && firstVariant && (
+                <button
+                  onClick={handleQuickAdd}
+                  disabled={isLoading}
+                  className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all disabled:opacity-50"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                </button>
+              )}
             </div>
             
             {/* Product Image */}
             {productImage?.url ? (
               <div className="relative w-full h-full">
-                {/* Main Image - Always visible */}
                 <Image
                   src={productImage.url}
                   alt={productImage.altText || product.title}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className={cn(
-                    "object-cover object-center transition-transform duration-700 ease-out",
-                    isHovered && hoverImage ? "scale-105" : "scale-100"
-                  )}
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   priority={priority}
                 />
                 
-                {/* Hover Image - Only if different from main image */}
                 {hoverImage?.url && (
                   <Image
                     src={hoverImage.url}
@@ -154,142 +149,28 @@ export function ProductCardClean({ product, priority = false, className }: Produ
                 <ShoppingBag className="h-10 w-10 text-gray-300" />
               </div>
             )}
-            
-            {/* Color Indicators - Bottom Left Overlay */}
-            {variants.length > 1 && (
-              <div className="absolute bottom-2 left-2 z-20 flex gap-1">
-                {variants.slice(0, 3).map((variant, index) => {
-                  // Try to get color from variant options
-                  const colorOption = variant.selectedOptions?.find(
-                    option => option.name.toLowerCase() === 'color'
-                  )
-                  const colorValue = colorOption?.value.toLowerCase() || ''
-                  
-                  // Simple color mapping
-                  const getColorStyle = (color: string) => {
-                    const colorMap: Record<string, string> = {
-                      black: '#000000',
-                      white: '#ffffff',
-                      red: '#ef4444',
-                      blue: '#3b82f6',
-                      green: '#10b981',
-                      yellow: '#f59e0b',
-                      pink: '#ec4899',
-                      purple: '#8b5cf6',
-                      gray: '#6b7280',
-                      grey: '#6b7280',
-                      navy: '#1e3a8a',
-                      brown: '#92400e',
-                      beige: '#f5f5dc',
-                      cream: '#fffdd0'
-                    }
-                    
-                    return colorMap[color] || '#d1d5db'
-                  }
-                  
-                  return (
-                    <div
-                      key={index}
-                      className="w-3 h-3 rounded-full border border-white/80 shadow-sm"
-                      style={{ backgroundColor: getColorStyle(colorValue) }}
-                      title={colorOption?.value || `Variant ${index + 1}`}
-                    />
-                  )
-                })}
-                {variants.length > 3 && (
-                  <div className="w-3 h-3 rounded-full bg-gray-500/70 border border-white/80 shadow-sm flex items-center justify-center">
-                    <span className="text-white text-[6px] font-bold">+</span>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {/* Quick Add Button - Desktop Only */}
-            <div className={cn(
-              "absolute inset-x-3 bottom-3 transition-all duration-300 transform",
-              "hidden md:block",
-              isHovered && product.availableForSale ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
-            )}>
-              <button
-                onClick={handleQuickAdd}
-                className={cn(
-                  "w-full bg-white/95 backdrop-blur-sm text-gray-900 py-2.5 px-4 rounded-md",
-                  "font-medium text-sm shadow-md",
-                  "transition-all duration-200",
-                  "hover:bg-white hover:shadow-lg",
-                  "disabled:opacity-50 disabled:cursor-not-allowed",
-                  "flex items-center justify-center gap-2"
-                )}
-                disabled={!product.availableForSale || isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <span className="h-4 w-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                    <span>Adding...</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="h-4 w-4" />
-                    <span>Quick Add</span>
-                  </>
-                )}
-              </button>
-            </div>
           </div>
         </Link>
         
         {/* Product Info */}
         <div className="space-y-1">
-          {/* Title */}
-          <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="font-medium text-gray-900 text-sm hover:text-gray-700 transition-colors line-clamp-1 truncate">
+          <Link href={`/products/${product.handle}`}>
+            <h3 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-gray-700 transition-colors">
               {product.title}
             </h3>
           </Link>
           
-          {/* Price */}
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="text-base font-semibold text-gray-900">
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-sm font-semibold text-gray-900">
               {formatPrice(minPrice.amount, minPrice.currencyCode)}
             </span>
             {isOnSale && compareAtPrice && (
-              <>
-                <span className="text-sm text-gray-500 line-through">
-                  {formatPrice(compareAtPrice.amount, compareAtPrice.currencyCode)}
-                </span>
-                <span className="text-xs text-red-600 font-medium">
-                  {discountPercentage}% off
-                </span>
-              </>
+              <span className="text-xs text-gray-500 line-through">
+                {formatPrice(compareAtPrice.amount, compareAtPrice.currencyCode)}
+              </span>
             )}
           </div>
         </div>
-        
-        {/* Mobile Add to Cart Button */}
-        <button
-          onClick={handleQuickAdd}
-          className={cn(
-            "w-full bg-gray-900 text-white py-3 px-4 rounded-md",
-            "flex items-center justify-center gap-2 font-medium text-sm",
-            "transition-all duration-200",
-            "hover:bg-gray-800 active:scale-[0.98]",
-            "md:hidden",
-            "disabled:bg-gray-300 disabled:cursor-not-allowed"
-          )}
-          disabled={!product.availableForSale || isLoading}
-        >
-          {isLoading ? (
-            <>
-              <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              <span>Adding...</span>
-            </>
-          ) : (
-            <>
-              <ShoppingBag className="h-4 w-4" />
-              <span>{product.availableForSale ? 'Add to Cart' : 'Out of Stock'}</span>
-            </>
-          )}
-        </button>
       </div>
     </article>
   )

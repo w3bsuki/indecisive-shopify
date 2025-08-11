@@ -110,7 +110,7 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
         align="end" 
         side="bottom"
         className="w-[calc(100vw-24px)] sm:w-[380px] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-lg overflow-hidden"
-        sideOffset={5}
+        sideOffset={8}
       >
         {/* Cart Header */}
         <div className="px-4 py-3 border-b bg-gray-50/50">

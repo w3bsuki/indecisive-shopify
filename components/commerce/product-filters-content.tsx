@@ -7,7 +7,7 @@ import { Slider } from '@/components/ui/slider'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
-import { X } from 'lucide-react'
+import { X, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
 import { formatPrice } from '@/lib/utils/price'
 
 // These arrays will be populated with translated labels inside the component
@@ -54,15 +54,39 @@ export function ProductFiltersContent() {
   
   const [priceRange, setPriceRange] = useState([0, 200])
   
-  // Create translated options arrays
+  // Create translated options arrays with icons and short labels
   const sortOptions = sortOptionsValues.map(value => {
-    const translationKey = value === 'relevance' ? 'relevance' :
-      value === 'price-asc' ? 'priceAsc' :
-      value === 'price-desc' ? 'priceDesc' :
-      value === 'name-asc' ? 'nameAsc' :
-      value === 'name-desc' ? 'nameDesc' :
-      'createdDesc'
-    return { value, label: t(`sort.${translationKey}`) }
+    let label = ''
+    let icon = null
+    let shortLabel = ''
+    
+    if (value === 'relevance') {
+      label = t('sort.relevance')
+      shortLabel = t('sort.relevance')
+      icon = <ArrowUpDown className="w-3 h-3" />
+    } else if (value === 'price-asc') {
+      label = t('sort.priceAsc')
+      shortLabel = 'ЦЕНА'
+      icon = <ArrowUp className="w-3 h-3" />
+    } else if (value === 'price-desc') {
+      label = t('sort.priceDesc')
+      shortLabel = 'ЦЕНА'
+      icon = <ArrowDown className="w-3 h-3" />
+    } else if (value === 'name-asc') {
+      label = t('sort.nameAsc')
+      shortLabel = 'ИМЕ'
+      icon = <ArrowUp className="w-3 h-3" />
+    } else if (value === 'name-desc') {
+      label = t('sort.nameDesc')
+      shortLabel = 'ИМЕ'
+      icon = <ArrowDown className="w-3 h-3" />
+    } else {
+      label = t('sort.createdDesc')
+      shortLabel = 'НОВИ'
+      icon = <ArrowDown className="w-3 h-3" />
+    }
+    
+    return { value, label, shortLabel, icon }
   })
   
   // Category options are handled differently in this component
@@ -173,13 +197,14 @@ export function ProductFiltersContent() {
               size="sm"
               onClick={() => updateFilter('sort', option.value)}
               className={cn(
-                "font-mono text-xs h-10 px-3 transition-all justify-start",
+                "font-mono text-xs h-10 px-2 transition-all justify-center gap-1.5",
                 currentSort === option.value
                   ? "bg-black text-white border-black"
                   : "hover:border-black hover:bg-gray-50"
               )}
             >
-              {option.label}
+              {option.icon}
+              <span className="truncate">{option.shortLabel}</span>
             </Button>
           ))}
         </div>

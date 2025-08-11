@@ -92,7 +92,7 @@ export function MobileSearchDropdown() {
       {/* Dropdown Container */}
       <div 
         className={cn(
-          "fixed top-[100px] left-3 right-3 sm:absolute sm:top-full sm:left-auto sm:right-0 sm:mt-2 sm:w-[380px] bg-white border border-gray-200 shadow-xl rounded-lg overflow-hidden transition-all duration-200 z-50",
+          "fixed top-[56px] left-3 right-3 sm:absolute sm:top-full sm:left-auto sm:right-0 sm:mt-2 sm:w-[380px] bg-white border border-gray-200 shadow-xl rounded-lg overflow-hidden transition-all duration-200 z-50",
           isOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
         )}
       >

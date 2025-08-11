@@ -73,14 +73,14 @@ export function ProductPageLayout({
         />
       )}
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6 px-safe">
-        {/* Collection Tabs */}
+      {/* Collection Tabs - No top padding, directly under banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 px-safe">
         <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
 
-        {/* Products Grid - Standardized 4-column responsive */}
+        {/* Products Grid - Fixed */}
         {products.length > 0 ? (
           <>
-            <div className={`grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 touch-optimized ${gridClassName}`}>
+            <div className={`grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:gap-6 ${gridClassName}`}>
               {products.map((product, index) => (
                 <ProductCardCleanServer 
                   key={product.id} 

@@ -119,14 +119,19 @@ export function Navigation() {
     { name: t('bestsellers'), href: "/bestsellers", badge: "❤️" },
   ]
 
-  const apparelItems = [
+  // Based on actual Shopify collections: bucket-hats, tees, tote-bags, tees-1, caps
+  const collections = [
     { 
       name: t('hats'), 
-      href: "/products?category=hats"
+      href: "/products?category=bucket-hats"
     },
     { 
       name: t('tshirts'), 
-      href: "/products?category=tshirts"
+      href: "/products?category=tees"
+    },
+    { 
+      name: t('bags'), 
+      href: "/products?category=tote-bags"
     },
   ]
 
@@ -172,19 +177,25 @@ export function Navigation() {
                       </NavigationMenuItem>
                     ))}
                     
-                    {/* Simple Apparel Links */}
-                    {apparelItems.map((item) => (
-                      <NavigationMenuItem key={item.href}>
-                        <NavigationMenuLink asChild>
-                          <Link 
-                            href={item.href}
-                            className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium  hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-                          >
-                            {item.name}
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    ))}
+                    {/* Dropdown for Collections */}
+                    <NavigationMenuItem>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                          {t('collections')}
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-48 p-2">
+                          <div className="space-y-1">
+                            {collections.map((item) => (
+                              <Link key={item.href} href={item.href}>
+                                <div className="px-3 py-2 text-sm hover:bg-gray-100 rounded cursor-pointer">
+                                  {item.name}
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
               )}
@@ -286,10 +297,10 @@ export function Navigation() {
       {/* Mobile Navigation */}
       <>
         {/* Mobile Navigation Stack */}
-        <div className="fixed-mobile-safe w-full z-50 md:hidden touch-optimized">
+        <div className="fixed-mobile-safe w-full z-40 md:hidden touch-optimized">
 
           {/* Mobile Navigation Bar */}
-          <nav className="bg-white shadow-sm">
+          <nav className="bg-white shadow-sm border-b border-gray-100">
             <div className="px-3 h-14 flex items-center justify-between">
               {/* Left Side: Menu + Logo */}
               <div className="flex items-center gap-0">
@@ -337,20 +348,17 @@ export function Navigation() {
                       
                       {/* Collections Section */}
                       <div className="border-t border-gray-100 pt-4">
-                        <h4 className="font-mono text-xs font-bold text-gray-600 mb-3 tracking-wider">{t('apparel').toUpperCase()}</h4>
-                        <div className="space-y-3">
-                          {apparelItems.map((item) => (
-                            <div key={item.href} className="space-y-2">
-                              <Link
-                                href={item.href}
-                                className="block p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group"
-                                onClick={() => setIsMenuOpen(false)}
-                              >
-                                <div className="flex items-center justify-center">
-                                  <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
-                                </div>
-                              </Link>
-                            </div>
+                        <h4 className="font-mono text-xs font-bold text-gray-600 mb-3 tracking-wider">{t('collections').toUpperCase()}</h4>
+                        <div className="grid grid-cols-2 gap-2">
+                          {collections.map((item) => (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              className="p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group text-center"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
+                            </Link>
                           ))}
                         </div>
                       </div>
@@ -446,8 +454,8 @@ export function Navigation() {
           </nav>
         </div>
 
-        {/* Spacer */}
-        <div className="h-[90px] md:hidden" />
+        {/* Mobile Header Spacer */}
+        <div className="h-14 md:hidden" />
       </>
 
       {/* Mobile Bottom Navigation */}

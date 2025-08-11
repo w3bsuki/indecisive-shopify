@@ -23,22 +23,22 @@ export function ProductPageBanner({
   const getPromoMessage = () => {
     const messages = {
       bg: [
-        '✨ НЕ МОЖЕШ ДА РЕШИШ? ВЗЕМИ ДВЕТЕ',
-        '🎯 ЖИВОТЪТ Е КРАТЪК • КУПИ ВСИЧКО',
-        '💫 ЗАЩО ДА ИЗБИРАШ?',
-        '🌟 НЕРЕШИТЕЛНОСТ = СТИЛ'
+        '🚚 БЕЗПЛАТНА ДОСТАВКА НАД 100 ЛВ',
+        '💎 НОВИ СТИЛОВЕ ВСЯКА СЕДМИЦА',
+        '⚡ ЕКСПРЕСНА ДОСТАВКА 24Ч',
+        '🎁 БЕЗПЛАТНО ВРЪЩАНЕ 30 ДНИ'
       ],
       en: [
-        '✨ CAN\'T DECIDE? GET BOTH',
-        '🎯 LIFE\'S SHORT • BUY EVERYTHING',
-        '💫 WHY CHOOSE?',
-        '🌟 INDECISION = STYLE'
+        '🚚 FREE SHIPPING OVER $50',
+        '💎 NEW STYLES WEEKLY',
+        '⚡ EXPRESS DELIVERY 24H',
+        '🎁 FREE RETURNS 30 DAYS'
       ],
       de: [
-        '✨ KANNST NICHT ENTSCHEIDEN? NIMM BEIDE',
-        '🎯 LEBEN IST KURZ • KAUF ALLES',
-        '💫 WARUM WÄHLEN?',
-        '🌟 UNENTSCHLOSSENHEIT = STIL'
+        '🚚 KOSTENLOSER VERSAND AB 50€',
+        '💎 NEUE STYLES WÖCHENTLICH',
+        '⚡ EXPRESS LIEFERUNG 24H',
+        '🎁 KOSTENLOSE RÜCKSENDUNG 30 TAGE'
       ]
     }
     
@@ -49,12 +49,16 @@ export function ProductPageBanner({
   }
 
   return (
-    <div className={cn('bg-black text-white', className)}>
-      <div className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
-          <p className="text-xs sm:text-sm font-medium text-center tracking-wide animate-pulse">
-            {getPromoMessage()}
-          </p>
+    <div className={cn('bg-black text-white relative overflow-hidden', className)}>
+      {/* Subtle moving background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent animate-pulse"></div>
+      <div className="relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
+          <div className="text-center">
+            <p className="text-[11px] sm:text-xs font-medium tracking-wider">
+              {getPromoMessage()}
+            </p>
+          </div>
         </div>
       </div>
     </div>

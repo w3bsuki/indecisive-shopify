@@ -48,7 +48,8 @@
     "home": "Начало",
     "apparel": "Колекции",
     "hats": "Шапки",
-    "tshirts": "Тениски"
+    "tshirts": "Тениски",
+    "bags": "Чанти"
   },
   "hero": {
     "customers": "клиенти",
@@ -414,6 +415,16 @@
       "priceDesc": "Цена: От висока към ниска",
       "nameAsc": "Име: А-Я",
       "nameDesc": "Име: Я-А"
+    },
+    "category": {
+      "all": "ВСИЧКИ",
+      "tshirts": "ТЕНИСКИ",
+      "hoodies": "СУИТШЪРТИ",
+      "jackets": "ЯКЕТА",
+      "pants": "ПАНТАЛОНИ",
+      "accessories": "АКСЕСОАРИ",
+      "hats": "ШАПКИ",
+      "bags": "ЧАНТИ"
     },
     "categories": {
       "title": "Категории",
