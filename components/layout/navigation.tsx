@@ -13,6 +13,7 @@ import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
 import { MobileSearchDropdown } from "@/components/layout/mobile-search-dropdown"
 import { SearchBar } from "@/components/layout/search-bar"
 import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
+import { FilterDrawer } from "@/components/commerce/filter-drawer"
 import { useCart, setCartSlideoutCallback } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
 import { useIndecisive } from "@/components/providers/indecisive-provider"
@@ -49,6 +50,7 @@ export function Navigation() {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [showWishlistDrawer, setShowWishlistDrawer] = useState(false)
   const [showCartSlideout, setShowCartSlideout] = useState(false)
+  const [showFilterDrawer, setShowFilterDrawer] = useState(false)
   
   // Refs
   const cartIconRef = useRef<HTMLButtonElement>(null)
@@ -487,20 +489,35 @@ export function Navigation() {
             </Button>
           </Link>
 
-          {/* Магазин (Shop) */}
-          <Link href="/products">
+          {/* Магазин (Shop) or Филтри (Filters) */}
+          {pathname === "/products" ? (
             <Button
               variant="ghost"
               size="sm"
               className={cn(
                 "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
-                pathname === "/products" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                showFilterDrawer ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
+              onClick={() => setShowFilterDrawer(true)}
             >
               <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
-              <span className="text-[10px] font-medium">МАГАЗИН</span>
+              <span className="text-[10px] font-medium">ФИЛТРИ</span>
             </Button>
-          </Link>
+          ) : (
+            <Link href="/products">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
+                  "text-gray-600 hover:text-black hover:bg-gray-50"
+                )}
+              >
+                <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+                <span className="text-[10px] font-medium">МАГАЗИН</span>
+              </Button>
+            </Link>
+          )}
 
           {/* Любими (Wishlist) */}
           <Button
@@ -539,6 +556,12 @@ export function Navigation() {
       <CartSlideout 
         isOpen={showCartSlideout} 
         onClose={() => setShowCartSlideout(false)} 
+      />
+      
+      {/* Filter Drawer */}
+      <FilterDrawer 
+        open={showFilterDrawer} 
+        onOpenChange={setShowFilterDrawer} 
       />
     </>
   )

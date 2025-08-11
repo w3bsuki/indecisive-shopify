@@ -1,7 +1,6 @@
 import { ProductCardCleanServer } from '@/components/commerce/product-card-clean-server'
 import { NoProductsFound } from '@/app/(shop)/products/page-client'
 import { ProductPageBanner } from '@/components/commerce/product-page-banner'
-import { ProductFiltersAdvanced } from '@/components/commerce/product-filters-advanced'
 import { ProductsPagination } from '@/components/commerce/products-pagination'
 import { BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
 import { CollectionsPillsServer } from '@/components/commerce/collections-pills-server'
@@ -77,9 +76,6 @@ export function ProductPageLayout({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 px-safe">
         {/* Collection Tabs */}
         <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
-
-        {/* Advanced Filters */}
-        {showFilters && <ProductFiltersAdvanced />}
 
         {/* Products Grid - Standardized 4-column responsive */}
         {products.length > 0 ? (
