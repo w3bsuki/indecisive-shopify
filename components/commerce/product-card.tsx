@@ -204,10 +204,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="p-4">
           <div className="space-y-4">
             {/* Product Title */}
-            <h3 className="text-sm font-medium line-clamp-2 leading-snug text-gray-900 text-center md:text-left">
+            <h3 className="text-sm font-medium text-gray-900 text-center md:text-left">
               <Link 
                 href={`/products/${product.handle}`} 
-                className="hover:text-black transition-colors duration-200"
+                className="hover:text-black transition-colors duration-200 block truncate"
               >
                 {product.title}
               </Link>
