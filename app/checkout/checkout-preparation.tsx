@@ -59,18 +59,15 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
     }
   }, [cart])
 
-  // Check authentication status on mount
+  // Check authentication status on mount (allow guest checkout)
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         const response = await fetch('/api/auth/status', { credentials: 'include' })
         const { authenticated } = await response.json()
         
-        if (!authenticated) {
-          // Redirect to login if not authenticated
-          window.location.href = '/login?redirectTo=/checkout'
-          return
-        } else {
+        // Allow both authenticated and guest users to proceed
+        if (authenticated) {
           // User is authenticated, proceed with auto-checkout
           if (!isEmpty && !isLoading) {
             const timer = setTimeout(() => {
@@ -79,9 +76,10 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
             return () => clearTimeout(timer)
           }
         }
+        // For guest users, just set auth check as complete and let them proceed
       } catch (_error) {
-        // Auth check failed, redirect to login
-        window.location.href = '/login?redirectTo=/checkout'
+        // Auth check failed, but allow guest checkout anyway
+        console.warn('Auth check failed, proceeding with guest checkout')
       } finally {
         setIsCheckingAuth(false)
       }

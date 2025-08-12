@@ -1,5 +1,5 @@
 import type { ShopifyProduct } from '@/lib/shopify/types'
-import { ProductCardClean } from './product-card-clean'
+import { ProductCardServer } from './product-card-server'
 
 interface ProductCardCleanServerProps {
   product: ShopifyProduct
@@ -10,7 +10,7 @@ interface ProductCardCleanServerProps {
 export async function ProductCardCleanServer({ 
   product, 
   priority = false,
-  className 
+  className: _className 
 }: ProductCardCleanServerProps) {
   // Safety check for product data
   if (!product || typeof product === 'string') {
@@ -18,10 +18,9 @@ export async function ProductCardCleanServer({
   }
   
   return (
-    <ProductCardClean 
+    <ProductCardServer 
       product={product} 
       priority={priority}
-      className={className}
     />
   )
 }

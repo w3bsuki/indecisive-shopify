@@ -66,7 +66,6 @@ export function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
   const handleCheckout = () => {
     if (checkoutUrl) {
       // Use checkoutUrl directly - it should point to Shopify's domain
-      console.log('Slideout checkout URL:', checkoutUrl)
       window.location.href = checkoutUrl
     }
   }

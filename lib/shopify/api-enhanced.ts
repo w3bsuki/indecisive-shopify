@@ -229,7 +229,6 @@ export async function getProductsPaginated(
 
     // Check if we need to use collection-specific query
     if (filters.category && filters.category !== 'all') {
-      console.log(`[DEBUG] Using collection-specific query for: ${filters.category}`);
       
       // Calculate cursor for pagination
       const skip = (page - 1) * perPage;
@@ -266,7 +265,6 @@ export async function getProductsPaginated(
       );
 
       if (!data?.collection) {
-        console.log(`[DEBUG] Collection '${filters.category}' not found`);
         return {
           products: [],
           pageInfo: {
@@ -278,8 +276,6 @@ export async function getProductsPaginated(
       }
 
       const products = extractNodes(data.collection.products);
-      console.log(`[DEBUG] Found ${products.length} products in collection: ${filters.category}`);
-      console.log(`[DEBUG] First 3 products:`, products.slice(0, 3).map((p: any) => p.title));
       
       // Map to ShopifyProduct type
       const mappedProducts = mapStorefrontProductsToShopifyProducts(products as Product[]);
@@ -324,7 +320,6 @@ export async function getProductsPaginated(
     }
     
     const searchQuery = queryParts.join(' ');
-    console.log(`[DEBUG] Final search query: "${searchQuery}"`);
     
     // Determine sort parameters
     let sortKey: string = 'CREATED_AT';
@@ -392,9 +387,7 @@ export async function getProductsPaginated(
     
     // Extract products for current page using flattenConnection
     const allProducts = extractNodes(data?.products);
-    console.log(`[DEBUG] Found ${allProducts.length} products for query: "${searchQuery}"`);
     if (allProducts.length === 0) {
-      console.log('[DEBUG] NO PRODUCTS FOUND - Check if collection exists in Shopify');
     }
     const pageProducts = skip > 0 ? allProducts.slice(skip) : allProducts;
     const products = pageProducts.slice(0, perPage);

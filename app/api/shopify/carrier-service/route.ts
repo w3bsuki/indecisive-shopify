@@ -109,13 +109,11 @@ export async function POST(request: NextRequest) {
   try {
     const body: ShopifyCarrierServiceRequest = await request.json()
     
-    console.log('[Carrier Service] Received rate request:', JSON.stringify(body, null, 2))
     
     const { rate } = body
     
     // Only process shipping to Bulgaria for now
     if (rate.destination.country !== 'Bulgaria') {
-      console.log('[Carrier Service] Skipping non-Bulgaria destination:', rate.destination.country)
       return NextResponse.json({ rates: [] })
     }
     
@@ -127,7 +125,6 @@ export async function POST(request: NextRequest) {
     const weight = calculateTotalWeight(rate.items)
     const declaredValue = calculateTotalValue(rate.items)
     
-    console.log('[Carrier Service] Package details:', { weight, declaredValue })
     
     // Minimum weight for shipping calculation
     const effectiveWeight = Math.max(weight, 0.1) // Minimum 100g
@@ -141,14 +138,12 @@ export async function POST(request: NextRequest) {
       declaredValue
     })
     
-    console.log('[Carrier Service] Delivery rates:', deliveryRates)
     
     // Convert our rates to Shopify format
     const shopifyRates = []
     
     for (const rate of deliveryRates) {
       if (rate.errors && rate.errors.length > 0) {
-        console.log(`[Carrier Service] Skipping ${rate.provider} due to errors:`, rate.errors)
         continue
       }
       
@@ -181,7 +176,6 @@ export async function POST(request: NextRequest) {
       })
     }
     
-    console.log('[Carrier Service] Returning rates:', shopifyRates)
     
     const response: ShopifyCarrierServiceResponse = {
       rates: shopifyRates

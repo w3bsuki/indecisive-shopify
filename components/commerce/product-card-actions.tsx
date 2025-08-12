@@ -21,6 +21,7 @@ interface ProductCardActionsProps {
   product: ShopifyProduct
   price?: ShopifyMoney
   sizes: Array<{ id: string; size: string; available: boolean }>
+  variant?: 'default' | 'overlay'
   translations: {
     addToWishlist: string
     removeFromWishlist: string
@@ -31,7 +32,7 @@ interface ProductCardActionsProps {
   }
 }
 
-export function ProductCardActions({ product, price: _price, sizes, translations }: ProductCardActionsProps) {
+export function ProductCardActions({ product, price: _price, sizes, variant = 'default', translations }: ProductCardActionsProps) {
   const { addItem, cartReady } = useCart()
   const { toggleItem, isInWishlist } = useWishlist()
   const isMobile = useIsMobile()
@@ -92,9 +93,83 @@ export function ProductCardActions({ product, price: _price, sizes, translations
 
   const isAvailable = product.variants?.edges?.[0]?.node.availableForSale
 
+  if (variant === 'overlay') {
+    return (
+      <>
+        {/* Modern Overlay Buttons - Mobile First */}
+        <div className="flex gap-2 w-full">
+          {/* Wishlist Button */}
+          <button
+            onClick={handleWishlist}
+            className={cn(
+              "flex-1 h-10 sm:h-12 flex items-center justify-center rounded-lg transition-all duration-200 backdrop-blur-sm",
+              isWishlisted 
+                ? "bg-white text-black" 
+                : "bg-black/80 text-white hover:bg-black"
+            )}
+            aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
+          >
+            <Heart 
+              className={cn(
+                "w-4 h-4 sm:w-5 sm:h-5",
+                isWishlisted && "fill-current"
+              )} 
+            />
+          </button>
+          
+          {/* Add to Cart Button */}
+          <button
+            onClick={() => handleAddToCart()}
+            disabled={isLoading || !isAvailable || !cartReady}
+            className={cn(
+              "flex-1 h-10 sm:h-12 flex items-center justify-center rounded-lg transition-all duration-200 backdrop-blur-sm",
+              isLoading || !isAvailable || !cartReady
+                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                : "bg-white text-black hover:bg-gray-100"
+            )}
+            aria-label={translations.addToCart}
+          >
+            <span className="text-xs sm:text-sm font-medium">
+              {isLoading ? translations.addingToCart : translations.addToCart}
+            </span>
+          </button>
+        </div>
+
+        {/* Size Selector Modal for Mobile */}
+        <Dialog open={showSizeSelector} onOpenChange={setShowSizeSelector}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>{translations.selectSize}</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-3 gap-2 py-4">
+              {sizes.map((size) => (
+                <button
+                  key={size.id}
+                  onClick={() => {
+                    setSelectedSize(size.id)
+                    handleAddToCart(size.id)
+                  }}
+                  disabled={!size.available}
+                  className={cn(
+                    "h-12 flex items-center justify-center rounded-lg border transition-all duration-200",
+                    size.available
+                      ? "border-gray-300 hover:border-black hover:bg-black hover:text-white"
+                      : "border-gray-200 text-gray-400 cursor-not-allowed"
+                  )}
+                >
+                  <span className="text-sm font-medium">{size.size}</span>
+                </button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
+    )
+  }
+
   return (
     <>
-      {/* Triple Split Button: Wishlist + Price + Add to Cart */}
+      {/* Default Split Button Layout: Wishlist + Price + Add to Cart */}
       <div className="relative w-full">
         <div className="flex items-stretch min-h-[44px] bg-white border border-gray-300 overflow-hidden">
           {/* Left - Wishlist */}

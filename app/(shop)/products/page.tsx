@@ -31,8 +31,6 @@ export default async function ProductsPage({
   const perPage = 20 // Show 20 products per page
   
   // Build filters object
-  console.log('URL PARAMS:', params)
-  console.log('CATEGORY FROM URL:', params.category)
   
   const filters = {
     category: params.category,
@@ -51,8 +49,6 @@ export default async function ProductsPage({
     filters
   )
   
-  console.log(`[DEBUG] Passing ${products.length} products to UI component for category: ${params.category}`)
-  console.log('FIRST 3 PRODUCT TITLES:', products.slice(0, 3).map(p => p.title))
   
   // Calculate total pages
   const totalPages = Math.ceil(totalCount / perPage)

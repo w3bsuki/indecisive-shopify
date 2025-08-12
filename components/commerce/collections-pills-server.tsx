@@ -35,7 +35,6 @@ export async function CollectionsPillsServer({
         collection.handle !== 'homepage' &&
         collection.handle !== 'all'
       )
-    console.log('SHOPIFY COLLECTIONS:', collections.map(c => `${c.handle} (${c.title})`))
   } catch (error) {
     console.error('Failed to fetch collections:', error)
   }

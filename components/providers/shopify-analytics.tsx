@@ -15,7 +15,6 @@ function AnalyticsPageTracker() {
   useEffect(() => {
     // Simple page view tracking
     if (typeof window !== 'undefined') {
-      console.log('Page viewed:', pathname)
       // TODO: Implement proper Shopify analytics tracking
       // when ShopifyAnalyticsProvider becomes available
     }
@@ -39,7 +38,7 @@ export function ShopifyAnalyticsWrapper({
 
 // Analytics tracking utilities
 export function useProductViewTracking() {
-  const trackProductView = (product: {
+  const trackProductView = (_product: {
     id: string
     title: string
     handle: string
@@ -48,7 +47,6 @@ export function useProductViewTracking() {
     currency: string
     variants?: Array<{ id: string; title: string; price: string }>
   }) => {
-    console.log('Product viewed:', product)
     // TODO: Implement proper tracking when analytics are available
   }
   
@@ -56,13 +54,11 @@ export function useProductViewTracking() {
 }
 
 export function useCartTracking() {
-  const trackCartUpdate = (cart: any) => {
-    console.log('Cart updated:', cart)
+  const trackCartUpdate = (_cart: any) => {
     // TODO: Implement proper tracking when analytics are available
   }
   
-  const trackCheckoutStart = (cart: any) => {
-    console.log('Checkout started:', cart)
+  const trackCheckoutStart = (_cart: any) => {
     // TODO: Implement proper tracking when analytics are available
   }
   
@@ -70,8 +66,7 @@ export function useCartTracking() {
 }
 
 export function useSearchTracking() {
-  const trackSearch = (query: string, resultsCount: number) => {
-    console.log('Search:', query, 'Results:', resultsCount)
+  const trackSearch = (_query: string, _resultsCount: number) => {
     // TODO: Implement proper tracking when analytics are available
   }
   
