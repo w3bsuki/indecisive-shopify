@@ -78,14 +78,14 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
     <section className="relative bg-black w-full hero-section-fixed">
       <div className="relative w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
         
-        {/* ХУЛИГАНКА Headline - Above everything */}
+        {/* Collection Name Headline - Dynamic */}
         <div className="absolute top-8 sm:top-12 lg:top-6 left-0 right-0 z-40 flex flex-col items-center gap-2">
-          {/* New Collection Badge - Mobile Only */}
+          {/* Collection Badge - Mobile Only */}
           <div className="sm:hidden bg-black text-white px-3 py-1 text-xs font-bold tracking-wider">
-            ДРОП №1
+            COLLECTION
           </div>
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-black tracking-wider font-mono">
-            "ХУЛИГАНКА"
+          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-black tracking-wider font-mono transition-all duration-500">
+            {slides[currentSlide]?.name || 'COLLECTIONS'}
           </h1>
         </div>
 
@@ -122,7 +122,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
                 {/* CTA Button */}
-                <Link href="/products">
+                <Link href={slide.handle || `/collections/${slide.name.toLowerCase()}`}>
                   <Button 
                     variant="white-sharp" 
                     size="lg" 

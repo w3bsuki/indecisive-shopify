@@ -6,11 +6,11 @@ import { CACHE_TIMES } from '@/lib/cache/config';
 
 // Cache hero slides data
 const getCachedHeroSlides = unstable_cache(
-  async () => getHeroSlides(5),
+  async () => getHeroSlides(3),
   ['hero-slides'],
   {
     revalidate: CACHE_TIMES.HERO,
-    tags: ['hero']
+    tags: ['hero', 'collections']
   }
 );
 
