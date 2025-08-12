@@ -10,7 +10,7 @@ export interface HeroSlide {
 }
 
 // Custom product names for hero rotation
-const _CUSTOM_HERO_NAMES = [
+const CUSTOM_HERO_NAMES = [
   'ХУЛИГАНКА',
   'DADDY ISSUES',
   'DO NOT DISTURB',
@@ -48,87 +48,48 @@ const FALLBACK_HERO_IMAGES: HeroSlide[] = [
 ];
 
 /**
- * Get hero carousel slides from Shopify collections
+ * Get hero carousel slides from Shopify products with fallback to curated images
  * @param maxSlides Maximum number of slides to return
  * @returns Promise<HeroSlide[]>
  */
-export async function getHeroSlides(maxSlides: number = 3): Promise<HeroSlide[]> {
+export async function getHeroSlides(maxSlides: number = 5): Promise<HeroSlide[]> {
   try {
-    // Fetch collections from Shopify
-    const collectionsData = await getCollections();
-    const collections = collectionsData.edges.map(edge => edge.node);
+    // Try to fetch products from Shopify with caching
+    const productsData = await getProducts(maxSlides);
+    const products = productsData.edges.map(edge => edge.node);
     
-    // Define the collections we want to show in order
-    const targetCollections = ['hats', 'tshirts', 'bags', 'accessories', 'bottoms'];
+    // Filter products that have featured images AND exclude C&C products
+    const productsWithImages = products.filter(
+      (product: Product) => product.featuredImage?.url && 
+        !product.title.toUpperCase().includes('C&C') && 
+        !product.title.toUpperCase().includes('C & C')
+    );
     
-    // Find matching collections
-    const heroSlides: HeroSlide[] = [];
-    
-    for (const targetHandle of targetCollections) {
-      const collection = collections.find(c => 
-        c.handle.toLowerCase() === targetHandle || 
-        c.handle.toLowerCase().includes(targetHandle)
-      );
+    if (productsWithImages.length >= 3) {
+      // We have enough products with images, use them
+      // Using product images for hero carousel with custom names
       
-      if (collection && collection.image?.url) {
-        heroSlides.push({
-          id: collection.id,
-          image: collection.image.url,
-          name: collection.title.toUpperCase(),
-          handle: `/collections/${collection.handle}`,
-        });
-      }
+      return productsWithImages.slice(0, maxSlides).map((product: Product) => ({
+        id: product.id,
+        image: product.featuredImage!.url,
+        name: product.title,
+        handle: product.handle,
+        price: product.priceRange?.minVariantPrice?.amount 
+          ? formatPrice(
+              product.priceRange.minVariantPrice.amount,
+              product.priceRange.minVariantPrice.currencyCode
+            )
+          : undefined,
+      }));
+    } else {
+      // Not enough product images available, use fallbacks
+      // Not enough product images available, using fallback images
+      return FALLBACK_HERO_IMAGES.slice(0, maxSlides);
     }
-    
-    // If we have at least 3 collections, use them
-    if (heroSlides.length >= 3) {
-      return heroSlides.slice(0, maxSlides);
-    }
-    
-    // Otherwise, use fallback with better names
-    return [
-      {
-        id: 'hero-hats',
-        image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=1200&h=1600&fit=crop&crop=center',
-        name: 'HATS',
-        handle: '/hats',
-      },
-      {
-        id: 'hero-tshirts', 
-        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&h=1600&fit=crop&crop=center',
-        name: 'T-SHIRTS',
-        handle: '/tshirts',
-      },
-      {
-        id: 'hero-bags',
-        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1200&h=1600&fit=crop&crop=center',
-        name: 'BAGS',
-        handle: '/accessories',
-      },
-    ];
     
   } catch (_error) {
-    // Failed to fetch collections, using fallback images
-    return [
-      {
-        id: 'hero-hats',
-        image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=1200&h=1600&fit=crop&crop=center',
-        name: 'HATS',
-        handle: '/hats',
-      },
-      {
-        id: 'hero-tshirts', 
-        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&h=1600&fit=crop&crop=center',
-        name: 'T-SHIRTS',
-        handle: '/tshirts',
-      },
-      {
-        id: 'hero-bags',
-        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1200&h=1600&fit=crop&crop=center',
-        name: 'BAGS',
-        handle: '/accessories',
-      },
-    ];
+    // Failed to fetch products, using fallback images
+    return FALLBACK_HERO_IMAGES.slice(0, maxSlides);
   }
 }
 
