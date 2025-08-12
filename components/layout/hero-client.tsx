@@ -122,7 +122,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
                 {/* CTA Button */}
-                <Link href={slide.handle || `/collections/${slide.name.toLowerCase()}`}>
+                <Link href="/products/category/bucket-hats">
                   <Button 
                     variant="white-sharp" 
                     size="lg" 
