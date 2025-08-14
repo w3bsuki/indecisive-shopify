@@ -173,14 +173,14 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
   return (
     <>
       {/* Centered Price Only */}
-      <div className="text-center">
+      <div className="flex justify-center items-center w-full">
         <ProductPrice 
           priceRange={product.priceRange as any}
           compareAtPriceRange={product.compareAtPriceRange as any}
           size="sm"
           showCompareAt={false}
           showRange={false}
-          className="text-sm font-medium text-gray-900"
+          className="text-sm font-medium text-gray-900 text-center"
         />
       </div>
 
