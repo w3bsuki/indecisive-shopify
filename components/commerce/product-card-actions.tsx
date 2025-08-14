@@ -20,7 +20,7 @@ interface ProductCardActionsProps {
   product: ShopifyProduct
   price?: ShopifyMoney
   sizes: Array<{ id: string; size: string; available: boolean }>
-  variant?: 'default' | 'overlay'
+  variant?: 'default' | 'overlay' | 'wishlist-only' | 'cart-only' | 'price-only'
   translations: {
     addToWishlist: string
     removeFromWishlist: string
@@ -91,6 +91,101 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
   }, [toggleItem, product, isMobile])
 
   const isAvailable = product.variants?.edges?.[0]?.node.availableForSale
+
+  // Wishlist button only
+  if (variant === 'wishlist-only') {
+    return (
+      <button
+        onClick={handleWishlist}
+        className={cn(
+          "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
+          "backdrop-blur-md shadow-sm",
+          isWishlisted 
+            ? "bg-black text-white" 
+            : "bg-white/90 text-black hover:bg-white"
+        )}
+        aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
+      >
+        <Heart 
+          className={cn(
+            "w-4 h-4 sm:w-5 sm:h-5",
+            isWishlisted && "fill-current"
+          )} 
+        />
+      </button>
+    )
+  }
+
+  // Cart button only
+  if (variant === 'cart-only') {
+    return (
+      <>
+        <button
+          onClick={() => handleAddToCart()}
+          disabled={isLoading || !isAvailable || !cartReady}
+          className={cn(
+            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
+            "shadow-sm",
+            isLoading || !isAvailable || !cartReady
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-black text-white hover:bg-gray-900"
+          )}
+          aria-label={translations.addToCart}
+        >
+          {isLoading ? (
+            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+          )}
+        </button>
+
+        {/* Size Selector Modal */}
+        <Dialog open={showSizeSelector} onOpenChange={setShowSizeSelector}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>{translations.selectSize}</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-3 gap-2 py-4">
+              {sizes.map((size) => (
+                <button
+                  key={size.id}
+                  onClick={() => {
+                    setSelectedSize(size.id)
+                    handleAddToCart(size.id)
+                  }}
+                  disabled={!size.available}
+                  className={cn(
+                    "h-12 flex items-center justify-center rounded-lg border transition-all duration-200",
+                    size.available
+                      ? "border-gray-300 hover:border-black hover:bg-black hover:text-white"
+                      : "border-gray-200 text-gray-400 cursor-not-allowed"
+                  )}
+                >
+                  <span className="text-sm font-medium">{size.size}</span>
+                </button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
+    )
+  }
+
+  // Price only
+  if (variant === 'price-only') {
+    return (
+      <div className="flex justify-center items-center w-full">
+        <ProductPrice 
+          priceRange={product.priceRange as any}
+          compareAtPriceRange={product.compareAtPriceRange as any}
+          size="sm"
+          showCompareAt={false}
+          showRange={false}
+          className="text-sm font-medium text-gray-900 text-center"
+        />
+      </div>
+    )
+  }
 
   if (variant === 'overlay') {
     return (

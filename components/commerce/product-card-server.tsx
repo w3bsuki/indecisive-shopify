@@ -68,12 +68,12 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Floating Actions - Positioned on Image */}
+        {/* Wishlist Button Only - Top Right */}
         <div className="absolute top-2 right-2 z-10">
           <ProductCardActions 
             product={product}
             sizes={sizes}
-            variant="overlay"
+            variant="wishlist-only"
             translations={{
               addToWishlist: t('addToWishlist'),
               removeFromWishlist: t('removeFromWishlist'),
@@ -87,7 +87,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
       </div>
 
       {/* Product Information - Simplified */}
-      <div className="p-3">
+      <div className="p-3 relative">
         <div className="space-y-2">
           {/* Product Title */}
           <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center">
@@ -99,11 +99,28 @@ export async function ProductCardServer({ product, priority: _priority = false }
             </Link>
           </h3>
 
-          {/* Price and Add to Cart - Clean Mobile Layout */}
+          {/* Price - Centered */}
           <ProductCardActions 
             product={product}
             sizes={sizes}
-            variant="default"
+            variant="price-only"
+            translations={{
+              addToWishlist: t('addToWishlist'),
+              removeFromWishlist: t('removeFromWishlist'),
+              addToCart: t('addToCart'),
+              addingToCart: t('addingToCart'),
+              selectSize: t('selectSize'),
+              viewProduct: t('viewProduct')
+            }}
+          />
+        </div>
+
+        {/* Cart Button - Bottom Right Corner */}
+        <div className="absolute bottom-3 right-3">
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="cart-only"
             translations={{
               addToWishlist: t('addToWishlist'),
               removeFromWishlist: t('removeFromWishlist'),
