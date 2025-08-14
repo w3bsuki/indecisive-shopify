@@ -17,7 +17,7 @@ export async function BagsCarousel() {
     // If no bags found, show a message
     if (products.length === 0) {
       return (
-        <section className="py-12 md:py-16 bg-white border-t border-gray-200">
+        <section className="py-8 md:py-12 bg-white border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1">
@@ -42,16 +42,16 @@ export async function BagsCarousel() {
     }
     
     return (
-      <section className="py-12 md:py-16 bg-white border-t border-gray-200">
+      <section className="py-8 md:py-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1 relative inline-block">
               {t('bags.title')}
               {/* Rough underline effect */}
-              <svg className="absolute -bottom-3 left-0 w-full" height="8" viewBox="0 0 100 8" preserveAspectRatio="none">
+              <svg className="absolute -bottom-3 left-0 w-full" height="8" viewBox="0 0 300 8" preserveAspectRatio="none">
                 <path 
-                  d="M0,4 Q25,2 50,4 T100,4" 
+                  d="M0,4 Q75,2 150,4 T300,4" 
                   stroke="currentColor" 
                   strokeWidth="2" 
                   fill="none"

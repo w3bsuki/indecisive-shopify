@@ -17,7 +17,7 @@ export async function TshirtsCarousel() {
     // If no T-shirts found, show a message
     if (products.length === 0) {
       return (
-        <section className="py-12 md:py-16 bg-white border-t border-gray-200">
+        <section className="py-8 md:py-12 bg-white border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform rotate-1">
@@ -42,10 +42,10 @@ export async function TshirtsCarousel() {
     }
     
     return (
-      <section className="py-12 md:py-16 bg-white border-t border-gray-200">
+      <section className="py-8 md:py-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform rotate-1 relative inline-block">
               {t('tshirts.title')}
               {/* Rough underline effect */}

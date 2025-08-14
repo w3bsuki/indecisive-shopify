@@ -32,10 +32,10 @@ export default async function HomePage() {
       <Hero />
 
       {/* FEATURED DROP Section - Enhanced for 2025 */}
-      <section className="py-12 md:py-16 bg-white border-t border-gray-200">
+      <section className="py-8 md:py-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header with Modern Typography */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1 relative inline-block">
               {t('featured.subtitle')}
               {/* Rough underline effect */}

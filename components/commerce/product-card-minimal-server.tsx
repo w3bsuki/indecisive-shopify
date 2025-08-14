@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import { cn } from '@/lib/utils'
 import { ProductCardMinimalActions } from './product-card-minimal-actions'
@@ -13,7 +12,7 @@ interface ProductCardMinimalServerProps {
 
 export async function ProductCardMinimalServer({ 
   product, 
-  priority = false, 
+  priority: _priority = false, 
   size = 'default' 
 }: ProductCardMinimalServerProps) {
   const price = product.priceRange.minVariantPrice
