@@ -46,9 +46,8 @@ export function ProductPageBanner({
     }
     
     const localMessages = messages[locale as keyof typeof messages] || messages.en
-    // Rotate message based on current hour for more frequent changes
-    const messageIndex = new Date().getHours() % localMessages.length
-    return localMessages[messageIndex]
+    // Always show "Can't decide? Get both!" message
+    return localMessages[0]
   }
 
   return (
