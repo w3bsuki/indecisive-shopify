@@ -68,22 +68,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Wishlist Button Only - Top Right */}
-        <div className="absolute top-2 right-2 z-10">
-          <ProductCardActions 
-            product={product}
-            sizes={sizes}
-            variant="wishlist-only"
-            translations={{
-              addToWishlist: t('addToWishlist'),
-              removeFromWishlist: t('removeFromWishlist'),
-              addToCart: t('addToCart'),
-              addingToCart: t('addingToCart'),
-              selectSize: t('selectSize'),
-              viewProduct: t('viewProduct')
-            }}
-          />
-        </div>
+        {/* Removed wishlist from image - moved to bottom */}
       </div>
 
       {/* Product Information - Simplified */}
@@ -104,6 +89,23 @@ export async function ProductCardServer({ product, priority: _priority = false }
             product={product}
             sizes={sizes}
             variant="price-only"
+            translations={{
+              addToWishlist: t('addToWishlist'),
+              removeFromWishlist: t('removeFromWishlist'),
+              addToCart: t('addToCart'),
+              addingToCart: t('addingToCart'),
+              selectSize: t('selectSize'),
+              viewProduct: t('viewProduct')
+            }}
+          />
+        </div>
+
+        {/* Wishlist Button - Bottom Left Corner */}
+        <div className="absolute bottom-3 left-3">
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="wishlist-only"
             translations={{
               addToWishlist: t('addToWishlist'),
               removeFromWishlist: t('removeFromWishlist'),

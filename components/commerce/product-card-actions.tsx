@@ -99,10 +99,10 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
         onClick={handleWishlist}
         className={cn(
           "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
-          "backdrop-blur-md shadow-sm",
+          "shadow-sm border",
           isWishlisted 
-            ? "bg-black text-white" 
-            : "bg-white/90 text-black hover:bg-white"
+            ? "bg-black text-white border-black" 
+            : "bg-white text-black border-gray-200 hover:border-black"
         )}
         aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
       >
@@ -124,18 +124,17 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           onClick={() => handleAddToCart()}
           disabled={isLoading || !isAvailable || !cartReady}
           className={cn(
-            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
-            "shadow-sm",
+            "p-2 transition-all duration-200",
             isLoading || !isAvailable || !cartReady
-              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-              : "bg-black text-white hover:bg-gray-900"
+              ? "text-gray-300 cursor-not-allowed"
+              : "text-gray-700 hover:text-black hover:scale-110"
           )}
           aria-label={translations.addToCart}
         >
           {isLoading ? (
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
           ) : (
-            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" />
           )}
         </button>
 
