@@ -76,10 +76,10 @@ export default async function HomePage() {
           {/* Enhanced CTA Section */}
           <div className="mt-8 md:mt-12 text-center">
             <Link 
-              href="/products" 
+              href="/products?category=bucket-hats" 
               className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white font-mono font-bold text-sm uppercase tracking-wider hover:bg-gray-900 transition-colors"
             >
-              {tp('viewAll')}
+              VIEW ALL HATS
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

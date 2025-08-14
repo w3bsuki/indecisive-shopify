@@ -87,7 +87,7 @@ export async function TshirtsCarousel() {
           {/* CTA Section */}
           <div className="mt-8 md:mt-12 text-center">
             <Link 
-              href="/products?category=tshirts" 
+              href="/products?category=tees" 
               className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white font-mono font-bold text-sm uppercase tracking-wider hover:bg-gray-900 transition-colors"
             >
               {t('tshirts.viewAll')}
