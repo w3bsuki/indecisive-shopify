@@ -7,8 +7,7 @@ import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
-import { Heart, X, Eye } from 'lucide-react'
-import { QuickViewDialog } from './quick-view-dialog'
+import { Heart, ShoppingBag } from 'lucide-react'
 import { ProductPrice } from '@/components/commerce/product-price'
 import {
   Dialog,
@@ -96,16 +95,17 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
   if (variant === 'overlay') {
     return (
       <>
-        {/* Modern Overlay Buttons - Mobile First */}
-        <div className="flex gap-2 w-full">
+        {/* Clean Floating Buttons - Vertical Stack */}
+        <div className="flex flex-col gap-2">
           {/* Wishlist Button */}
           <button
             onClick={handleWishlist}
             className={cn(
-              "flex-1 h-10 sm:h-12 flex items-center justify-center rounded-lg transition-all duration-200 backdrop-blur-sm",
+              "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
+              "backdrop-blur-md shadow-sm",
               isWishlisted 
-                ? "bg-white text-black" 
-                : "bg-black/80 text-white hover:bg-black"
+                ? "bg-black text-white" 
+                : "bg-white/90 text-black hover:bg-white"
             )}
             aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
           >
@@ -122,16 +122,19 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
             onClick={() => handleAddToCart()}
             disabled={isLoading || !isAvailable || !cartReady}
             className={cn(
-              "flex-1 h-10 sm:h-12 flex items-center justify-center rounded-lg transition-all duration-200 backdrop-blur-sm",
+              "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
+              "backdrop-blur-md shadow-sm",
               isLoading || !isAvailable || !cartReady
-                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                : "bg-white text-black hover:bg-gray-100"
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-900"
             )}
             aria-label={translations.addToCart}
           >
-            <span className="text-xs sm:text-sm font-medium">
-              {isLoading ? translations.addingToCart : translations.addToCart}
-            </span>
+            {isLoading ? (
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+            )}
           </button>
         </div>
 
@@ -169,85 +172,16 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
 
   return (
     <>
-      {/* Default Split Button Layout: Wishlist + Price + Add to Cart */}
-      <div className="relative w-full">
-        <div className="flex items-stretch min-h-[44px] bg-white border border-gray-300 overflow-hidden">
-          {/* Left - Wishlist */}
-          <button
-            onClick={handleWishlist}
-            className={cn(
-              "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
-              "border-r border-gray-300",
-              isWishlisted 
-                ? "bg-black text-white" 
-                : "bg-white text-black hover:bg-black hover:text-white"
-            )}
-            aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
-          >
-            <Heart 
-              className={cn(
-                "absolute w-[18px] h-[18px] transition-all duration-200",
-                isWishlisted && "fill-current"
-              )} 
-            />
-          </button>
-          
-          {/* Middle - Price */}
-          <div className="flex-1 flex items-center justify-center px-2 bg-gray-50">
-            <ProductPrice 
-              priceRange={product.priceRange as any}
-              compareAtPriceRange={product.compareAtPriceRange as any}
-              size="sm"
-              showCompareAt={false}
-              showRange={false}
-              className="text-[11px] font-normal tracking-tight text-black"
-            />
-          </div>
-          
-          {/* Right - Add to Cart / Quick View */}
-          {isMobile ? (
-            <button
-              onClick={() => handleAddToCart()}
-              disabled={isLoading || !isAvailable || !cartReady}
-              className={cn(
-                "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
-                "border-l border-gray-300",
-                isLoading || !isAvailable || !cartReady
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-black text-white hover:bg-gray-900"
-              )}
-              aria-label={isLoading ? translations.addingToCart : translations.addToCart}
-            >
-              {isLoading ? (
-                <div className="absolute w-[18px] h-[18px] border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : !isAvailable ? (
-                <X className="absolute w-[18px] h-[18px]" />
-              ) : (
-                <svg 
-                  className="absolute w-[18px] h-[18px]" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              )}
-            </button>
-          ) : (
-            <QuickViewDialog product={product}>
-              <button
-                className={cn(
-                  "relative min-w-[44px] flex items-center justify-center transition-all duration-200",
-                  "border-l border-gray-300",
-                  "bg-black text-white hover:bg-gray-900"
-                )}
-                aria-label={translations.viewProduct}
-              >
-                <Eye className="absolute w-[18px] h-[18px]" />
-              </button>
-            </QuickViewDialog>
-          )}
-        </div>
+      {/* Centered Price Only */}
+      <div className="text-center">
+        <ProductPrice 
+          priceRange={product.priceRange as any}
+          compareAtPriceRange={product.compareAtPriceRange as any}
+          size="sm"
+          showCompareAt={false}
+          showRange={false}
+          className="text-sm font-medium text-gray-900"
+        />
       </div>
 
       {/* Mobile Size Selector Dialog */}

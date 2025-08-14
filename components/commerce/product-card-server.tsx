@@ -37,38 +37,58 @@ export async function ProductCardServer({ product, priority: _priority = false }
 
   return (
     <div className="group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200">
-      {/* Sale Badge Only */}
-      {isOnSale && (
-        <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1 text-xs font-bold font-mono">
-          SALE
-        </div>
-      )}
-
-      {/* Product Image with Hydrogen React */}
-      <Link 
-        href={`/products/${product.handle}`}
-        className="block relative aspect-square overflow-hidden group"
-      >
-        <HydrogenImageServer
-          data={product.featuredImage}
-          alt={product.title}
-          className="transition-transform duration-300 group-hover:scale-105"
-        />
-
-        {/* Second Image on Hover (Desktop Only) */}
-        {secondImage && (
-          <div className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-            <HydrogenImageServer
-              data={secondImage as ShopifyImage}
-              alt={`${product.title} - view 2`}
-            />
+      {/* Product Image Container with Floating Actions */}
+      <div className="relative">
+        {/* Sale Badge */}
+        {isOnSale && (
+          <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1 text-xs font-bold font-mono">
+            SALE
           </div>
         )}
-      </Link>
 
-      {/* Product Information */}
-      <div className="p-3 sm:p-4">
-        <div className="space-y-3 sm:space-y-4">
+        {/* Product Image with Hydrogen React */}
+        <Link 
+          href={`/products/${product.handle}`}
+          className="block relative aspect-square overflow-hidden group"
+        >
+          <HydrogenImageServer
+            data={product.featuredImage}
+            alt={product.title}
+            className="transition-transform duration-300 group-hover:scale-105"
+          />
+
+          {/* Second Image on Hover (Desktop Only) */}
+          {secondImage && (
+            <div className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+              <HydrogenImageServer
+                data={secondImage as ShopifyImage}
+                alt={`${product.title} - view 2`}
+              />
+            </div>
+          )}
+        </Link>
+
+        {/* Floating Actions - Positioned on Image */}
+        <div className="absolute top-2 right-2 z-10">
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="overlay"
+            translations={{
+              addToWishlist: t('addToWishlist'),
+              removeFromWishlist: t('removeFromWishlist'),
+              addToCart: t('addToCart'),
+              addingToCart: t('addingToCart'),
+              selectSize: t('selectSize'),
+              viewProduct: t('viewProduct')
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Product Information - Simplified */}
+      <div className="p-3">
+        <div className="space-y-2">
           {/* Product Title */}
           <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center">
             <Link 
@@ -79,10 +99,11 @@ export async function ProductCardServer({ product, priority: _priority = false }
             </Link>
           </h3>
 
-          {/* Actions Component */}
+          {/* Price and Add to Cart - Clean Mobile Layout */}
           <ProductCardActions 
             product={product}
             sizes={sizes}
+            variant="default"
             translations={{
               addToWishlist: t('addToWishlist'),
               removeFromWishlist: t('removeFromWishlist'),
