@@ -101,8 +101,8 @@ export async function ProductCardServer({ product, priority: _priority = false }
       </div>
 
       {/* Product Information - Simplified */}
-      <div className="p-3">
-        <div className="space-y-2">
+      <div className="px-3 pb-3 pt-2">
+        <div className="space-y-1">
           {/* Product Title */}
           <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center">
             <Link 
