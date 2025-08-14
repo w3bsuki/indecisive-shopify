@@ -130,7 +130,8 @@
     "featured": {
       "title": "FEATURED COLLECTION",
       "subtitle": "STREETWEAR COLLECTION",
-      "description": "Street culture meets Bulgarian spirit. Bold designs for those who dare."
+      "description": "Street culture meets Bulgarian spirit. Bold designs for those who dare.",
+      "viewAll": "VIEW ALL HATS"
     },
     "community": {
       "title": "COMMUNITY STYLE",
@@ -146,6 +147,14 @@
       "emptyMessage": "Our T-shirt collection is coming soon. Check back later!",
       "browseAll": "Browse All Products",
       "viewAll": "View All T-shirts"
+    },
+    "bags": {
+      "badge": "ESSENTIAL GEAR",
+      "title": "GET A BAG",
+      "subtitle": "When life gets heavy, carry it with style. Built for your indecisive lifestyle.",
+      "emptyMessage": "Our bag collection is coming soon. Check back later!",
+      "browseAll": "Browse All Products",
+      "viewAll": "View All Bags"
     }
   },
   "products": {

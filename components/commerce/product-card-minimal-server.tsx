@@ -24,7 +24,7 @@ export async function ProductCardMinimalServer({
   return (
     <div 
       className={cn(
-        "group relative bg-white",
+        "group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200",
         size === 'large' && 'min-w-[280px] md:min-w-[320px]',
         size === 'mobile' && 'w-full'
       )}
@@ -40,28 +40,16 @@ export async function ProductCardMinimalServer({
       <div className="relative">
         <Link 
           href={`/products/${product.handle}`}
-          className={cn(
-            "block relative overflow-hidden",
-            size === 'large' ? 'aspect-square' : 'aspect-square md:aspect-[4/5]'
-          )}
+          className="block"
         >
           {product.featuredImage ? (
-            <Image
+            <img
               src={product.featuredImage.url}
               alt={product.featuredImage.altText || product.title}
-              fill
-              sizes={
-                size === 'mobile' 
-                  ? "(max-width: 768px) 50vw, 25vw" 
-                  : size === 'large' 
-                  ? "(max-width: 768px) 80vw, 40vw" 
-                  : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-              }
-              priority={priority}
-              className="object-cover transition-all duration-500 group-hover:scale-105"
+              className="w-full h-auto object-contain transition-all duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-100">
+            <div className="w-full h-32 flex items-center justify-center text-gray-400 bg-gray-100">
               <div className="text-center">
                 <div className="text-2xl mb-1">👕</div>
                 <div className="text-xs">No image</div>
@@ -78,28 +66,22 @@ export async function ProductCardMinimalServer({
       </div>
 
       {/* Product Information */}
-      <div className={cn(
-        size === 'mobile' ? "pt-2" : "pt-3",
-        size === 'large' && 'px-2'
-      )}>
+      <div className="px-2 pt-0 pb-2">
         {/* Product Title */}
         <h3 className={cn(
-          "font-medium line-clamp-1 text-gray-900 text-center",
-          size === 'mobile' ? "text-xs" : "text-sm"
+          "text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-1",
+          size === 'mobile' ? "text-sm" : ""
         )}>
           <Link 
             href={`/products/${product.handle}`} 
-            className="hover:text-black transition-colors duration-200"
+            className="hover:text-black transition-colors duration-200 block truncate"
           >
             {product.title}
           </Link>
         </h3>
         
         {/* Price */}
-        <div className={cn(
-          "text-center",
-          size === 'mobile' ? "mt-1" : "mt-2"
-        )} style={{ fontFamily: 'var(--font-mono)' }}>
+        <div className="text-center" style={{ fontFamily: 'var(--font-mono)' }}>
           {isOnSale ? (
             <SalePriceServer 
               price={price}

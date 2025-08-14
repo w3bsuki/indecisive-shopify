@@ -55,7 +55,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
         {/* Product Image */}
         <Link 
           href={`/products/${product.handle}`}
-          className="block relative aspect-square overflow-hidden pt-4"
+          className="block relative overflow-hidden"
         >
           <HydrogenImageServer
             data={product.featuredImage}

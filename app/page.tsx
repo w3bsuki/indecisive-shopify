@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/footer'
 import { Navigation } from '@/components/layout/navigation'
 import { CommunityCarousel } from '@/components/commerce/community-carousel'
 import { TshirtsCarousel } from '@/components/commerce/tshirts-carousel'
+import { BagsCarousel } from '@/components/commerce/bags-carousel'
 import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
 
 export default async function HomePage() {
@@ -79,7 +80,7 @@ export default async function HomePage() {
               href="/products?category=bucket-hats" 
               className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white font-mono font-bold text-sm uppercase tracking-wider hover:bg-gray-900 transition-colors"
             >
-              VIEW ALL HATS
+              {t('featured.viewAll')}
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -93,6 +94,9 @@ export default async function HomePage() {
 
       {/* T-shirts Section */}
       <TshirtsCarousel />
+
+      {/* Bags Section */}
+      <BagsCarousel />
 
       {/* Community Section with Instagram/TikTok Tabs */}
       <CommunityCarousel />

@@ -70,41 +70,35 @@ export function ProductCardMinimalActions({
       {/* Desktop Actions */}
       {size !== 'mobile' && (
         <>
-          {/* Add to Cart Button - Inside Image */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 p-3">
-            <button
-              onClick={handleAddToCart}
-              className={cn(
-                "w-full bg-black text-white py-2.5 px-3 font-mono text-xs font-medium transition-all duration-300 hover:bg-gray-800",
-                "opacity-0 translate-y-2",
-                "group-hover:opacity-100 group-hover:translate-y-0"
-              )}
-              aria-label={t('addToCart')}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <ShoppingCart className="w-4 h-4" />
-                {t('addToCart')}
-              </div>
-            </button>
-          </div>
-
-          {/* Wishlist Heart */}
+          {/* Wishlist Button - Top Left */}
           <button
             onClick={handleWishlist}
             className={cn(
-              "absolute top-3 right-3 z-20 w-8 h-8 flex items-center justify-center transition-all duration-300",
-              "opacity-0",
-              "group-hover:opacity-100",
-              isWishlisted ? "text-red-500 bg-white rounded-full" : "text-white drop-shadow-md"
+              "absolute top-2 left-2 z-20 w-8 h-8 flex items-center justify-center transition-all duration-200",
+              "bg-white/90 backdrop-blur-sm shadow-sm hover:bg-white",
+              isWishlisted ? "text-red-500" : "text-gray-600 hover:text-red-500"
             )}
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
           >
             <Heart 
               className={cn(
-                "w-5 h-5",
+                "w-4 h-4 transition-all",
                 isWishlisted && "fill-current"
               )} 
             />
+          </button>
+
+          {/* Cart Button - Top Right */}
+          <button
+            onClick={handleAddToCart}
+            className={cn(
+              "absolute top-2 right-2 z-20 w-8 h-8 flex items-center justify-center transition-all duration-200",
+              "bg-white/90 backdrop-blur-sm shadow-sm hover:bg-white",
+              "text-gray-600 hover:text-black"
+            )}
+            aria-label={t('addToCart')}
+          >
+            <ShoppingCart className="w-4 h-4" />
           </button>
         </>
       )}

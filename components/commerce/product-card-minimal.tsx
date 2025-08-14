@@ -56,11 +56,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
               : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           }
           priority={priority}
-          className={cn(
-            "object-cover transition-all duration-500",
-            imageLoading ? "opacity-0" : "opacity-100",
-            showOverlay && size !== 'mobile' && "scale-105"
-          )}
+          className="object-cover mt-4 transition-all duration-500 group-hover:scale-105"
           onLoad={() => setImageLoading(false)}
         />
       )}
@@ -119,7 +115,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
       <PrefetchLink 
         href={`/products/${product.handle}`}
         className={cn(
-          "block relative overflow-hidden",
+          "block relative overflow-hidden flex items-end",
           size === 'large' ? 'aspect-square' : 'aspect-square md:aspect-[4/5]'
         )}
       >
