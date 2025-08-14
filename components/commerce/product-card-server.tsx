@@ -68,11 +68,43 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Removed wishlist from image - moved to bottom */}
+        {/* Wishlist Button - Bottom Left of Image */}
+        <div className="absolute bottom-2 left-2 z-10">
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="wishlist-only"
+            translations={{
+              addToWishlist: t('addToWishlist'),
+              removeFromWishlist: t('removeFromWishlist'),
+              addToCart: t('addToCart'),
+              addingToCart: t('addingToCart'),
+              selectSize: t('selectSize'),
+              viewProduct: t('viewProduct')
+            }}
+          />
+        </div>
+
+        {/* Cart Button - Bottom Right of Image */}
+        <div className="absolute bottom-2 right-2 z-10">
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="cart-only"
+            translations={{
+              addToWishlist: t('addToWishlist'),
+              removeFromWishlist: t('removeFromWishlist'),
+              addToCart: t('addToCart'),
+              addingToCart: t('addingToCart'),
+              selectSize: t('selectSize'),
+              viewProduct: t('viewProduct')
+            }}
+          />
+        </div>
       </div>
 
       {/* Product Information - Simplified */}
-      <div className="p-3 relative">
+      <div className="p-3">
         <div className="space-y-2">
           {/* Product Title */}
           <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center">
@@ -89,40 +121,6 @@ export async function ProductCardServer({ product, priority: _priority = false }
             product={product}
             sizes={sizes}
             variant="price-only"
-            translations={{
-              addToWishlist: t('addToWishlist'),
-              removeFromWishlist: t('removeFromWishlist'),
-              addToCart: t('addToCart'),
-              addingToCart: t('addingToCart'),
-              selectSize: t('selectSize'),
-              viewProduct: t('viewProduct')
-            }}
-          />
-        </div>
-
-        {/* Wishlist Button - Bottom Left Corner */}
-        <div className="absolute bottom-3 left-3">
-          <ProductCardActions 
-            product={product}
-            sizes={sizes}
-            variant="wishlist-only"
-            translations={{
-              addToWishlist: t('addToWishlist'),
-              removeFromWishlist: t('removeFromWishlist'),
-              addToCart: t('addToCart'),
-              addingToCart: t('addingToCart'),
-              selectSize: t('selectSize'),
-              viewProduct: t('viewProduct')
-            }}
-          />
-        </div>
-
-        {/* Cart Button - Bottom Right Corner */}
-        <div className="absolute bottom-3 right-3">
-          <ProductCardActions 
-            product={product}
-            sizes={sizes}
-            variant="cart-only"
             translations={{
               addToWishlist: t('addToWishlist'),
               removeFromWishlist: t('removeFromWishlist'),
