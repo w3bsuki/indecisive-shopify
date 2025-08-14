@@ -101,10 +101,10 @@ export async function ProductCardServer({ product, priority: _priority = false }
       </div>
 
       {/* Product Information - Simplified */}
-      <div className="px-3 pb-3 pt-2">
-        <div className="space-y-1">
+      <div className="px-2 py-1">
+        <div>
           {/* Product Title */}
-          <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center">
+          <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center mb-0">
             <Link 
               href={`/products/${product.handle}`} 
               className="hover:text-black transition-colors duration-200 block truncate"
