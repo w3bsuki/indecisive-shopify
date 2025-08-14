@@ -228,16 +228,14 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
   // Price only
   if (variant === 'price-only') {
     return (
-      <div className="flex justify-center items-center w-full">
-        <ProductPrice 
-          priceRange={product.priceRange as any}
-          compareAtPriceRange={product.compareAtPriceRange as any}
-          size="sm"
-          showCompareAt={false}
-          showRange={false}
-          className="text-sm font-medium text-gray-900 text-center"
-        />
-      </div>
+      <ProductPrice 
+        priceRange={product.priceRange as any}
+        compareAtPriceRange={product.compareAtPriceRange as any}
+        size="sm"
+        showCompareAt={false}
+        showRange={false}
+        className="text-sm font-medium text-gray-900 text-center flex justify-center"
+      />
     )
   }
 

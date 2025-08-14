@@ -51,7 +51,7 @@ export function ProductPrice({
   return (
     <div className={cn('flex flex-col gap-1', className)}>
       {/* Main Price */}
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center justify-center gap-2 flex-wrap">
         {hasRange ? (
           // Price Range Display
           <div className={cn('font-mono font-semibold', sizeClasses[size])}>
