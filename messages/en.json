@@ -410,7 +410,9 @@
     "boldDesc": "Make confident choices and express yourself",
     "subscribe": "SUBSCRIBE",
     "enterEmail": "Enter email",
-    "joinNewsletter": "JOIN OUR NEWSLETTER"
+    "joinNewsletter": "JOIN OUR NEWSLETTER",
+    "beIndecisive": "BE INDECISIVE",
+    "minimalDesign": "MINIMAL DESIGN"
   },
   "messages": {
     "addedToCart": "Added to cart",

@@ -23,18 +23,21 @@ export function ProductPageBanner({
   const getPromoMessage = () => {
     const messages = {
       bg: [
+        '🤔 НЕ МОЖЕШ ДА РЕШИШ? ВЗЕМИ И ДВЕТЕ!',
         '🚚 БЕЗПЛАТНА ДОСТАВКА НАД 100 ЛВ',
         '💎 НОВИ СТИЛОВЕ ВСЯКА СЕДМИЦА',
         '⚡ ЕКСПРЕСНА ДОСТАВКА 24Ч',
         '🎁 БЕЗПЛАТНО ВРЪЩАНЕ 30 ДНИ'
       ],
       en: [
+        '🤔 CAN\'T DECIDE? GET BOTH!',
         '🚚 FREE SHIPPING OVER $50',
         '💎 NEW STYLES WEEKLY',
         '⚡ EXPRESS DELIVERY 24H',
         '🎁 FREE RETURNS 30 DAYS'
       ],
       de: [
+        '🤔 KANNST DICH NICHT ENTSCHEIDEN? NIMM BEIDE!',
         '🚚 KOSTENLOSER VERSAND AB 50€',
         '💎 NEUE STYLES WÖCHENTLICH',
         '⚡ EXPRESS LIEFERUNG 24H',
