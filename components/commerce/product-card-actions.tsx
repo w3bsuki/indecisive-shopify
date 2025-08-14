@@ -20,7 +20,7 @@ interface ProductCardActionsProps {
   product: ShopifyProduct
   price?: ShopifyMoney
   sizes: Array<{ id: string; size: string; available: boolean }>
-  variant?: 'default' | 'overlay' | 'wishlist-only' | 'cart-only' | 'price-only'
+  variant?: 'default' | 'overlay' | 'wishlist-only' | 'cart-only' | 'price-only' | 'cart-icon-only'
   translations: {
     addToWishlist: string
     removeFromWishlist: string
@@ -136,6 +136,60 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
             <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+          )}
+        </button>
+
+        {/* Size Selector Modal */}
+        <Dialog open={showSizeSelector} onOpenChange={setShowSizeSelector}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>{translations.selectSize}</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-3 gap-2 py-4">
+              {sizes.map((size) => (
+                <button
+                  key={size.id}
+                  onClick={() => {
+                    setSelectedSize(size.id)
+                    handleAddToCart(size.id)
+                  }}
+                  disabled={!size.available}
+                  className={cn(
+                    "h-12 flex items-center justify-center rounded-lg border transition-all duration-200",
+                    size.available
+                      ? "border-gray-300 hover:border-black hover:bg-black hover:text-white"
+                      : "border-gray-200 text-gray-400 cursor-not-allowed"
+                  )}
+                >
+                  <span className="text-sm font-medium">{size.size}</span>
+                </button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
+    )
+  }
+
+  // Cart icon only - no circle
+  if (variant === 'cart-icon-only') {
+    return (
+      <>
+        <button
+          onClick={() => handleAddToCart()}
+          disabled={isLoading || !isAvailable || !cartReady}
+          className={cn(
+            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200",
+            isLoading || !isAvailable || !cartReady
+              ? "text-gray-300 cursor-not-allowed"
+              : "text-gray-700 hover:text-black"
+          )}
+          aria-label={translations.addToCart}
+        >
+          {isLoading ? (
+            <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
+          ) : (
+            <ShoppingBag className="w-5 h-5" />
           )}
         </button>
 

@@ -68,8 +68,8 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Wishlist Button - Bottom Left of Image */}
-        <div className="absolute bottom-2 left-2 z-10">
+        {/* Action Buttons - Top Right, Stacked */}
+        <div className="absolute top-2 right-2 z-10 flex flex-col gap-2">
           <ProductCardActions 
             product={product}
             sizes={sizes}
@@ -83,14 +83,11 @@ export async function ProductCardServer({ product, priority: _priority = false }
               viewProduct: t('viewProduct')
             }}
           />
-        </div>
-
-        {/* Cart Button - Bottom Right of Image */}
-        <div className="absolute bottom-2 right-2 z-10">
+          
           <ProductCardActions 
             product={product}
             sizes={sizes}
-            variant="cart-only"
+            variant="cart-icon-only"
             translations={{
               addToWishlist: t('addToWishlist'),
               removeFromWishlist: t('removeFromWishlist'),
