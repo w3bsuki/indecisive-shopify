@@ -98,17 +98,16 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
       <button
         onClick={handleWishlist}
         className={cn(
-          "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
-          "backdrop-blur-sm shadow-md",
+          "p-2 transition-all duration-200",
           isWishlisted 
-            ? "bg-black text-white" 
-            : "bg-white/90 text-black hover:bg-white"
+            ? "text-black" 
+            : "text-gray-400 hover:text-black"
         )}
         aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
       >
         <Heart 
           className={cn(
-            "w-4 h-4 sm:w-5 sm:h-5",
+            "w-5 h-5 sm:w-6 sm:h-6 transition-all duration-200",
             isWishlisted && "fill-current"
           )} 
         />
@@ -124,18 +123,17 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           onClick={() => handleAddToCart()}
           disabled={isLoading || !isAvailable || !cartReady}
           className={cn(
-            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
-            "backdrop-blur-sm shadow-md",
+            "p-2 transition-all duration-200",
             isLoading || !isAvailable || !cartReady
-              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-              : "bg-black/90 text-white hover:bg-black"
+              ? "text-gray-300 cursor-not-allowed"
+              : "text-gray-400 hover:text-black"
           )}
           aria-label={translations.addToCart}
         >
           {isLoading ? (
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
           ) : (
-            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-200" />
           )}
         </button>
 

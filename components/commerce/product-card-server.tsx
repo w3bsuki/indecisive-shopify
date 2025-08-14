@@ -68,8 +68,12 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Wishlist Button - Bottom Left of Image */}
-        <div className="absolute bottom-2 left-2 z-10">
+      </div>
+
+      {/* Product Information - Simplified */}
+      <div className="p-3">
+        {/* Action Buttons - Centered Above Title */}
+        <div className="flex justify-center items-center gap-4 mb-2">
           <ProductCardActions 
             product={product}
             sizes={sizes}
@@ -83,10 +87,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
               viewProduct: t('viewProduct')
             }}
           />
-        </div>
-
-        {/* Cart Button - Bottom Right of Image */}
-        <div className="absolute bottom-2 right-2 z-10">
+          
           <ProductCardActions 
             product={product}
             sizes={sizes}
@@ -101,10 +102,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
             }}
           />
         </div>
-      </div>
-
-      {/* Product Information - Simplified */}
-      <div className="p-3">
+        
         <div className="space-y-2">
           {/* Product Title */}
           <h3 className="text-xs sm:text-sm font-medium text-gray-900 text-center">
