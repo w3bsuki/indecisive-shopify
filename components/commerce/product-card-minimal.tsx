@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Money, SalePrice } from '@/components/commerce/money'
 import { Heart, Eye } from 'lucide-react'
+import { getProductColors, getColorFromName } from '@/lib/utils/product'
 
 interface ProductCardMinimalProps {
   product: ShopifyProduct
@@ -27,6 +28,9 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
   const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
   const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
+
+  // Extract color variants for display
+  const availableColors = getProductColors(product)
 
   const handleWishlist = (event: React.MouseEvent) => {
     event.preventDefault()
@@ -170,10 +174,35 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
         size === 'mobile' ? "pt-2" : "pt-3",
         size === 'large' && 'px-2'
       )}>
+        {/* Color Variants Display - Above Title */}
+        {availableColors.length > 0 && (
+          <div className="flex items-center justify-center gap-1 mb-2">
+            {availableColors.slice(0, 4).map((color, index) => {
+              const bgColor = getColorFromName(color)
+              return (
+                <div
+                  key={`${color}-${index}`}
+                  className="w-3 h-3 rounded-full"
+                  style={{ 
+                    backgroundColor: bgColor,
+                    border: bgColor === '#FFFFFF' ? '1px solid #ccc' : 'none'
+                  }}
+                  title={color}
+                />
+              )
+            })}
+            {availableColors.length > 4 && (
+              <span className="text-[10px] text-gray-500 ml-1">
+                +{availableColors.length - 4}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Product Title */}
         <h3 className={cn(
           "font-medium line-clamp-1 text-gray-900 text-center",
-          size === 'mobile' ? "text-xs" : "text-sm"
+          size === 'mobile' ? "text-xs mb-1" : "text-sm mb-2"
         )}>
           <Link 
             href={`/products/${product.handle}`} 

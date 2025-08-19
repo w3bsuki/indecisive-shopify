@@ -286,7 +286,8 @@
     "empty": {
       "title": "КОШНИЦАТА Е ПРАЗНА",
       "subtitle": "Добавете продукти за да започнете",
-      "cta": "ПРОДЪЛЖИ ПАЗАРУВАНЕТО"
+      "cta": "ПРОДЪЛЖИ ПАЗАРУВАНЕТО",
+      "emptyMessage": "Изглежда все още не сте добавили нищо."
     },
     "subtotal": "Междинна сума",
     "shipping": "Доставка",
@@ -299,7 +300,49 @@
     "clear": "ИЗЧИСТИ КОШНИЦАТА",
     "discountCode": "Въведи промо код",
     "apply": "Приложи",
-    "calculatedAtCheckout": "Изчислява се при плащане"
+    "calculatedAtCheckout": "Изчислява се при плащане",
+    "shoppingCart": "Кошница за пазаруване",
+    "removeFromCart": "Премахни от кошницата",
+    "quantity": "Количество",
+    "orderSummary": "Резюме на поръчката",
+    "proceedToCheckout": "ПРОДЪЛЖИ КЪМ ПЛАЩАНЕ",
+    "secureCheckout": "Сигурно плащане от Shopify",
+    "decreaseQuantity": "Намали количеството",
+    "increaseQuantity": "Увеличи количеството",
+    "loading": "ЗАРЕЖДАНЕ..."
+  },
+  "checkout": {
+    "title": "Сигурно плащане",
+    "preparation": {
+      "title": "Подготовка на плащането",
+      "preparingCheckout": "Подготвяме сигурното плащане",
+      "redirecting": "Пренасочваме ви към страницата за плащане...",
+      "error": "ГРЕШКА ПРИ ПЛАЩАНЕТО",
+      "tryAgain": "ОПИТАЙ ОТНОВО",
+      "tryingAgain": "ОПИТВАМЕ ОТНОВО...",
+      "backToCart": "ОБРАТНО КЪМ КОШНИЦАТА",
+      "continueToCheckout": "ПРОДЪЛЖИ КЪМ СИГУРНО ПЛАЩАНЕ",
+      "orderSummary": "РЕЗЮМЕ НА ПОРЪЧКАТА",
+      "product": "продукт",
+      "products": "продукта",
+      "quantity": "Количество",
+      "noImage": "НЯМА ИЗОБРАЖЕНИЕ",
+      "subtotal": "Междинна сума",
+      "tax": "Данък",
+      "total": "ОБЩО",
+      "security": {
+        "bankLevel": "БАНКОВО НИВО НА СИГУРНОСТ",
+        "encrypted": "Вашето плащане е защитено с 256-bit SSL криптиране",
+        "ssl": "SSL",
+        "pci": "PCI",
+        "shopify": "SHOPIFY"
+      },
+      "steps": {
+        "cart": "КОШНИЦА",
+        "checkout": "ПЛАЩАНЕ",
+        "complete": "ЗАВЪРШЕНО"
+      }
+    }
   },
   "auth": {
     "login": {
@@ -473,5 +516,11 @@
     "registerSuccess": "Профилът е създаден успешно",
     "registerFailed": "Неуспешно създаване на профил",
     "logoutSuccess": "Успешен изход"
+  },
+  "notifications": {
+    "addedToCart": "Добавено в кошницата!",
+    "continueShopping": "Продължи",
+    "viewCart": "Виж кошницата",
+    "checkout": "Плащане"
   }
 }

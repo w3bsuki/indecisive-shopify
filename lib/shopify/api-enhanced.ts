@@ -1,8 +1,9 @@
-import { storefront, type Product } from './storefront-client';
+import { storefront, type Product, type ProductVariant } from './storefront-client';
 import { getMarketFromCookies } from './server-market';
 import type { Market } from './markets';
 import { extractNodes } from './flatten-connection';
 import { mapStorefrontProductsToShopifyProducts } from './type-mappers';
+import { logger } from '../logger';
 
 // Collection products query for fetching products from a specific collection
 const COLLECTION_PRODUCTS_QUERY = `
@@ -190,6 +191,17 @@ const PRODUCTS_ENHANCED_QUERY = `
     }
   }
 `;
+
+// GraphQL response type interfaces
+interface VariantEdge {
+  node: ProductVariant;
+  cursor?: string;
+}
+
+interface SelectedOption {
+  name: string;
+  value: string;
+}
 
 interface ProductsFilter {
   category?: string;
@@ -399,9 +411,9 @@ export async function getProductsPaginated(
     if (filters.colors && filters.colors.length > 0 && !searchQuery.includes('tag:color')) {
       const selectedColors = filters.colors.map(c => c.toLowerCase());
       filteredProducts = (filteredProducts as Product[]).filter((product: Product) => {
-        return product.variants?.edges?.some((edge: any) => {
+        return product.variants?.edges?.some((edge: VariantEdge) => {
           const variant = edge.node;
-          return variant.selectedOptions?.some((option: any) => 
+          return variant.selectedOptions?.some((option: SelectedOption) => 
             option.name.toLowerCase() === 'color' && 
             selectedColors.includes(option.value.toLowerCase())
           );
@@ -413,9 +425,9 @@ export async function getProductsPaginated(
     if (filters.sizes && filters.sizes.length > 0 && !searchQuery.includes('tag:size')) {
       const selectedSizes = filters.sizes.map(s => s.toUpperCase());
       filteredProducts = (filteredProducts as Product[]).filter((product: Product) => {
-        return product.variants?.edges?.some((edge: any) => {
+        return product.variants?.edges?.some((edge: VariantEdge) => {
           const variant = edge.node;
-          return variant.selectedOptions?.some((option: any) => 
+          return variant.selectedOptions?.some((option: SelectedOption) => 
             option.name.toLowerCase() === 'size' && 
             selectedSizes.includes(option.value.toUpperCase())
           );
@@ -434,7 +446,7 @@ export async function getProductsPaginated(
       totalCount: allProducts.length // Approximate count
     };
   } catch (error) {
-    console.error('Error fetching products:', error);
+    logger.error('Error fetching products:', error);
     return {
       products: [],
       pageInfo: {

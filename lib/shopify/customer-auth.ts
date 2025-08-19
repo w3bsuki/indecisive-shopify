@@ -1,4 +1,5 @@
 import { storefront } from './storefront-client';
+import { logger } from '../logger';
 import {
   CUSTOMER_ACCESS_TOKEN_CREATE,
   CUSTOMER_ACCESS_TOKEN_RENEW,
@@ -171,7 +172,7 @@ export async function authenticateCustomer(
       customerAccessToken: customerAccessTokenCreate.customerAccessToken
     };
   } catch (error) {
-    console.error('Shopify authentication error:', error);
+    logger.error('Shopify authentication error:', error);
     return {
       success: false,
       errors: [{ message: 'Authentication failed. Please try again.' }]

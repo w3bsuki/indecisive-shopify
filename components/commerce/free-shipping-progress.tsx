@@ -1,6 +1,3 @@
-'use client'
-
-import { useMemo } from 'react'
 import { Truck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -26,15 +23,13 @@ export function FreeShippingProgress({ currentAmount, currency, className }: Fre
   const remaining = Math.max(threshold - currentAmount, 0)
   const hasQualified = remaining === 0
 
-  const formattedRemaining = useMemo(() => {
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })
-    return formatter.format(remaining)
-  }, [remaining, currency])
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+  const formattedRemaining = formatter.format(remaining)
 
   return (
     <div className={cn("space-y-2", className)}>

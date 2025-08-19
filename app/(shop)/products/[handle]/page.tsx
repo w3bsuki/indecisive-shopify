@@ -4,14 +4,14 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { ProductImageGallery } from '@/components/commerce/product-image-gallery'
 import { AddToCartForm } from '@/components/commerce/add-to-cart-form'
-// import { ProductInfo } from '@/components/commerce/product-info'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
-// import { MobileProductLayoutV2 } from './mobile-product-layout-v2'
 import { RecentlyViewedSection } from '@/components/commerce/recently-viewed-section'
 import { ProductTabs } from '@/components/commerce/product-tabs'
 import { ProductPageClient } from './product-page-client'
 import { ProductDetailsSection } from '@/components/commerce/product-details-section'
-import { ProductInfoWrapper } from '@/components/commerce/product-info-wrapper'
+import { ProductRating } from '@/components/commerce/product-rating'
+import { Money } from '@/components/commerce/money'
+import { MobileBottomSheet } from '@/components/commerce/mobile-bottom-sheet'
 import { ArrowLeft } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { BreadcrumbNavigation, BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
@@ -145,42 +145,52 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      <div className="min-h-screen bg-white">
+      <div className="bg-white">
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto md:px-4">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-12">
             {/* Product Images */}
-            <div className="md:sticky md:top-20 md:self-start px-4 md:px-0">
-              <Suspense fallback={
-                <div className="aspect-square bg-gray-100 animate-pulse" />
-              }>
-                <ProductImageGallery 
-                  images={images} 
-                  productTitle={product.title} 
-                />
-              </Suspense>
+            <div className="md:sticky md:top-20 md:self-start">
+              <div className="px-4 md:px-0">
+                <Suspense fallback={
+                  <div className="aspect-square bg-gray-50 animate-pulse rounded-2xl" />
+                }>
+                  <ProductImageGallery 
+                    images={images} 
+                    productTitle={product.title} 
+                  />
+                </Suspense>
+              </div>
             </div>
 
-            {/* Product Details */}
-            <div className="px-4 md:px-0 pb-6 md:pb-6">
-              {/* Enhanced Product Info with ratings and inventory */}
-              <ProductInfoWrapper product={product} />
-              
-              {/* Add to Cart Form */}
-              <div className="mt-6">
-                <AddToCartForm product={product} showProductInfo={false} />
-              </div>
-
-
-              {/* Product Information - Mobile Tabs, Desktop Collapsible */}
-              <div className="mt-8">
-                {/* Mobile: Enhanced Tabs */}
-                <div className="md:hidden">
-                  <ProductTabs description={product.description} />
+            {/* Product Details - Desktop */}
+            <div className="hidden md:block px-4 md:px-0 py-6">
+              {/* Product Info */}
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{product.title}</h1>
+                  <ProductRating product={product} size="sm" />
                 </div>
+                
+                {/* Price */}
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount ? (
+                      <Money data={product.priceRange.minVariantPrice} />
+                    ) : (
+                      <>
+                        <span className="text-base text-gray-600 font-normal">from </span>
+                        <Money data={product.priceRange.minVariantPrice} />
+                      </>
+                    )}
+                  </p>
+                </div>
+                
+                {/* Add to Cart Form */}
+                <AddToCartForm product={product} showProductInfo={false} />
 
-                {/* Desktop: Product Details with Metafields */}
-                <div className="hidden md:block">
+                {/* Product Details */}
+                <div className="mt-6 pt-4 border-t border-gray-200">
                   <ProductDetailsSection 
                     product={product} 
                     description={product.description}
@@ -188,24 +198,51 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
             </div>
+
+
+            {/* Mobile Content Above Bottom Sheet */}
+            <div className="md:hidden px-4 py-4 pb-20">
+              {/* Clean Mobile Product Info */}
+              <div className="space-y-4">
+                <div className="space-y-2 text-center">
+                  <h1 className="text-xl font-bold text-gray-900">{product.title}</h1>
+                  <div className="flex justify-center">
+                    <ProductRating product={product} size="sm" />
+                  </div>
+                </div>
+                
+                {/* Mobile Options Selector Only */}
+                <div className="space-y-4">
+                  {/* Size/Color selectors will be handled by AddToCartForm but hidden add to cart button */}
+                  <div className="[&_.md\:flex]:!hidden">
+                    <AddToCartForm product={product} showProductInfo={false} />
+                  </div>
+                </div>
+                
+                {/* Mobile Tabs for Details */}
+                <div className="mt-4">
+                  <ProductTabs description={product.description} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Recently Viewed Products */}
+      {/* Recently Viewed Products - Compact */}
       <RecentlyViewedSection />
       
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <div className="mt-8 md:mt-12 border-t">
-          <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
-            <h2 className="text-lg md:text-xl font-medium mb-4 md:mb-6 text-gray-800">{t('youMayAlsoLike')}</h2>
+        <div className="border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-2 md:py-3">
+            <h2 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{t('youMayAlsoLike')}</h2>
             
             {/* Mobile: Horizontal scroll */}
             <div className="md:hidden -mx-4">
-              <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
-                {relatedProducts.map((product) => (
-                  <div key={product.id} className="flex-none snap-start" style={{ width: 'calc(50% - 4px)' }}>
+              <div className="flex gap-3 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
+                {relatedProducts.slice(0, 6).map((product) => (
+                  <div key={product.id} className="flex-none snap-start w-36">
                     <ProductCardMinimalServer product={product} />
                   </div>
                 ))}
@@ -213,7 +250,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Desktop: Grid */}
-            <div className="hidden md:grid grid-cols-4 gap-4">
+            <div className="hidden md:grid grid-cols-4 gap-3">
               {relatedProducts.slice(0, 4).map((product) => (
                 <ProductCardMinimalServer key={product.id} product={product} />
               ))}

@@ -281,7 +281,8 @@
     "empty": {
       "title": "YOUR CART IS EMPTY",
       "subtitle": "Add some items to get started",
-      "cta": "CONTINUE SHOPPING"
+      "cta": "CONTINUE SHOPPING",
+      "emptyMessage": "Looks like you haven't added anything yet."
     },
     "subtotal": "Subtotal",
     "shipping": "Shipping",
@@ -294,7 +295,49 @@
     "clear": "CLEAR CART",
     "discountCode": "Enter promo code",
     "apply": "Apply",
-    "calculatedAtCheckout": "Calculated at checkout"
+    "calculatedAtCheckout": "Calculated at checkout",
+    "shoppingCart": "Shopping Cart",
+    "removeFromCart": "Remove from cart",
+    "quantity": "Quantity",
+    "orderSummary": "Order Summary",
+    "proceedToCheckout": "PROCEED TO CHECKOUT",
+    "secureCheckout": "Secure checkout powered by Shopify",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "loading": "LOADING..."
+  },
+  "checkout": {
+    "title": "Secure Checkout",
+    "preparation": {
+      "title": "Preparing Checkout",
+      "preparingCheckout": "Preparing Secure Checkout",
+      "redirecting": "Redirecting you to our secure payment page...",
+      "error": "CHECKOUT ERROR",
+      "tryAgain": "TRY AGAIN",
+      "tryingAgain": "TRYING AGAIN...",
+      "backToCart": "BACK TO CART",
+      "continueToCheckout": "CONTINUE TO SECURE CHECKOUT",
+      "orderSummary": "ORDER SUMMARY",
+      "product": "product",
+      "products": "products",
+      "quantity": "Quantity",
+      "noImage": "NO IMAGE",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "TOTAL",
+      "security": {
+        "bankLevel": "BANK-LEVEL SECURITY",
+        "encrypted": "Your payment is protected with 256-bit SSL encryption",
+        "ssl": "SSL",
+        "pci": "PCI",
+        "shopify": "SHOPIFY"
+      },
+      "steps": {
+        "cart": "CART",
+        "checkout": "CHECKOUT",
+        "complete": "COMPLETE"
+      }
+    }
   },
   "auth": {
     "login": {
@@ -432,5 +475,11 @@
     "registerSuccess": "Account created successfully",
     "registerFailed": "Registration failed",
     "logoutSuccess": "Logged out successfully"
+  },
+  "notifications": {
+    "addedToCart": "Added to cart!",
+    "continueShopping": "Continue",
+    "viewCart": "View Cart",
+    "checkout": "Checkout"
   }
 }

@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { ProductCardActions } from './product-card-actions'
 import { HydrogenImageServer } from './hydrogen-image'
 import { extractNodes } from '@/lib/shopify/flatten-connection'
+import { getProductColors, getColorFromName } from '@/lib/utils/product'
 
 interface ProductCardServerProps {
   product: ShopifyProduct
@@ -30,6 +31,9 @@ export async function ProductCardServer({ product, priority: _priority = false }
 
   const productImages = product.images ? extractNodes(product.images) : []
   const secondImage = productImages.length > 1 ? productImages[1] as ShopifyImage : null
+  
+  // Extract color variants for display
+  const availableColors = getProductColors(product)
 
   // Common translations
   const actionTranslations = {
@@ -98,7 +102,32 @@ export async function ProductCardServer({ product, priority: _priority = false }
 
       {/* Product Info */}
       <div className="px-2 pt-1 pb-2">
-        <h3 className="text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-1">
+        {/* Color Variants Display - Above Title */}
+        {availableColors.length > 0 && (
+          <div className="flex items-center justify-center gap-1 mb-2">
+            {availableColors.slice(0, 4).map((color, index) => {
+              const bgColor = getColorFromName(color)
+              return (
+                <div
+                  key={`${color}-${index}`}
+                  className="w-3 h-3 rounded-full"
+                  style={{ 
+                    backgroundColor: bgColor,
+                    border: bgColor === '#FFFFFF' ? '1px solid #ccc' : 'none'
+                  }}
+                  title={color}
+                />
+              )
+            })}
+            {availableColors.length > 4 && (
+              <span className="text-[10px] text-gray-500 ml-1">
+                +{availableColors.length - 4}
+              </span>
+            )}
+          </div>
+        )}
+
+        <h3 className="text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-2">
           <Link 
             href={`/products/${product.handle}`} 
             className="hover:text-black transition-colors duration-200 block truncate"

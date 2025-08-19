@@ -1,4 +1,4 @@
-import { ProductCardCleanServer } from '@/components/commerce/product-card-clean-server'
+import { ProductCardServer } from '@/components/commerce/product-card-server'
 import { NoProductsFound } from '@/app/(shop)/products/page-client'
 import { ProductPageBanner } from '@/components/commerce/product-page-banner'
 import { ProductsPagination } from '@/components/commerce/products-pagination'
@@ -82,11 +82,13 @@ export function ProductPageLayout({
           <>
             <div className={`grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:gap-6 ${gridClassName}`}>
               {products.map((product, index) => (
-                <ProductCardCleanServer 
-                  key={product.id} 
-                  product={product} 
-                  priority={index < 8} // Priority for first 8 products (above fold)
-                />
+                product && typeof product !== 'string' ? (
+                  <ProductCardServer 
+                    key={product.id} 
+                    product={product} 
+                    priority={index < 8} // Priority for first 8 products (above fold)
+                  />
+                ) : null
               ))}
             </div>
             

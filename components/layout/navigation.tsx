@@ -10,7 +10,6 @@ import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileCartDropdown } from "@/components/layout/mobile-cart-dropdown"
 import { CartSlideout } from "@/components/cart/cart-slideout"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
-import { MobileSearchDropdown } from "@/components/layout/mobile-search-dropdown"
 import { SearchBar } from "@/components/layout/search-bar"
 import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
 import { FilterDrawer } from "@/components/commerce/filter-drawer"
@@ -21,6 +20,7 @@ import { MarketSwitcher } from "@/components/commerce/market-switcher"
 import { useTranslations } from 'next-intl'
 import { useFlyToCart } from "@/contexts/fly-to-cart-context"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/components/providers/auth-provider"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -42,6 +42,7 @@ export function Navigation() {
   const { totalItems: wishlistCount } = useWishlist()
   const { } = useIndecisive()
   const { setCartIconRef } = useFlyToCart()
+  const { isAuthenticated } = useAuth()
   
   // State
   const [showSearchBar, setShowSearchBar] = useState(false)
@@ -317,108 +318,127 @@ export function Navigation() {
                   <DropdownMenuContent 
                     align="start" 
                     side="bottom"
-                    className="w-[calc(100vw-24px)] sm:w-[calc(100vw-48px)] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-lg overflow-hidden animate-none"
+                    className="w-[calc(100vw-24px)] sm:w-[calc(100vw-48px)] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
                     sideOffset={5}
                   >
-                    {/* Navigation Categories */}
-                    <div className="px-4 py-4 max-h-[70vh] overflow-y-auto">
-                      {/* Main Categories - Grid Layout */}
-                      <div className="mb-4">
-                        <h3 className="font-mono text-xs font-bold text-gray-600 mb-3 tracking-wider">{tc('categories')}</h3>
-                        <div className="grid grid-cols-2 gap-2">
+                    <div className="max-h-[70vh] overflow-y-auto">
+                      {/* User Actions - Top Priority */}
+                      <div className="p-4 border-b border-gray-100">
+                        <div className="flex items-center gap-2 mb-3">
+                          {/* Account/Auth */}
+                          {isAuthenticated ? (
+                            <Link
+                              href="/account"
+                              onClick={() => setIsMenuOpen(false)}
+                              className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 rounded-xl transition-colors"
+                            >
+                              <User className="h-4 w-4 mr-1.5" />
+                              <span className="text-sm font-medium">{t('account')}</span>
+                            </Link>
+                          ) : (
+                            <>
+                              <Link
+                                href="/account/login"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 rounded-xl transition-colors"
+                              >
+                                <span className="text-sm font-medium">Sign In</span>
+                              </Link>
+                              <Link
+                                href="/account/register"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex-1 h-10 flex items-center justify-center border border-black text-black hover:bg-gray-50 rounded-xl transition-colors"
+                              >
+                                <span className="text-sm font-medium">Sign Up</span>
+                              </Link>
+                            </>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          {/* Wishlist */}
+                          <Link
+                            href="/wishlist"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex-1 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl relative transition-colors"
+                          >
+                            <Heart className="h-4 w-4 mr-1.5" />
+                            <span className="text-sm font-medium">{tc('wishlist')}</span>
+                            {wishlistCount > 0 && (
+                              <Badge className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-red-500 text-white">
+                                {wishlistCount}
+                              </Badge>
+                            )}
+                          </Link>
+                          
+                          {/* Cart */}
+                          <Link
+                            href="/cart"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex-1 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl relative transition-colors"
+                          >
+                            <ShoppingBag className="h-4 w-4 mr-1.5" />
+                            <span className="text-sm font-medium">{t('cart')}</span>
+                            {totalItems > 0 && (
+                              <Badge className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-red-500 text-white">
+                                {totalItems}
+                              </Badge>
+                            )}
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Main Navigation */}
+                      <div className="p-4">
+                        {/* Shop Categories */}
+                        <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Shop</h3>
+                        <div className="space-y-2 mb-4">
                           {menuItems.map((item) => (
                             <Link
                               key={item.href}
                               href={item.href}
-                              className="relative p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group"
+                              className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors"
                               onClick={() => setIsMenuOpen(false)}
                             >
-                              <div className="flex flex-col items-center text-center space-y-1">
-                                <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
-                                {item.badge && (
-                                  <span className="text-xs font-mono font-bold px-2 py-0.5 bg-black text-white rounded text-center">
-                                    {item.badge}
-                                  </span>
-                                )}
-                              </div>
+                              <span className="font-medium text-sm">{item.name}</span>
+                              {item.badge && (
+                                <Badge variant="secondary" className="text-xs">
+                                  {item.badge}
+                                </Badge>
+                              )}
                             </Link>
                           ))}
                         </div>
-                      </div>
-                      
-                      {/* Collections Section */}
-                      <div className="border-t border-gray-100 pt-4">
-                        <h4 className="font-mono text-xs font-bold text-gray-600 mb-3 tracking-wider">{t('collections').toUpperCase()}</h4>
-                        <div className="grid grid-cols-2 gap-2">
+                        
+                        {/* Collections */}
+                        <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Collections</h3>
+                        <div className="space-y-2">
                           {collections.map((item) => (
                             <Link
                               key={item.href}
                               href={item.href}
-                              className="p-3 border border-gray-200 rounded-lg hover:border-black hover:shadow-sm group text-center"
+                              className="flex items-center p-3 hover:bg-gray-50 rounded-xl transition-colors"
                               onClick={() => setIsMenuOpen(false)}
                             >
-                              <span className="font-mono text-sm font-medium tracking-wide group-hover:text-black">{item.name}</span>
+                              <span className="font-medium text-sm">{item.name}</span>
                             </Link>
                           ))}
                         </div>
                       </div>
-                    </div>
-
-                    {/* Quick Actions Footer */}
-                    <div className="border-t border-gray-200 bg-gray-50/50 p-3">
-                      <div className="flex items-center gap-2">
-                        {/* Account */}
-                        <Link
-                          href="/account"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800  rounded-md"
-                        >
-                          <User className="h-4 w-4 mr-1.5" />
-                          <span className="text-xs font-medium">{t('account')}</span>
-                        </Link>
-                        
-                        {/* Wishlist */}
-                        <Link
-                          href="/wishlist"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex-1 h-10 flex items-center justify-center bg-white text-black border border-gray-300 hover:bg-gray-50  rounded-md relative"
-                        >
-                          <Heart className="h-4 w-4 mr-1.5" />
-                          <span className="text-xs font-medium">{tc('wishlist')}</span>
-                          {wishlistCount > 0 && (
-                            <span className="absolute -top-1 -right-1 text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                              {wishlistCount}
-                            </span>
-                          )}
-                        </Link>
-                        
-                        {/* Cart */}
-                        <Link
-                          href="/cart"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800  rounded-md relative"
-                        >
-                          <ShoppingBag className="h-4 w-4 mr-1.5" />
-                          <span className="text-xs font-medium">{t('cart')}</span>
-                          {totalItems > 0 && (
-                            <span className="absolute -top-1 -right-1 text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                              {totalItems}
-                            </span>
-                          )}
-                        </Link>
-                      </div>
                       
                       {/* Support Links */}
-                      <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t border-gray-200">
-                        <Link href="/support" onClick={() => setIsMenuOpen(false)} className="text-xs font-mono text-gray-600 hover:text-black ">
-                          {tf('customerService')}
-                        </Link>
-                        <Link href="/size-guide" onClick={() => setIsMenuOpen(false)} className="text-xs font-mono text-gray-600 hover:text-black ">
-                          {tf('sizeGuide')}
-                        </Link>
-                        <Link href="/shipping" onClick={() => setIsMenuOpen(false)} className="text-xs font-mono text-gray-600 hover:text-black ">
-                          {tf('shipping')}
-                        </Link>
+                      <div className="border-t border-gray-100 p-4 bg-gray-50/50">
+                        <div className="flex items-center justify-center gap-4">
+                          <Link href="/support" onClick={() => setIsMenuOpen(false)} className="text-xs text-gray-600 hover:text-black transition-colors">
+                            {tf('customerService')}
+                          </Link>
+                          <Link href="/size-guide" onClick={() => setIsMenuOpen(false)} className="text-xs text-gray-600 hover:text-black transition-colors">
+                            {tf('sizeGuide')}
+                          </Link>
+                          <Link href="/shipping" onClick={() => setIsMenuOpen(false)} className="text-xs text-gray-600 hover:text-black transition-colors">
+                            {tf('shipping')}
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </DropdownMenuContent>
@@ -444,7 +464,11 @@ export function Navigation() {
               <div className="flex items-center">
                 {/* Search */}
                 <div className="-mr-2">
-                  <MobileSearchDropdown />
+                  <MobileSearchSheet>
+                    <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200">
+                      <Search className="h-5 w-5 stroke-[1.5]" />
+                    </Button>
+                  </MobileSearchSheet>
                 </div>
 
                 {/* Cart */}

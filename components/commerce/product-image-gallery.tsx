@@ -10,7 +10,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { OptimizedImage } from './optimized-image'
+import { HydrogenImageWrapper } from './hydrogen-image'
 import type { ShopifyImage } from '@/lib/shopify/types'
 
 interface TouchState {
@@ -190,10 +190,10 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
             transform: `scale(${zoomState.scale}) translate(${zoomState.translateX}px, ${zoomState.translateY}px)`
           }}
         >
-          <OptimizedImage
-            src={selectedImage.url}
+          <HydrogenImageWrapper
+            data={selectedImage}
             alt={selectedImage.altText || productTitle}
-            aspectRatio="1:1"
+            aspectRatio="1/1"
             priority={selectedIndex === 0}
             sizes="(max-width: 768px) 100vw, 50vw"
             className="rounded-lg select-none"
@@ -401,10 +401,10 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                   : "border-transparent hover:border-gray-300"
               )}
             >
-              <OptimizedImage
-                src={image.url}
+              <HydrogenImageWrapper
+                data={image}
                 alt={image.altText || `${productTitle} ${index + 1}`}
-                aspectRatio="1:1"
+                aspectRatio="1/1"
                 sizes="(max-width: 768px) 25vw, 10vw"
               />
             </button>
@@ -427,10 +427,10 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                     : "border-transparent"
                 )}
               >
-                <OptimizedImage
-                  src={image.url}
+                <HydrogenImageWrapper
+                  data={image}
                   alt={image.altText || `${productTitle} ${index + 1}`}
-                  aspectRatio="1:1"
+                  aspectRatio="1/1"
                   sizes="64px"
                 />
               </button>

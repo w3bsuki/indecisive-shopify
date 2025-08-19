@@ -1,12 +1,11 @@
-'use client'
-
 // import { Money as HydrogenMoney } from '@shopify/hydrogen-react'
 import type { MoneyV2 } from '@shopify/hydrogen-react/storefront-api-types'
 import { formatPriceForMarket, DEFAULT_MARKET } from '@/lib/shopify/markets'
+import type { Money as ShopifyMoney } from '@/lib/shopify/types'
 // import { currencyService } from '@/lib/currency/exchange-rates'
 
 interface MoneyProps {
-  data: MoneyV2
+  data: MoneyV2 | ShopifyMoney | { amount?: string; currencyCode?: string; __typename?: string }
   className?: string
   as?: React.ElementType
   withoutTrailingZeros?: boolean
@@ -30,8 +29,8 @@ export function Money({
 
   // Convert price to BGN if needed, then format
   const formattedPrice = (() => {
-    if (data.currencyCode === 'BGN') {
-      return formatPriceForMarket(data.amount, DEFAULT_MARKET)
+    if ((data.currencyCode || 'USD') === 'BGN') {
+      return formatPriceForMarket(data.amount || '0', DEFAULT_MARKET)
     }
     
     // Convert from USD/GBP/EUR to BGN
@@ -41,8 +40,8 @@ export function Money({
       'EUR': 1 / 0.51, // ~1.96
     }
     
-    const rate = approximateRates[data.currencyCode] || 1
-    const convertedAmount = parseFloat(data.amount) * rate
+    const rate = approximateRates[data.currencyCode || 'USD'] || 1
+    const convertedAmount = parseFloat(data.amount || '0') * rate
     
     return formatPriceForMarket(convertedAmount.toString(), DEFAULT_MARKET)
   })()
@@ -55,7 +54,7 @@ export function Money({
         new Intl.NumberFormat(DEFAULT_MARKET.locale, {
           minimumFractionDigits: withoutTrailingZeros ? 0 : 2,
           maximumFractionDigits: 2,
-        }).format(parseFloat(data.amount)) : 
+        }).format(parseFloat(data.amount || '0')) : 
         formattedPrice
       }
     </Component>
@@ -70,12 +69,12 @@ export function PriceRange({
   maxPrice,
   className
 }: {
-  minPrice: MoneyV2
-  maxPrice: MoneyV2
+  minPrice: MoneyV2 | ShopifyMoney | { amount?: string; currencyCode?: string; __typename?: string }
+  maxPrice: MoneyV2 | ShopifyMoney | { amount?: string; currencyCode?: string; __typename?: string }
   className?: string
 }) {
-  const isSamePrice = minPrice.amount === maxPrice.amount && 
-    minPrice.currencyCode === maxPrice.currencyCode
+  const isSamePrice = (minPrice.amount || '0') === (maxPrice.amount || '0') && 
+    (minPrice.currencyCode || 'USD') === (maxPrice.currencyCode || 'USD')
 
   if (isSamePrice) {
     return <Money data={minPrice} className={className} />

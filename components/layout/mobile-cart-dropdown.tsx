@@ -24,7 +24,6 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
   const { formatPrice } = useMarket()
   const t = useTranslations('cart')
   const tc = useTranslations('common')
-  const tp = useTranslations('products')
   const { setCartIconRef } = useFlyToCart()
   const cartIconRef = useRef<HTMLButtonElement>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -109,7 +108,7 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
       <DropdownMenuContent 
         align="end" 
         side="bottom"
-        className="w-[calc(100vw-24px)] sm:w-[380px] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-lg overflow-hidden"
+        className="w-[calc(100vw-24px)] sm:w-[380px] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
         sideOffset={8}
       >
         {/* Cart Header */}
@@ -140,23 +139,32 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
               </Link>
             </div>
           ) : (
-            <div className="p-3 space-y-3">
+            <div className="p-4 space-y-3">
               {lines.map((item) => 
                 item ? (
-                  <div key={item.id} className="flex gap-3 p-2 bg-gray-50/50 rounded-lg">
-                    <div className="relative w-16 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                      {item.merchandise?.product?.featuredImage ? (
-                        <Image
-                          src={item.merchandise.product.featuredImage.url || ''}
-                          alt={item.merchandise.product.featuredImage.altText || item.merchandise.product.title || 'Product'}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full text-gray-400 text-xs">
-                          {tp('noImage')}
-                        </div>
-                      )}
+                  <div key={item.id} className="flex gap-3 p-3 bg-white border border-gray-200 rounded-xl hover:shadow-sm transition-shadow">
+                    <div className="relative w-16 h-16 bg-gray-50 rounded-xl overflow-hidden flex-shrink-0">
+                      {(() => {
+                        const product = item.merchandise?.product
+                        // Try multiple image sources including variant image
+                        const image = 
+                          item.merchandise?.image?.url ||           // Try variant image first (most likely to exist)
+                          product?.featuredImage?.url || 
+                          product?.images?.edges?.[0]?.node?.url
+                        
+                        return image ? (
+                          <Image
+                            src={image}
+                            alt={item.merchandise?.image?.altText || product?.featuredImage?.altText || product?.title || 'Product'}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center h-full text-gray-400 text-xs">
+                            <ShoppingBag className="w-6 h-6" />
+                          </div>
+                        )
+                      })()}
                     </div>
 
                     <div className="flex-1 min-w-0">
@@ -179,17 +187,17 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1 border border-gray-200 rounded-md bg-white">
+                        <div className="flex items-center bg-gray-50 rounded-lg">
                           <button
-                            className="p-1 hover:bg-gray-100 transition-colors disabled:opacity-50"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-l-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => item.id && updateItem(item.id, (item.quantity || 1) - 1)}
                             disabled={isLoading || (item.quantity || 1) === 1}
                           >
                             <Minus className="h-3 w-3" />
                           </button>
-                          <span className="w-6 text-center text-xs">{item.quantity || 1}</span>
+                          <span className="w-12 text-center text-sm font-medium h-8 flex items-center justify-center">{item.quantity || 1}</span>
                           <button
-                            className="p-1 hover:bg-gray-100 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-r-lg transition-colors disabled:opacity-50"
                             onClick={() => item.id && updateItem(item.id, (item.quantity || 1) + 1)}
                             disabled={isLoading}
                           >
@@ -219,21 +227,21 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
             />
             
             {/* Checkout Actions */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Button
-                className="w-full bg-black text-white hover:bg-gray-800 h-10 text-sm"
+                className="w-full bg-black text-white hover:bg-gray-800 h-11 text-sm font-medium rounded-xl"
                 onClick={handleCheckout}
                 disabled={isLoading}
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     {tc('loading')}
                   </>
                 ) : (
                   <>
                     {t('checkout')}
-                    <ArrowRight className="ml-2 h-3 w-3" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </>
                 )}
               </Button>
@@ -241,7 +249,7 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
               <Link href="/cart" onClick={() => setIsOpen(false)}>
                 <Button
                   variant="outline"
-                  className="w-full h-9 text-sm"
+                  className="w-full h-10 text-sm border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl"
                 >
                   {t('viewCart')}
                 </Button>

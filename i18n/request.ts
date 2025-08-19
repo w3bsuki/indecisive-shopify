@@ -1,5 +1,6 @@
 import { getRequestConfig } from 'next-intl/server'
 import { cookies } from 'next/headers'
+import { logger } from '@/lib/logger'
 
 // Map market IDs to locales
 const marketToLocale: Record<string, string> = {
@@ -45,7 +46,7 @@ export default getRequestConfig(async () => {
       messages
     }
   } catch (error) {
-    console.error(`❌ [I18N] Failed to load messages for ${locale}, falling back to English:`, error)
+    logger.error(`Failed to load messages for ${locale}, falling back to English`, error)
     
     // Fallback to English if the locale file doesn't exist
     const fallbackMessages = (await import(`../messages/en.json`)).default

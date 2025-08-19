@@ -96,7 +96,7 @@ export function CartItem({ item, updateItem, removeItem, isLoading, variant = 'd
           {/* Price */}
           <div className="text-sm font-semibold">
             {item.cost?.totalAmount ? (
-              <Money data={item.cost.totalAmount as any} />
+              <Money data={item.cost.totalAmount} />
             ) : (
               '$0.00'
             )}

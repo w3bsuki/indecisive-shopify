@@ -302,33 +302,35 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         </div>
       )}
 
-      {/* Quantity Selector - Compact mobile design */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium">{tc('quantity')}</Label>
-        <div className="flex items-center bg-gray-100 rounded-lg p-1 w-fit">
+      {/* Quantity Selector - Desktop Only */}
+      <div className="hidden md:block space-y-3">
+        <div className="flex items-center justify-start">
+          <Label className="text-sm font-medium">{tc('quantity')}</Label>
+        </div>
+        <div className="flex items-center bg-gray-50 rounded-xl w-fit">
           <button
             type="button"
             onClick={() => handleQuantityChange(-1)}
             disabled={quantity <= 1}
-            className="h-8 w-8 flex items-center justify-center hover:bg-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+            className="w-12 h-12 flex items-center justify-center hover:bg-gray-200 rounded-l-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
-            <Minus className="h-3 w-3" />
+            <Minus className="w-4 h-4" />
           </button>
-          <div className="w-12 text-center">
+          <div className="w-16 text-center">
             <span className="text-base font-medium">{quantity}</span>
           </div>
           <button
             type="button"
             onClick={() => handleQuantityChange(1)}
             disabled={quantity >= 10}
-            className="h-8 w-8 flex items-center justify-center hover:bg-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+            className="w-12 h-12 flex items-center justify-center hover:bg-gray-200 rounded-r-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
-            <Plus className="h-3 w-3" />
+            <Plus className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Action Buttons - Hide on mobile as mobile footer handles it */}
+      {/* Action Buttons - Desktop Only */}
       <div className="hidden md:flex gap-3">
         {selectedVariant && !selectedVariant.availableForSale ? (
           <BackInStockForm
@@ -342,19 +344,19 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
             onClick={handleAddToCart}
             disabled={isDisabled}
             size="lg"
-            className="flex-1 h-14 touch-manipulation bg-black hover:bg-white text-white hover:text-black border-2 border-black font-medium tracking-wide transition-colors"
+            className="flex-1 h-14 touch-manipulation bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-colors"
           >
             {isAdding ? (
               <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                <span className="uppercase">{t('addingToCart')}</span>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                <span>{t('addingToCart')}</span>
               </>
             ) : !selectedVariant ? (
-              <span className="uppercase">{sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')}</span>
+              <span>{sizeOption && !selectedSize ? t('selectSize') : tc('selectOptions')}</span>
             ) : (
               <>
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                <span className="uppercase">{t('addToCart')}</span>
+                <span className="font-medium">{t('addToCart')}</span>
               </>
             )}
           </Button>
@@ -365,10 +367,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
           variant="outline"
           size="lg"
           className={cn(
-            "px-4 h-14 touch-manipulation border-2 transition-colors",
+            "px-6 h-14 touch-manipulation transition-colors rounded-xl border-gray-200 hover:bg-gray-50",
             isInWishlist(product.id)
-              ? "bg-black text-white border-black hover:bg-white hover:text-black"
-              : "border-black hover:bg-black hover:text-white"
+              ? "bg-red-50 text-red-600 border-red-200 hover:bg-red-100"
+              : "text-gray-600 hover:text-red-500 hover:border-red-200"
           )}
           title={isInWishlist(product.id) ? t('removeFromWishlist') : t('addToWishlist')}
           onClick={() => {
@@ -385,19 +387,19 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         </Button>
       </div>
 
-      {/* Stock Status */}
+      {/* Stock Status - Hidden on mobile (shown in bottom sheet) */}
       {selectedVariant && (
-        <div className="text-sm">
+        <div className="hidden md:block text-sm">
           {selectedVariant.availableForSale ? (
-            <p className="text-green-600 flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-600 rounded-full" />
-              {tc('inStock')}
-            </p>
+            <div className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-xl text-sm font-medium w-fit">
+              <div className="w-2 h-2 bg-green-500 rounded-full" />
+              <span>In stock • Ready to ship</span>
+            </div>
           ) : (
-            <p className="text-red-600 flex items-center gap-2">
-              <span className="w-2 h-2 bg-red-600 rounded-full" />
-              {tc('outOfStock')}
-            </p>
+            <div className="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 rounded-xl text-sm font-medium w-fit">
+              <div className="w-2 h-2 bg-red-500 rounded-full" />
+              <span>{tc('outOfStock')}</span>
+            </div>
           )}
         </div>
       )}
@@ -405,11 +407,16 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
       {/* Size Guide Modal */}
       {showSizeGuide && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowSizeGuide(false)}>
-          <div className="bg-white max-w-md w-full p-6 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white max-w-md w-full p-6 max-h-[80vh] overflow-y-auto rounded-2xl shadow-xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold">{tc('sizeGuide')}</h3>
-              <button onClick={() => setShowSizeGuide(false)} className="text-gray-500 hover:text-black">
-                ×
+              <button 
+                onClick={() => setShowSizeGuide(false)} 
+                className="p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
             <div className="space-y-4">

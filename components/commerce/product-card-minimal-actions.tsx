@@ -52,55 +52,56 @@ export function ProductCardMinimalActions({
         <button
           onClick={handleWishlist}
           className={cn(
-            "absolute top-2 right-2 z-20 w-8 h-8 flex items-center justify-center rounded-full transition-colors",
-            "bg-white/90 backdrop-blur-sm shadow-sm",
-            isWishlisted ? "text-red-500" : "text-gray-600"
+            "absolute top-3 right-3 z-20 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-200",
+            "bg-white shadow-lg hover:shadow-xl border border-gray-200",
+            isWishlisted ? "text-red-500 bg-red-50 border-red-200" : "text-gray-600 hover:text-red-500"
           )}
           aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart 
             className={cn(
-              "w-4 h-4",
-              isWishlisted && "fill-current"
+              "w-4 h-4 transition-all",
+              isWishlisted && "fill-current scale-110"
             )} 
           />
         </button>
       )}
 
-      {/* Desktop Actions */}
+      {/* Desktop Actions - Modern Style */}
       {size !== 'mobile' && (
-        <>
-          {/* Wishlist Button - Top Left */}
-          <button
-            onClick={handleWishlist}
-            className={cn(
-              "absolute top-2 left-2 z-20 w-8 h-8 flex items-center justify-center transition-all duration-200",
-              "bg-white/90 backdrop-blur-sm shadow-sm hover:bg-white",
-              isWishlisted ? "text-red-500" : "text-gray-600 hover:text-red-500"
-            )}
-            aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
-          >
-            <Heart 
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+          <div className="flex gap-2">
+            {/* Wishlist Button */}
+            <button
+              onClick={handleWishlist}
               className={cn(
-                "w-4 h-4 transition-all",
-                isWishlisted && "fill-current"
-              )} 
-            />
-          </button>
+                "w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 transform scale-95 hover:scale-100",
+                "bg-white shadow-lg hover:shadow-xl border border-gray-200",
+                isWishlisted ? "text-red-500 bg-red-50 border-red-200" : "text-gray-600 hover:text-red-500"
+              )}
+              aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
+            >
+              <Heart 
+                className={cn(
+                  "w-4 h-4 transition-all",
+                  isWishlisted && "fill-current scale-110"
+                )} 
+              />
+            </button>
 
-          {/* Cart Button - Top Right */}
-          <button
-            onClick={handleAddToCart}
-            className={cn(
-              "absolute top-2 right-2 z-20 w-8 h-8 flex items-center justify-center transition-all duration-200",
-              "bg-white/90 backdrop-blur-sm shadow-sm hover:bg-white",
-              "text-gray-600 hover:text-black"
-            )}
-            aria-label={t('addToCart')}
-          >
-            <ShoppingCart className="w-4 h-4" />
-          </button>
-        </>
+            {/* Cart Button */}
+            <button
+              onClick={handleAddToCart}
+              className={cn(
+                "w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 transform scale-95 hover:scale-100",
+                "bg-black text-white shadow-lg hover:shadow-xl hover:bg-gray-800"
+              )}
+              aria-label={t('addToCart')}
+            >
+              <ShoppingCart className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       )}
     </>
   )

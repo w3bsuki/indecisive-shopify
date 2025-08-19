@@ -1,11 +1,9 @@
 'use client'
 
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
-import { Badge } from '@/components/ui/badge'
 import { useTranslations } from 'next-intl'
 import { Money } from './money'
 import { ProductRating } from './product-rating'
-import { Check } from 'lucide-react'
 
 interface ProductInfoCompactProps {
   product: ShopifyProduct
@@ -19,42 +17,50 @@ export function ProductInfoCompact({ product, selectedVariant }: ProductInfoComp
   const inStock = selectedVariant ? selectedVariant.availableForSale : true
 
   return (
-    <div className="space-y-3">
-      {/* Title and Price in same row */}
-      <div className="flex items-start justify-between gap-4">
-        <h1 className="text-lg md:text-2xl font-bold leading-tight flex-1">{product.title}</h1>
-        <div className="text-right">
-          <p className="text-lg md:text-xl font-semibold">
-            {selectedVariant ? (
-              <Money data={selectedVariant.price as any} />
-            ) : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount ? (
-              <Money data={product.priceRange.minVariantPrice as any} />
-            ) : (
-              <span className="text-base">
-                <Money data={product.priceRange.minVariantPrice as any} />
-              </span>
-            )}
-          </p>
-          {/* Compare at price */}
-          {selectedVariant?.compareAtPrice && (
-            <p className="text-sm text-gray-500 line-through">
-              <Money data={selectedVariant.compareAtPrice as any} />
-            </p>
-          )}
-        </div>
+    <div className="space-y-6">
+      {/* Title */}
+      <div className="space-y-2">
+        <h1 className="text-2xl md:text-3xl font-bold leading-tight text-gray-900">{product.title}</h1>
+        <ProductRating product={product} size="sm" />
       </div>
 
-      {/* Rating and Stock Status in same row */}
-      <div className="flex items-center justify-between">
-        <ProductRating product={product} size="sm" />
-        {inStock ? (
-          <div className="flex items-center gap-1 text-sm text-green-600">
-            <Check className="w-4 h-4" />
-            <span>{tc('inStock')}</span>
+      {/* Price and Stock in clean card */}
+      <div className="bg-gray-50 rounded-2xl p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-2xl md:text-3xl font-bold text-gray-900">
+              {selectedVariant ? (
+                <Money data={selectedVariant.price} />
+              ) : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount ? (
+                <Money data={product.priceRange.minVariantPrice} />
+              ) : (
+                <>
+                  <span className="text-sm text-gray-600 font-normal">from </span>
+                  <Money data={product.priceRange.minVariantPrice} />
+                </>
+              )}
+            </p>
+            {/* Compare at price */}
+            {selectedVariant?.compareAtPrice && (
+              <p className="text-base text-gray-500 line-through mt-1">
+                <Money data={selectedVariant.compareAtPrice} />
+              </p>
+            )}
           </div>
-        ) : (
-          <Badge variant="destructive" className="text-xs">{t('soldOut')}</Badge>
-        )}
+          
+          {/* Stock status */}
+          {inStock ? (
+            <div className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-xl text-sm font-medium">
+              <div className="w-2 h-2 bg-green-500 rounded-full" />
+              <span>{tc('inStock')}</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 rounded-xl text-sm font-medium">
+              <div className="w-2 h-2 bg-red-500 rounded-full" />
+              <span>{t('soldOut')}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

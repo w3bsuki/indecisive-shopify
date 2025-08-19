@@ -91,11 +91,6 @@ export function observeLongTasks() {
       for (const entry of list.getEntries()) {
         // Report tasks longer than 50ms
         if (entry.duration > 50) {
-          // console.warn('Long task detected:', {
-          //   duration: entry.duration,
-          //   startTime: entry.startTime,
-          // })
-          
           if (window.gtag) {
             window.gtag('event', 'long_task', {
               event_category: 'Performance',
@@ -126,11 +121,7 @@ export function observeResourceTiming() {
       for (const entry of list.getEntries()) {
         // Report slow resources (>1 second)
         if (entry.duration > 1000) {
-          // console.warn('Slow resource:', {
-          //   name: entry.name,
-          //   duration: entry.duration,
-          //   type: (entry as PerformanceResourceTiming).initiatorType,
-          // })
+          // Slow resource detected, could add reporting here
         }
       }
     })

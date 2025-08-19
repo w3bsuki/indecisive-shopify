@@ -13,7 +13,6 @@ export default function ProductError({
 }) {
   useEffect(() => {
     // FUTURE: Integrate error reporting (Sentry, LogRocket, etc.)
-    // console.error('Product page error:', error)
   }, [error])
 
   return (

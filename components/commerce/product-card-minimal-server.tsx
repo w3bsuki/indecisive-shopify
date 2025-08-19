@@ -3,6 +3,7 @@ import type { ShopifyProduct } from '@/lib/shopify/types'
 import { cn } from '@/lib/utils'
 import { ProductCardMinimalActions } from './product-card-minimal-actions'
 import { MoneyServer, SalePriceServer } from './money-server'
+import { getProductColors, getColorFromName } from '@/lib/utils/product'
 
 interface ProductCardMinimalServerProps {
   product: ShopifyProduct
@@ -19,6 +20,9 @@ export async function ProductCardMinimalServer({
   const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
   const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
+
+  // Extract color variants for display
+  const availableColors = getProductColors(product)
 
   return (
     <div 
@@ -66,9 +70,37 @@ export async function ProductCardMinimalServer({
 
       {/* Product Information */}
       <div className="px-2 pt-0 pb-2">
+        {/* Color Variants Display - Above Title */}
+        {availableColors.length > 0 && (
+          <div className="flex items-center justify-center gap-1 mb-2">
+            {availableColors.slice(0, 4).map((color, index) => {
+              const bgColor = getColorFromName(color)
+              return (
+                <div
+                  key={`${color}-${index}`}
+                  className={cn(
+                    "rounded-full",
+                    size === 'mobile' ? "w-2.5 h-2.5" : "w-3 h-3"
+                  )}
+                  style={{ 
+                    backgroundColor: bgColor,
+                    border: bgColor === '#FFFFFF' ? '1px solid #ccc' : 'none'
+                  }}
+                  title={color}
+                />
+              )
+            })}
+            {availableColors.length > 4 && (
+              <span className="text-[10px] text-gray-500 ml-1">
+                +{availableColors.length - 4}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Product Title */}
         <h3 className={cn(
-          "text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-1",
+          "text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-2",
           size === 'mobile' ? "text-sm" : ""
         )}>
           <Link 

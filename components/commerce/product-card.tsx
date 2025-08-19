@@ -13,6 +13,7 @@ import { QuickViewDialog } from './quick-view-dialog'
 import { Heart, Eye, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useFlyToCart } from '@/contexts/fly-to-cart-context'
+import { getProductColors, getColorFromName } from '@/lib/utils/product'
 import {
   Dialog,
   DialogContent,
@@ -42,6 +43,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
   const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
+
+  // Extract color variants for display
+  const availableColors = getProductColors(product)
 
   // Extract sizes from variants
   const sizes = product.variants?.edges
@@ -213,37 +217,56 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               </Link>
             </h3>
 
+            {/* Color Variants Display */}
+            {availableColors.length > 0 && (
+              <div className="flex items-center justify-center md:justify-start gap-1">
+                {availableColors.slice(0, 4).map((color) => (
+                  <div
+                    key={color}
+                    className="w-4 h-4 rounded-full border border-gray-300 shadow-sm"
+                    style={{ backgroundColor: getColorFromName(color) }}
+                    title={color}
+                  />
+                ))}
+                {availableColors.length > 4 && (
+                  <span className="text-xs text-gray-500 ml-1">
+                    +{availableColors.length - 4}
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Triple Split Button: Wishlist + Price + Add to Cart (mobile only) */}
             {product.variants?.edges?.[0]?.node ? (
               <div className="relative w-full">
                 {/* Mobile: Show all three buttons */}
                 {isMobile ? (
-                  <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
+                  <div className="flex items-stretch h-12 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                     {/* Left - Wishlist */}
                     <button
                       onClick={handleWishlist}
                       className={cn(
-                        "relative w-11 flex items-center justify-center transition-all duration-200",
-                        "border-r-2 border-black",
+                        "relative w-12 flex items-center justify-center transition-all duration-200",
+                        "border-r border-gray-200",
                         isWishlisted 
-                          ? "bg-black text-white" 
-                          : "bg-white text-black hover:bg-black hover:text-white"
+                          ? "bg-red-50 text-red-600" 
+                          : "bg-white text-gray-600 hover:bg-gray-50 hover:text-red-500"
                       )}
                       aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
                     >
                       <Heart 
                         className={cn(
-                          "absolute w-[18px] h-[18px] transition-all duration-200",
+                          "w-5 h-5 transition-all duration-200",
                           isWishlisted && "fill-current"
                         )} 
                       />
                     </button>
                     
                     {/* Middle - Price */}
-                    <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
+                    <div className="flex-1 flex items-center justify-center px-3 bg-white min-w-0" style={{ fontFamily: 'var(--font-mono)' }}>
                       <Money 
                         data={price as any} 
-                        className="text-[11px] font-normal tracking-tight text-black"
+                        className="text-sm font-medium text-gray-900 truncate"
                       />
                     </div>
                     
@@ -252,21 +275,21 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                       onClick={() => handleAddToCart()}
                       disabled={isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady}
                       className={cn(
-                        "relative w-11 flex items-center justify-center transition-all duration-200",
-                        "border-l-2 border-black",
+                        "relative w-12 flex items-center justify-center transition-all duration-200",
+                        "border-l border-gray-200",
                         isLoading || !product.variants?.edges?.[0]?.node.availableForSale || !cartReady
-                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                          : "bg-black text-white hover:bg-gray-900"
+                          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                          : "bg-black text-white hover:bg-gray-800 shadow-sm"
                       )}
                       aria-label={isLoading ? t('addingToCart') : t('addToCart')}
                     >
                       {isLoading ? (
-                        <div className="absolute w-[18px] h-[18px] border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : !product.variants?.edges?.[0]?.node.availableForSale ? (
-                        <X className="absolute w-[18px] h-[18px]" />
+                        <X className="w-5 h-5" />
                       ) : (
                         <svg 
-                          className="absolute w-[18px] h-[18px]" 
+                          className="w-5 h-5" 
                           fill="none" 
                           stroke="currentColor" 
                           strokeWidth={2}
@@ -279,32 +302,32 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                   </div>
                 ) : (
                   /* Desktop: Only show wishlist and price */
-                  <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
+                  <div className="flex items-stretch h-10 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                     {/* Left - Wishlist */}
                     <button
                       onClick={handleWishlist}
                       className={cn(
-                        "relative w-11 flex items-center justify-center transition-all duration-200",
-                        "border-r-2 border-black",
+                        "relative w-10 flex items-center justify-center transition-all duration-200",
+                        "border-r border-gray-200",
                         isWishlisted 
-                          ? "bg-black text-white" 
-                          : "bg-white text-black hover:bg-black hover:text-white"
+                          ? "bg-red-50 text-red-600" 
+                          : "bg-white text-gray-600 hover:bg-gray-50 hover:text-red-500"
                       )}
                       aria-label={isWishlisted ? t('removeFromWishlist') : t('addToWishlist')}
                     >
                       <Heart 
                         className={cn(
-                          "absolute w-[18px] h-[18px] transition-all duration-200",
+                          "w-4 h-4 transition-all duration-200",
                           isWishlisted && "fill-current"
                         )} 
                       />
                     </button>
                     
                     {/* Right - Price (takes remaining space) */}
-                    <div className="flex-1 flex items-center justify-center px-4 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
+                    <div className="flex-1 flex items-center justify-center px-3 bg-white" style={{ fontFamily: 'var(--font-mono)' }}>
                       <Money 
                         data={price as any} 
-                        className="text-sm font-medium tracking-tight text-black"
+                        className="text-sm font-medium text-gray-900"
                       />
                     </div>
                   </div>
@@ -312,19 +335,27 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               </div>
             ) : (
               <div className="relative w-full opacity-50">
-                <div className="flex items-stretch h-11 bg-white border-2 border-black overflow-hidden">
-                  <div className="relative w-11 flex items-center justify-center bg-gray-100 border-r-2 border-black">
-                    <Heart className="absolute w-[18px] h-[18px] text-gray-400" />
+                <div className={cn(
+                  "flex items-stretch bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm",
+                  isMobile ? "h-12" : "h-10"
+                )}>
+                  <div className={cn(
+                    "flex items-center justify-center bg-gray-100 border-r border-gray-200",
+                    isMobile ? "w-12" : "w-10"
+                  )}>
+                    <Heart className={cn("text-gray-400", isMobile ? "w-5 h-5" : "w-4 h-4")} />
                   </div>
-                  <div className="flex-1 flex items-center justify-center px-2 bg-gray-50" style={{ fontFamily: 'var(--font-mono)' }}>
+                  <div className="flex-1 flex items-center justify-center px-3 bg-white" style={{ fontFamily: 'var(--font-mono)' }}>
                     <Money 
                       data={price as any} 
-                      className="text-[11px] font-normal tracking-tight text-gray-500"
+                      className="text-sm font-normal text-gray-500"
                     />
                   </div>
-                  <div className="relative w-11 flex items-center justify-center bg-gray-100 border-l-2 border-black">
-                    <X className="absolute w-[18px] h-[18px] text-gray-400" />
-                  </div>
+                  {isMobile && (
+                    <div className="w-12 flex items-center justify-center bg-gray-100 border-l border-gray-200">
+                      <X className="w-5 h-5 text-gray-400" />
+                    </div>
+                  )}
                 </div>
               </div>
             )}

@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils'
 import { ShoppingCart, TrendingUp, Users, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { OptimizedImage } from './optimized-image'
+import { HydrogenImageWrapper } from './hydrogen-image'
 import { Money } from './money'
-import { ProductCardSkeleton } from '@/components/ui/skeleton-enhanced'
+import { ProductCardSkeleton } from '@/components/ui/skeleton'
 import { InteractiveButton, WishlistHeart, RatingStars } from '@/components/ui/visual-feedback'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 
@@ -293,10 +293,10 @@ export function SmartRecommendations({
             {/* Product Image */}
             <div className="aspect-square relative overflow-hidden bg-gray-100">
               {product.featuredImage?.url ? (
-                <OptimizedImage
-                  src={product.featuredImage.url}
+                <HydrogenImageWrapper
+                  data={product.featuredImage}
                   alt={product.featuredImage.altText || product.title}
-                  aspectRatio="1:1"
+                  aspectRatio="1/1"
                   className="product-image"
                   sizes="(max-width: 768px) 50vw, 25vw"
                 />

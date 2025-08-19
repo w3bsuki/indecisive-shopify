@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useRecentlyViewed } from '@/hooks/use-recently-viewed'
 import { useMarket } from '@/hooks/use-market'
-import { StickyMobileFooter } from '@/components/commerce/sticky-mobile-footer'
+import { MobileBottomSheet } from '@/components/commerce/mobile-bottom-sheet'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 
 interface ProductPageClientProps {
@@ -65,13 +65,8 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
       {/* Hidden ref div to mark the add to cart form location */}
       <div ref={addToCartFormRef} className="absolute" style={{ top: '60vh' }} />
       
-      {/* Sticky Mobile Footer */}
-      <StickyMobileFooter
-        product={product}
-        selectedVariant={selectedVariant}
-        onSizeSelect={handleSizeSelect}
-        onAddToCart={handleAddToCart}
-      />
+      {/* Mobile Bottom Sheet */}
+      <MobileBottomSheet product={product} />
       
       {/* Quick Actions - Mobile Only */}
       <div className="fixed bottom-24 right-4 z-30 md:hidden">

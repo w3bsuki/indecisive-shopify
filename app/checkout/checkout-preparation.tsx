@@ -21,6 +21,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface CheckoutPreparationProps {
   returnUrl?: string
@@ -31,7 +32,8 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
   const { formatPrice } = useMarket()
   const [isPreparingCheckout, setIsPreparingCheckout] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const t = useTranslations('checkout.preparation')
+  const tc = useTranslations('cart')
 
   const handleCheckout = useCallback(async () => {
     try {
@@ -59,48 +61,18 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
     }
   }, [cart])
 
-  // Check authentication status on mount (allow guest checkout)
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await fetch('/api/auth/status', { credentials: 'include' })
-        const { authenticated } = await response.json()
-        
-        // Allow both authenticated and guest users to proceed
-        if (authenticated) {
-          // User is authenticated, proceed with auto-checkout
-          if (!isEmpty && !isLoading) {
-            const timer = setTimeout(() => {
-              handleCheckout()
-            }, 2000)
-            return () => clearTimeout(timer)
-          }
-        }
-        // For guest users, just set auth check as complete and let them proceed
-      } catch (_error) {
-        // Auth check failed, but allow guest checkout anyway
-        console.warn('Auth check failed, proceeding with guest checkout')
-      } finally {
-        setIsCheckingAuth(false)
-      }
-    }
+  // Skip auth check entirely - both guests and authenticated users can checkout
 
-    checkAuthStatus()
-  }, [isEmpty, isLoading, handleCheckout])
-
-  // Auto-start checkout preparation only for authenticated users
+  // Auto-start checkout immediately for better UX
   useEffect(() => {
-    if (!isEmpty && !isLoading && !isPreparingCheckout && !error && !isCheckingAuth) {
-      const timer = setTimeout(() => {
-        handleCheckout()
-      }, 2000) // 2 second delay to show the UI
-      
-      return () => clearTimeout(timer)
+    if (!isEmpty && !isLoading && !isPreparingCheckout && !error) {
+      // Start checkout immediately without delay
+      handleCheckout()
     }
-  }, [isEmpty, isLoading, isPreparingCheckout, error, isCheckingAuth, handleCheckout])
+  }, [isEmpty, isLoading, isPreparingCheckout, error, handleCheckout])
 
   // If cart is empty, show empty state
-  if (isEmpty && !isLoading && !isCheckingAuth) {
+  if (isEmpty && !isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-3 sm:px-4">
@@ -110,13 +82,13 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                   <ShoppingBag className="h-8 w-8 sm:h-10 sm:w-10 text-gray-400" />
                 </div>
-                <h1 className="text-xl sm:text-2xl font-bold mb-3">YOUR CART IS EMPTY</h1>
+                <h1 className="text-xl sm:text-2xl font-bold mb-3">{tc('empty.title')}</h1>
                 <p className="text-gray-600 mb-8 leading-relaxed">
-                  Add products to your cart<br />before proceeding to checkout
+                  {tc('empty.subtitle')}
                 </p>
                 <Link href="/products">
                   <Button size="lg" className="h-10 sm:h-11 px-6 sm:px-8 font-medium text-sm sm:text-base">
-                    CONTINUE SHOPPING
+                    {tc('empty.cta')}
                   </Button>
                 </Link>
               </CardContent>
@@ -127,17 +99,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
     )
   }
 
-  // Show loading state while checking authentication
-  if (isCheckingAuth) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Verifying authentication...</p>
-        </div>
-      </div>
-    )
-  }
+  // No need to show auth loading state since we skip auth check
 
   // If there's an error, show error state with retry option
   if (error) {
@@ -149,7 +111,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-red-700 text-xl font-mono">
                   <AlertCircle className="h-5 w-5" />
-                  CHECKOUT ERROR
+                  {t('error')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -165,16 +127,16 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                     {isPreparingCheckout ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        TRYING AGAIN...
+                        {t('tryingAgain')}
                       </>
                     ) : (
-                      'TRY AGAIN'
+                      t('tryAgain')
                     )}
                   </Button>
                   <Link href="/cart" className="flex-1">
                     <Button variant="outline" className="w-full h-12 font-mono">
                       <ArrowLeft className="h-4 w-4 mr-2" />
-                      BACK TO CART
+                      {t('backToCart')}
                     </Button>
                   </Link>
                 </div>
@@ -197,17 +159,17 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
               <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">
                 <CheckCircle className="h-5 w-5" />
               </div>
-              <span className="text-sm font-medium">CART</span>
+              <span className="text-sm font-medium">{t('steps.cart')}</span>
             </div>
             <div className="w-12 h-0.5 bg-black"></div>
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">2</div>
-              <span className="text-sm font-medium">CHECKOUT</span>
+              <span className="text-sm font-medium">{t('steps.checkout')}</span>
             </div>
             <div className="w-12 h-0.5 bg-gray-300"></div>
             <div className="flex items-center gap-2 opacity-50">
               <div className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center font-bold">3</div>
-              <span className="text-sm text-gray-600">COMPLETE</span>
+              <span className="text-sm text-gray-600">{t('steps.complete')}</span>
             </div>
           </div>
         </div>
@@ -220,10 +182,10 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
             <Link href="/cart">
               <Button variant="outline" size="sm" className="border-gray-300 hover:border-gray-400">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Към кошницата</span>
+                <span className="hidden sm:inline">Back to Cart</span>
               </Button>
             </Link>
-            <h1 className="text-xl font-bold">Secure Checkout</h1>
+            <h1 className="text-xl font-bold">{t('title', { ns: 'checkout' })}</h1>
             <div className="hidden sm:block" />
           </div>
         </div>
@@ -235,9 +197,9 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-xl font-mono">
                   <ShoppingBag className="h-5 w-5" />
-                  РЕЗЮМЕ НА ПОРЪЧКАТА
+                  {t('orderSummary')}
                   <Badge variant="secondary" className="ml-auto">
-                    {totalQuantity} {totalQuantity === 1 ? 'продукт' : 'продукта'}
+                    {totalQuantity} {totalQuantity === 1 ? t('product') : t('products')}
                   </Badge>
                 </CardTitle>
               </CardHeader>
@@ -258,19 +220,19 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                             />
                           ) : (
                             <div className="flex items-center justify-center h-full text-gray-400 text-xs">
-                              БЕЗ СНИМКА
+                              {t('noImage')}
                             </div>
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-bold text-sm mb-1">
-                            {item.merchandise?.product?.title || 'Продукт'}
+                            {item.merchandise?.product?.title || 'Product'}
                           </h4>
                           {item.merchandise?.title && item.merchandise.title !== 'Default Title' && (
                             <p className="text-xs text-gray-600 mb-2">{item.merchandise.title}</p>
                           )}
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">Quantity: {item.quantity}</span>
+                            <span className="text-sm text-gray-600">{t('quantity')}: {item.quantity}</span>
                             <span className="font-bold font-mono">
                               {formatPrice(item.cost?.totalAmount?.amount || '0', item.cost?.totalAmount?.currencyCode || 'USD')}
                             </span>
@@ -284,18 +246,18 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                 {/* Totals */}
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between text-base">
-                    <span>Междинна сума</span>
-                    <span className="font-mono">{cost?.subtotalAmount?.amount && cost?.subtotalAmount?.currencyCode ? formatPrice(cost.subtotalAmount.amount, cost.subtotalAmount.currencyCode) : '0.00 лв'}</span>
+                    <span>{t('subtotal')}</span>
+                    <span className="font-mono">{cost?.subtotalAmount?.amount && cost?.subtotalAmount?.currencyCode ? formatPrice(cost.subtotalAmount.amount, cost.subtotalAmount.currencyCode) : '$0.00'}</span>
                   </div>
                   {cost?.totalTaxAmount?.amount && parseFloat(cost.totalTaxAmount.amount) > 0 && (
                     <div className="flex justify-between text-base">
-                      <span>Tax</span>
-                      <span className="font-mono">{cost.totalTaxAmount?.amount && cost.totalTaxAmount?.currencyCode ? formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode) : '0.00 лв'}</span>
+                      <span>{t('tax')}</span>
+                      <span className="font-mono">{cost.totalTaxAmount?.amount && cost.totalTaxAmount?.currencyCode ? formatPrice(cost.totalTaxAmount.amount, cost.totalTaxAmount.currencyCode) : '$0.00'}</span>
                     </div>
                   )}
                   <div className="flex justify-between font-bold text-lg pt-3 border-t">
-                    <span>ОБЩО</span>
-                    <span className="font-mono">{cost?.totalAmount?.amount && cost?.totalAmount?.currencyCode ? formatPrice(cost.totalAmount.amount, cost.totalAmount.currencyCode) : '0.00 лв'}</span>
+                    <span>{t('total')}</span>
+                    <span className="font-mono">{cost?.totalAmount?.amount && cost?.totalAmount?.currencyCode ? formatPrice(cost.totalAmount.amount, cost.totalAmount.currencyCode) : '$0.00'}</span>
                   </div>
                 </div>
               </CardContent>
@@ -308,7 +270,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg font-mono">
                   <CreditCard className="h-5 w-5" />
-                  PREPARING CHECKOUT
+                  {t('title')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -318,8 +280,8 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                     <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
                     <div className="absolute top-0 left-0 w-16 h-16 border-4 border-gray-900 rounded-full animate-spin border-t-transparent"></div>
                   </div>
-                  <p className="text-center font-semibold mb-2">Preparing Secure Checkout</p>
-                  <p className="text-sm text-gray-600 text-center">Redirecting you to our secure payment page...</p>
+                  <p className="text-center font-semibold mb-2">{t('preparingCheckout')}</p>
+                  <p className="text-sm text-gray-600 text-center">{t('redirecting')}</p>
                 </div>
 
                 {/* Trust badges */}
@@ -328,9 +290,9 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                     <div className="flex items-start gap-3">
                       <Shield className="h-5 w-5 text-blue-600 mt-0.5" />
                       <div>
-                        <p className="font-semibold text-blue-900 text-sm">BANK-LEVEL SECURITY</p>
+                        <p className="font-semibold text-blue-900 text-sm">{t('security.bankLevel')}</p>
                         <p className="text-xs text-blue-700 mt-1">
-                          Your payment is protected with 256-bit SSL encryption
+                          {t('security.encrypted')}
                         </p>
                       </div>
                     </div>
@@ -339,15 +301,15 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                   <div className="flex items-center justify-center gap-6 text-gray-400">
                     <div className="flex items-center gap-2">
                       <Lock className="h-5 w-5" />
-                      <span className="text-xs">SSL</span>
+                      <span className="text-xs">{t('security.ssl')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Shield className="h-5 w-5" />
-                      <span className="text-xs">PCI</span>
+                      <span className="text-xs">{t('security.pci')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Zap className="h-5 w-5" />
-                      <span className="text-xs">SHOPIFY</span>
+                      <span className="text-xs">{t('security.shopify')}</span>
                     </div>
                   </div>
                 </div>
@@ -359,7 +321,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                     className="w-full h-12 font-mono font-bold"
                   >
                     <CreditCard className="h-4 w-4 mr-2" />
-                    CONTINUE TO SECURE CHECKOUT
+                    {t('continueToCheckout')}
                   </Button>
                 )}
               </CardContent>

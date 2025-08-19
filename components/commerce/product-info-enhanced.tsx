@@ -31,13 +31,13 @@ export function ProductInfoEnhanced({ product, selectedVariant }: ProductInfoEnh
         <div className="mt-3 flex items-center gap-3">
           <p className="text-xl md:text-2xl font-semibold">
             {selectedVariant ? (
-              <Money data={selectedVariant.price as any} />
+              <Money data={selectedVariant.price} />
             ) : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount ? (
-              <Money data={product.priceRange.minVariantPrice as any} />
+              <Money data={product.priceRange.minVariantPrice} />
             ) : (
               <PriceRange 
-                minPrice={product.priceRange.minVariantPrice as any} 
-                maxPrice={product.priceRange.maxVariantPrice as any}
+                minPrice={product.priceRange.minVariantPrice} 
+                maxPrice={product.priceRange.maxVariantPrice}
               />
             )}
           </p>
@@ -45,7 +45,7 @@ export function ProductInfoEnhanced({ product, selectedVariant }: ProductInfoEnh
           {/* Compare at price */}
           {selectedVariant?.compareAtPrice && (
             <p className="text-lg text-gray-500 line-through">
-              <Money data={selectedVariant.compareAtPrice as any} />
+              <Money data={selectedVariant.compareAtPrice} />
             </p>
           )}
           

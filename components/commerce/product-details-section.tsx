@@ -44,7 +44,7 @@ export function ProductDetailsSection({ product, description }: ProductDetailsSe
 
   return (
     <>
-      <div className="mt-8 space-y-4">
+      <div className="mt-4 space-y-2">
         {/* Materials & Fabric */}
         {materials && (
           <details className="group">
@@ -55,7 +55,7 @@ export function ProductDetailsSection({ product, description }: ProductDetailsSe
               </div>
               <ChevronDown className="h-5 w-5 text-gray-400 group-open:rotate-180 transition-transform" />
             </summary>
-            <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed">
+            <div className="pb-3 text-sm md:text-base text-gray-700 leading-relaxed">
               {materials}
             </div>
           </details>
@@ -71,7 +71,7 @@ export function ProductDetailsSection({ product, description }: ProductDetailsSe
               </div>
               <ChevronDown className="h-5 w-5 text-gray-400 group-open:rotate-180 transition-transform" />
             </summary>
-            <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed">
+            <div className="pb-3 text-sm md:text-base text-gray-700 leading-relaxed">
               <div className="prose prose-sm md:prose-base max-w-none">
                 {description}
               </div>
@@ -89,7 +89,7 @@ export function ProductDetailsSection({ product, description }: ProductDetailsSe
               </div>
               <ChevronDown className="h-5 w-5 text-gray-400 group-open:rotate-180 transition-transform" />
             </summary>
-            <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed space-y-4">
+            <div className="pb-3 text-sm md:text-base text-gray-700 leading-relaxed space-y-4">
               {fitGuide && (
                 <div>
                   <h4 className="font-medium mb-2">Fit Guide</h4>
@@ -120,7 +120,7 @@ export function ProductDetailsSection({ product, description }: ProductDetailsSe
               <span className="font-medium">Care Instructions</span>
               <ChevronDown className="h-5 w-5 text-gray-400 group-open:rotate-180 transition-transform" />
             </summary>
-            <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed">
+            <div className="pb-3 text-sm md:text-base text-gray-700 leading-relaxed">
               {careInstructions.split('\n').map((line, i) => (
                 <p key={i} className="mb-1">• {line}</p>
               ))}
@@ -134,7 +134,7 @@ export function ProductDetailsSection({ product, description }: ProductDetailsSe
             <span className="font-medium">Shipping & Returns</span>
             <ChevronDown className="h-5 w-5 text-gray-400 group-open:rotate-180 transition-transform" />
           </summary>
-          <div className="pb-6 text-sm md:text-base text-gray-700 leading-relaxed space-y-3">
+          <div className="pb-3 text-sm md:text-base text-gray-700 leading-relaxed space-y-3">
             <p>• Free standard shipping on orders over €50</p>
             <p>• Express shipping available at checkout</p>
             <p>• 30-day return policy</p>

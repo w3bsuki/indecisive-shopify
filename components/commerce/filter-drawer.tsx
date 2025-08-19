@@ -10,7 +10,7 @@ interface FilterDrawerProps {
 }
 
 export function FilterDrawer({ open, onOpenChange }: FilterDrawerProps) {
-  const t = useTranslations('filters')
+  const t = useTranslations('products.filters')
   
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>

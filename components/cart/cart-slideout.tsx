@@ -160,25 +160,30 @@ export function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
                   <div 
                     key={line.id} 
                     className={cn(
-                      "border border-gray-200 p-3 rounded-lg bg-white shadow-sm transition-all duration-300 cart-item-enter",
+                      "border border-gray-200 p-4 rounded-2xl bg-white shadow-sm transition-all duration-300 cart-item-enter hover:shadow-md",
                       removingItems.has(line.id || '') && "cart-item-exit opacity-0 scale-95"
                     )}
                   >
                     <div className="flex gap-3">
                       {/* Enhanced Product Image */}
-                      <div className="w-16 h-16 bg-gray-100 rounded-md relative flex-shrink-0 overflow-hidden group">
-                        {line.merchandise.product.featuredImage?.url ? (
-                          <Image
-                            src={line.merchandise.product.featuredImage.url}
-                            alt={line.merchandise.product.title || 'Product image'}
-                            fill
-                            className="object-cover rounded-md transition-transform duration-200 group-hover:scale-105"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ShoppingBag className="w-6 h-6 text-gray-400" />
-                          </div>
-                        )}
+                      <div className="w-16 h-16 bg-gray-50 rounded-xl relative flex-shrink-0 overflow-hidden group">
+                        {(() => {
+                          const product = line.merchandise.product
+                          // Try variant image first, then fallback to product images
+                          const image = line.merchandise?.image?.url || product.featuredImage?.url || product.images?.edges?.[0]?.node?.url
+                          return image ? (
+                            <Image
+                              src={image}
+                              alt={line.merchandise?.image?.altText || product.featuredImage?.altText || product.title || 'Product image'}
+                              fill
+                              className="object-cover rounded-md transition-transform duration-200 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <ShoppingBag className="w-6 h-6 text-gray-400" />
+                            </div>
+                          )
+                        })()}
                       </div>
 
                       {/* Enhanced Product Details */}
@@ -204,21 +209,21 @@ export function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
 
                         <div className="flex items-center justify-between">
                           {/* Enhanced Quantity Controls */}
-                          <div className="flex items-center gap-1 bg-gray-50 rounded-md p-1">
+                          <div className="flex items-center bg-gray-50 rounded-lg">
                             <button
                               onClick={() => line.id && line.quantity && updateItem(line.id, Math.max(1, line.quantity - 1))}
                               disabled={!line.quantity || line.quantity <= 1 || isLoading}
-                              className="w-6 h-6 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 rounded interactive-element"
+                              className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-l-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <Minus className="w-3 h-3" />
                             </button>
-                            <span className="w-8 text-center font-mono text-sm font-medium px-2">
+                            <span className="w-12 text-center text-sm font-medium h-8 flex items-center justify-center">
                               {line.quantity || 0}
                             </span>
                             <button
                               onClick={() => line.id && line.quantity && updateItem(line.id, line.quantity + 1)}
                               disabled={isLoading}
-                              className="w-6 h-6 border border-gray-300 hover:border-gray-400 flex items-center justify-center hover:bg-white transition-all duration-200 rounded interactive-element"
+                              className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-r-lg transition-colors disabled:opacity-50"
                             >
                               <Plus className="w-3 h-3" />
                             </button>
@@ -227,7 +232,7 @@ export function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
                           {/* Enhanced Price Display */}
                           <div className="font-mono font-bold text-sm text-right">
                             {line.cost?.totalAmount?.amount && line.cost?.totalAmount?.currencyCode ? (
-                              <Money data={line.cost.totalAmount as any} />
+                              <Money data={line.cost.totalAmount} />
                             ) : (
                               '$0.00'
                             )}
@@ -247,7 +252,7 @@ export function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
                     <span className="text-gray-600">Subtotal</span>
                     <span className="font-mono font-medium">
                       {cost?.subtotalAmount?.amount && cost?.subtotalAmount?.currencyCode ? (
-                        <Money data={cost.subtotalAmount as any} />
+                        <Money data={cost.subtotalAmount} />
                       ) : (
                         '$0.00'
                       )}
@@ -267,7 +272,7 @@ export function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
                     <span className="font-bold text-lg">Total</span>
                     <span className="font-bold text-lg font-mono">
                       {cost?.totalAmount?.amount && cost?.totalAmount?.currencyCode ? (
-                        <Money data={cost.totalAmount as any} />
+                        <Money data={cost.totalAmount} />
                       ) : (
                         '$0.00'
                       )}

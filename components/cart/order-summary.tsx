@@ -56,7 +56,7 @@ export function OrderSummary({ cost, onCheckout, isLoading, variant = 'default' 
           <span>Subtotal</span>
           <span className="font-medium">
             {cost?.subtotalAmount ? (
-              <Money data={cost.subtotalAmount as any} />
+              <Money data={cost.subtotalAmount} />
             ) : (
               '$0.00'
             )}
@@ -67,7 +67,7 @@ export function OrderSummary({ cost, onCheckout, isLoading, variant = 'default' 
           <div className="flex justify-between text-sm">
             <span>Tax</span>
             <span className="font-medium">
-              <Money data={cost.totalTaxAmount as any} />
+              <Money data={cost.totalTaxAmount} />
             </span>
           </div>
         )}
@@ -90,7 +90,7 @@ export function OrderSummary({ cost, onCheckout, isLoading, variant = 'default' 
         <span className={`font-semibold ${isSticky ? 'text-base' : 'text-lg'}`}>Total</span>
         <span className={`font-bold ${isSticky ? 'text-lg' : 'text-xl'}`}>
           {cost?.totalAmount ? (
-            <Money data={cost.totalAmount as any} />
+            <Money data={cost.totalAmount} />
           ) : (
             '$0.00'
           )}

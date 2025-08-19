@@ -25,6 +25,163 @@ export function getProductSizes(product: ShopifyProduct): string[] {
 }
 
 /**
+ * Extract unique color options from product variants
+ */
+export function getProductColors(product: ShopifyProduct): string[] {
+  const colors = new Set<string>()
+  
+  // Check all variants for color options
+  if (product.variants?.edges?.length) {
+    product.variants.edges.forEach(edge => {
+      const colorOption = edge.node.selectedOptions?.find(
+        option => option.name.toLowerCase() === 'color'
+      )
+      if (colorOption?.value) {
+        colors.add(colorOption.value)
+      }
+    })
+  }
+  
+  // If no color options found in variants, check if title contains colors
+  if (colors.size === 0) {
+    const titleLower = product.title.toLowerCase()
+    const colorMatches = ['red', 'pink', 'black', 'blue', 'green', 'white', 'yellow', 'purple', 'orange', 'brown', 'grey', 'gray', 'navy', 'beige', 'tan', 'khaki', 'cream', 'ivory', 'maroon', 'burgundy', 'coral', 'peach', 'gold', 'silver', 'charcoal']
+    colorMatches.forEach(color => {
+      if (titleLower.includes(color)) {
+        colors.add(color.charAt(0).toUpperCase() + color.slice(1))
+      }
+    })
+  }
+  
+  // If still no colors found, check product tags
+  if (colors.size === 0 && product.tags?.length) {
+    const colorTags = product.tags.filter(tag => {
+      const tagLower = tag.toLowerCase()
+      return tagLower.includes('color:') || tagLower.includes('colour:')
+    })
+    colorTags.forEach(tag => {
+      const colorValue = tag.split(':')[1]?.trim()
+      if (colorValue) {
+        colors.add(colorValue.charAt(0).toUpperCase() + colorValue.slice(1))
+      }
+    })
+  }
+  
+  // ALWAYS return at least one color - use a default neutral color
+  if (colors.size === 0) {
+    colors.add('Default')
+  }
+  
+  return Array.from(colors)
+}
+
+/**
+ * Map color names to hex values for display
+ */
+export function getColorFromName(colorName: string): string {
+  // Normalize the color name to lowercase for matching
+  const normalizedColor = colorName.toLowerCase().trim()
+  
+  // Try exact match first
+  const exactColorMap: Record<string, string> = {
+    // Black variations
+    'black': '#000000',
+    
+    // White variations  
+    'white': '#FFFFFF',
+    'cream': '#F5F5DC',
+    'ivory': '#FFFFF0',
+    'off-white': '#FAF0E6',
+    
+    // Red variations
+    'red': '#EF4444',
+    'crimson': '#DC143C',
+    'maroon': '#800000',
+    'burgundy': '#800020',
+    
+    // Blue variations
+    'blue': '#3B82F6',
+    'navy': '#1E3A8A',
+    'royal blue': '#4169E1',
+    'sky blue': '#87CEEB',
+    'light blue': '#ADD8E6',
+    
+    // Green variations
+    'green': '#10B981',
+    'forest green': '#228B22',
+    'olive': '#808000',
+    'lime': '#00FF00',
+    
+    // Yellow variations
+    'yellow': '#F59E0B',
+    'gold': '#FFD700',
+    'mustard': '#FFDB58',
+    
+    // Purple variations
+    'purple': '#8B5CF6',
+    'violet': '#8A2BE2',
+    'lavender': '#E6E6FA',
+    
+    // Pink variations
+    'pink': '#EC4899',
+    'hot pink': '#FF69B4',
+    'light pink': '#FFB6C1',
+    'rose': '#FF007F',
+    
+    // Gray variations
+    'gray': '#6B7280',
+    'grey': '#6B7280',
+    'charcoal': '#36454F',
+    'silver': '#C0C0C0',
+    
+    // Brown variations
+    'brown': '#92400E',
+    'tan': '#D2B48C',
+    'beige': '#F5E6D3',
+    'khaki': '#F0E68C',
+    
+    // Orange variations
+    'orange': '#F97316',
+    'coral': '#FF7F50',
+    'peach': '#FFCBA4',
+    
+    // Default for single-color products
+    'default': '#E5E7EB',
+  }
+  
+  // Check for exact match
+  if (exactColorMap[normalizedColor]) {
+    return exactColorMap[normalizedColor]
+  }
+  
+  // If no exact match, try partial matching for common patterns
+  const colorKeywords = [
+    { keywords: ['black', 'noir', 'bk', 'blk'], color: '#000000' },
+    { keywords: ['white', 'blanc', 'wht', 'wt'], color: '#FFFFFF' },
+    { keywords: ['red', 'rouge', 'rd'], color: '#EF4444' },
+    { keywords: ['pink', 'rose', 'pk', 'pnk'], color: '#EC4899' },
+    { keywords: ['blue', 'bleu', 'bl', 'blu'], color: '#3B82F6' },
+    { keywords: ['green', 'vert', 'grn', 'gr'], color: '#10B981' },
+    { keywords: ['yellow', 'jaune', 'yl', 'ylw'], color: '#F59E0B' },
+    { keywords: ['purple', 'violet', 'prp', 'pur'], color: '#8B5CF6' },
+    { keywords: ['brown', 'brun', 'brn', 'br'], color: '#92400E' },
+    { keywords: ['orange', 'org', 'or'], color: '#F97316' },
+    { keywords: ['gray', 'grey', 'gris', 'gy', 'gry'], color: '#6B7280' },
+    { keywords: ['navy', 'nvy', 'nv'], color: '#1E3A8A' },
+    { keywords: ['beige', 'bg', 'bge'], color: '#F5E6D3' },
+  ]
+  
+  // Try to find a color keyword within the variant name
+  for (const { keywords, color } of colorKeywords) {
+    if (keywords.some(keyword => normalizedColor.includes(keyword))) {
+      return color
+    }
+  }
+  
+  return '#E5E7EB' // Light gray fallback for unknown colors
+}
+
+/**
  * Get variant by selected options
  */
 export function getVariantByOptions(

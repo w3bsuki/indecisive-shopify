@@ -14,10 +14,10 @@ export function RecentlyViewedSection() {
   if (!isLoaded || count === 0) return null
 
   return (
-    <div className="mt-8 md:mt-12 border-t">
-      <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
-        <div className="flex items-center justify-between mb-4 md:mb-6">
-          <h2 className="text-xl md:text-2xl font-bold">Recently Viewed</h2>
+    <div className="mt-2 md:mt-3 border-t">
+      <div className="max-w-7xl mx-auto px-4 py-2 md:py-3">
+        <div className="flex items-center justify-between mb-3 md:mb-4">
+          <h2 className="text-lg md:text-xl font-bold">Recently Viewed</h2>
           {count > 0 && (
             <Button
               variant="ghost"

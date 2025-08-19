@@ -1,5 +1,3 @@
-'use client'
-
 import { AlertCircle, CheckCircle, Clock } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { ShopifyProduct } from '@/lib/shopify/types'
