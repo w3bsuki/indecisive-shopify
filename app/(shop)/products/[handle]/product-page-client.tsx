@@ -13,7 +13,7 @@ interface ProductPageClientProps {
 export function ProductPageClient({ product }: ProductPageClientProps) {
   const { addProduct } = useRecentlyViewed()
   const { formatPrice } = useMarket()
-  const [selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant>()
+  const [_selectedVariant, setSelectedVariant] = useState<ShopifyProductVariant>()
   const addToCartFormRef = useRef<HTMLDivElement>(null)
   const hasTracked = useRef(false)
 
@@ -44,7 +44,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
     return () => window.removeEventListener('variant-changed', handleVariantChange as EventListener)
   }, [])
 
-  const handleSizeSelect = () => {
+  const _handleSizeSelect = () => {
     // Scroll to the add to cart form
     if (addToCartFormRef.current) {
       addToCartFormRef.current.scrollIntoView({ 
@@ -54,7 +54,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
     }
   }
 
-  const handleAddToCart = () => {
+  const _handleAddToCart = () => {
     // Trigger add to cart from the form
     const addToCartEvent = new CustomEvent('trigger-add-to-cart')
     window.dispatchEvent(addToCartEvent)

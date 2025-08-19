@@ -20,7 +20,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
   const [isAdding, setIsAdding] = useState(false)
   const { addItem, cartReady } = useCart()
   const t = useTranslations('products')
-  const tc = useTranslations('common')
+  const _tc = useTranslations('common')
 
   // Get all variants and options
   const variants = product.variants.edges.map(edge => edge.node)

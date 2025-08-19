@@ -42,7 +42,21 @@ export function getProductColors(product: ShopifyProduct): string[] {
     })
   }
   
-  // If no color options found in variants, check if title contains colors
+  // If no color options found in variants, check product options
+  if (colors.size === 0 && product.options?.length) {
+    const colorOption = product.options.find(
+      option => option.name.toLowerCase() === 'color'
+    )
+    if (colorOption?.values?.length) {
+      colorOption.values.forEach(value => {
+        if (value) {
+          colors.add(value)
+        }
+      })
+    }
+  }
+  
+  // If no color options found, check if title contains colors
   if (colors.size === 0) {
     const titleLower = product.title.toLowerCase()
     const colorMatches = ['red', 'pink', 'black', 'blue', 'green', 'white', 'yellow', 'purple', 'orange', 'brown', 'grey', 'gray', 'navy', 'beige', 'tan', 'khaki', 'cream', 'ivory', 'maroon', 'burgundy', 'coral', 'peach', 'gold', 'silver', 'charcoal']

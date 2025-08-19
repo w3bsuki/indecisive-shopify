@@ -30,11 +30,20 @@ export const PRODUCTS_QUERY = `
               }
             }
           }
-          variants(first: 1) {
+          options {
+            id
+            name
+            values
+          }
+          variants(first: 10) {
             edges {
               node {
                 id
                 availableForSale
+                selectedOptions {
+                  name
+                  value
+                }
               }
             }
           }
@@ -188,11 +197,20 @@ export const COLLECTION_PRODUCTS_QUERY = `
                 }
               }
             }
-            variants(first: 1) {
+            options {
+              id
+              name
+              values
+            }
+            variants(first: 10) {
               edges {
                 node {
                   id
                   availableForSale
+                  selectedOptions {
+                    name
+                    value
+                  }
                 }
               }
             }
