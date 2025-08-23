@@ -71,11 +71,11 @@ export async function NewsletterSection() {
               </div>
             </Link>
             
-            {/* Modern black/white stats */}
+            {/* Professional black/white stats */}
             <div className="grid grid-cols-3 gap-6 max-w-lg mx-auto">
               <div className="text-center">
                 <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">✨</span>
+                  <span className="text-white text-3xl font-black">01</span>
                 </div>
                 <p className="text-black text-sm font-mono font-bold">
                   {locale === 'bg' ? 'УНИКАЛЕН СТИЛ' : 'UNIQUE STYLE'}
@@ -84,7 +84,7 @@ export async function NewsletterSection() {
               
               <div className="text-center">
                 <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 border-2 border-black">
-                  <span className="text-2xl">🎯</span>
+                  <span className="text-black text-3xl font-black">02</span>
                 </div>
                 <p className="text-black text-sm font-mono font-bold">
                   {locale === 'bg' ? 'КАЧЕСТВО' : 'QUALITY'}
@@ -93,7 +93,7 @@ export async function NewsletterSection() {
               
               <div className="text-center">
                 <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">❤️</span>
+                  <span className="text-white text-3xl font-black">03</span>
                 </div>
                 <p className="text-black text-sm font-mono font-bold">
                   {locale === 'bg' ? 'ОБЩНОСТ' : 'COMMUNITY'}

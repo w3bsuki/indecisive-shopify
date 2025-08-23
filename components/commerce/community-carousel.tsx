@@ -58,45 +58,32 @@ export function CommunityCarousel() {
         <div className="relative">
           <div className="flex animate-marquee hover:pause">
             {/* First set of cards */}
-            {demoCards.map((card, index) => (
+            {demoCards.map((card) => (
               <StarCard 
                 key={`first-${card.id}`} 
-                card={card} 
-                index={index}
+                card={card}
               />
             ))}
             {/* Duplicate set for seamless loop */}
-            {demoCards.map((card, index) => (
+            {demoCards.map((card) => (
               <StarCard 
                 key={`second-${card.id}`} 
-                card={card} 
-                index={index}
+                card={card}
               />
             ))}
           </div>
         </div>
         
-        {/* Modern 50/50 Black/White Call to action */}
-        <div className="text-center mt-16 px-4">
-          <div className="bg-white border-2 border-black rounded-2xl max-w-md mx-auto shadow-xl overflow-hidden">
-            <div className="bg-black text-white p-6">
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <Camera className="w-6 h-6" />
-                <Star className="w-6 h-6" />
-              </div>
-              <h3 className="font-bold text-lg mb-2">
-                {t('shareYourStyle')}
-              </h3>
-            </div>
-            <div className="bg-white text-black p-6">
-              <p className="text-gray-700 text-sm leading-relaxed mb-4">
-                {t('tagToBeFeature')}
-              </p>
-              <div className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl font-mono text-sm font-bold">
-                <span>@indecisive_wear</span>
-              </div>
-            </div>
-          </div>
+        {/* Simple Instagram link */}
+        <div className="text-center mt-8 px-4">
+          <a 
+            href="https://instagram.com/indecisive_wear" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-gray-600 font-mono text-sm hover:text-black transition-colors"
+          >
+            @indecisive_wear
+          </a>
         </div>
       </div>
     </section>
@@ -104,8 +91,7 @@ export function CommunityCarousel() {
 }
 
 function StarCard({ 
-  card, 
-  index 
+  card
 }: { 
   card: { 
     id: number
@@ -114,7 +100,6 @@ function StarCard({
     likes: string
     image?: string
   }
-  index: number
 }) {
 
   return (

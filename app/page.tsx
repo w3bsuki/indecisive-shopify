@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { Hero } from '@/components/layout/hero'
 import { ProductCarousel } from '@/components/commerce/product-carousel'
 import { ProductCardMinimalServer } from '@/components/commerce/product-card-minimal-server'
-import { NewsletterSection } from '@/components/layout/newsletter-section'
+import { ClubSection } from '@/components/layout/club-section'
 import { Footer } from '@/components/layout/footer'
 import { Navigation } from '@/components/layout/navigation'
 import { CommunityCarousel } from '@/components/commerce/community-carousel'
@@ -61,14 +61,14 @@ export default async function HomePage() {
           </div>
           
           {/* Desktop: Grid Layout */}
-          <div className="hidden md:block">
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+          <div className="hidden md:block px-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 max-w-6xl mx-auto">
               {products.map((product, index) => (
                 <ProductCardMinimalServer 
                   key={product.id} 
                   product={product} 
                   priority={index < 4}
-                  size="large"
+                  size="default"
                 />
               ))}
             </div>
@@ -88,7 +88,7 @@ export default async function HomePage() {
               </div>
             </Link>
             <p className="mt-6 text-sm font-medium text-gray-500 bg-gray-50 inline-block px-4 py-2 rounded-full">
-              ✨ {tp('viewAllCount', { count: productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length })}
+              {tp('viewAllCount', { count: productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length })}
             </p>
           </div>
         </div>
@@ -103,8 +103,8 @@ export default async function HomePage() {
       {/* Community Section with Instagram/TikTok Tabs */}
       <CommunityCarousel />
 
-      {/* Newsletter Section */}
-      <NewsletterSection />
+      {/* Club Section */}
+      <ClubSection />
 
       {/* Footer */}
       <Footer />

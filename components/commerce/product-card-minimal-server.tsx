@@ -31,8 +31,8 @@ export async function ProductCardMinimalServer({
   return (
     <div 
       className={cn(
-        "group relative bg-white rounded-2xl border border-gray-100 hover:border-gray-300",
-        "shadow-sm hover:shadow-2xl transform transition-all duration-500 hover:scale-[1.02]",
+        "group relative bg-white rounded-2xl border border-gray-100 hover:border-gray-200",
+        "shadow-sm hover:shadow-md transition-all duration-300",
         "overflow-hidden",
         size === 'large' && 'min-w-[280px] md:min-w-[320px]',
         size === 'mobile' && 'w-full'
@@ -55,7 +55,7 @@ export async function ProductCardMinimalServer({
             <img
               src={product.featuredImage.url}
               alt={product.featuredImage.altText || product.title}
-              className="w-full h-auto object-contain transition-all duration-700 group-hover:scale-110"
+              className="w-full h-auto object-contain"
             />
           ) : (
             <div className="w-full h-32 flex items-center justify-center text-gray-400 bg-gradient-to-br from-gray-50 to-gray-100">
