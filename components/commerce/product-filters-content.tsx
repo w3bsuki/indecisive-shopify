@@ -2,9 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
-import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { X, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
