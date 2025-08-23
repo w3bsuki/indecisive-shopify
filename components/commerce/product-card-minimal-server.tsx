@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { ProductCardMinimalActions } from './product-card-minimal-actions'
 import { MoneyServer, SalePriceServer } from './money-server'
 import { getProductColors, getColorFromName } from '@/lib/utils/product'
+import { getMarketFromCookies } from '@/lib/shopify/server-market'
 
 interface ProductCardMinimalServerProps {
   product: ShopifyProduct
@@ -21,6 +22,9 @@ export async function ProductCardMinimalServer({
   
   const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
 
+  // Get market from server-side cookies
+  const market = await getMarketFromCookies()
+  
   // Extract color variants for display
   const availableColors = getProductColors(product)
 
@@ -117,6 +121,8 @@ export async function ProductCardMinimalServer({
             <SalePriceServer 
               price={price}
               compareAtPrice={compareAtPrice}
+              showDualCurrency={market.countryCode === 'BG'}
+              marketCountryCode={market.countryCode}
               className={cn(
                 "font-normal tracking-tight text-black",
                 size === 'mobile' ? "text-xs" : "text-sm"
@@ -129,6 +135,8 @@ export async function ProductCardMinimalServer({
           ) : (
             <MoneyServer 
               data={price} 
+              showDualCurrency={market.countryCode === 'BG'}
+              marketCountryCode={market.countryCode}
               className={cn(
                 "font-normal tracking-tight text-black",
                 size === 'mobile' ? "text-xs" : "text-sm"

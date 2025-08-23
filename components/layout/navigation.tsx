@@ -10,8 +10,8 @@ import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
 import { MobileCartDropdown } from "@/components/layout/mobile-cart-dropdown"
 import { CartSlideout } from "@/components/cart/cart-slideout"
 import { MobileSearchSheet } from "@/components/layout/mobile-search-sheet"
-import { SearchBar } from "@/components/layout/search-bar"
-import { WishlistDrawer } from "@/components/commerce/wishlist-drawer"
+import { SearchDropdown } from "@/components/layout/search-dropdown"
+import { WishlistDropdown } from "@/components/commerce/wishlist-dropdown"
 import { FilterDrawer } from "@/components/commerce/filter-drawer"
 import { useCart, setCartSlideoutCallback } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
@@ -45,11 +45,9 @@ export function Navigation() {
   const { isAuthenticated } = useAuth()
   
   // State
-  const [showSearchBar, setShowSearchBar] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showBottomNav, setShowBottomNav] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
-  const [showWishlistDrawer, setShowWishlistDrawer] = useState(false)
   const [showCartSlideout, setShowCartSlideout] = useState(false)
   const [showFilterDrawer, setShowFilterDrawer] = useState(false)
   
@@ -152,13 +150,8 @@ export function Navigation() {
                 </h1>
               </Link>
 
-              {/* Center Navigation or Search Bar */}
-              {showSearchBar ? (
-                <div className="flex-1 max-w-2xl mx-8">
-                  <SearchBar />
-                </div>
-              ) : (
-                <NavigationMenu className="hidden lg:flex">
+              {/* Center Navigation */}
+              <NavigationMenu className="hidden lg:flex">
                   <NavigationMenuList>
                     {menuItems.map((category) => (
                       <NavigationMenuItem key={category.href}>
@@ -199,7 +192,6 @@ export function Navigation() {
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
-              )}
 
               {/* Right Actions */}
               <div className="flex items-center gap-2">
@@ -208,21 +200,10 @@ export function Navigation() {
 
                 {/* Search */}
                 <div className="hidden lg:block">
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => setShowSearchBar(!showSearchBar)}
-                    className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200 "
-                  >
-                    <Search className="h-5 w-5 stroke-[1.5]" />
-                  </Button>
+                  <SearchDropdown />
                 </div>
                 <div className="lg:hidden">
-                  <MobileSearchSheet>
-                    <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200 ">
-                      <Search className="h-5 w-5 stroke-[1.5]" />
-                    </Button>
-                  </MobileSearchSheet>
+                  <SearchDropdown />
                 </div>
 
                 {/* Account */}
@@ -233,22 +214,7 @@ export function Navigation() {
                 </Link>
 
                 {/* Wishlist */}
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 "
-                  onClick={() => setShowWishlistDrawer(true)}
-                >
-                  <Heart className="h-5 w-5 stroke-[1.5]" />
-                  {wishlistCount > 0 && (
-                    <Badge
-                      variant="secondary"
-                      className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-black text-white border-2 border-white"
-                    >
-                      {wishlistCount}
-                    </Badge>
-                  )}
-                </Button>
+                <WishlistDropdown />
 
                 {/* Cart - Desktop Slideout, Mobile Sheet */}
                 <div className="hidden lg:block">
@@ -464,11 +430,7 @@ export function Navigation() {
               <div className="flex items-center">
                 {/* Search */}
                 <div className="-mr-2">
-                  <MobileSearchSheet>
-                    <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200">
-                      <Search className="h-5 w-5 stroke-[1.5]" />
-                    </Button>
-                  </MobileSearchSheet>
+                  <SearchDropdown />
                 </div>
 
                 {/* Cart */}
@@ -490,7 +452,7 @@ export function Navigation() {
           showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
         )}
       >
-        <div className="grid grid-cols-5 gap-0 py-2 px-2 pb-safe">
+        <div className="grid grid-cols-5 gap-0 py-2 px-2 pr-4 pb-safe">
           {/* Профил (Account) */}
           <div className="flex justify-center">
             <Link href="/account">
@@ -567,28 +529,7 @@ export function Navigation() {
 
           {/* Любими (Wishlist) */}
           <div className="flex justify-center">
-            <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg",
-              showWishlistDrawer ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
-            )}
-            onClick={() => setShowWishlistDrawer(true)}
-          >
-            <div className="relative">
-              <Heart className={cn("h-5 w-5 stroke-[2.5]", wishlistCount > 0 && "fill-current")} />
-              {wishlistCount > 0 && (
-                <Badge
-                  variant="secondary"
-                  className="absolute -top-2 -right-2 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[9px] font-bold bg-red-500 text-white border border-white"
-                >
-                  {wishlistCount}
-                </Badge>
-              )}
-            </div>
-            <span className="text-[10px] font-medium">ЛЮБИМИ</span>
-            </Button>
+            <WishlistDropdown isBottomNav />
           </div>
 
           {/* Количка (Cart) */}
@@ -598,11 +539,6 @@ export function Navigation() {
         </div>
       </div>
       
-      {/* Wishlist Drawer */}
-      <WishlistDrawer 
-        open={showWishlistDrawer} 
-        onOpenChange={setShowWishlistDrawer} 
-      />
       
       {/* Desktop Cart Slideout */}
       <CartSlideout 

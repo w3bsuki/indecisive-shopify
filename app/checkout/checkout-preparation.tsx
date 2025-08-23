@@ -77,7 +77,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="max-w-lg mx-auto">
-            <Card className="shadow-lg border border-gray-200 bg-white">
+            <Card className="shadow-xl rounded-2xl border-0 bg-white overflow-hidden">
               <CardContent className="py-16 text-center">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                   <ShoppingBag className="h-8 w-8 sm:h-10 sm:w-10 text-gray-400" />
@@ -104,25 +104,25 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
   // If there's an error, show error state with retry option
   if (error) {
     return (
-      <div className="min-h-screen bg-red-50 py-12">
+      <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="max-w-2xl mx-auto">
-            <Card className="shadow-lg border border-gray-200 bg-white">
+            <Card className="shadow-xl rounded-2xl border-0 bg-white overflow-hidden">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-red-700 text-xl font-mono">
+                <CardTitle className="flex items-center gap-2 text-red-600 text-xl">
                   <AlertCircle className="h-5 w-5" />
                   {t('error')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 bg-red-50 rounded-lg">
+                <div className="p-4 bg-red-50 rounded-xl border border-red-100">
                   <p className="text-red-800 font-medium">{error}</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button 
                     onClick={handleCheckout}
                     disabled={isPreparingCheckout}
-                    className="flex-1 h-12 font-mono"
+                    className="flex-1 h-12 rounded-xl font-medium bg-black text-white hover:bg-gray-800 transition-colors"
                   >
                     {isPreparingCheckout ? (
                       <>
@@ -134,7 +134,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                     )}
                   </Button>
                   <Link href="/cart" className="flex-1">
-                    <Button variant="outline" className="w-full h-12 font-mono">
+                    <Button variant="outline" className="w-full h-12 rounded-xl font-medium border-gray-200 hover:bg-gray-50 transition-colors">
                       <ArrowLeft className="h-4 w-4 mr-2" />
                       {t('backToCart')}
                     </Button>
@@ -150,20 +150,20 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
 
   // Show checkout preparation UI with enhanced design
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50/50 py-8">
       {/* Progress indicator */}
       <div className="max-w-4xl mx-auto px-4 mb-8">
         <div className="flex items-center justify-center">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold shadow-lg">
                 <CheckCircle className="h-5 w-5" />
               </div>
               <span className="text-sm font-medium">{t('steps.cart')}</span>
             </div>
-            <div className="w-12 h-0.5 bg-black"></div>
+            <div className="w-12 h-0.5 bg-gray-900"></div>
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">2</div>
+              <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold shadow-lg animate-pulse">2</div>
               <span className="text-sm font-medium">{t('steps.checkout')}</span>
             </div>
             <div className="w-12 h-0.5 bg-gray-300"></div>
@@ -193,9 +193,9 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Order Summary */}
           <div className="lg:col-span-2">
-            <Card className="shadow-lg border border-gray-200 bg-white">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl font-mono">
+            <Card className="shadow-xl rounded-2xl border-0 bg-white overflow-hidden">
+              <CardHeader className="pb-4 bg-gray-50/50 border-b border-gray-100">
+                <CardTitle className="flex items-center gap-2 text-xl font-semibold">
                   <ShoppingBag className="h-5 w-5" />
                   {t('orderSummary')}
                   <Badge variant="secondary" className="ml-auto">
@@ -208,7 +208,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {lines?.map((item) => 
                     item ? (
-                      <div key={item.id} className="flex gap-4 p-3 bg-gray-50 rounded-md">
+                      <div key={item.id} className="flex gap-4 p-3 bg-gray-50 rounded-xl border border-gray-100 hover:shadow-sm transition-shadow">
                         <div className="relative w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                           {item.merchandise?.product?.featuredImage?.url ? (
                             <Image
@@ -266,9 +266,9 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
 
           {/* Checkout Status */}
           <div className="lg:col-span-1">
-            <Card className="shadow-xl border-0 bg-white lg:sticky lg:top-8">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-mono">
+            <Card className="shadow-2xl rounded-2xl border-0 bg-white lg:sticky lg:top-8 overflow-hidden">
+              <CardHeader className="pb-4 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-100">
+                <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                   <CreditCard className="h-5 w-5" />
                   {t('title')}
                 </CardTitle>
@@ -277,7 +277,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                 {/* Loading animation */}
                 <div className="flex flex-col items-center justify-center py-8">
                   <div className="relative mb-6">
-                    <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
+                    <div className="w-16 h-16 border-4 border-gray-100 rounded-full"></div>
                     <div className="absolute top-0 left-0 w-16 h-16 border-4 border-gray-900 rounded-full animate-spin border-t-transparent"></div>
                   </div>
                   <p className="text-center font-semibold mb-2">{t('preparingCheckout')}</p>
@@ -286,7 +286,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
 
                 {/* Trust badges */}
                 <div className="space-y-4">
-                  <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 p-4 rounded-xl">
                     <div className="flex items-start gap-3">
                       <Shield className="h-5 w-5 text-blue-600 mt-0.5" />
                       <div>
@@ -318,7 +318,7 @@ export function CheckoutPreparation({ returnUrl }: CheckoutPreparationProps) {
                 {!isPreparingCheckout && (
                   <Button 
                     onClick={handleCheckout}
-                    className="w-full h-12 font-mono font-bold"
+                    className="w-full h-12 font-semibold bg-gray-900 text-white hover:bg-gray-800 rounded-xl transition-colors shadow-lg"
                   >
                     <CreditCard className="h-4 w-4 mr-2" />
                     {t('continueToCheckout')}

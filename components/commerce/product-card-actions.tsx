@@ -9,6 +9,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
 import { Heart, ShoppingBag } from 'lucide-react'
 import { ProductPrice } from '@/components/commerce/product-price'
+import { useMarket } from '@/hooks/use-market'
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,7 @@ interface ProductCardActionsProps {
 export function ProductCardActions({ product, price: _price, sizes, variant = 'default', translations }: ProductCardActionsProps) {
   const { addItem, cartReady } = useCart()
   const { toggleItem, isInWishlist } = useWishlist()
+  const { market } = useMarket()
   const isMobile = useIsMobile()
   const [isLoading, setIsLoading] = useState(false)
   const [showSizeSelector, setShowSizeSelector] = useState(false)
@@ -234,6 +236,7 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
         size="sm"
         showCompareAt={false}
         showRange={false}
+        showDualCurrency={market.countryCode === 'BG'}
         className="text-sm font-medium text-gray-900 text-center flex justify-center"
       />
     )
@@ -327,6 +330,7 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           size="sm"
           showCompareAt={false}
           showRange={false}
+          showDualCurrency={market.countryCode === 'BG'}
           className="text-sm font-medium text-gray-900 text-center"
         />
       </div>

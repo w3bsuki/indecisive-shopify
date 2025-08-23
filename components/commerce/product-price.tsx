@@ -17,6 +17,7 @@ interface ProductPriceProps {
   showCompareAt?: boolean
   showRange?: boolean
   size?: 'sm' | 'md' | 'lg'
+  showDualCurrency?: boolean
 }
 
 export function ProductPrice({
@@ -25,7 +26,8 @@ export function ProductPrice({
   className,
   showCompareAt = true,
   showRange = true,
-  size = 'md'
+  size = 'md',
+  showDualCurrency = false
 }: ProductPriceProps) {
   const minPrice = priceRange.minVariantPrice
   const maxPrice = priceRange.maxVariantPrice
@@ -55,9 +57,9 @@ export function ProductPrice({
         {hasRange ? (
           // Price Range Display
           <div className={cn('font-mono font-semibold', sizeClasses[size])}>
-            <Money data={minPrice} withoutTrailingZeros />
+            <Money data={minPrice} withoutTrailingZeros showDualCurrency={showDualCurrency} />
             <span className="text-gray-500 mx-1">-</span>
-            <Money data={maxPrice} withoutTrailingZeros />
+            <Money data={maxPrice} withoutTrailingZeros showDualCurrency={showDualCurrency} />
           </div>
         ) : (
           // Single Price Display
@@ -65,6 +67,7 @@ export function ProductPrice({
             data={minPrice} 
             className={cn('font-mono font-semibold', sizeClasses[size])}
             withoutTrailingZeros 
+            showDualCurrency={showDualCurrency}
           />
         )}
         
@@ -77,6 +80,7 @@ export function ProductPrice({
               size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base' : 'text-sm'
             )}
             withoutTrailingZeros
+            showDualCurrency={showDualCurrency}
           />
         )}
         
@@ -97,7 +101,7 @@ export function ProductPrice({
           'text-green-600 font-mono font-medium',
           size === 'sm' ? 'text-xs' : 'text-sm'
         )}>
-          Save <Money data={{ amount: savings.toString(), currencyCode: minPrice.currencyCode }} withoutTrailingZeros />
+          Save <Money data={{ amount: savings.toString(), currencyCode: minPrice.currencyCode }} withoutTrailingZeros showDualCurrency={showDualCurrency} />
         </div>
       )}
     </div>
@@ -111,7 +115,8 @@ export function ProductPriceServer({
   className,
   showCompareAt = true,
   showRange = true,
-  size = 'md'
+  size = 'md',
+  showDualCurrency = false
 }: ProductPriceProps) {
   // For server components, we'll use a simpler implementation
   // that doesn't rely on client-side Money component
@@ -123,14 +128,37 @@ export function ProductPriceServer({
   const isOnSale = showCompareAt && minCompareAtPrice && 
     parseFloat(minCompareAtPrice.amount) > parseFloat(minPrice.amount)
   
-  const formatPrice = (money: MoneyV2) => {
-    const formatter = new Intl.NumberFormat('en-US', {
+  const formatPrice = (money: MoneyV2, withEur = false) => {
+    // Convert to BGN first if needed
+    const bgnAmount = money.currencyCode === 'BGN' 
+      ? parseFloat(money.amount)
+      : parseFloat(money.amount) * (
+          money.currencyCode === 'USD' ? (1 / 0.64) : 
+          money.currencyCode === 'GBP' ? (1 / 0.42) : 
+          money.currencyCode === 'EUR' ? (1 / 0.51) : 1
+        )
+
+    const bgnFormatter = new Intl.NumberFormat('bg-BG', {
       style: 'currency',
-      currency: money.currencyCode,
+      currency: 'BGN',
       minimumFractionDigits: 0,
       maximumFractionDigits: 2
     })
-    return formatter.format(parseFloat(money.amount))
+    const bgnPrice = bgnFormatter.format(bgnAmount)
+
+    if (withEur && showDualCurrency) {
+      const eurAmount = bgnAmount * 0.51
+      const eurFormatter = new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })
+      const eurPrice = eurFormatter.format(eurAmount)
+      return `${bgnPrice} (${eurPrice})`
+    }
+
+    return bgnPrice
   }
   
   const sizeClasses = {

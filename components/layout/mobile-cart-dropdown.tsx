@@ -106,14 +106,17 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
         {trigger}
       </DropdownMenuTrigger>
       <DropdownMenuContent 
-        align="end" 
-        side="bottom"
-        className="w-[calc(100vw-24px)] sm:w-[380px] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
-        sideOffset={8}
+        align={isBottomNav ? "center" : "end"}
+        side={isBottomNav ? "top" : "bottom"}
+        className={cn(
+          "max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none",
+          isBottomNav ? "w-[calc(100vw-32px)] mx-4" : "w-[calc(100vw-24px)] sm:w-[380px]"
+        )}
+        sideOffset={isBottomNav ? 12 : 8}
       >
         {/* Cart Header */}
-        <div className="px-4 py-3 border-b bg-gray-50/50">
-          <div className="flex items-center justify-between">
+        <div className="px-4 py-3 border-b bg-gray-50/50 relative">
+          <div className="flex items-center justify-between pr-8">
             <h3 className="font-semibold text-sm">
               {t('title')} {totalItems > 0 && `(${totalItems})`}
             </h3>
@@ -123,6 +126,14 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
               </span>
             )}
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsOpen(false)}
+            className="absolute top-2 right-2 h-6 w-6 p-0 text-gray-400 hover:text-gray-600"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
         {/* Cart Items */}
@@ -133,7 +144,7 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
               <p className="text-sm font-medium mb-1">{t('empty.title')}</p>
               <p className="text-xs text-gray-500 mb-4">{t('empty.subtitle')}</p>
               <Link href="/products" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full rounded-xl">
                   {t('continueShopping')}
                 </Button>
               </Link>

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart, Minus, Plus } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart'
+import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useTranslations } from 'next-intl'
@@ -19,6 +20,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
   const [selectedColor, setSelectedColor] = useState<string>()
   const [isAdding, setIsAdding] = useState(false)
   const { addItem, cartReady } = useCart()
+  const { market } = useMarket()
   const t = useTranslations('products')
   const _tc = useTranslations('common')
 
@@ -31,8 +33,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
     if (colorOption?.values) {
       return colorOption.values
     }
-    // FORCE TEST COLORS TO VERIFY UI
-    return ['Black', 'White', 'Navy', 'Gray']
+    return []
   }, [colorOption])
   
   // Initialize with first available variant
@@ -154,13 +155,13 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
               <div className="flex items-center gap-2 mt-0.5">
                 <p className="text-base font-bold text-black">
                   {selectedVariant ? (
-                    <Money data={selectedVariant.price} />
+                    <Money data={selectedVariant.price} showDualCurrency={market.countryCode === 'BG'} />
                   ) : product.priceRange.minVariantPrice.amount === product.priceRange.maxVariantPrice.amount ? (
-                    <Money data={product.priceRange.minVariantPrice} />
+                    <Money data={product.priceRange.minVariantPrice} showDualCurrency={market.countryCode === 'BG'} />
                   ) : (
                     <>
                       <span className="text-xs text-gray-600 font-normal">from </span>
-                      <Money data={product.priceRange.minVariantPrice} />
+                      <Money data={product.priceRange.minVariantPrice} showDualCurrency={market.countryCode === 'BG'} />
                     </>
                   )}
                 </p>

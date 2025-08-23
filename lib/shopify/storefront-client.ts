@@ -45,16 +45,20 @@ export async function storefront<T = unknown>(
         query,
         variables: requestVariables,
       }),
+      // Add timeout and other fetch options
+      signal: AbortSignal.timeout(10000), // 10 second timeout
     });
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`Shopify API error: ${response.status}`, errorText);
       throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
     }
 
     const json = await response.json();
     
     if (json.errors) {
+      console.error('Shopify GraphQL errors:', json.errors);
       throw new Error(
         `GraphQL errors: ${json.errors.map((e: { message: string }) => e.message).join(', ')}`
       );
@@ -62,6 +66,7 @@ export async function storefront<T = unknown>(
     
     return json.data as T;
   } catch (error) {
+    console.error('Shopify storefront request failed:', error);
     throw error;
   }
 }

@@ -6,6 +6,7 @@ import { PrefetchLink } from './prefetch-link'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 import { useWishlist } from '@/hooks/use-wishlist'
+import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Money, SalePrice } from '@/components/commerce/money'
@@ -20,6 +21,7 @@ interface ProductCardMinimalProps {
 
 export function ProductCardMinimal({ product, priority = false, size = 'default' }: ProductCardMinimalProps) {
   const { toggleItem, isInWishlist } = useWishlist()
+  const { market } = useMarket()
   const [imageLoading, setImageLoading] = useState(true)
   const [showOverlay, setShowOverlay] = useState(false)
   const isWishlisted = isInWishlist(product.id)
@@ -221,6 +223,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
             <SalePrice 
               price={price as any}
               compareAtPrice={compareAtPrice as any}
+              showDualCurrency={market.countryCode === 'BG'}
               className={cn(
                 "font-normal tracking-tight text-black",
                 size === 'mobile' ? "text-xs" : "text-sm"
@@ -233,6 +236,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
           ) : (
             <Money 
               data={price as any} 
+              showDualCurrency={market.countryCode === 'BG'}
               className={cn(
                 "font-normal tracking-tight text-black",
                 size === 'mobile' ? "text-xs" : "text-sm"
