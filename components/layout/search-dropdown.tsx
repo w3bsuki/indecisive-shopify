@@ -24,6 +24,7 @@ export function SearchDropdown() {
   const [isLoading, setIsLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const { market } = useMarket()
+  const t = useTranslations('search')
 
   // Popular collections/categories with images
   const popularCollections = [
@@ -130,7 +131,7 @@ export function SearchDropdown() {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Търси продукти..."
+                placeholder={t('placeholder')}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-full h-10 pl-10 pr-8 text-sm border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-all"
@@ -164,7 +165,7 @@ export function SearchDropdown() {
           ) : query.trim().length < 2 ? (
             <div className="p-4">
               <div className="mb-4">
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Популярни Категории</h3>
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">{t('popularCategories')}</h3>
                 <div className="space-y-2">
                   {popularCollections.map((collection) => (
                     <Link
@@ -188,7 +189,7 @@ export function SearchDropdown() {
               </div>
               
               <div className="mb-4">
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Популярни Търсения</h3>
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">{t('popularSearches')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {popularSearches.map((term) => (
                     <button
@@ -207,17 +208,17 @@ export function SearchDropdown() {
               
               <div className="text-center pt-2">
                 <Search className="h-6 w-6 mx-auto mb-2 text-gray-300" />
-                <p className="text-xs text-gray-500">Пишете за да търсите продукти</p>
+                <p className="text-xs text-gray-500">{t('typeToSearch')}</p>
               </div>
             </div>
           ) : results.length === 0 ? (
             <div className="p-8 text-center">
               <Search className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-              <p className="text-sm font-medium mb-1">No Results Found</p>
-              <p className="text-xs text-gray-500 mb-4">Try different keywords</p>
+              <p className="text-sm font-medium mb-1">{t('noResults')}</p>
+              <p className="text-xs text-gray-500 mb-4">{t('tryDifferentKeywords')}</p>
               <Link href={`/search?q=${encodeURIComponent(query)}`} onClick={() => setIsOpen(false)}>
                 <Button variant="outline" size="sm" className="w-full rounded-xl">
-                  View All Search Results
+                  {t('viewAllResults')}
                 </Button>
               </Link>
             </div>
@@ -271,7 +272,7 @@ export function SearchDropdown() {
           <div className="p-4 border-t bg-gray-50/50">
             <Link href={`/search?q=${encodeURIComponent(query)}`} onClick={() => setIsOpen(false)}>
               <Button className="w-full h-10 text-sm bg-black hover:bg-gray-800 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                View All Results for "{query}"
+{t('viewAllResultsFor')} "{query}"
               </Button>
             </Link>
           </div>

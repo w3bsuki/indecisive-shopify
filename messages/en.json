@@ -49,7 +49,18 @@
     "apparel": "Apparel",
     "hats": "Hats", 
     "tshirts": "T-shirts",
-    "bags": "Bags"
+    "bags": "Bags",
+    "accessories": "ACCESSORIES",
+    "featured": "FEATURED",
+    "newArrivals": "New Arrivals",
+    "saleItems": "Sale Items",
+    "bestsellers": "Bestsellers",
+    "hoodies": "Hoodies",
+    "jackets": "Jackets",
+    "belts": "Belts",
+    "watches": "Watches",
+    "jewelry": "Jewelry",
+    "wishlist": "Wishlist"
   },
   "hero": {
     "customers": "customers",
@@ -481,5 +492,23 @@
     "continueShopping": "Continue",
     "viewCart": "View Cart",
     "checkout": "Checkout"
+  },
+  "search": {
+    "popularCategories": "Popular Categories",
+    "popularSearches": "Popular Searches",
+    "typeToSearch": "Type to search products",
+    "placeholder": "Search products...",
+    "noResults": "No Results Found",
+    "tryDifferentKeywords": "Try different keywords",
+    "viewAllResults": "View All Search Results",
+    "viewAllResultsFor": "View All Results for"
+  },
+  "cartExtras": {
+    "completeYourLook": "Complete your look",
+    "secureCheckout": "Secure checkout",
+    "freeReturns": "Free returns",
+    "from": "from",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock"
   }
 }

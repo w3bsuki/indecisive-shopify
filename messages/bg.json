@@ -49,7 +49,18 @@
     "apparel": "Колекции",
     "hats": "Шапки",
     "tshirts": "Тениски",
-    "bags": "Чанти"
+    "bags": "Чанти",
+    "accessories": "АКСЕСОАРИ",
+    "featured": "ПРЕПОРЪЧАНИ",
+    "newArrivals": "Нови постъпления",
+    "saleItems": "Продукти в промоция",
+    "bestsellers": "Бестселъри",
+    "hoodies": "Суитшърти",
+    "jackets": "Якета",
+    "belts": "Колани",
+    "watches": "Часовници",
+    "jewelry": "Бижутерия",
+    "wishlist": "Любими"
   },
   "hero": {
     "customers": "клиенти",
@@ -522,5 +533,23 @@
     "continueShopping": "Продължи",
     "viewCart": "Виж кошницата",
     "checkout": "Плащане"
+  },
+  "search": {
+    "popularCategories": "Популярни Категории",
+    "popularSearches": "Популярни Търсения",
+    "typeToSearch": "Пишете за да търсите продукти",
+    "placeholder": "Търси продукти...",
+    "noResults": "Няма намерени резултати",
+    "tryDifferentKeywords": "Опитайте различни ключови думи",
+    "viewAllResults": "Вижте всички резултати",
+    "viewAllResultsFor": "Вижте всички резултати за"
+  },
+  "cartExtras": {
+    "completeYourLook": "Допълнете визията си",
+    "secureCheckout": "Сигурно плащане",
+    "freeReturns": "Безплатни връщания",
+    "from": "от",
+    "inStock": "В наличност",
+    "outOfStock": "Няма в наличност"
   }
 }
