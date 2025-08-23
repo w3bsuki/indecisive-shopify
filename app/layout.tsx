@@ -11,6 +11,7 @@ import { getLocale, getMessages } from 'next-intl/server'
 import { getCurrentCustomer } from '@/app/actions/auth'
 import { ResourceHints } from './resource-hints'
 import ClientLayout from '@/components/layout/client-layout'
+import { ScrollToTop } from '@/components/ui/scroll-to-top'
 
 // Inter - Clean, modern font with excellent readability
 const inter = Inter({
@@ -64,6 +65,7 @@ export default async function RootLayout({
             <HydrogenProvider>
               <AuthProvider initialCustomer={customer}>
                 <IndecisiveProvider>
+                  <ScrollToTop />
                   <ClientLayout>
                     {children}
                   </ClientLayout>

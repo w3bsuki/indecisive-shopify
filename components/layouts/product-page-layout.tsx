@@ -73,14 +73,16 @@ export function ProductPageLayout({
         />
       )}
       
-      {/* Collection Tabs - No top padding, directly under banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 px-safe">
-        <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
+      {/* Modern Collection Tabs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 px-safe">
+        <div className="pt-6">
+          <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
+        </div>
 
-        {/* Products Grid - Fixed */}
+        {/* Modern Products Grid with Better Spacing */}
         {products.length > 0 ? (
           <>
-            <div className={`grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:gap-6 ${gridClassName}`}>
+            <div className={`grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 sm:gap-8 lg:gap-10 mt-8 ${gridClassName}`}>
               {products.map((product, index) => (
                 product && typeof product !== 'string' ? (
                   <ProductCardServer 

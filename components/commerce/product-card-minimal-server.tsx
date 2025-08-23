@@ -31,14 +31,16 @@ export async function ProductCardMinimalServer({
   return (
     <div 
       className={cn(
-        "group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200",
+        "group relative bg-white rounded-2xl border border-gray-100 hover:border-gray-300",
+        "shadow-sm hover:shadow-2xl transform transition-all duration-500 hover:scale-[1.02]",
+        "overflow-hidden",
         size === 'large' && 'min-w-[280px] md:min-w-[320px]',
         size === 'mobile' && 'w-full'
       )}
     >
-      {/* Sale Badge */}
+      {/* Modern Sale Badge */}
       {isOnSale && (
-        <div className="absolute top-2 left-2 z-20 bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase">
+        <div className="absolute top-3 left-3 z-20 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 text-xs font-bold uppercase rounded-full shadow-lg animate-pulse">
           Sale
         </div>
       )}
@@ -53,13 +55,13 @@ export async function ProductCardMinimalServer({
             <img
               src={product.featuredImage.url}
               alt={product.featuredImage.altText || product.title}
-              className="w-full h-auto object-contain transition-all duration-500 group-hover:scale-105"
+              className="w-full h-auto object-contain transition-all duration-700 group-hover:scale-110"
             />
           ) : (
-            <div className="w-full h-32 flex items-center justify-center text-gray-400 bg-gray-100">
+            <div className="w-full h-32 flex items-center justify-center text-gray-400 bg-gradient-to-br from-gray-50 to-gray-100">
               <div className="text-center">
-                <div className="text-2xl mb-1">👕</div>
-                <div className="text-xs">No image</div>
+                <div className="text-3xl mb-2 animate-pulse">👕</div>
+                <div className="text-xs font-medium">No image</div>
               </div>
             </div>
           )}
@@ -72,51 +74,51 @@ export async function ProductCardMinimalServer({
         />
       </div>
 
-      {/* Product Information */}
-      <div className="px-2 pt-0 pb-2">
-        {/* Color Variants Display - Above Title */}
+      {/* Modern Product Information */}
+      <div className="px-4 pt-3 pb-4">
+        {/* Modern Color Variants Display */}
         {availableColors.length > 0 && (
-          <div className="flex items-center justify-center gap-1 mb-2">
+          <div className="flex items-center justify-center gap-1.5 mb-3">
             {availableColors.slice(0, 4).map((color, index) => {
               const bgColor = getColorFromName(color)
               return (
                 <div
                   key={`${color}-${index}`}
                   className={cn(
-                    "rounded-full",
-                    size === 'mobile' ? "w-2.5 h-2.5" : "w-3 h-3"
+                    "rounded-full ring-2 ring-offset-1 ring-transparent hover:ring-gray-300 transition-all cursor-pointer",
+                    size === 'mobile' ? "w-3 h-3" : "w-3.5 h-3.5"
                   )}
                   style={{ 
                     backgroundColor: bgColor,
-                    border: bgColor === '#FFFFFF' ? '1px solid #ccc' : 'none'
+                    border: bgColor === '#FFFFFF' ? '1px solid #e5e7eb' : 'none'
                   }}
                   title={color}
                 />
               )
             })}
             {availableColors.length > 4 && (
-              <span className="text-[10px] text-gray-500 ml-1">
+              <span className="text-[11px] text-gray-600 font-medium bg-gray-100 px-1.5 py-0.5 rounded-full ml-0.5">
                 +{availableColors.length - 4}
               </span>
             )}
           </div>
         )}
 
-        {/* Product Title */}
+        {/* Modern Product Title */}
         <h3 className={cn(
-          "text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-2",
+          "text-base sm:text-lg font-semibold text-gray-900 text-center leading-snug mb-3 transition-colors duration-300",
           size === 'mobile' ? "text-sm" : ""
         )}>
           <Link 
             href={`/products/${product.handle}`} 
-            className="hover:text-black transition-colors duration-200 block truncate"
+            className="hover:text-black block truncate"
           >
             {product.title}
           </Link>
         </h3>
         
-        {/* Price */}
-        <div className="text-center" style={{ fontFamily: 'var(--font-mono)' }}>
+        {/* Modern Price Section */}
+        <div className="text-center bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl py-2.5 px-3 mt-auto" style={{ fontFamily: 'var(--font-mono)' }}>
           {isOnSale ? (
             <SalePriceServer 
               price={price}
@@ -124,12 +126,12 @@ export async function ProductCardMinimalServer({
               showDualCurrency={market.countryCode === 'BG'}
               marketCountryCode={market.countryCode}
               className={cn(
-                "font-normal tracking-tight text-black",
-                size === 'mobile' ? "text-xs" : "text-sm"
+                "font-bold tracking-tight text-black",
+                size === 'mobile' ? "text-sm" : "text-base"
               )}
               compareClassName={cn(
-                "line-through text-gray-400",
-                size === 'mobile' ? "text-[10px]" : "text-xs"
+                "line-through text-gray-400 font-normal",
+                size === 'mobile' ? "text-xs" : "text-sm"
               )}
             />
           ) : (
@@ -138,8 +140,8 @@ export async function ProductCardMinimalServer({
               showDualCurrency={market.countryCode === 'BG'}
               marketCountryCode={market.countryCode}
               className={cn(
-                "font-normal tracking-tight text-black",
-                size === 'mobile' ? "text-xs" : "text-sm"
+                "font-bold tracking-tight text-black",
+                size === 'mobile' ? "text-sm" : "text-base"
               )}
             />
           )}

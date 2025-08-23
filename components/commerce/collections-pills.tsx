@@ -86,24 +86,23 @@ export function CollectionsPills({
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Desktop view - integrated tabs */}
+          {/* Simplified Desktop view */}
           <div className="hidden sm:flex justify-center py-4">
-            <div className="inline-flex items-center gap-2 p-1 bg-gray-50 rounded-2xl border">
+            <div className="inline-flex items-center gap-1 p-1 bg-white border-2 border-black">
               {collections.map((collection) => (
                 <button
                   key={collection.id}
                   onClick={() => handleCollectionClick(collection.href)}
                   className={cn(
-                    "relative px-6 py-3 text-sm font-medium rounded-xl transition-all duration-300",
-                    "hover:text-black hover:bg-white",
+                    "relative px-5 py-2 text-sm font-medium transition-all duration-150",
                     currentCategory === collection.handle
-                      ? "bg-black text-white shadow-lg transform scale-105"
-                      : "text-gray-600 hover:scale-102"
+                      ? "bg-black text-white"
+                      : "text-black hover:bg-gray-100"
                   )}
                 >
-                  <span className="relative z-10 uppercase tracking-wider font-mono text-xs sm:text-sm font-semibold">
+                  <span className="uppercase tracking-wider font-mono text-xs font-bold">
                     {collection.title}
                   </span>
                 </button>
@@ -111,22 +110,22 @@ export function CollectionsPills({
             </div>
           </div>
           
-          {/* Mobile view - modern pill design */}
+          {/* Simplified Mobile view */}
           <div className="sm:hidden py-4">
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
               {collections.map((collection) => (
                 <button
                   key={collection.id}
                   onClick={() => handleCollectionClick(collection.href)}
                   className={cn(
-                    "relative px-4 py-2.5 text-sm font-semibold whitespace-nowrap rounded-full transition-all duration-300 border",
-                    "min-w-[80px] flex-shrink-0",
+                    "px-4 py-2 text-sm font-semibold whitespace-nowrap transition-all duration-150 border",
+                    "min-w-[70px] flex-shrink-0",
                     currentCategory === collection.handle
-                      ? "bg-black text-white border-black shadow-md"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:shadow-sm active:scale-95"
+                      ? "bg-black text-white border-black"
+                      : "bg-white text-black border-black hover:bg-gray-100"
                   )}
                 >
-                  <span className="uppercase tracking-wide font-mono text-xs font-bold">
+                  <span className="uppercase tracking-wider font-mono text-xs font-bold">
                     {collection.title}
                   </span>
                 </button>

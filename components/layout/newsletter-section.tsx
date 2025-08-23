@@ -26,13 +26,12 @@ export async function NewsletterSection() {
         ))}
       </Marquee>
       
-      <section className="min-h-[400px] md:h-[500px] relative overflow-hidden">
-        {/* Modern gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800"></div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+      <section className="min-h-[400px] md:h-[500px] relative overflow-hidden bg-white">
+        {/* Split background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 w-1/2 bg-black"></div>
+          <div className="absolute inset-0 w-1/2 left-1/2 bg-white"></div>
+        </div>
         
         {/* Content container */}
         <div className="absolute inset-0 flex items-center justify-center">
@@ -42,64 +41,62 @@ export async function NewsletterSection() {
               href="/products"
               className="group inline-block mb-8"
             >
-              <div className="relative bg-white/10 backdrop-blur-sm border-2 border-white/20 rounded-3xl p-8 hover:bg-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
-                <div className="flex items-center justify-center gap-4 mb-4">
-                  <div className="w-3 h-3 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full animate-pulse delay-150"></div>
-                  <div className="w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full animate-pulse delay-300"></div>
+              <div className="relative bg-white border-4 border-black rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <div className="bg-black text-white p-8 pb-4">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight font-mono uppercase">
+                    {locale === 'bg' ? 'ПРИСЪЕДИНИ СЕ КЪМ НЕРЕШИТЕЛНИЯ КЛУБ' : 'JOIN THE INDECISIVE CLUB'}
+                  </h2>
                 </div>
                 
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">
-                  {locale === 'bg' ? 'ПРИСЪЕДИНИ СЕ КЪМ НЕРЕШИТЕЛНИЯ КЛУБ' : 'JOIN THE INDECISIVE CLUB'}
-                </h2>
-                
-                <p className="text-white/80 text-base sm:text-lg font-medium mb-6">
-                  {locale === 'bg' ? 'Открий уникални парчета и бъди част от нашата общност' : 'Discover unique pieces and be part of our community'}
-                </p>
-                
-                <div className="flex items-center justify-center gap-6 text-white/60 text-sm font-semibold">
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
-                    {locale === 'bg' ? 'Яки оферти' : 'Exclusive offers'}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                    {locale === 'bg' ? 'Ранен достъп' : 'Early access'}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-                    {locale === 'bg' ? 'Общност' : 'Community'}
-                  </span>
+                <div className="bg-white text-black p-8 pt-4">
+                  <p className="text-gray-700 text-base sm:text-lg font-medium mb-6">
+                    {locale === 'bg' ? 'Открий уникални парчета и бъди част от нашата общност' : 'Discover unique pieces and be part of our community'}
+                  </p>
+                  
+                  <div className="flex items-center justify-center gap-6 text-gray-600 text-sm font-mono font-semibold">
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-black rounded-full"></span>
+                      {locale === 'bg' ? 'Яки оферти' : 'Exclusive offers'}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-black rounded-full"></span>
+                      {locale === 'bg' ? 'Ранен достъп' : 'Early access'}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-black rounded-full"></span>
+                      {locale === 'bg' ? 'Общност' : 'Community'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </Link>
             
-            {/* Modern stats or features */}
+            {/* Modern black/white stats */}
             <div className="grid grid-cols-3 gap-6 max-w-lg mx-auto">
               <div className="text-center">
-                <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-3 border border-white/20">
+                <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center mx-auto mb-3">
                   <span className="text-2xl">✨</span>
                 </div>
-                <p className="text-white/80 text-sm font-medium">
-                  {locale === 'bg' ? 'Уникален стил' : 'Unique Style'}
+                <p className="text-black text-sm font-mono font-bold">
+                  {locale === 'bg' ? 'УНИКАЛЕН СТИЛ' : 'UNIQUE STYLE'}
                 </p>
               </div>
               
               <div className="text-center">
-                <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-3 border border-white/20">
+                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 border-2 border-black">
                   <span className="text-2xl">🎯</span>
                 </div>
-                <p className="text-white/80 text-sm font-medium">
-                  {locale === 'bg' ? 'Качество' : 'Quality'}
+                <p className="text-black text-sm font-mono font-bold">
+                  {locale === 'bg' ? 'КАЧЕСТВО' : 'QUALITY'}
                 </p>
               </div>
               
               <div className="text-center">
-                <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-3 border border-white/20">
+                <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center mx-auto mb-3">
                   <span className="text-2xl">❤️</span>
                 </div>
-                <p className="text-white/80 text-sm font-medium">
-                  {locale === 'bg' ? 'Общност' : 'Community'}
+                <p className="text-black text-sm font-mono font-bold">
+                  {locale === 'bg' ? 'ОБЩНОСТ' : 'COMMUNITY'}
                 </p>
               </div>
             </div>
