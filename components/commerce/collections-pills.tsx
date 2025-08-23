@@ -88,18 +88,18 @@ export function CollectionsPills({
     <div className={cn('w-full', className)}>
       <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Simplified Desktop view */}
+          {/* Modern Desktop view with rounded pills */}
           <div className="hidden sm:flex justify-center py-4">
-            <div className="inline-flex items-center gap-1 p-1 bg-white border-2 border-black">
+            <div className="inline-flex items-center gap-2">
               {collections.map((collection) => (
                 <button
                   key={collection.id}
                   onClick={() => handleCollectionClick(collection.href)}
                   className={cn(
-                    "relative px-5 py-2 text-sm font-medium transition-all duration-150",
+                    "relative px-6 py-2.5 text-sm font-medium transition-all duration-200 rounded-full",
                     currentCategory === collection.handle
-                      ? "bg-black text-white"
-                      : "text-black hover:bg-gray-100"
+                      ? "bg-black text-white shadow-md"
+                      : "bg-gray-50 text-black hover:bg-gray-100 border border-gray-200"
                   )}
                 >
                   <span className="uppercase tracking-wider font-mono text-xs font-bold">
@@ -110,19 +110,19 @@ export function CollectionsPills({
             </div>
           </div>
           
-          {/* Simplified Mobile view */}
+          {/* Modern Mobile view with rounded pills */}
           <div className="sm:hidden py-4">
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide px-2">
               {collections.map((collection) => (
                 <button
                   key={collection.id}
                   onClick={() => handleCollectionClick(collection.href)}
                   className={cn(
-                    "px-4 py-2 text-sm font-semibold whitespace-nowrap transition-all duration-150 border",
+                    "px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-all duration-200 rounded-full",
                     "min-w-[70px] flex-shrink-0",
                     currentCategory === collection.handle
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-black border-black hover:bg-gray-100"
+                      ? "bg-black text-white shadow-md"
+                      : "bg-white text-black border border-gray-200"
                   )}
                 >
                   <span className="uppercase tracking-wider font-mono text-xs font-bold">

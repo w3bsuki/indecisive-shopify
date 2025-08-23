@@ -14,11 +14,15 @@ export function FilterDrawer({ open, onOpenChange }: FilterDrawerProps) {
   
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
-        <SheetHeader className="mb-4">
-          <SheetTitle className="text-center font-mono tracking-wider">{t('title')}</SheetTitle>
+      <SheetContent side="bottom" className="h-[85vh] rounded-t-[28px] bg-white border-t-0">
+        {/* Modern handle bar */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1 bg-gray-300 rounded-full" />
+        
+        <SheetHeader className="mb-6 pt-2">
+          <SheetTitle className="text-xl font-bold font-mono tracking-tight text-black">{t('title')}</SheetTitle>
         </SheetHeader>
-        <div className="overflow-y-auto h-[calc(100%-80px)] pb-20 px-4">
+        
+        <div className="overflow-y-auto h-[calc(100%-100px)] pb-24 px-2">
           <ProductFiltersContent />
         </div>
       </SheetContent>
