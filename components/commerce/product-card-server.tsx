@@ -79,8 +79,8 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Actions on hover only - bottom of image */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+        {/* Actions - always visible on mobile, hover on desktop */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-all duration-300">
           <div className="flex items-center justify-between gap-2">
             <ProductCardActions 
               product={product}
