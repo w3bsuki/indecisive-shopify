@@ -46,12 +46,12 @@ export async function ProductCardServer({ product, priority: _priority = false }
   }
 
   return (
-    <div className="group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200">
+    <div className="group relative bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-all duration-200 overflow-hidden">
       {/* Image Section */}
-      <div className="relative">
+      <div className="relative aspect-square bg-gray-50">
         {/* Sale Badge */}
         {isOnSale && (
-          <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1 text-xs font-bold font-mono">
+          <div className="absolute top-3 left-3 z-20 bg-red-500 text-white px-2.5 py-1 text-xs font-bold rounded-full">
             SALE
           </div>
         )}
@@ -59,12 +59,12 @@ export async function ProductCardServer({ product, priority: _priority = false }
         {/* Product Image */}
         <Link 
           href={`/products/${product.handle}`}
-          className="block relative overflow-hidden"
+          className="block relative w-full h-full"
         >
           <HydrogenImageServer
             data={product.featuredImage}
             alt={product.title}
-            className="transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-contain"
           />
           
           {/* Hover Image */}
@@ -73,64 +73,62 @@ export async function ProductCardServer({ product, priority: _priority = false }
               <HydrogenImageServer
                 data={secondImage}
                 alt={`${product.title} - view 2`}
-                className="object-contain"
+                className="w-full h-full object-contain"
               />
             </div>
           )}
         </Link>
 
-        {/* Wishlist Button - Top Left */}
-        <div className="absolute top-2 left-2 z-10">
-          <ProductCardActions 
-            product={product}
-            sizes={sizes}
-            variant="wishlist-only"
-            translations={actionTranslations}
-          />
-        </div>
-        
-        {/* Cart Button - Top Right */}
-        <div className="absolute top-2 right-2 z-10">
-          <ProductCardActions 
-            product={product}
-            sizes={sizes}
-            variant="cart-icon-only"
-            translations={actionTranslations}
-          />
+        {/* Actions on hover only - bottom of image */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="flex items-center justify-between gap-2">
+            <ProductCardActions 
+              product={product}
+              sizes={sizes}
+              variant="wishlist-only"
+              translations={actionTranslations}
+            />
+            
+            <ProductCardActions 
+              product={product}
+              sizes={sizes}
+              variant="cart-icon-only"
+              translations={actionTranslations}
+            />
+          </div>
         </div>
       </div>
 
       {/* Product Info */}
-      <div className="px-2 pt-1 pb-2">
-        {/* Color Variants Display - Above Title */}
+      <div className="p-4">
+        {/* Color Variants Display */}
         {availableColors.length > 0 && (
-          <div className="flex items-center justify-center gap-1 mb-2">
+          <div className="flex items-center justify-center gap-1.5 mb-3">
             {availableColors.slice(0, 4).map((color, index) => {
               const bgColor = getColorFromName(color)
               return (
                 <div
                   key={`${color}-${index}`}
-                  className="w-3 h-3 rounded-full"
+                  className="w-3 h-3 rounded-full ring-1 ring-gray-200"
                   style={{ 
-                    backgroundColor: bgColor,
-                    border: bgColor === '#FFFFFF' ? '1px solid #ccc' : 'none'
+                    backgroundColor: bgColor
                   }}
                   title={color}
                 />
               )
             })}
             {availableColors.length > 4 && (
-              <span className="text-[10px] text-gray-500 ml-1">
+              <span className="text-[10px] text-gray-500 font-medium">
                 +{availableColors.length - 4}
               </span>
             )}
           </div>
         )}
 
-        <h3 className="text-base sm:text-lg font-medium text-gray-900 text-center leading-tight mb-2">
+        <h3 className="text-sm font-semibold text-gray-900 text-center mb-2">
           <Link 
             href={`/products/${product.handle}`} 
-            className="hover:text-black transition-colors duration-200 block truncate"
+            className="hover:text-black transition-colors duration-200 line-clamp-2"
           >
             {product.title}
           </Link>

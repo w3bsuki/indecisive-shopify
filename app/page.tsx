@@ -61,8 +61,8 @@ export default async function HomePage() {
           </div>
           
           {/* Desktop: Grid Layout */}
-          <div className="hidden md:block px-4">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 max-w-6xl mx-auto">
+          <div className="hidden md:block">
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 max-w-7xl mx-auto px-8">
               {products.map((product, index) => (
                 <ProductCardMinimalServer 
                   key={product.id} 
