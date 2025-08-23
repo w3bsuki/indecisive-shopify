@@ -28,9 +28,13 @@ export function CommunityCarousel() {
   }))
 
   return (
-    <section className="py-8 md:py-16 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="px-4 sm:px-6 lg:px-8 mb-8 text-center">
+    <section className="py-12 md:py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden relative">
+      {/* Background decorative elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-200/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-200/20 rounded-full blur-3xl" />
+      
+      <div className="max-w-7xl mx-auto relative">
+        <div className="px-4 sm:px-6 lg:px-8 mb-12 text-center">
           <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1 inline-block relative">
             {t('title')}
             {/* Rough underline effect */}
@@ -45,7 +49,7 @@ export function CommunityCarousel() {
               />
             </svg>
           </h2>
-          <p className="text-gray-700 text-sm md:text-base font-medium">
+          <p className="text-gray-600 text-base md:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
             {t('subtitle')}
           </p>
         </div>
@@ -72,14 +76,26 @@ export function CommunityCarousel() {
           </div>
         </div>
         
-        {/* Call to action text */}
-        <div className="text-center mt-8 px-4">
-          <p className="font-mono text-sm text-gray-600 mb-2">
-            {t('shareYourStyle')}
-          </p>
-          <p className="font-mono text-xs text-gray-500">
-            {t('tagToBeFeature')}
-          </p>
+        {/* Modern Call to action */}
+        <div className="text-center mt-12 px-4">
+          <div className="bg-white/80 backdrop-blur-sm border-2 border-purple-200 rounded-2xl p-8 max-w-md mx-auto shadow-lg">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Camera className="w-6 h-6 text-purple-600" />
+              <Heart className="w-5 h-5 text-pink-500 fill-current" />
+              <Star className="w-6 h-6 text-yellow-500 fill-current" />
+            </div>
+            <h3 className="font-bold text-lg text-gray-900 mb-3">
+              {t('shareYourStyle')}
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed mb-4">
+              {t('tagToBeFeature')}
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm font-medium text-purple-600 bg-purple-50 px-4 py-2 rounded-full">
+              <span>✨</span>
+              <span>@indecisive_wear</span>
+              <span>✨</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -123,13 +139,15 @@ function StarCard({
   ]
 
   return (
-    <div className="flex-shrink-0 w-48 mx-2">
-      <div className="bg-white border border-gray-200 hover:border-black/40 hover:shadow-lg transition-all duration-300 group">
+    <div className="flex-shrink-0 w-52 mx-3">
+      <div className="bg-white/90 backdrop-blur-sm border-2 border-gray-200 hover:border-purple-300 rounded-2xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-500 group">
         {/* Image area - shows indecisive stars */}
-        <div className="aspect-[4/5] relative overflow-hidden bg-gray-100">
-          {/* Star icon overlay */}
+        <div className="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+          {/* Modern Star icon overlay */}
           <div className="absolute top-3 right-3 z-10">
-            <Star className="w-5 h-5 text-white drop-shadow-lg fill-current" />
+            <div className="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
+              <Star className="w-4 h-4 text-yellow-500 fill-current" />
+            </div>
           </div>
           
           {card.image ? (
@@ -141,33 +159,40 @@ function StarCard({
               sizes="(max-width: 768px) 192px, 192px"
             />
           ) : (
-            <div className={`w-full h-full bg-gradient-to-br ${gradients[index % gradients.length]} flex flex-col items-center justify-center p-4`}>
-              <div className="mb-4 relative">
-                <div className="absolute inset-0 bg-black/5 blur-xl"></div>
-                <Camera className={`w-10 h-10 ${iconColors[index % iconColors.length]} relative z-10 group-hover:scale-110 transition-transform`} strokeWidth={1.5} />
+            <div className={`w-full h-full bg-gradient-to-br ${gradients[index % gradients.length]} flex flex-col items-center justify-center p-6 relative`}>
+              <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+              <div className="relative z-10 text-center">
+                <div className="mb-6 relative">
+                  <div className="absolute inset-0 bg-black/10 blur-2xl rounded-full"></div>
+                  <div className="p-4 bg-white/30 backdrop-blur-sm rounded-2xl relative">
+                    <Camera className={`w-8 h-8 ${iconColors[index % iconColors.length]} group-hover:scale-110 transition-transform`} strokeWidth={2} />
+                  </div>
+                </div>
+                
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/30">
+                  <h3 className="font-bold text-sm text-gray-800 mb-1">
+                    INDECISIVE STAR
+                  </h3>
+                  <p className="text-xs text-gray-600 font-medium">
+                    Coming Soon ✨
+                  </p>
+                </div>
               </div>
-              
-              <h3 className="font-mono font-bold text-sm text-gray-800 text-center mb-1">
-                INDECISIVE STAR
-              </h3>
-              <p className="font-mono text-xs text-gray-600 text-center">
-                Coming Soon
-              </p>
             </div>
           )}
         </div>
 
-        {/* Card Info */}
-        <div className="p-3 border-t border-black/20">
-          <div className="flex items-center justify-between mb-2">
-            <p className="font-mono font-medium text-xs">{card.username}</p>
-            <div className="flex items-center gap-1">
-              <Heart className="w-3 h-3 text-gray-400" />
-              <span className="font-mono text-xs font-medium text-gray-400">{card.likes}</span>
+        {/* Modern Card Info */}
+        <div className="p-4 bg-gradient-to-t from-white to-gray-50">
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-semibold text-xs text-gray-800">{card.username}</p>
+            <div className="flex items-center gap-1 bg-pink-50 px-2 py-1 rounded-full">
+              <Heart className="w-3 h-3 text-pink-500 fill-current" />
+              <span className="text-xs font-bold text-pink-600">{card.likes}</span>
             </div>
           </div>
           
-          <p className="font-mono text-xs text-gray-600 line-clamp-2">
+          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
             {card.caption}
           </p>
         </div>

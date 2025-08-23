@@ -19,63 +19,82 @@ export default async function LoginPage({
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 bg-white">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 bg-gradient-to-br from-gray-50 via-white to-gray-100">
         <div className="max-w-sm sm:max-w-md w-full space-y-6 sm:space-y-8">
           <div className="text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">Welcome back</h1>
-            <p className="mt-2 text-sm sm:text-base text-gray-600">
-              Sign in to your account to continue shopping
-            </p>
+            <div className="mb-8">
+              <div className="w-16 h-16 bg-gradient-to-br from-gray-900 to-gray-700 rounded-2xl flex items-center justify-center mx-auto sm:mx-0 mb-4">
+                <span className="text-white font-bold text-xl">IW</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">Welcome back</h1>
+              <p className="mt-3 text-base text-gray-600">
+                Sign in to your account to continue your fashion journey
+              </p>
+            </div>
           </div>
 
-          <Card className="border border-gray-200 shadow-sm">
-            <CardContent className="pt-6">
-              <LoginForm redirectTo={redirectTo} />
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-6 sm:p-8">
+            <LoginForm redirectTo={redirectTo} />
 
-              <div className="mt-6 text-center">
-                <p className="text-xs sm:text-sm text-gray-600">
-                  Don&apos;t have an account?{' '}
-                  <Link href="/register" className="font-medium text-gray-900 hover:underline">
-                    Sign up
-                  </Link>
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+            <div className="mt-8 text-center">
+              <p className="text-sm text-gray-600">
+                Don&apos;t have an account?{' '}
+                <Link href="/register" className="font-semibold text-gray-900 hover:underline transition-colors">
+                  Sign up for free
+                </Link>
+              </p>
+            </div>
+          </div>
 
           <div className="text-center">
             <Link
               href="/"
-              className="text-xs sm:text-sm text-gray-600 hover:text-gray-900"
+              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
-              ← Back to shopping
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to shopping
             </Link>
           </div>
         </div>
       </div>
 
       {/* Right side - Visual element (hidden on mobile) */}
-      <div className="hidden lg:block lg:flex-1 bg-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black opacity-90" />
+      <div className="hidden lg:block lg:flex-1 bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10" />
         <div className="relative h-full flex items-center justify-center p-12 text-white">
-          <div className="max-w-md">
-            <h2 className="text-4xl font-bold mb-4">Indecisive Wear</h2>
-            <p className="text-lg text-gray-300">
+          <div className="max-w-lg text-center">
+            <div className="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-8">
+              <span className="text-white font-bold text-2xl">IW</span>
+            </div>
+            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              Indecisive Wear
+            </h2>
+            <p className="text-xl text-gray-300 leading-relaxed mb-12">
               Discover unique fashion pieces that match your style. 
-              Join our community of fashion enthusiasts.
+              Join our community of fashion enthusiasts and express your individuality.
             </p>
-            <div className="mt-8 flex gap-8">
-              <div>
-                <p className="text-3xl font-bold">10K+</p>
-                <p className="text-sm text-gray-400">Happy Customers</p>
+            <div className="grid grid-cols-3 gap-8">
+              <div className="text-center">
+                <p className="text-4xl font-bold mb-2">10K+</p>
+                <p className="text-sm text-gray-400 uppercase tracking-wider">Happy Customers</p>
               </div>
-              <div>
-                <p className="text-3xl font-bold">500+</p>
-                <p className="text-sm text-gray-400">Unique Products</p>
+              <div className="text-center">
+                <p className="text-4xl font-bold mb-2">500+</p>
+                <p className="text-sm text-gray-400 uppercase tracking-wider">Unique Products</p>
+              </div>
+              <div className="text-center">
+                <p className="text-4xl font-bold mb-2">24/7</p>
+                <p className="text-sm text-gray-400 uppercase tracking-wider">Support</p>
               </div>
             </div>
           </div>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full blur-xl" />
+        <div className="absolute bottom-20 right-20 w-40 h-40 bg-white/5 rounded-full blur-xl" />
       </div>
     </div>
   )

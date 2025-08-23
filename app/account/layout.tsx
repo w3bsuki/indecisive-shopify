@@ -17,7 +17,7 @@ export default async function AccountLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex flex-col">
       {/* Main Navigation */}
       <Navigation />
       {/* Account Content */}

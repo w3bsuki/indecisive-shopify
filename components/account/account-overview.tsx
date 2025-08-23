@@ -88,150 +88,153 @@ export function AccountOverview({ customer, onTabChange }: AccountOverviewProps)
   const memberSince = new Date().getFullYear()
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Section - Minimal and Clean */}
-      <div>
-        <h1 className="text-2xl font-semibold">
-          Welcome back, {customer.firstName || 'Customer'}
+    <div className="space-y-8">
+      {/* Welcome Section - Modern and Clean */}
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 text-white">
+        <h1 className="text-2xl font-bold mb-2">
+          Welcome back, {customer.firstName || 'Customer'} 👋
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">{customer.email}</p>
+        <p className="text-gray-300">{customer.email}</p>
       </div>
 
-      {/* Quick Actions Bar - Primary Tasks */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Button
-          variant="outline"
-          className="relative h-auto justify-start p-4"
+      {/* Quick Actions Bar - Modern Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <button
+          className="relative bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-6 text-left transition-all duration-200 hover:shadow-lg group"
           onClick={() => onTabChange('orders')}
         >
-          <div className="flex items-center gap-3 w-full">
-            <Package className="h-5 w-5 text-muted-foreground" />
-            <div className="text-left">
-              <p className="text-sm font-medium">My Orders</p>
-              <p className="text-xs text-muted-foreground">Track & manage orders</p>
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+              <Package className="h-5 w-5 text-gray-600 group-hover:text-white" />
+            </div>
+            <div>
+              <p className="font-semibold text-gray-900">My Orders</p>
+              <p className="text-sm text-gray-600">Track & manage</p>
             </div>
           </div>
           {orderStats.total > 0 && (
-            <Badge variant="secondary" className="absolute -top-2 -right-2 h-5 min-w-[20px] px-1.5">
+            <Badge className="absolute -top-2 -right-2 h-6 min-w-[24px] px-2 bg-red-500 text-white rounded-full font-bold">
               {orderStats.total}
             </Badge>
           )}
-        </Button>
+        </button>
 
-        <Button
-          variant="outline"
-          className="h-auto justify-start p-4"
+        <button
+          className="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-6 text-left transition-all duration-200 hover:shadow-lg group"
           onClick={() => onTabChange('profile')}
         >
-          <div className="flex items-center gap-3 w-full">
-            <User className="h-5 w-5 text-muted-foreground" />
-            <div className="text-left">
-              <p className="text-sm font-medium">Profile</p>
-              <p className="text-xs text-muted-foreground">Personal information</p>
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+              <User className="h-5 w-5 text-gray-600 group-hover:text-white" />
+            </div>
+            <div>
+              <p className="font-semibold text-gray-900">Profile</p>
+              <p className="text-sm text-gray-600">Personal info</p>
             </div>
           </div>
-        </Button>
+        </button>
 
-        <Button
-          variant="outline"
-          className="h-auto justify-start p-4"
+        <button
+          className="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-6 text-left transition-all duration-200 hover:shadow-lg group"
           onClick={() => onTabChange('addresses')}
         >
-          <div className="flex items-center gap-3 w-full">
-            <MapPin className="h-5 w-5 text-muted-foreground" />
-            <div className="text-left">
-              <p className="text-sm font-medium">Addresses</p>
-              <p className="text-xs text-muted-foreground">Shipping addresses</p>
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+              <MapPin className="h-5 w-5 text-gray-600 group-hover:text-white" />
+            </div>
+            <div>
+              <p className="font-semibold text-gray-900">Addresses</p>
+              <p className="text-sm text-gray-600">Shipping</p>
             </div>
           </div>
-        </Button>
+        </button>
 
-        <Button
-          variant="outline"
-          className="h-auto justify-start p-4"
+        <button
+          className="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-6 text-left transition-all duration-200 hover:shadow-lg group"
           onClick={() => onTabChange('billing')}
         >
-          <div className="flex items-center gap-3 w-full">
-            <Settings className="h-5 w-5 text-muted-foreground" />
-            <div className="text-left">
-              <p className="text-sm font-medium">Settings</p>
-              <p className="text-xs text-muted-foreground">Account preferences</p>
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+              <Settings className="h-5 w-5 text-gray-600 group-hover:text-white" />
+            </div>
+            <div>
+              <p className="font-semibold text-gray-900">Settings</p>
+              <p className="text-sm text-gray-600">Preferences</p>
             </div>
           </div>
-        </Button>
+        </button>
       </div>
 
-      {/* Account Stats - Clean Cards */}
+      {/* Account Stats - Modern Glass Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-2xl font-semibold">{orderStats.total}</p>
-                <p className="text-sm text-muted-foreground">Total Orders</p>
-              </div>
-              <Package className="h-5 w-5 text-muted-foreground" />
+        <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-blue-50 rounded-xl">
+              <Package className="h-6 w-6 text-blue-600" />
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <p className="text-2xl font-bold text-gray-900">{orderStats.total}</p>
+              <p className="text-sm text-gray-600">Total Orders</p>
+            </div>
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-2xl font-semibold">{orderStats.active}</p>
-                <p className="text-sm text-muted-foreground">Active Orders</p>
-              </div>
-              <Clock className="h-5 w-5 text-muted-foreground" />
+        <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-yellow-50 rounded-xl">
+              <Clock className="h-6 w-6 text-yellow-600" />
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <p className="text-2xl font-bold text-gray-900">{orderStats.active}</p>
+              <p className="text-sm text-gray-600">Active Orders</p>
+            </div>
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-2xl font-semibold">{wishlistCount}</p>
-                <p className="text-sm text-muted-foreground">Wishlist Items</p>
-              </div>
-              <Heart className="h-5 w-5 text-muted-foreground" />
+        <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-red-50 rounded-xl">
+              <Heart className="h-6 w-6 text-red-500" />
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <p className="text-2xl font-bold text-gray-900">{wishlistCount}</p>
+              <p className="text-sm text-gray-600">Wishlist Items</p>
+            </div>
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-2xl font-semibold">{memberSince}</p>
-                <p className="text-sm text-muted-foreground">Member Since</p>
-              </div>
-              <Calendar className="h-5 w-5 text-muted-foreground" />
+        <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-green-50 rounded-xl">
+              <Calendar className="h-6 w-6 text-green-600" />
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <p className="text-2xl font-bold text-gray-900">{memberSince}</p>
+              <p className="text-sm text-gray-600">Member Since</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Recent Orders Section */}
       {recentOrders.length > 0 ? (
-        <Card>
-          <CardContent className="p-0">
-            <div className="px-6 py-4 border-b">
-              <h2 className="text-lg font-semibold">Recent Orders</h2>
-            </div>
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Orders</h2>
+          </div>
             
-            <div className="divide-y divide-gray-100">
-              {recentOrders.slice(0, 3).map((order) => {
-                const isDelivered = order.fulfillmentStatus === 'FULFILLED'
-                const isActive = order.fulfillmentStatus === 'UNFULFILLED' || 
-                               order.fulfillmentStatus === 'PARTIALLY_FULFILLED'
-                
-                return (
-                  <div 
-                    key={order.id} 
-                    className="px-6 py-4 hover:bg-accent transition-colors cursor-pointer"
-                    onClick={() => onTabChange('orders')}
-                  >
+          <div className="divide-y divide-gray-100">
+            {recentOrders.slice(0, 3).map((order) => {
+              const isDelivered = order.fulfillmentStatus === 'FULFILLED'
+              const isActive = order.fulfillmentStatus === 'UNFULFILLED' || 
+                             order.fulfillmentStatus === 'PARTIALLY_FULFILLED'
+              
+              return (
+                <div 
+                  key={order.id} 
+                  className="px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer group"
+                  onClick={() => onTabChange('orders')}
+                >
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-1">
@@ -271,89 +274,104 @@ export function AccountOverview({ customer, onTabChange }: AccountOverviewProps)
               })}
             </div>
 
-            <div className="px-6 py-3 border-t">
-              <Button
-                variant="ghost"
-                className="w-full sm:w-auto text-sm"
-                onClick={() => onTabChange('orders')}
-              >
-                View All Orders
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto text-sm rounded-xl border-gray-300 hover:border-gray-900 hover:bg-white transition-colors"
+              onClick={() => onTabChange('orders')}
+            >
+              View All Orders
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        </div>
       ) : (
         !isLoading && (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <Package className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
-              <h3 className="text-lg font-medium mb-1">No orders yet</h3>
-              <p className="text-sm text-muted-foreground">Start shopping to see your orders here</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
+            <div className="p-4 bg-gray-50 rounded-2xl w-fit mx-auto mb-4">
+              <Package className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No orders yet</h3>
+            <p className="text-gray-600">Start shopping to see your orders here</p>
+          </div>
         )
       )}
 
-      {/* Quick Links Grid - Secondary Tasks */}
+      {/* Quick Links Grid - Modern Cards */}
       <div>
-        <h2 className="text-lg font-semibold mb-4">Quick Links</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <Button
-            variant="ghost"
-            className="h-auto justify-start p-4 border"
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Links</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <button
+            className="bg-white border border-gray-200 hover:border-gray-900 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-md group"
             onClick={() => onTabChange('profile')}
           >
-            <Shield className="h-5 w-5 text-muted-foreground mr-3" />
-            <span className="text-sm font-medium">Change Password</span>
-          </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+                <Shield className="h-4 w-4 text-gray-600 group-hover:text-white" />
+              </div>
+              <span className="font-medium text-gray-900">Change Password</span>
+            </div>
+          </button>
 
-          <Button
-            variant="ghost"
-            className="h-auto justify-start p-4 border"
+          <button
+            className="bg-white border border-gray-200 hover:border-gray-900 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-md group"
             onClick={() => onTabChange('billing')}
           >
-            <CreditCard className="h-5 w-5 text-muted-foreground mr-3" />
-            <span className="text-sm font-medium">Payment Methods</span>
-          </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+                <CreditCard className="h-4 w-4 text-gray-600 group-hover:text-white" />
+              </div>
+              <span className="font-medium text-gray-900">Payment Methods</span>
+            </div>
+          </button>
 
-          <Button
-            variant="ghost"
-            className="h-auto justify-start p-4 border"
+          <button
+            className="bg-white border border-gray-200 hover:border-gray-900 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-md group"
             onClick={() => onTabChange('profile')}
           >
-            <Mail className="h-5 w-5 text-muted-foreground mr-3" />
-            <span className="text-sm font-medium">Email Preferences</span>
-          </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+                <Mail className="h-4 w-4 text-gray-600 group-hover:text-white" />
+              </div>
+              <span className="font-medium text-gray-900">Email Preferences</span>
+            </div>
+          </button>
 
-          <Button
-            variant="ghost"
-            className="h-auto justify-start p-4 border"
+          <button
+            className="bg-white border border-gray-200 hover:border-gray-900 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-md group"
             onClick={() => onTabChange('orders')}
           >
-            <FileText className="h-5 w-5 text-muted-foreground mr-3" />
-            <span className="text-sm font-medium">Download Invoices</span>
-          </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+                <FileText className="h-4 w-4 text-gray-600 group-hover:text-white" />
+              </div>
+              <span className="font-medium text-gray-900">Download Invoices</span>
+            </div>
+          </button>
 
-          <Button
-            variant="ghost"
-            className="h-auto justify-start p-4 border"
-            asChild
+          <a
+            href="/contact"
+            className="bg-white border border-gray-200 hover:border-gray-900 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-md group block"
           >
-            <a href="/contact">
-              <HelpCircle className="h-5 w-5 text-muted-foreground mr-3" />
-              <span className="text-sm font-medium">Contact Support</span>
-            </a>
-          </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+                <HelpCircle className="h-4 w-4 text-gray-600 group-hover:text-white" />
+              </div>
+              <span className="font-medium text-gray-900">Contact Support</span>
+            </div>
+          </a>
 
-          <Button
-            variant="ghost"
-            className="h-auto justify-start p-4 border"
+          <button
+            className="bg-white border border-gray-200 hover:border-gray-900 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-md group"
             onClick={() => onTabChange('profile')}
           >
-            <Settings className="h-5 w-5 text-muted-foreground mr-3" />
-            <span className="text-sm font-medium">Preferences</span>
-          </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-xl group-hover:bg-gray-900 transition-colors">
+                <Settings className="h-4 w-4 text-gray-600 group-hover:text-white" />
+              </div>
+              <span className="font-medium text-gray-900">Preferences</span>
+            </div>
+          </button>
         </div>
       </div>
     </div>

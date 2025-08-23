@@ -75,49 +75,58 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
   }
 
   return (
-    <div className={`space-y-6 ${className || ''}`}>
+    <div className={`space-y-8 ${className || ''}`}>
       {/* Profile Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-semibold">Profile Information</h2>
-          <p className="text-sm text-muted-foreground mt-1">Manage your personal information and preferences</p>
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
+            <p className="text-gray-600 mt-1">Manage your personal information and preferences</p>
+          </div>
+          <Button
+            variant={isEditing ? "outline" : "default"}
+            size="sm"
+            onClick={() => isEditing ? handleCancel() : setIsEditing(true)}
+            disabled={isPending}
+            className={isEditing ? "rounded-xl border-gray-300" : "rounded-xl bg-gray-900 hover:bg-gray-800"}
+          >
+            {isEditing ? 'Cancel' : 'Edit Profile'}
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => isEditing ? handleCancel() : setIsEditing(true)}
-          disabled={isPending}
-        >
-          {isEditing ? 'Cancel' : 'Edit Profile'}
-        </Button>
       </div>
 
       {/* Success/Error Messages */}
       {state.success && (
-        <Alert>
-          <Check className="h-4 w-4" />
-          <AlertDescription>
-            Profile updated successfully
-          </AlertDescription>
-        </Alert>
+        <div className="bg-green-50 border border-green-200 rounded-2xl p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-1 bg-green-100 rounded-full">
+              <Check className="h-4 w-4 text-green-600" />
+            </div>
+            <p className="font-medium text-green-800">Profile updated successfully</p>
+          </div>
+        </div>
       )}
       
       {state.error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            {state.error}
-          </AlertDescription>
-        </Alert>
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-1 bg-red-100 rounded-full">
+              <AlertCircle className="h-4 w-4 text-red-600" />
+            </div>
+            <p className="font-medium text-red-800">{state.error}</p>
+          </div>
+        </div>
       )}
 
       {/* Profile Form */}
       <form action={formAction} className="space-y-8">
         {/* Personal Information */}
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-base font-semibold mb-4">Personal Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <User className="h-5 w-5 text-gray-600" />
+            Personal Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="firstName" className="text-sm font-medium">
                   First name
@@ -130,7 +139,7 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
                     disabled={!isEditing || isPending}
                     onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                     placeholder="Enter your first name"
-                    className={`h-11 ${isEditing ? 'bg-background' : 'bg-muted/50'} ${state.fieldErrors?.firstName ? 'border-destructive' : ''}`}
+                    className={`h-12 rounded-xl ${isEditing ? 'bg-white border-gray-300 focus:border-gray-900' : 'bg-gray-50 border-gray-200'} ${state.fieldErrors?.firstName ? 'border-red-500' : ''} transition-colors`}
                   />
                   {isEditing && (
                     <User className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
@@ -153,7 +162,7 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
                     disabled={!isEditing || isPending}
                     onChange={(e) => setFormData({...formData, lastName: e.target.value})}
                     placeholder="Enter your last name"
-                    className={`h-11 ${isEditing ? 'bg-background' : 'bg-muted/50'} ${state.fieldErrors?.lastName ? 'border-destructive' : ''}`}
+                    className={`h-12 rounded-xl ${isEditing ? 'bg-white border-gray-300 focus:border-gray-900' : 'bg-gray-50 border-gray-200'} ${state.fieldErrors?.lastName ? 'border-red-500' : ''} transition-colors`}
                   />
                   {isEditing && (
                     <User className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
@@ -166,10 +175,15 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
             </div>
           </div>
 
-          {/* Contact Information */}
-          <div>
-            <h3 className="text-base font-semibold mb-4">Contact Information</h3>
-            <div className="space-y-6">
+        </div>
+
+        {/* Contact Information */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <Mail className="h-5 w-5 text-gray-600" />
+            Contact Information
+          </h3>
+          <div className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">
                   Email address
@@ -183,7 +197,7 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
                     disabled={!isEditing || isPending}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     placeholder="your@email.com"
-                    className={`h-11 pl-4 pr-10 ${isEditing ? 'bg-background' : 'bg-muted/50'} ${state.fieldErrors?.email ? 'border-destructive' : ''}`}
+                    className={`h-12 pl-4 pr-10 rounded-xl ${isEditing ? 'bg-white border-gray-300 focus:border-gray-900' : 'bg-gray-50 border-gray-200'} ${state.fieldErrors?.email ? 'border-red-500' : ''} transition-colors`}
                   />
                   <Mail className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
                 </div>
@@ -204,7 +218,7 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
                     placeholder="+1 (555) 000-0000"
                     disabled={!isEditing || isPending}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className={`h-11 pl-4 pr-10 ${isEditing ? 'bg-background' : 'bg-muted/50'} ${state.fieldErrors?.phone ? 'border-destructive' : ''}`}
+                    className={`h-12 pl-4 pr-10 rounded-xl ${isEditing ? 'bg-white border-gray-300 focus:border-gray-900' : 'bg-gray-50 border-gray-200'} ${state.fieldErrors?.phone ? 'border-red-500' : ''} transition-colors`}
                   />
                   <div className="absolute right-3 top-3 h-5 w-5 text-muted-foreground">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -216,15 +230,17 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
                   <p className="text-sm text-destructive">{state.fieldErrors.phone[0]}</p>
                 )}
               </div>
-            </div>
           </div>
         </div>
 
         {/* Preferences */}
-        <div className="border-t pt-6">
-          <h3 className="text-base font-semibold mb-4">Email Preferences</h3>
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <Bell className="h-5 w-5 text-gray-600" />
+            Email Preferences
+          </h3>
           <div className="space-y-4">
-            <div className="flex items-start space-x-3 p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
+            <div className="flex items-start space-x-3 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
               <Switch
                 id="marketing"
                 name="acceptsMarketing"
@@ -247,20 +263,23 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
         </div>
 
         {/* Security */}
-        <div className="border-t pt-6">
-          <h3 className="text-base font-semibold mb-4">Security</h3>
-          <div className="p-4 rounded-lg border bg-card">
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-gray-600" />
+            Security
+          </h3>
+          <div className="p-4 rounded-xl border border-gray-200 bg-gray-50">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-sm font-medium">Password</p>
-                <p className="text-sm text-muted-foreground">Last changed: Never</p>
+                <p className="font-medium text-gray-900">Password</p>
+                <p className="text-sm text-gray-600">Last changed: Never</p>
               </div>
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
                 size="sm"
                 disabled={isPending}
-                className="gap-2"
+                className="gap-2 rounded-xl border-gray-300 hover:border-gray-900 hover:bg-white"
               >
                 <Shield className="h-4 w-4" />
                 Change
@@ -275,6 +294,7 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
             <Button 
               type="submit"
               disabled={isPending}
+              className="rounded-xl bg-gray-900 hover:bg-gray-800 px-8 h-12"
             >
               {isPending ? (
                 <>
@@ -290,6 +310,7 @@ export function ProfileSection({ className, customer }: ProfileSectionProps) {
               variant="outline" 
               onClick={handleCancel}
               disabled={isPending}
+              className="rounded-xl border-gray-300 hover:border-gray-900 hover:bg-gray-50 px-8 h-12"
             >
               Cancel
             </Button>

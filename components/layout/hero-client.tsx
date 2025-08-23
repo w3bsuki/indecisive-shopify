@@ -80,8 +80,8 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
         
         {/* Collection Name Headline - Dynamic */}
         <div className="absolute top-8 sm:top-12 lg:top-6 left-0 right-0 z-40 flex flex-col items-center gap-2">
-          {/* Collection Badge - Mobile Only */}
-          <div className="sm:hidden bg-black text-white px-3 py-1 text-xs font-bold tracking-wider">
+          {/* Modern Collection Badge - Mobile Only */}
+          <div className="sm:hidden bg-black/90 backdrop-blur-sm border-2 border-black/20 text-white px-3 py-1.5 text-xs font-bold tracking-wider rounded-full shadow-lg">
             ХУЛИГАНКА
           </div>
           <h1 className="text-3xl sm:text-7xl lg:text-8xl font-black text-black tracking-wide font-mono transition-all duration-500 px-2 whitespace-nowrap">
@@ -118,35 +118,40 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
             
             {/* Content overlay with gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
-              {/* CTA button */}
+              {/* Modern CTA button */}
               <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2 px-4">
                 
-                {/* CTA Button */}
-                <Link href="/products?category=bucket-hats">
-                  <Button 
-                    variant="white-sharp" 
-                    size="lg" 
-                    className="shadow-lg min-w-[200px] sm:min-w-[240px] h-12 sm:h-14 text-sm sm:text-base font-medium tracking-wider uppercase hover:scale-[1.02] transition-all bg-white/95 backdrop-blur-sm border-2 border-white/20"
-                    emphasis="strong"
-                    animation="scale"
-                  >
-                    {translations.viewCollection}
-                  </Button>
+                {/* Modern CTA Button */}
+                <Link href="/products?category=bucket-hats" className="group">
+                  <button className="bg-white/95 backdrop-blur-sm border-2 border-white/20 rounded-xl px-6 py-3 min-w-[180px] sm:min-w-[200px] shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 group">
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-black font-semibold text-sm tracking-wide">
+                        {translations.viewCollection}
+                      </span>
+                      <div className="p-0.5 bg-black/10 rounded-full group-hover:bg-black/20 transition-colors">
+                        <svg className="w-4 h-4 text-black transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </div>
+                    </div>
+                  </button>
                 </Link>
               </div>
             </div>
           </div>
         ))}
         
-        {/* Progress indicator */}
-        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-30">
+        {/* Modern Progress indicator */}
+        <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-30">
           {slides.map((_, index) => (
             <button
               key={index}
               type="button"
               aria-label={`Go to slide ${index + 1}`}
-              className={`w-3 h-3 border border-primary-foreground transition-all duration-500 cursor-pointer hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-foreground/50 shadow-lg ${
-                index === currentSlide ? 'bg-primary-foreground scale-125' : 'bg-transparent hover:bg-primary-foreground/50'
+              className={`transition-all duration-500 cursor-pointer hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-full ${
+                index === currentSlide 
+                  ? 'w-8 h-3 bg-white shadow-lg scale-110' 
+                  : 'w-3 h-3 bg-white/50 hover:bg-white/80 shadow-md'
               }`}
               onClick={() => setCurrentSlide(index)}
             />

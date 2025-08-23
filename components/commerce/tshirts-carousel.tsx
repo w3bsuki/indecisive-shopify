@@ -84,19 +84,21 @@ export async function TshirtsCarousel() {
             </div>
           </div>
           
-          {/* CTA Section */}
-          <div className="mt-8 md:mt-12 text-center">
+          {/* Modern CTA Section */}
+          <div className="mt-12 md:mt-16 text-center">
             <Link 
               href="/products?category=tees" 
-              className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white font-mono font-bold text-sm uppercase tracking-wider hover:bg-gray-900 transition-colors"
+              className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-semibold text-sm rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
-              {t('tshirts.viewAll')}
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
+              <span className="tracking-wide">{t('tshirts.viewAll')}</span>
+              <div className="p-0.5 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors">
+                <svg className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </Link>
-            <p className="mt-4 text-xs font-mono text-gray-600 uppercase tracking-wide">
-              {tp('viewAllCount', { count: products.length > 8 ? `${products.length}+` : products.length })}
+            <p className="mt-6 text-sm font-medium text-gray-500 bg-gray-50 inline-block px-4 py-2 rounded-full">
+              👕 {tp('viewAllCount', { count: products.length > 8 ? `${products.length}+` : products.length })}
             </p>
           </div>
         </div>

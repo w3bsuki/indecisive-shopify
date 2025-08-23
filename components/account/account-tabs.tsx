@@ -41,18 +41,24 @@ export function AccountTabs() {
   }, [])
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto px-4 py-6">
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Account</h1>
+        <p className="text-gray-600">Manage your account settings, orders, and preferences</p>
+      </div>
+
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as AccountTab)}>
-        {/* Desktop Navigation */}
-        <div className="hidden md:block mb-6 border-b">
-          <TabsList className="h-auto p-0 bg-transparent rounded-none justify-start">
+        {/* Desktop Navigation - Modern Pills */}
+        <div className="hidden md:block mb-8">
+          <TabsList className="h-auto p-1 bg-gray-100 rounded-2xl justify-start gap-1">
             {tabs.map((tab) => {
               const Icon = tab.icon
               return (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="relative px-6 py-4 text-sm font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent transition-all"
+                  className="px-6 py-3 text-sm font-medium rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 text-gray-600 hover:text-gray-900 transition-all duration-200"
                 >
                   <Icon className="h-4 w-4 mr-2 inline-block" />
                   {tab.label}
@@ -62,12 +68,12 @@ export function AccountTabs() {
           </TabsList>
         </div>
 
-        {/* Mobile Navigation - Select Dropdown */}
+        {/* Mobile Navigation - Modern Select */}
         <div className="md:hidden mb-6">
           <select
             value={activeTab}
             onChange={(e) => setActiveTab(e.target.value as AccountTab)}
-            className="w-full px-4 py-3 text-sm font-medium border rounded-lg"
+            className="w-full px-4 py-3 text-sm font-medium border-2 border-gray-200 rounded-xl bg-white focus:border-gray-900 focus:outline-none transition-colors"
           >
             {tabs.map((tab) => (
               <option key={tab.id} value={tab.id}>
@@ -103,10 +109,10 @@ export function AccountTabs() {
 
       {/* Loading State */}
       {isLoading && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="text-center">
-            <div className="h-8 w-8 border-2 border-muted border-t-foreground rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-sm text-muted-foreground">Loading your account...</p>
+        <div className="fixed inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="text-center p-8 bg-white rounded-2xl shadow-2xl border border-gray-100">
+            <div className="h-8 w-8 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm text-gray-600 font-medium">Loading your account...</p>
           </div>
         </div>
       )}
