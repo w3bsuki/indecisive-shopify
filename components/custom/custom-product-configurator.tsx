@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Shirt, HardHat, ShoppingBag, Type, Image as ImageIcon, Palette, Package } from 'lucide-react'
+import { Shirt, HardHat, ShoppingBag, Type, Image as ImageIcon, Palette, Package, ChevronRight } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart'
 import { useToast } from '@/hooks/use-toast'
 import { storefront } from '@/lib/shopify'
@@ -155,80 +155,115 @@ export function CustomProductConfigurator() {
   }
 
   return (
-    <div className="grid lg:grid-cols-2 gap-12">
-      {/* Product Preview */}
-      <div className="bg-gray-50 rounded-2xl p-8 flex items-center justify-center min-h-[500px]">
-        <div className="text-center">
-          <div className="relative w-64 h-64 mx-auto mb-6">
-            {/* Product Icon */}
-            {product.type === 'tshirt' && <Shirt className="w-full h-full" strokeWidth={1} />}
-            {product.type === 'hat' && <HardHat className="w-full h-full" strokeWidth={1} />}
-            {product.type === 'bag' && <ShoppingBag className="w-full h-full" strokeWidth={1} />}
-            
-            {/* Custom Text Preview */}
-            {product.customization !== 'image' && product.text && (
-              <div 
-                className={cn(
-                  "absolute inset-0 flex items-center justify-center",
-                  product.textPosition?.includes('back') && "opacity-50"
-                )}
-              >
-                <p 
+    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+      {/* Product Preview - Mobile First */}
+      <div className="order-2 lg:order-1">
+        <div className="sticky top-24 bg-white border border-gray-200 rounded-3xl p-6 lg:p-8">
+          <div className="aspect-square bg-gray-50 rounded-2xl flex items-center justify-center mb-6">
+            <div className="relative w-48 h-48 lg:w-64 lg:h-64">
+              {/* Product Icon */}
+              {product.type === 'tshirt' && <Shirt className="w-full h-full" strokeWidth={1} />}
+              {product.type === 'hat' && <HardHat className="w-full h-full" strokeWidth={1} />}
+              {product.type === 'bag' && <ShoppingBag className="w-full h-full" strokeWidth={1} />}
+              
+              {/* Custom Text Preview */}
+              {product.customization !== 'image' && product.text && (
+                <div 
                   className={cn(
-                    "font-bold text-xl max-w-[80%] text-center",
-                    `text-${product.textColor}`
+                    "absolute inset-0 flex items-center justify-center p-4",
+                    product.textPosition?.includes('back') && "opacity-50"
                   )}
-                  style={{ color: product.textColor }}
                 >
-                  {product.text}
-                </p>
-              </div>
-            )}
+                  <p 
+                    className={cn(
+                      "font-bold text-lg lg:text-xl max-w-[80%] text-center break-words",
+                      `text-${product.textColor}`
+                    )}
+                    style={{ color: product.textColor }}
+                  >
+                    {product.text}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
           
-          {/* Product Details */}
-          <div className="space-y-2 text-sm text-gray-600">
-            <p>{t('preview.color')}: <span className="font-semibold capitalize">{product.color}</span></p>
-            <p>{t('preview.material')}: <span className="font-semibold capitalize">{product.material.replace('-', ' ')}</span></p>
-            {product.size && <p>{t('preview.size')}: <span className="font-semibold">{product.size}</span></p>}
+          {/* Product Details - Clean Grid */}
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div className="text-center">
+              <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{t('preview.color')}</p>
+              <p className="font-semibold capitalize">{product.color}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{t('preview.material')}</p>
+              <p className="font-semibold capitalize">{product.material.replace('-', ' ')}</p>
+            </div>
+            {product.size && (
+              <div className="text-center">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{t('preview.size')}</p>
+                <p className="font-semibold">{product.size}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Configuration Form */}
-      <div className="space-y-8">
-        {/* Product Type Selection */}
-        <div className="space-y-4">
-          <Label className="text-lg font-semibold">{t('form.productType')}</Label>
-          <Tabs value={product.type} onValueChange={(value) => setProduct({...product, type: value as ProductType})}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="tshirt" className="gap-2">
-                <Shirt className="w-4 h-4" />
-                {t('products.tshirt')}
-              </TabsTrigger>
-              <TabsTrigger value="hat" className="gap-2">
-                <HardHat className="w-4 h-4" />
-                {t('products.hat')}
-              </TabsTrigger>
-              <TabsTrigger value="bag" className="gap-2">
-                <ShoppingBag className="w-4 h-4" />
-                {t('products.bag')}
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+      {/* Configuration Form - Mobile Optimized */}
+      <div className="order-1 lg:order-2 space-y-6">
+        {/* Product Type Selection - Modern Pills */}
+        <div>
+          <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.productType')}</Label>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={() => setProduct({...product, type: 'tshirt'})}
+              className={cn(
+                "relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all",
+                product.type === 'tshirt' 
+                  ? "border-black bg-black text-white" 
+                  : "border-gray-200 hover:border-gray-300 bg-white"
+              )}
+            >
+              <Shirt className="w-6 h-6" />
+              <span className="text-xs font-medium">{t('products.tshirt')}</span>
+            </button>
+            <button
+              onClick={() => setProduct({...product, type: 'hat'})}
+              className={cn(
+                "relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all",
+                product.type === 'hat' 
+                  ? "border-black bg-black text-white" 
+                  : "border-gray-200 hover:border-gray-300 bg-white"
+              )}
+            >
+              <HardHat className="w-6 h-6" />
+              <span className="text-xs font-medium">{t('products.hat')}</span>
+            </button>
+            <button
+              onClick={() => setProduct({...product, type: 'bag'})}
+              className={cn(
+                "relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all",
+                product.type === 'bag' 
+                  ? "border-black bg-black text-white" 
+                  : "border-gray-200 hover:border-gray-300 bg-white"
+              )}
+            >
+              <ShoppingBag className="w-6 h-6" />
+              <span className="text-xs font-medium">{t('products.bag')}</span>
+            </button>
+          </div>
         </div>
 
-        {/* Color Selection */}
-        <div className="space-y-4">
-          <Label className="text-lg font-semibold">{t('form.color')}</Label>
-          <div className="flex gap-3 flex-wrap">
+        {/* Color Selection - Clean Grid */}
+        <div>
+          <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.color')}</Label>
+          <div className="flex gap-2 flex-wrap">
             {selectedProductOptions.colors.map((color) => (
               <button
                 key={color}
                 onClick={() => setProduct({...product, color})}
                 className={cn(
-                  "w-12 h-12 rounded-full border-2 transition-all",
-                  product.color === color ? "ring-2 ring-offset-2 ring-black" : "hover:scale-110"
+                  "w-10 h-10 rounded-full border-2 transition-all",
+                  product.color === color ? "ring-2 ring-offset-2 ring-black scale-110" : "hover:scale-105"
                 )}
                 style={{ 
                   backgroundColor: color === 'natural' ? '#F5F5DC' : color,
@@ -240,162 +275,187 @@ export function CustomProductConfigurator() {
           </div>
         </div>
 
-        {/* Material Selection */}
-        <div className="space-y-4">
-          <Label className="text-lg font-semibold">{t('form.material')}</Label>
-          <RadioGroup value={product.material} onValueChange={(value) => setProduct({...product, material: value})}>
+        {/* Material Selection - Modern Buttons */}
+        <div>
+          <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.material')}</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {selectedProductOptions.materials.map((material) => (
-              <div key={material} className="flex items-center space-x-2">
-                <RadioGroupItem value={material} id={material} />
-                <Label htmlFor={material} className="capitalize cursor-pointer">
-                  {material.replace('-', ' ')}
-                </Label>
-              </div>
+              <button
+                key={material}
+                onClick={() => setProduct({...product, material})}
+                className={cn(
+                  "px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all",
+                  product.material === material 
+                    ? "border-black bg-black text-white" 
+                    : "border-gray-200 hover:border-gray-300 bg-white"
+                )}
+              >
+                {material.replace('-', ' ').charAt(0).toUpperCase() + material.replace('-', ' ').slice(1)}
+              </button>
             ))}
-          </RadioGroup>
+          </div>
         </div>
 
-        {/* Size Selection (if applicable) */}
+        {/* Size Selection - Compact Grid */}
         {selectedProductOptions.sizes.length > 1 && (
-          <div className="space-y-4">
-            <Label className="text-lg font-semibold">{t('form.size')}</Label>
-            <div className="flex gap-2 flex-wrap">
+          <div>
+            <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.size')}</Label>
+            <div className="grid grid-cols-6 gap-2">
               {selectedProductOptions.sizes.map((size) => (
-                <Button
+                <button
                   key={size}
-                  variant={product.size === size ? "default" : "outline"}
-                  size="sm"
                   onClick={() => setProduct({...product, size})}
-                  className="min-w-[60px]"
+                  className={cn(
+                    "py-3 rounded-xl border-2 text-sm font-medium transition-all",
+                    product.size === size 
+                      ? "border-black bg-black text-white" 
+                      : "border-gray-200 hover:border-gray-300 bg-white"
+                  )}
                 >
                   {size}
-                </Button>
+                </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Customization Type */}
-        <div className="space-y-4">
-          <Label className="text-lg font-semibold">{t('form.customizationType')}</Label>
+        {/* Customization Type - Clean Tabs */}
+        <div>
+          <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.customizationType')}</Label>
           <Tabs value={product.customization} onValueChange={(value) => setProduct({...product, customization: value as CustomizationType})}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="text" className="gap-2">
+            <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-1 rounded-xl">
+              <TabsTrigger value="text" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg gap-2">
                 <Type className="w-4 h-4" />
-                {t('customization.text')}
+                <span className="hidden sm:inline">{t('customization.text')}</span>
               </TabsTrigger>
-              <TabsTrigger value="image" className="gap-2">
+              <TabsTrigger value="image" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg gap-2">
                 <ImageIcon className="w-4 h-4" />
-                {t('customization.image')}
+                <span className="hidden sm:inline">{t('customization.image')}</span>
               </TabsTrigger>
-              <TabsTrigger value="both" className="gap-2">
+              <TabsTrigger value="both" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg gap-2">
                 <Package className="w-4 h-4" />
-                {t('customization.both')}
+                <span className="hidden sm:inline">{t('customization.both')}</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="text" className="space-y-4">
+            <TabsContent value="text" className="mt-6 space-y-4">
               <div>
-                <Label htmlFor="customText">{t('form.customText')}</Label>
+                <Label htmlFor="customText" className="text-sm font-medium mb-2 block">{t('form.customText')}</Label>
                 <Input
                   id="customText"
                   value={product.text}
                   onChange={(e) => setProduct({...product, text: e.target.value})}
                   placeholder={t('form.textPlaceholder')}
                   maxLength={50}
+                  className="h-12 rounded-xl border-gray-200 focus:border-black"
                 />
-                <p className="text-xs text-gray-500 mt-1">{product.text?.length || 0}/50</p>
+                <p className="text-xs text-gray-500 mt-1 text-right">{product.text?.length || 0}/50</p>
               </div>
 
-              <div className="space-y-2">
-                <Label>{t('form.textColor')}</Label>
-                <div className="flex gap-3">
-                  {textColors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setProduct({...product, textColor: color})}
-                      className={cn(
-                        "w-8 h-8 rounded-full border-2 transition-all",
-                        product.textColor === color ? "ring-2 ring-offset-2 ring-black" : "hover:scale-110"
-                      )}
-                      style={{ 
-                        backgroundColor: color === 'gold' ? '#FFD700' : color,
-                        borderColor: color === 'white' ? '#e5e5e5' : color
-                      }}
-                      aria-label={color}
-                    />
-                  ))}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Text Color */}
+                <div>
+                  <Label className="text-sm font-medium mb-2 block">{t('form.textColor')}</Label>
+                  <div className="flex gap-2">
+                    {textColors.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => setProduct({...product, textColor: color})}
+                        className={cn(
+                          "w-8 h-8 rounded-full border-2 transition-all",
+                          product.textColor === color ? "ring-2 ring-offset-2 ring-black scale-110" : "hover:scale-105"
+                        )}
+                        style={{ 
+                          backgroundColor: color === 'gold' ? '#FFD700' : color,
+                          borderColor: color === 'white' ? '#e5e5e5' : color
+                        }}
+                        aria-label={color}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label>{t('form.position')}</Label>
-                <RadioGroup value={product.textPosition} onValueChange={(value) => setProduct({...product, textPosition: value})}>
-                  {selectedProductOptions.positions.map((position) => (
-                    <div key={position} className="flex items-center space-x-2">
-                      <RadioGroupItem value={position} id={position} />
-                      <Label htmlFor={position} className="capitalize cursor-pointer">
-                        {position.replace('-', ' ')}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
+                {/* Position */}
+                <div>
+                  <Label className="text-sm font-medium mb-2 block">{t('form.position')}</Label>
+                  <select
+                    value={product.textPosition}
+                    onChange={(e) => setProduct({...product, textPosition: e.target.value})}
+                    className="w-full h-10 px-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-black"
+                  >
+                    {selectedProductOptions.positions.map((position) => (
+                      <option key={position} value={position}>
+                        {position.replace('-', ' ').charAt(0).toUpperCase() + position.replace('-', ' ').slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </TabsContent>
 
-            <TabsContent value="image" className="space-y-4">
-              <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg">
-                <ImageIcon className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-sm text-gray-600 mb-4">{t('form.uploadInstruction')}</p>
-                <Button variant="outline" size="sm">
+            <TabsContent value="image" className="mt-6">
+              <div className="text-center p-8 border-2 border-dashed border-gray-200 rounded-2xl hover:border-gray-300 transition-colors cursor-pointer">
+                <ImageIcon className="w-10 h-10 mx-auto mb-3 text-gray-400" />
+                <p className="text-sm text-gray-600 mb-3">{t('form.uploadInstruction')}</p>
+                <Button variant="outline" size="sm" className="rounded-full">
                   {t('form.uploadButton')}
                 </Button>
               </div>
             </TabsContent>
 
-            <TabsContent value="both" className="text-center p-8">
+            <TabsContent value="both" className="mt-6 text-center p-8 bg-gray-50 rounded-2xl">
               <p className="text-gray-600">{t('form.contactForBoth')}</p>
             </TabsContent>
           </Tabs>
         </div>
 
-        {/* Pricing Info */}
-        <div className="bg-gray-50 rounded-xl p-6">
-          <div className="flex justify-between items-center mb-4">
-            <span className="font-semibold">{t('pricing.basePrice')}:</span>
-            <span className="text-xl font-bold">
-              {product.type === 'tshirt' && '35 лв'}
-              {product.type === 'hat' && '30 лв'}
-              {product.type === 'bag' && '25 лв'}
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-sm text-gray-600">
-            <span>{t('pricing.customization')}:</span>
-            <span>+10 лв</span>
-          </div>
-          <hr className="my-4" />
-          <div className="flex justify-between items-center">
-            <span className="font-semibold text-lg">{t('pricing.total')}:</span>
-            <span className="text-2xl font-bold">
-              {product.type === 'tshirt' && '45 лв'}
-              {product.type === 'hat' && '40 лв'}
-              {product.type === 'bag' && '35 лв'}
-            </span>
+        {/* Pricing Info - Compact Card */}
+        <div className="bg-black text-white rounded-2xl p-6">
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm">{t('pricing.basePrice')}</span>
+              <span className="font-semibold">
+                {product.type === 'tshirt' && '35 лв'}
+                {product.type === 'hat' && '30 лв'}
+                {product.type === 'bag' && '25 лв'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm">{t('pricing.customization')}</span>
+              <span className="font-semibold">+10 лв</span>
+            </div>
+            <div className="border-t border-white/20 pt-3 flex justify-between items-center">
+              <span className="text-lg font-bold">{t('pricing.total')}</span>
+              <span className="text-2xl font-bold">
+                {product.type === 'tshirt' && '45 лв'}
+                {product.type === 'hat' && '40 лв'}
+                {product.type === 'bag' && '35 лв'}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Add to Cart Button */}
+        {/* Add to Cart Button - Modern Style */}
         <Button
           size="lg"
-          className="w-full"
+          className="w-full h-14 rounded-full bg-black hover:bg-gray-900 text-white font-medium text-base"
           onClick={handleAddToCart}
           disabled={isLoading || (product.customization === 'text' && !product.text)}
         >
-          <Palette className="w-5 h-5 mr-2" />
-          {isLoading ? t('form.adding') : t('form.addToCart')}
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              {t('form.adding')}
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              {t('form.addToCart')}
+              <ChevronRight className="w-4 h-4" />
+            </span>
+          )}
         </Button>
 
-        {/* Info */}
+        {/* Info - Subtle */}
         <p className="text-xs text-gray-500 text-center">
           {t('info.productionTime')}
         </p>

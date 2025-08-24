@@ -15,14 +15,14 @@ export default async function CustomPage() {
     <div className="min-h-screen bg-white">
       <Navigation />
       
-      <main className="pt-20 pb-24">
+      <main className="pt-16 md:pt-20 pb-20 md:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-handwritten text-black mb-4 transform -rotate-1">
+          {/* Header - Compact and Modern */}
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl md:text-5xl font-black font-mono uppercase tracking-tight text-black mb-2">
               {t('title', { fallback: 'Design Your Own' })}
             </h1>
-            <p className="text-gray-700 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-sm md:text-base max-w-lg mx-auto">
               {t('subtitle', { fallback: 'Create custom t-shirts, hats, and bags with your own text and designs' })}
             </p>
           </div>
