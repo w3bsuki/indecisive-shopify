@@ -244,38 +244,38 @@ export function CustomProductConfigurator() {
             <button
               onClick={() => setProduct({...product, type: 'tshirt'})}
               className={cn(
-                "relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all",
+                "relative flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all",
                 product.type === 'tshirt' 
                   ? "border-black bg-black text-white" 
                   : "border-gray-200 hover:border-gray-300 bg-white"
               )}
             >
-              <Shirt className="w-6 h-6" />
-              <span className="text-xs font-medium">{t('products.tshirt')}</span>
+              <Shirt className="w-5 h-5" />
+              <span className="text-[11px] font-medium">{t('products.tshirt')}</span>
             </button>
             <button
               onClick={() => setProduct({...product, type: 'hat'})}
               className={cn(
-                "relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all",
+                "relative flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all",
                 product.type === 'hat' 
                   ? "border-black bg-black text-white" 
                   : "border-gray-200 hover:border-gray-300 bg-white"
               )}
             >
-              <HardHat className="w-6 h-6" />
-              <span className="text-xs font-medium">{t('products.hat')}</span>
+              <HardHat className="w-5 h-5" />
+              <span className="text-[11px] font-medium">{t('products.hat')}</span>
             </button>
             <button
               onClick={() => setProduct({...product, type: 'bag'})}
               className={cn(
-                "relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all",
+                "relative flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all",
                 product.type === 'bag' 
                   ? "border-black bg-black text-white" 
                   : "border-gray-200 hover:border-gray-300 bg-white"
               )}
             >
-              <ShoppingBag className="w-6 h-6" />
-              <span className="text-xs font-medium">{t('products.bag')}</span>
+              <ShoppingBag className="w-5 h-5" />
+              <span className="text-[11px] font-medium">{t('products.bag')}</span>
             </button>
           </div>
         </div>
@@ -311,7 +311,7 @@ export function CustomProductConfigurator() {
                 key={material}
                 onClick={() => setProduct({...product, material})}
                 className={cn(
-                  "px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all",
+                  "px-3 py-2 rounded-xl border-2 text-xs font-medium transition-all",
                   product.material === material 
                     ? "border-black bg-black text-white" 
                     : "border-gray-200 hover:border-gray-300 bg-white"
@@ -333,7 +333,7 @@ export function CustomProductConfigurator() {
                   key={size}
                   onClick={() => setProduct({...product, size})}
                   className={cn(
-                    "py-3 rounded-xl border-2 text-sm font-medium transition-all",
+                    "py-2 rounded-xl border-2 text-xs font-medium transition-all",
                     product.size === size 
                       ? "border-black bg-black text-white" 
                       : "border-gray-200 hover:border-gray-300 bg-white"

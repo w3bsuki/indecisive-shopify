@@ -15,7 +15,7 @@ export default async function CustomPage() {
     <div className="min-h-screen bg-white">
       <Navigation />
       
-      <main className="pt-2 md:pt-6 pb-20 md:pb-24">
+      <main className="pt-0 md:pt-4 pb-20 md:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header - Compact and Modern */}
           <div className="text-center mb-4 md:mb-6">
