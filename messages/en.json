@@ -510,5 +510,56 @@
     "from": "from",
     "inStock": "In stock",
     "outOfStock": "Out of stock"
+  },
+  "custom": {
+    "title": "Design Your Own",
+    "subtitle": "Create custom t-shirts, hats, and bags with your own text and designs",
+    "form": {
+      "productType": "Product Type",
+      "color": "Color",
+      "material": "Material",
+      "size": "Size",
+      "customizationType": "Customization Type",
+      "customText": "Your Text",
+      "textPlaceholder": "Enter your custom text",
+      "textColor": "Text Color",
+      "position": "Position",
+      "uploadInstruction": "Upload your design (PNG, JPG, SVG)",
+      "uploadButton": "Choose File",
+      "contactForBoth": "Contact us for text + image designs",
+      "addToCart": "Add Custom Product to Cart",
+      "adding": "Adding..."
+    },
+    "products": {
+      "tshirt": "T-Shirt",
+      "hat": "Hat",
+      "bag": "Bag"
+    },
+    "customization": {
+      "text": "Text",
+      "image": "Image",
+      "both": "Both"
+    },
+    "preview": {
+      "color": "Color",
+      "material": "Material",
+      "size": "Size"
+    },
+    "pricing": {
+      "basePrice": "Base Price",
+      "customization": "Customization",
+      "total": "Total"
+    },
+    "error": {
+      "noText": "Please add your custom text",
+      "failed": "Failed to add custom product"
+    },
+    "success": {
+      "addedToCart": "Custom product added to cart\!",
+      "description": "Our team will review your design and contact you"
+    },
+    "info": {
+      "productionTime": "Production time: 3-5 business days"
+    }
   }
 }

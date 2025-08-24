@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, ShoppingBag, Heart, User, Instagram, Star, SlidersHorizontal } from "lucide-react"
+import { Menu, X, ShoppingBag, Heart, User, Instagram, Star, SlidersHorizontal, Palette } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
@@ -471,21 +471,21 @@ export function Navigation() {
             </Link>
           </div>
 
-          {/* Клуб (Community) */}
+          {/* Custom (Design) */}
           <div className="flex justify-center">
-            <Link href="/#community">
+            <Link href="/custom">
               <Button
               variant="ghost"
               size="sm"
               className={cn(
                 "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
-                pathname === "/#community" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                pathname === "/custom" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
               )}
             >
               <div className="relative">
-                <Star className="h-5 w-5 stroke-[2.5]" />
+                <Palette className="h-5 w-5 stroke-[2.5]" />
               </div>
-              <span className="text-[10px] font-medium">КЛУБ</span>
+              <span className="text-[10px] font-medium">CUSTOM</span>
               </Button>
             </Link>
           </div>
