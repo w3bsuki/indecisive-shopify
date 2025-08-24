@@ -1,27 +1,28 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import type { ComponentProps } from 'react'
 
-interface ScrollToTopLinkProps extends ComponentProps<typeof Link> {
+interface ScrollToTopLinkProps {
   children: React.ReactNode
+  href: string
+  className?: string
 }
 
-export function ScrollToTopLink({ children, href, ...props }: ScrollToTopLinkProps) {
+export function ScrollToTopLink({ children, href, className }: ScrollToTopLinkProps) {
   const router = useRouter()
   
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'instant' })
-    // Then navigate
-    router.push(href.toString())
+  const handleClick = () => {
+    // Navigate first (which will preserve scroll on same page)
+    router.push(href)
+    // Then scroll to top after a tiny delay to ensure navigation has started
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, 50)
   }
   
   return (
-    <Link href={href} onClick={handleClick} {...props}>
+    <button onClick={handleClick} className={className}>
       {children}
-    </Link>
+    </button>
   )
 }
