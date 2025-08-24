@@ -6,12 +6,10 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Shirt, HardHat, ShoppingBag, Type, Image as ImageIcon, Palette, Package, ChevronRight } from 'lucide-react'
+import { Shirt, HardHat, ShoppingBag, Type, Image as ImageIcon, Package, ChevronRight } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart'
 import { useToast } from '@/hooks/use-toast'
-import { storefront } from '@/lib/shopify'
 import { CustomBottomNav } from './custom-bottom-nav'
 
 type ProductType = 'tshirt' | 'hat' | 'bag'
@@ -205,7 +203,7 @@ export function CustomProductConfigurator() {
         textColor: 'white',
         size: 'M'
       })
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: t('error.failed', { fallback: 'Failed to add custom product' }),
         variant: 'destructive'

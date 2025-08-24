@@ -2,8 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Palette, Shirt, Ruler, Type, Package } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { Palette, Ruler, Type, Package } from 'lucide-react'
 
 interface CustomBottomNavProps {
   onSectionClick: (section: 'product' | 'color' | 'material' | 'size' | 'text') => void
@@ -14,7 +13,6 @@ interface CustomBottomNavProps {
 }
 
 export function CustomBottomNav({ onSectionClick, onOrderClick, activeSection, isLoading, canOrder }: CustomBottomNavProps) {
-  const t = useTranslations('custom.form')
   
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-black/10 z-40 md:hidden shadow-lg">
