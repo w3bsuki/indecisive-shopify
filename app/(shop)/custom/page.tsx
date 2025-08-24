@@ -15,10 +15,10 @@ export default async function CustomPage() {
     <div className="min-h-screen bg-white">
       <Navigation />
       
-      <main className="pt-4 md:pt-8 pb-20 md:pb-24">
+      <main className="pt-2 md:pt-6 pb-20 md:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header - Compact and Modern */}
-          <div className="text-center mb-6 md:mb-8">
+          <div className="text-center mb-4 md:mb-6">
             <h1 className="text-2xl md:text-4xl font-black font-mono uppercase tracking-tight text-black mb-1">
               {t('title', { fallback: 'Design Your Own' })}
             </h1>
