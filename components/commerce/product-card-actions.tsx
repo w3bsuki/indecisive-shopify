@@ -101,17 +101,17 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
       <button
         onClick={handleWishlist}
         className={cn(
-          "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
-          "backdrop-blur-sm shadow-md",
+          "w-6 h-6 flex items-center justify-center rounded-full transition-all duration-200",
+          "border shadow-sm",
           isWishlisted 
-            ? "bg-black text-white" 
-            : "bg-white/90 text-black hover:bg-white"
+            ? "bg-black text-white border-black" 
+            : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
         )}
         aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
       >
         <Heart 
           className={cn(
-            "w-4 h-4 sm:w-5 sm:h-5",
+            "w-3.5 h-3.5",
             isWishlisted && "fill-current"
           )} 
         />
@@ -182,18 +182,18 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           onClick={() => handleAddToCart()}
           disabled={isLoading || !isAvailable || !cartReady}
           className={cn(
-            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
-            "bg-white border-2 border-white shadow-md",
+            "w-6 h-6 flex items-center justify-center rounded-full transition-all duration-200",
+            "bg-white border border-gray-200 shadow-sm",
             isLoading || !isAvailable || !cartReady
               ? "text-gray-300 cursor-not-allowed"
-              : "text-black hover:bg-black hover:text-white"
+              : "text-gray-600 hover:bg-black hover:text-white hover:border-black"
           )}
           aria-label={translations.addToCart}
         >
           {isLoading ? (
-            <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
+            <div className="w-3 h-3 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
           ) : (
-            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ShoppingBag className="w-3.5 h-3.5" />
           )}
         </button>
 

@@ -79,9 +79,41 @@ export async function ProductCardServer({ product, priority: _priority = false }
           )}
         </Link>
 
-        {/* Actions - always visible on mobile, hover on desktop */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-all duration-300">
-          <div className="flex items-center justify-between gap-2">
+      </div>
+
+      {/* Product Info */}
+      <div className="p-4">
+        {/* Color Variants Display with Action Buttons */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex-1 flex items-center justify-center gap-1.5">
+            {availableColors.length > 0 ? (
+              <>
+                {availableColors.slice(0, 4).map((color, index) => {
+                  const bgColor = getColorFromName(color)
+                  return (
+                    <div
+                      key={`${color}-${index}`}
+                      className="w-3 h-3 rounded-full ring-1 ring-gray-200"
+                      style={{ 
+                        backgroundColor: bgColor
+                      }}
+                      title={color}
+                    />
+                  )
+                })}
+                {availableColors.length > 4 && (
+                  <span className="text-[10px] text-gray-500 font-medium">
+                    +{availableColors.length - 4}
+                  </span>
+                )}
+              </>
+            ) : (
+              <div className="w-3 h-3" />
+            )}
+          </div>
+          
+          {/* Action Buttons */}
+          <div className="flex items-center gap-1">
             <ProductCardActions 
               product={product}
               sizes={sizes}
@@ -97,33 +129,6 @@ export async function ProductCardServer({ product, priority: _priority = false }
             />
           </div>
         </div>
-      </div>
-
-      {/* Product Info */}
-      <div className="p-4">
-        {/* Color Variants Display */}
-        {availableColors.length > 0 && (
-          <div className="flex items-center justify-center gap-1.5 mb-3">
-            {availableColors.slice(0, 4).map((color, index) => {
-              const bgColor = getColorFromName(color)
-              return (
-                <div
-                  key={`${color}-${index}`}
-                  className="w-3 h-3 rounded-full ring-1 ring-gray-200"
-                  style={{ 
-                    backgroundColor: bgColor
-                  }}
-                  title={color}
-                />
-              )
-            })}
-            {availableColors.length > 4 && (
-              <span className="text-[10px] text-gray-500 font-medium">
-                +{availableColors.length - 4}
-              </span>
-            )}
-          </div>
-        )}
 
         <h3 className="text-sm font-medium text-gray-800 text-center mb-2">
           <Link 
