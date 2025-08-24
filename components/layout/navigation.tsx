@@ -443,14 +443,15 @@ export function Navigation() {
         <div className="h-14 md:hidden" />
       </>
 
-      {/* Mobile Bottom Navigation */}
-      <div 
-        className={cn(
-          "fixed-bottom-mobile-safe bg-white border-t border-black/10 z-40 md:hidden touch-optimized shadow-lg",
-          "transition-transform duration-300 ease-in-out overscroll-contain",
-          showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
-        )}
-      >
+      {/* Mobile Bottom Navigation - Hide on custom page */}
+      {pathname !== '/custom' && (
+        <div 
+          className={cn(
+            "fixed-bottom-mobile-safe bg-white border-t border-black/10 z-40 md:hidden touch-optimized shadow-lg",
+            "transition-transform duration-300 ease-in-out overscroll-contain",
+            showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
+          )}
+        >
         <div className="grid grid-cols-5 gap-0 py-2 px-2 pr-4 pb-safe">
           {/* Профил (Account) */}
           <div className="flex justify-center">
@@ -537,6 +538,7 @@ export function Navigation() {
           </div>
         </div>
       </div>
+      )}
       
       
       {/* Desktop Cart Slideout */}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,7 @@ import { Shirt, HardHat, ShoppingBag, Type, Image as ImageIcon, Palette, Package
 import { useCart } from '@/hooks/use-cart'
 import { useToast } from '@/hooks/use-toast'
 import { storefront } from '@/lib/shopify'
+import { CustomBottomNav } from './custom-bottom-nav'
 
 type ProductType = 'tshirt' | 'hat' | 'bag'
 type CustomizationType = 'text' | 'image' | 'both'
@@ -57,6 +58,13 @@ export function CustomProductConfigurator() {
   const { addItem } = useCart()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('product')
+  
+  // Refs for sections
+  const productRef = useRef<HTMLDivElement | null>(null)
+  const colorRef = useRef<HTMLDivElement | null>(null)
+  const materialRef = useRef<HTMLDivElement | null>(null)
+  const textRef = useRef<HTMLDivElement | null>(null)
   
   const [product, setProduct] = useState<CustomProduct>({
     type: 'tshirt',
@@ -70,6 +78,59 @@ export function CustomProductConfigurator() {
   })
 
   const selectedProductOptions = productOptions[product.type]
+  
+  // Handle section navigation
+  const handleSectionClick = (section: string) => {
+    let ref: React.RefObject<HTMLDivElement | null> | undefined
+    
+    switch(section) {
+      case 'product':
+        ref = productRef
+        break
+      case 'color':
+        ref = colorRef
+        break
+      case 'material':
+      case 'size':
+        ref = materialRef
+        break
+      case 'text':
+        ref = textRef
+        break
+    }
+    
+    if (ref?.current) {
+      const yOffset = -80 // Account for fixed header
+      const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset
+      window.scrollTo({ top: y, behavior: 'smooth' })
+      setActiveSection(section)
+    }
+  }
+  
+  // Track active section based on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = [
+        { ref: productRef, name: 'product' },
+        { ref: colorRef, name: 'color' },
+        { ref: materialRef, name: 'material' },
+        { ref: textRef, name: 'text' }
+      ]
+      
+      for (const section of sections) {
+        if (section.ref.current) {
+          const rect = section.ref.current.getBoundingClientRect()
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(section.name)
+            break
+          }
+        }
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleAddToCart = async () => {
     if (product.customization === 'text' && !product.text) {
@@ -155,6 +216,7 @@ export function CustomProductConfigurator() {
   }
 
   return (
+    <>
     <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
       {/* Product Preview - Mobile First */}
       <div className="order-1">
@@ -236,9 +298,9 @@ export function CustomProductConfigurator() {
       </div>
 
       {/* Configuration Form - Mobile Optimized */}
-      <div className="order-2 space-y-6">
+      <div className="order-2 space-y-6 pb-20 md:pb-0">
         {/* Product Type Selection - Modern Pills */}
-        <div>
+        <div ref={productRef}>
           <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.productType')}</Label>
           <div className="grid grid-cols-3 gap-2">
             <button
@@ -281,7 +343,7 @@ export function CustomProductConfigurator() {
         </div>
 
         {/* Color Selection - Clean Grid */}
-        <div>
+        <div ref={colorRef}>
           <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.color')}</Label>
           <div className="flex gap-2 flex-wrap">
             {selectedProductOptions.colors.map((color) => (
@@ -303,7 +365,7 @@ export function CustomProductConfigurator() {
         </div>
 
         {/* Material Selection - Modern Buttons */}
-        <div>
+        <div ref={materialRef}>
           <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.material')}</Label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {selectedProductOptions.materials.map((material) => (
@@ -347,7 +409,7 @@ export function CustomProductConfigurator() {
         )}
 
         {/* Customization Type - Clean Tabs */}
-        <div>
+        <div ref={textRef}>
           <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.customizationType')}</Label>
           <Tabs value={product.customization} onValueChange={(value) => setProduct({...product, customization: value as CustomizationType})}>
             <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-1 rounded-xl">
@@ -494,5 +556,15 @@ export function CustomProductConfigurator() {
         </div>
       </div>
     </div>
+    
+    {/* Custom Bottom Navigation - Mobile Only */}
+    <CustomBottomNav 
+      onSectionClick={handleSectionClick}
+      onOrderClick={handleAddToCart}
+      activeSection={activeSection}
+      isLoading={isLoading}
+      canOrder={product.customization !== 'text' || !!product.text}
+    />
+  </>
   )
 }
