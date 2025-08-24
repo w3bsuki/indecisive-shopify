@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { Heart, ShoppingBag } from 'lucide-react'
 import { ProductPrice } from '@/components/commerce/product-price'
 import { useMarket } from '@/hooks/use-market'
+import { Money as MoneyClient } from '@/components/commerce/money'
 import {
   Dialog,
   DialogContent,
@@ -181,17 +182,18 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           onClick={() => handleAddToCart()}
           disabled={isLoading || !isAvailable || !cartReady}
           className={cn(
-            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200",
+            "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-200",
+            "bg-white border-2 border-white shadow-md",
             isLoading || !isAvailable || !cartReady
               ? "text-gray-300 cursor-not-allowed"
-              : "text-gray-700 hover:text-black"
+              : "text-black hover:bg-black hover:text-white"
           )}
           aria-label={translations.addToCart}
         >
           {isLoading ? (
             <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
           ) : (
-            <ShoppingBag className="w-5 h-5" />
+            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
           )}
         </button>
 
@@ -229,16 +231,33 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
 
   // Price only
   if (variant === 'price-only') {
+    const price = product.priceRange.minVariantPrice
+    const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
+    const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
+    
     return (
-      <ProductPrice 
-        priceRange={product.priceRange as any}
-        compareAtPriceRange={product.compareAtPriceRange as any}
-        size="sm"
-        showCompareAt={false}
-        showRange={false}
-        showDualCurrency={market.countryCode === 'BG'}
-        className="text-sm font-medium text-gray-900 text-center flex justify-center"
-      />
+      <div className="text-center font-mono">
+        {isOnSale && compareAtPrice ? (
+          <div className="flex items-center justify-center gap-2">
+            <MoneyClient 
+              data={price} 
+              showDualCurrency={false}
+              className="text-sm font-bold text-black"
+            />
+            <MoneyClient 
+              data={compareAtPrice}
+              showDualCurrency={false}
+              className="text-xs text-gray-500 line-through"
+            />
+          </div>
+        ) : (
+          <MoneyClient 
+            data={price} 
+            showDualCurrency={false}
+            className="text-sm font-bold text-black"
+          />
+        )}
+      </div>
     )
   }
 
