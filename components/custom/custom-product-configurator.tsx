@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Shirt, HardHat, ShoppingBag, Type, Image as ImageIcon, Palette, Package } from 'lucide-react'
 import { useCart } from '@/hooks/use-cart'
 import { useToast } from '@/hooks/use-toast'
+import { storefront } from '@/lib/shopify'
 
 type ProductType = 'tshirt' | 'hat' | 'bag'
 type CustomizationType = 'text' | 'image' | 'both'
@@ -82,27 +83,55 @@ export function CustomProductConfigurator() {
     setIsLoading(true)
     
     try {
-      // In a real implementation, this would:
-      // 1. Send the custom product details to your backend
-      // 2. Create a draft order in Shopify
-      // 3. Add the draft order product to cart
+      // Map product type to Shopify variant IDs
+      // These need to be actual variant IDs from your Shopify store
+      const variantMap: Record<string, string> = {
+        'tshirt-black': 'gid://shopify/ProductVariant/YOUR_TSHIRT_BLACK_VARIANT_ID',
+        'tshirt-white': 'gid://shopify/ProductVariant/YOUR_TSHIRT_WHITE_VARIANT_ID',
+        'hat-black': 'gid://shopify/ProductVariant/YOUR_HAT_BLACK_VARIANT_ID',
+        'hat-white': 'gid://shopify/ProductVariant/YOUR_HAT_WHITE_VARIANT_ID',
+        'bag-natural': 'gid://shopify/ProductVariant/YOUR_BAG_NATURAL_VARIANT_ID',
+        'bag-black': 'gid://shopify/ProductVariant/YOUR_BAG_BLACK_VARIANT_ID',
+      }
       
-      // For demo purposes, we'll show a success message
-      // You would need to integrate with your backend API here
+      // Get the variant ID based on product type and color
+      const variantKey = `${product.type}-${product.color}`
+      const variantId = variantMap[variantKey]
       
-      // Store custom product details in localStorage for checkout
-      const customProducts = JSON.parse(localStorage.getItem('customProducts') || '[]')
-      customProducts.push({
-        ...product,
-        id: `custom-${Date.now()}`,
-        createdAt: new Date().toISOString()
-      })
-      localStorage.setItem('customProducts', JSON.stringify(customProducts))
-      
-      toast({
-        title: t('success.addedToCart', { fallback: 'Custom product added to cart!' }),
-        description: t('success.description', { fallback: 'Our team will review your design and contact you' })
-      })
+      if (!variantId) {
+        // For now, store in localStorage and show notice
+        const customProducts = JSON.parse(localStorage.getItem('customProducts') || '[]')
+        customProducts.push({
+          ...product,
+          id: `custom-${Date.now()}`,
+          price: product.type === 'tshirt' ? '45' : product.type === 'hat' ? '40' : '35',
+          createdAt: new Date().toISOString()
+        })
+        localStorage.setItem('customProducts', JSON.stringify(customProducts))
+        
+        toast({
+          title: t('success.addedToCart', { fallback: 'Custom product request saved!' }),
+          description: t('success.description', { fallback: 'Our team will contact you to complete your custom order' })
+        })
+      } else {
+        // Add to cart with custom attributes
+        const customAttributes = [
+          { key: 'Custom Type', value: product.customization },
+          { key: 'Material', value: product.material },
+          ...(product.text ? [{ key: 'Custom Text', value: product.text }] : []),
+          ...(product.textColor ? [{ key: 'Text Color', value: product.textColor }] : []),
+          ...(product.textPosition ? [{ key: 'Text Position', value: product.textPosition }] : []),
+          ...(product.size ? [{ key: 'Size', value: product.size }] : []),
+        ]
+        
+        // Add to cart with custom attributes
+        await addItem(variantId, 1, customAttributes)
+        
+        toast({
+          title: t('success.addedToCart', { fallback: 'Custom product added to cart!' }),
+          description: t('success.description', { fallback: 'You can add special instructions at checkout' })
+        })
+      }
       
       // Reset form
       setProduct({

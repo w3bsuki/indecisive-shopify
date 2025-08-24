@@ -555,7 +555,7 @@
       "failed": "Failed to add custom product"
     },
     "success": {
-      "addedToCart": "Custom product added to cart\!",
+      "addedToCart": "Custom product added to cart!",
       "description": "Our team will review your design and contact you"
     },
     "info": {

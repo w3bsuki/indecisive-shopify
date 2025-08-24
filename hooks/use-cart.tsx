@@ -181,7 +181,7 @@ export function useCart() {
   
 
   // Add item to cart with optimistic updates
-  const addItem = useCallback(async (merchandiseId: string, quantity: number = 1) => {
+  const addItem = useCallback(async (merchandiseId: string, quantity: number = 1, customAttributes?: Array<{key: string, value: string}>) => {
     if (!merchandiseId) {
       toast.error('Invalid product variant', { id: 'cart-error' });
       return;
@@ -250,7 +250,7 @@ export function useCart() {
         await linesUpdate([{ id: existingLine.id, quantity: newQuantity }]);
       } else {
         // Add new line
-        await linesAdd([{ merchandiseId, quantity }]);
+        await linesAdd([{ merchandiseId, quantity, attributes: customAttributes }]);
       }
       
       // Track add to cart event
