@@ -15,10 +15,19 @@ export default async function CustomPage() {
     <div className="min-h-screen bg-white">
       <Navigation />
       
-      <main className="pt-0 md:pt-4 pb-20 md:pb-24">
+      <main className="pb-20 md:pb-24">
+        {/* Info Banner - Fills the empty space */}
+        <div className="bg-black text-white py-2 md:py-3">
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <p className="text-xs md:text-sm font-medium">
+              ✨ CUSTOM ORDERS READY IN 3-5 DAYS • FREE DESIGN CONSULTATION
+            </p>
+          </div>
+        </div>
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header - Compact and Modern */}
-          <div className="text-center mb-4 md:mb-6">
+          <div className="text-center mt-4 md:mt-6 mb-4 md:mb-6">
             <h1 className="text-2xl md:text-4xl font-black font-mono uppercase tracking-tight text-black mb-1">
               {t('title', { fallback: 'Design Your Own' })}
             </h1>
