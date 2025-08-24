@@ -11,7 +11,6 @@ import { CommunityCarousel } from '@/components/commerce/community-carousel'
 import { TshirtsCarousel } from '@/components/commerce/tshirts-carousel'
 import { BagsCarousel } from '@/components/commerce/bags-carousel'
 import { ErrorRefreshButton } from '@/components/ui/error-refresh-button'
-import { ScrollToTopLink } from '@/components/ui/scroll-to-top-link'
 
 export default async function HomePage() {
   // Get translations for the home page
@@ -77,7 +76,7 @@ export default async function HomePage() {
           
           {/* Modern CTA Section */}
           <div className="mt-12 md:mt-16 text-center">
-            <ScrollToTopLink 
+            <Link 
               href="/products?category=bucket-hats" 
               className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-semibold text-sm rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
@@ -87,7 +86,7 @@ export default async function HomePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </div>
-            </ScrollToTopLink>
+            </Link>
             <p className="mt-6 text-sm font-medium text-gray-500 bg-gray-50 inline-block px-4 py-2 rounded-full">
               {tp('viewAllCount', { count: productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length })}
             </p>
