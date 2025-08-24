@@ -1,5 +1,43 @@
 # Custom Products Setup Guide
 
+## Current Implementation (V1)
+A clean, modern custom product configurator with:
+- Product type selection (T-shirt, Hat, Bag)
+- Color and material options
+- Text customization with position/color
+- Mobile-first responsive design
+- Local storage for custom requests
+
+## Recommended Enhancements for V2
+
+### Plugin Options
+
+1. **Zakeke** (Best for Professional Stores)
+   - Real product mockups with live preview
+   - 3D visualization
+   - Advanced text effects (curve, arc)
+   - Image upload and positioning
+   - Price: $49-299/month
+   - [zakeke.com](https://www.zakeke.com/)
+
+2. **Customily** (Good Balance)
+   - Live preview on actual products
+   - Design templates
+   - Bulk ordering support
+   - Price: $19-99/month
+   - [customily.com](https://customily.com/)
+
+3. **Product Personalizer** (Budget-Friendly)
+   - Simple but effective
+   - Good Shopify integration
+   - Price: $9.99/month
+   - Shopify App Store
+
+4. **Teeinblue** (Print-on-Demand Focused)
+   - Mockup generator
+   - POD integration
+   - Price: $19-89/month
+
 ## Shopify Admin Setup
 
 ### Option 1: Using Base Products with Variants (Recommended)

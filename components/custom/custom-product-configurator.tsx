@@ -157,14 +157,41 @@ export function CustomProductConfigurator() {
   return (
     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
       {/* Product Preview - Mobile First */}
-      <div className="order-2 lg:order-1">
-        <div className="sticky top-24 bg-white border border-gray-200 rounded-3xl p-6 lg:p-8">
-          <div className="aspect-square bg-gray-50 rounded-2xl flex items-center justify-center mb-6">
+      <div className="order-1">
+        <div className="lg:sticky lg:top-24 bg-white border border-gray-200 rounded-3xl p-6 lg:p-8">
+          <div className="aspect-square bg-gray-50 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden">
             <div className="relative w-48 h-48 lg:w-64 lg:h-64">
-              {/* Product Icon */}
-              {product.type === 'tshirt' && <Shirt className="w-full h-full" strokeWidth={1} />}
-              {product.type === 'hat' && <HardHat className="w-full h-full" strokeWidth={1} />}
-              {product.type === 'bag' && <ShoppingBag className="w-full h-full" strokeWidth={1} />}
+              {/* Product Icon with color fill */}
+              {product.type === 'tshirt' && (
+                <Shirt 
+                  className="w-full h-full transition-colors duration-300" 
+                  strokeWidth={1}
+                  style={{ 
+                    fill: product.color === 'white' ? '#f5f5f5' : product.color,
+                    stroke: product.color === 'white' ? '#e5e5e5' : '#000'
+                  }}
+                />
+              )}
+              {product.type === 'hat' && (
+                <HardHat 
+                  className="w-full h-full transition-colors duration-300" 
+                  strokeWidth={1}
+                  style={{ 
+                    fill: product.color === 'white' ? '#f5f5f5' : product.color,
+                    stroke: product.color === 'white' ? '#e5e5e5' : '#000'
+                  }}
+                />
+              )}
+              {product.type === 'bag' && (
+                <ShoppingBag 
+                  className="w-full h-full transition-colors duration-300" 
+                  strokeWidth={1}
+                  style={{ 
+                    fill: product.color === 'natural' ? '#F5F5DC' : product.color === 'white' ? '#f5f5f5' : product.color,
+                    stroke: product.color === 'white' || product.color === 'natural' ? '#e5e5e5' : '#000'
+                  }}
+                />
+              )}
               
               {/* Custom Text Preview */}
               {product.customization !== 'image' && product.text && (
@@ -209,7 +236,7 @@ export function CustomProductConfigurator() {
       </div>
 
       {/* Configuration Form - Mobile Optimized */}
-      <div className="order-1 lg:order-2 space-y-6">
+      <div className="order-2 space-y-6">
         {/* Product Type Selection - Modern Pills */}
         <div>
           <Label className="text-sm font-medium uppercase tracking-wider text-gray-600 mb-3 block">{t('form.productType')}</Label>
@@ -456,9 +483,15 @@ export function CustomProductConfigurator() {
         </Button>
 
         {/* Info - Subtle */}
-        <p className="text-xs text-gray-500 text-center">
-          {t('info.productionTime')}
-        </p>
+        <div className="space-y-2">
+          <p className="text-xs text-gray-500 text-center">
+            {t('info.productionTime')}
+          </p>
+          {/* Note about limitations */}
+          <p className="text-xs text-gray-400 text-center">
+            Preview is for reference only. Final product may vary.
+          </p>
+        </div>
       </div>
     </div>
   )
