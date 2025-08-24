@@ -236,26 +236,48 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
     const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
     
     return (
-      <div className="text-center font-mono">
+      <div className="text-center space-y-1">
         {isOnSale && compareAtPrice ? (
-          <div className="flex items-center justify-center gap-2">
+          <>
+            <div className="flex items-center justify-center gap-2">
+              <MoneyClient 
+                data={price} 
+                showDualCurrency={false}
+                className="text-sm font-bold text-black"
+              />
+              <MoneyClient 
+                data={compareAtPrice}
+                showDualCurrency={false}
+                className="text-xs text-gray-500 line-through"
+              />
+            </div>
+            {market.countryCode === 'BG' && (
+              <div className="text-xs text-gray-600">
+                <MoneyClient 
+                  data={price} 
+                  showDualCurrency={true}
+                  className="text-xs"
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <>
             <MoneyClient 
               data={price} 
               showDualCurrency={false}
               className="text-sm font-bold text-black"
             />
-            <MoneyClient 
-              data={compareAtPrice}
-              showDualCurrency={false}
-              className="text-xs text-gray-500 line-through"
-            />
-          </div>
-        ) : (
-          <MoneyClient 
-            data={price} 
-            showDualCurrency={false}
-            className="text-sm font-bold text-black"
-          />
+            {market.countryCode === 'BG' && (
+              <div className="text-xs text-gray-600">
+                <MoneyClient 
+                  data={price} 
+                  showDualCurrency={true}
+                  className="text-xs"
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     )

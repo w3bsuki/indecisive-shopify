@@ -125,7 +125,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
           </div>
         )}
 
-        <h3 className="text-sm font-semibold text-gray-900 text-center mb-2">
+        <h3 className="text-sm font-medium text-gray-800 text-center mb-2">
           <Link 
             href={`/products/${product.handle}`} 
             className="hover:text-black transition-colors duration-200 line-clamp-2"
