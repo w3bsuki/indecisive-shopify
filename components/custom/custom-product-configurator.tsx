@@ -155,12 +155,12 @@ export function CustomProductConfigurator() {
   }
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+    <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
       {/* Product Preview - Mobile First */}
       <div className="order-1">
-        <div className="lg:sticky lg:top-24 bg-white border border-gray-200 rounded-3xl p-6 lg:p-8">
-          <div className="aspect-square bg-gray-50 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden">
-            <div className="relative w-48 h-48 lg:w-64 lg:h-64">
+        <div className="lg:sticky lg:top-24 bg-white border border-gray-200 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8">
+          <div className="aspect-square bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 relative overflow-hidden">
+            <div className="relative w-40 h-40 md:w-48 md:h-48 lg:w-64 lg:h-64">
               {/* Product Icon with color fill */}
               {product.type === 'tshirt' && (
                 <Shirt 
@@ -216,19 +216,19 @@ export function CustomProductConfigurator() {
           </div>
           
           {/* Product Details - Clean Grid */}
-          <div className="grid grid-cols-3 gap-4 text-sm">
+          <div className="grid grid-cols-3 gap-2 md:gap-4 text-xs md:text-sm">
             <div className="text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{t('preview.color')}</p>
-              <p className="font-semibold capitalize">{product.color}</p>
+              <p className="text-gray-500 text-[10px] md:text-xs uppercase tracking-wider mb-0.5 md:mb-1">{t('preview.color')}</p>
+              <p className="font-semibold capitalize text-xs md:text-sm">{product.color}</p>
             </div>
             <div className="text-center">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{t('preview.material')}</p>
-              <p className="font-semibold capitalize">{product.material.replace('-', ' ')}</p>
+              <p className="text-gray-500 text-[10px] md:text-xs uppercase tracking-wider mb-0.5 md:mb-1">{t('preview.material')}</p>
+              <p className="font-semibold capitalize text-xs md:text-sm">{product.material.replace('-', ' ')}</p>
             </div>
             {product.size && (
               <div className="text-center">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{t('preview.size')}</p>
-                <p className="font-semibold">{product.size}</p>
+                <p className="text-gray-500 text-[10px] md:text-xs uppercase tracking-wider mb-0.5 md:mb-1">{t('preview.size')}</p>
+                <p className="font-semibold text-xs md:text-sm">{product.size}</p>
               </div>
             )}
           </div>
