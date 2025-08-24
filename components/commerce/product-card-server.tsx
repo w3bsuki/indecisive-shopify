@@ -83,8 +83,17 @@ export async function ProductCardServer({ product, priority: _priority = false }
 
       {/* Product Info */}
       <div className="p-4">
-        {/* Color Variants Display with Action Buttons */}
-        <div className="flex items-center justify-between mb-3">
+        {/* Action Buttons and Color Variants Row */}
+        <div className="flex items-center justify-between mb-3 gap-2">
+          {/* Wishlist Button - Left */}
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="wishlist-only"
+            translations={actionTranslations}
+          />
+          
+          {/* Color Variants - Center */}
           <div className="flex-1 flex items-center justify-center gap-1.5">
             {availableColors.length > 0 ? (
               <>
@@ -108,26 +117,17 @@ export async function ProductCardServer({ product, priority: _priority = false }
                 )}
               </>
             ) : (
-              <div className="w-3 h-3" />
+              <div className="h-3" />
             )}
           </div>
           
-          {/* Action Buttons */}
-          <div className="flex items-center gap-1">
-            <ProductCardActions 
-              product={product}
-              sizes={sizes}
-              variant="wishlist-only"
-              translations={actionTranslations}
-            />
-            
-            <ProductCardActions 
-              product={product}
-              sizes={sizes}
-              variant="cart-icon-only"
-              translations={actionTranslations}
-            />
-          </div>
+          {/* Cart Button - Right */}
+          <ProductCardActions 
+            product={product}
+            sizes={sizes}
+            variant="cart-icon-only"
+            translations={actionTranslations}
+          />
         </div>
 
         <h3 className="text-sm font-medium text-gray-800 text-center mb-2">
