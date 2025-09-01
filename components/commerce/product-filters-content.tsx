@@ -196,9 +196,9 @@ export function ProductFiltersContent() {
                 updateFilter('sort', newValue)
               }}
               className={cn(
-                "font-mono text-xs h-11 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5",
+                "font-mono text-xs h-11 px-3 rounded-full transition-colors flex items-center justify-center gap-1.5",
                 currentSort === option.value
-                  ? "bg-black text-white shadow-md"
+                  ? "bg-black text-white"
                   : "bg-gray-50 text-black hover:bg-gray-100"
               )}
             >
@@ -250,7 +250,7 @@ export function ProductFiltersContent() {
               >
                 <div
                   className={cn(
-                    "w-10 h-10 rounded-full border-2 transition-all shadow-sm",
+                    "w-10 h-10 rounded-full border-2 transition-transform",
                     isSelected 
                       ? "border-black scale-110" 
                       : "border-gray-200 group-hover:border-gray-300",
@@ -281,9 +281,9 @@ export function ProductFiltersContent() {
               key={size.value}
               onClick={() => toggleArrayFilter('sizes', size.value, currentSizes)}
               className={cn(
-                "font-mono text-xs h-10 px-3 rounded-xl transition-all font-semibold",
+                "font-mono text-xs h-10 px-3 rounded-full transition-colors font-semibold",
                 currentSizes.includes(size.value)
-                  ? "bg-black text-white shadow-md"
+                  ? "bg-black text-white"
                   : "bg-gray-50 text-black hover:bg-gray-100"
               )}
             >
@@ -311,7 +311,7 @@ export function ProductFiltersContent() {
                 )}
               >
                 <div className={cn(
-                  "w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center",
+                  "w-5 h-5 rounded-lg border-2 transition-colors flex items-center justify-center",
                   isChecked ? "bg-black border-black" : "bg-white border-gray-300"
                 )}>
                   {isChecked && (

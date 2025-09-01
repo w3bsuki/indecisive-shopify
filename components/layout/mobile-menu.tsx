@@ -126,11 +126,18 @@ export function MobileMenu({ className }: MobileMenuProps) {
                       <span className="text-sm font-mono">{t('hats')}</span>
                     </Link>
                     <Link
-                      href="/products?collection=t-shirts"
+                      href="/tshirts"
                       onClick={() => setIsOpen(false)}
                       className="p-3 text-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                     >
                       <span className="text-sm font-mono">{t('tshirts')}</span>
+                    </Link>
+                    <Link
+                      href="/crop-tops"
+                      onClick={() => setIsOpen(false)}
+                      className="p-3 text-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      <span className="text-sm font-mono">{t('cropTops')}</span>
                     </Link>
                     <Link
                       href="/products?collection=hoodies"
@@ -195,7 +202,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
                 <AccordionContent>
                   <div className="space-y-2">
                     <Link
-                      href="/collections/new"
+                      href="/new"
                       onClick={() => setIsOpen(false)}
                       className="block p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors relative"
                     >
@@ -203,7 +210,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
                       <span className="absolute top-2 right-2 text-[10px] bg-black text-white px-1.5 py-0.5 rounded">NEW</span>
                     </Link>
                     <Link
-                      href="/collections/sale"
+                      href="/sale"
                       onClick={() => setIsOpen(false)}
                       className="block p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors relative"
                     >

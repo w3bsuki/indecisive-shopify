@@ -212,6 +212,8 @@ interface ProductsFilter {
   availability?: string[];
   sort?: 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'created-desc';
   tags?: string[]; // For filtering by tags like 'new', 'sale', etc.
+  excludeTags?: string[]; // For excluding products with specific tags
+  keyword?: string; // free text search query
 }
 
 interface PaginatedProducts {
@@ -239,8 +241,19 @@ export async function getProductsPaginated(
       language: marketContext.languageCode
     };
 
-    // Check if we need to use collection-specific query
-    if (filters.category && filters.category !== 'all') {
+    // Map certain "virtual" categories to tag-based filters (no Shopify collection needed)
+    const TAG_CATEGORY_MAP: Record<string, string[]> = {
+      // Virtual/tag-driven categories (ensure we don't use collection query for these)
+      'crop-tops': ['crop top'],
+      // Normalize all tees/tshirts handles to tag-based filtering using Shopify tag `tee`
+      'tees': ['tee'],
+      'tshirts': ['tee'],
+      'tees-1': ['tee']
+    };
+    const isTagCategory = !!(filters.category && TAG_CATEGORY_MAP[filters.category]);
+
+    // Check if we need to use collection-specific query (skip when it's a tag-based category)
+    if (filters.category && filters.category !== 'all' && !isTagCategory) {
       
       // Calculate cursor for pagination
       const skip = (page - 1) * perPage;
@@ -325,10 +338,44 @@ export async function getProductsPaginated(
       queryParts.push(`(${sizeQuery})`);
     }
     
-    // General tags filter (for new, sale, etc.)
+    // General tags filter (for new, sale, etc.) including tag-based categories like crop-tops
+    const combinedTags: string[] = [];
+    if (isTagCategory) {
+      combinedTags.push(...(TAG_CATEGORY_MAP[filters.category as string] || []));
+    }
+    
+    // Keyword search (title, product_type, tag)
+    if (filters.keyword && filters.keyword.trim().length > 0) {
+      const q = filters.keyword.trim().replace(/\s+/g, ' ')
+      const isMulti = /\s/.test(q)
+      const quoted = isMulti ? `"${q.replace(/"/g, '\\"')}"` : q
+      const titlePart = `title:*${q}*`
+      const tagPart = `tag:${quoted}`
+      const typePart = `product_type:${quoted}`
+      queryParts.push(`(${titlePart} OR ${tagPart} OR ${typePart})`)
+    }
     if (filters.tags && filters.tags.length > 0) {
-      const tagQuery = filters.tags.map(tag => `tag:${tag}`).join(' OR ');
-      queryParts.push(`(${tagQuery})`);
+      combinedTags.push(...filters.tags);
+    }
+    if (combinedTags.length > 0) {
+      const encodeTag = (tag: string) => {
+        const escaped = tag.replace(/"/g, '\\"')
+        const needsQuotes = /\s|[():]/.test(tag)
+        return needsQuotes ? `tag:"${escaped}"` : `tag:${tag}`
+      }
+      const tagQuery = Array.from(new Set(combinedTags)).map(encodeTag).join(' OR ')
+      queryParts.push(`(${tagQuery})`)
+    }
+    
+    // Tag exclusion (for filtering out specific product types)
+    if (filters.excludeTags && filters.excludeTags.length > 0) {
+      const encodeTag = (tag: string) => {
+        const escaped = tag.replace(/"/g, '\\"')
+        const needsQuotes = /\s|[():]/.test(tag)
+        return needsQuotes ? `-tag:"${escaped}"` : `-tag:${tag}`
+      }
+      const excludeQuery = filters.excludeTags.map(encodeTag).join(' ')
+      queryParts.push(excludeQuery)
     }
     
     const searchQuery = queryParts.join(' ');
@@ -435,6 +482,15 @@ export async function getProductsPaginated(
       });
     }
     
+    // Tag exclusion filter (client-side to ensure products with excluded tags are filtered out)
+    if (filters.excludeTags && filters.excludeTags.length > 0) {
+      const excludedTags = filters.excludeTags.map(tag => tag.toLowerCase());
+      filteredProducts = (filteredProducts as Product[]).filter((product: Product) => {
+        const productTags = (product.tags || []).map(tag => tag.toLowerCase());
+        return !excludedTags.some(excludedTag => productTags.includes(excludedTag));
+      });
+    }
+    
     return {
       products: mapStorefrontProductsToShopifyProducts(filteredProducts as Product[]),
       pageInfo: {
@@ -504,3 +560,4 @@ export function extractFilterOptions(products: Product[]) {
     }
   };
 }
+    

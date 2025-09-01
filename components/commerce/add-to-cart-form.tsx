@@ -9,6 +9,7 @@ import { useWishlist } from '@/hooks/use-wishlist'
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useTranslations } from 'next-intl'
+import { getColorFromName } from '@/lib/utils/product'
 import { BackInStockForm } from './back-in-stock-form'
 
 interface AddToCartFormProps {
@@ -31,7 +32,11 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   
   // Get size and color options
   const sizeOption = product.options?.find(opt => opt.name.toLowerCase() === 'size')
-  const colorOption = product.options?.find(opt => opt.name.toLowerCase() === 'color')
+  // Support common synonyms/locales for color option
+  const colorOption = product.options?.find(opt => {
+    const n = opt.name.toLowerCase().trim()
+    return n === 'color' || n === 'colour' || n === 'цвят'
+  })
   const [selectedColor, setSelectedColor] = useState<string>()
   const [selectedSize, setSelectedSize] = useState<string>()
 
@@ -42,8 +47,9 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
       setSelectedVariant(variant)
       // Set initial selections based on variant
       variant.selectedOptions?.forEach(opt => {
-        if (opt.name.toLowerCase() === 'size') setSelectedSize(opt.value)
-        if (opt.name.toLowerCase() === 'color') setSelectedColor(opt.value)
+        const n = opt.name.toLowerCase().trim()
+        if (n === 'size') setSelectedSize(opt.value)
+        if (n === 'color' || n === 'colour' || n === 'цвят') setSelectedColor(opt.value)
       })
     } else if (variants.length > 0) {
       // For products with only size options (no color), select the first available size
@@ -58,7 +64,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         }
       } else if (colorOption) {
         // Auto-select first available color
-        const colorOpt = firstAvailable.selectedOptions?.find(opt => opt.name.toLowerCase() === 'color')
+        const colorOpt = firstAvailable.selectedOptions?.find(opt => {
+          const n = opt.name.toLowerCase().trim()
+          return n === 'color' || n === 'colour' || n === 'цвят'
+        })
         if (colorOpt) setSelectedColor(colorOpt.value)
       }
     }
@@ -76,9 +85,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
     
     return variants.find(variant => {
       const variantOptions = variant.selectedOptions || []
-      const matchesColor = !selectedColor || variantOptions.some(opt => 
-        opt.name.toLowerCase() === 'color' && opt.value === selectedColor
-      )
+      const matchesColor = !selectedColor || variantOptions.some(opt => {
+        const n = opt.name.toLowerCase().trim()
+        return (n === 'color' || n === 'colour' || n === 'цвят') && opt.value === selectedColor
+      })
       const matchesSize = !selectedSize || variantOptions.some(opt => 
         opt.name.toLowerCase() === 'size' && opt.value === selectedSize
       )
@@ -105,9 +115,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
     return sizeOption.values.map(size => {
       const variant = variants.find(v => {
         const options = v.selectedOptions || []
-        const hasColor = !selectedColor || options.some(opt => 
-          opt.name.toLowerCase() === 'color' && opt.value === selectedColor
-        )
+        const hasColor = !selectedColor || options.some(opt => {
+          const n = opt.name.toLowerCase().trim()
+          return (n === 'color' || n === 'colour' || n === 'цвят') && opt.value === selectedColor
+        })
         const hasSize = options.some(opt => 
           opt.name.toLowerCase() === 'size' && opt.value === size
         )
@@ -129,9 +140,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
     return colorOption.values.map(color => {
       const hasAvailableVariant = variants.some(v => {
         const options = v.selectedOptions || []
-        const hasColor = options.some(opt => 
-          opt.name.toLowerCase() === 'color' && opt.value === color
-        )
+        const hasColor = options.some(opt => {
+          const n = opt.name.toLowerCase().trim()
+          return (n === 'color' || n === 'colour' || n === 'цвят') && opt.value === color
+        })
         return hasColor && v.availableForSale
       })
       
@@ -188,26 +200,8 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
   const isDisabled = !selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding
 
-  // Map color names to hex values for swatches
-  const getColorHex = (colorName: string): string => {
-    const colorMap: Record<string, string> = {
-      'black': '#000000',
-      'white': '#ffffff', 
-      'red': '#ef4444',
-      'blue': '#3b82f6',
-      'green': '#10b981',
-      'yellow': '#f59e0b',
-      'purple': '#8b5cf6',
-      'pink': '#ec4899',
-      'gray': '#6b7280',
-      'grey': '#6b7280',
-      'brown': '#92400e',
-      'navy': '#1e3a8a',
-      'beige': '#f5e6d3',
-      'orange': '#f97316'
-    }
-    return colorMap[colorName.toLowerCase()] || '#e5e7eb'
-  }
+  // Use shared util to map color names to hex values (supports more locales/keywords)
+  const getColorHex = (colorName: string): string => getColorFromName(colorName)
 
   return (
     <div className="space-y-4">

@@ -16,6 +16,8 @@ export default async function ProductsPage({
     colors?: string
     sizes?: string
     availability?: string
+    q?: string
+    tags?: string
     minPrice?: string
     maxPrice?: string
     page?: string
@@ -30,16 +32,34 @@ export default async function ProductsPage({
   const currentPage = parseInt(params.page || '1', 10)
   const perPage = 20 // Show 20 products per page
   
-  // Build filters object
-  
+  // Normalize category handle (unify tees/tshirts variants)
+  const normalizeCategory = (handle?: string) => {
+    if (!handle) return undefined
+    const h = handle.toLowerCase()
+    if (h === 'tees' || h === 'tshirts' || h === 'tees-1') return 'tshirts'
+    return h
+  }
+
+  const normalizedCategory = normalizeCategory(params.category)
+
+  // Build filters object with category-specific tag filtering
   const filters = {
-    category: params.category,
+    category: normalizedCategory,
     minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
     maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : undefined,
     colors: params.colors ? params.colors.split(',') : undefined,
     sizes: params.sizes ? params.sizes.split(',') : undefined,
     availability: params.availability ? params.availability.split(',') : undefined,
-    sort: params.sort as any
+    sort: params.sort as any,
+    tags: params.tags ? params.tags.split(',') : undefined,
+    keyword: params.q || undefined,
+    // Simple tag mapping: crop-tops -> 'crop top', tees/tshirts -> 'tee'
+    ...(normalizedCategory === 'crop-tops' && {
+      tags: ['crop top']
+    }),
+    ...(normalizedCategory === 'tshirts' && {
+      tags: ['tee']
+    })
   }
   
   // Fetch products with server-side filtering and pagination
@@ -75,13 +95,14 @@ export default async function ProductsPage({
     <ProductPageLayout
       title={t('title')}
       variant="all"
+      showBanner={false}
       products={products}
       currentPage={currentPage}
       totalPages={totalPages}
       totalCount={totalCount}
       pageInfo={pageInfo}
       hasFilters={hasFilters}
-      currentCategory={params.category || 'all'}
+      currentCategory={normalizedCategory || 'all'}
       breadcrumbItems={breadcrumbItems}
     />
   )

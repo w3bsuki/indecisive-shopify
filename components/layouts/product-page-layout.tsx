@@ -2,8 +2,12 @@ import { ProductCardServer } from '@/components/commerce/product-card-server'
 import { NoProductsFound } from '@/app/(shop)/products/page-client'
 import { ProductPageBanner } from '@/components/commerce/product-page-banner'
 import { ProductsPagination } from '@/components/commerce/products-pagination'
+import { ProductsToolbar } from '@/components/commerce/products-toolbar'
+import { InlineProductsSearch } from '@/components/commerce/inline-products-search'
+import { ActiveFiltersBar } from '@/components/commerce/active-filters-bar'
 import { BreadcrumbStructuredData } from '@/components/layout/breadcrumb-navigation'
 import { CollectionsPillsServer } from '@/components/commerce/collections-pills-server'
+import { MobileRefineBar } from '@/components/commerce/mobile-refine-bar'
 import type { ShopifyProduct } from '@/lib/shopify/types'
 
 interface ProductPageLayoutProps {
@@ -57,6 +61,7 @@ export function ProductPageLayout({
   gridClassName = '',
   showBanner = true
 }: ProductPageLayoutProps) {
+  const totalCount = _totalCount
   return (
     <div className={className}>
       {/* SEO Breadcrumbs */}
@@ -73,13 +78,29 @@ export function ProductPageLayout({
         />
       )}
       
-      {/* Modern Collection Tabs */}
+      {/* Category Pills + Toolbar (sticky) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 px-safe">
-        <div className="pt-6">
-          <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
+        <div className="sticky top-14 md:top-0 z-20 bg-transparent backdrop-blur-0 shadow-none">
+          <div className="pt-3">
+            <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
+          </div>
+          {/* Inline search (desktop only to reduce mobile header height) */}
+          <div className="hidden sm:block">
+            <InlineProductsSearch />
+          </div>
+        </div>
+        {/* Below-the-fold controls (reduce sticky header noise) */}
+        <div className="mt-3">
+          {/* Show toolbar only on desktop; mobile uses bottom refine bar */}
+          <div className="px-1 hidden sm:block">
+            <ProductsToolbar totalCount={totalCount} />
+          </div>
+          <div className="px-1 pt-1">
+            <ActiveFiltersBar />
+          </div>
         </div>
 
-        {/* Modern Products Grid with Better Spacing */}
+        {/* Products Grid */}
         {products.length > 0 ? (
           <>
             <div className={`grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 sm:gap-8 lg:gap-10 mt-8 ${gridClassName}`}>
@@ -108,6 +129,8 @@ export function ProductPageLayout({
           <NoProductsFound />
         )}
       </div>
+      {/* Mobile bottom refine bar for Filters/Sort */}
+      <MobileRefineBar totalCount={totalCount} />
     </div>
   )
 }

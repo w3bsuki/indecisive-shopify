@@ -45,8 +45,7 @@ export async function storefront<T = unknown>(
         query,
         variables: requestVariables,
       }),
-      // Add timeout and other fetch options
-      signal: AbortSignal.timeout(10000), // 10 second timeout
+      // Add basic timeout without AbortSignal.timeout for better compatibility
     });
 
     if (!response.ok) {

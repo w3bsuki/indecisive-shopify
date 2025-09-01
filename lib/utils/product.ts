@@ -33,9 +33,10 @@ export function getProductColors(product: ShopifyProduct): string[] {
   // Check all variants for color options
   if (product.variants?.edges?.length) {
     product.variants.edges.forEach(edge => {
-      const colorOption = edge.node.selectedOptions?.find(
-        option => option.name.toLowerCase() === 'color'
-      )
+      const colorOption = edge.node.selectedOptions?.find(option => {
+        const n = option.name.toLowerCase().trim()
+        return n === 'color' || n === 'colour' || n === 'цвят'
+      })
       if (colorOption?.value) {
         colors.add(colorOption.value)
       }
@@ -44,9 +45,10 @@ export function getProductColors(product: ShopifyProduct): string[] {
   
   // If no color options found in variants, check product options
   if (colors.size === 0 && product.options?.length) {
-    const colorOption = product.options.find(
-      option => option.name.toLowerCase() === 'color'
-    )
+    const colorOption = product.options.find(option => {
+      const n = option.name.toLowerCase().trim()
+      return n === 'color' || n === 'colour' || n === 'цвят'
+    })
     if (colorOption?.values?.length) {
       colorOption.values.forEach(value => {
         if (value) {
@@ -95,6 +97,11 @@ export function getProductColors(product: ShopifyProduct): string[] {
 export function getColorFromName(colorName: string): string {
   // Normalize the color name to lowercase for matching
   const normalizedColor = colorName.toLowerCase().trim()
+
+  // If value is a valid HEX color code, use it directly
+  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(normalizedColor)) {
+    return normalizedColor
+  }
   
   // Try exact match first
   const exactColorMap: Record<string, string> = {
@@ -141,6 +148,7 @@ export function getColorFromName(colorName: string): string {
     'hot pink': '#FF69B4',
     'light pink': '#FFB6C1',
     'rose': '#FF007F',
+    'fuchsia': '#FF00FF',
     
     // Gray variations
     'gray': '#6B7280',
@@ -170,17 +178,18 @@ export function getColorFromName(colorName: string): string {
   
   // If no exact match, try partial matching for common patterns
   const colorKeywords = [
-    { keywords: ['black', 'noir', 'bk', 'blk'], color: '#000000' },
-    { keywords: ['white', 'blanc', 'wht', 'wt'], color: '#FFFFFF' },
-    { keywords: ['red', 'rouge', 'rd'], color: '#EF4444' },
-    { keywords: ['pink', 'rose', 'pk', 'pnk'], color: '#EC4899' },
-    { keywords: ['blue', 'bleu', 'bl', 'blu'], color: '#3B82F6' },
-    { keywords: ['green', 'vert', 'grn', 'gr'], color: '#10B981' },
-    { keywords: ['yellow', 'jaune', 'yl', 'ylw'], color: '#F59E0B' },
-    { keywords: ['purple', 'violet', 'prp', 'pur'], color: '#8B5CF6' },
-    { keywords: ['brown', 'brun', 'brn', 'br'], color: '#92400E' },
-    { keywords: ['orange', 'org', 'or'], color: '#F97316' },
-    { keywords: ['gray', 'grey', 'gris', 'gy', 'gry'], color: '#6B7280' },
+    // English + French + Abbrev
+    { keywords: ['black', 'noir', 'bk', 'blk', 'черен', 'черно'], color: '#000000' },
+    { keywords: ['white', 'blanc', 'wht', 'wt', 'бял', 'бяло'], color: '#FFFFFF' },
+    { keywords: ['red', 'rouge', 'rd', 'червен', 'червено'], color: '#EF4444' },
+    { keywords: ['pink', 'rose', 'pk', 'pnk', 'розов', 'розово', 'фуксия'], color: '#EC4899' },
+    { keywords: ['blue', 'bleu', 'bl', 'blu', 'син', 'синьо'], color: '#3B82F6' },
+    { keywords: ['green', 'vert', 'grn', 'gr', 'зелен', 'зелено'], color: '#10B981' },
+    { keywords: ['yellow', 'jaune', 'yl', 'ylw', 'жълт', 'жълто'], color: '#F59E0B' },
+    { keywords: ['purple', 'violet', 'prp', 'pur', 'лилав', 'лилаво'], color: '#8B5CF6' },
+    { keywords: ['brown', 'brun', 'brn', 'br', 'кафяв', 'кафяво'], color: '#92400E' },
+    { keywords: ['orange', 'org', 'or', 'оранжев', 'оранжево'], color: '#F97316' },
+    { keywords: ['gray', 'grey', 'gris', 'gy', 'gry', 'сив', 'сиво'], color: '#6B7280' },
     { keywords: ['navy', 'nvy', 'nv'], color: '#1E3A8A' },
     { keywords: ['beige', 'bg', 'bge'], color: '#F5E6D3' },
   ]

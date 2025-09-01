@@ -39,6 +39,11 @@ export async function CollectionsPillsServer({
     console.error('Failed to fetch collections:', error)
   }
 
+  // Ensure virtual tag-based category for Crop Tops appears in pills even if no Shopify collection exists
+  if (!collections.some(c => c.handle === 'crop-tops')) {
+    collections.push({ id: 'virtual-crop-tops', handle: 'crop-tops', title: 'Crop Tops' })
+  }
+
   return (
     <CollectionsPills
       variant={variant}

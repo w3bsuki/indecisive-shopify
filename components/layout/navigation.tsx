@@ -117,20 +117,12 @@ export function Navigation() {
     { name: t('bestsellers'), href: "/bestsellers", badge: "❤️" },
   ]
 
-  // Based on actual Shopify collections: bucket-hats, tees, tote-bags, tees-1, caps
+  // Collections menu (mix of Shopify collections and custom pages)
   const collections = [
-    { 
-      name: t('hats'), 
-      href: "/products?category=bucket-hats"
-    },
-    { 
-      name: t('tshirts'), 
-      href: "/products?category=tees"
-    },
-    { 
-      name: t('bags'), 
-      href: "/products?category=tote-bags"
-    },
+    { name: t('hats'), href: "/products?category=bucket-hats" },
+    { name: t('tshirts'), href: "/tshirts" },
+    { name: t('cropTops'), href: "/crop-tops" },
+    { name: t('bags'), href: "/products?category=tote-bags" },
   ]
 
   return (

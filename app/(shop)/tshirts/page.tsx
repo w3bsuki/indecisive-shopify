@@ -30,7 +30,7 @@ export default async function TshirtsPage({
   const currentPage = parseInt(params.page || '1', 10)
   const perPage = 20 // Show 20 products per page
   
-  // Build filters object with T-shirts filter
+  // Build filters object with T-shirts filter (exclude crop tops)
   const filters = {
     category: params.category,
     minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
@@ -39,8 +39,8 @@ export default async function TshirtsPage({
     sizes: params.sizes ? params.sizes.split(',') : undefined,
     availability: params.availability ? params.availability.split(',') : undefined,
     sort: params.sort as 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'created-desc' | undefined,
-    // Include crop tops as they are a type of t-shirt
-    tags: ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees', 'crop top', 'crop-top', 'croptop']
+    tags: ['tshirt', 't-shirt', 'tshirts', 't-shirts', 'tee', 'tees'],
+    excludeTags: ['crop top'] // Exclude crop tops from T-shirts page
   }
   
   // Fetch products with server-side filtering and pagination

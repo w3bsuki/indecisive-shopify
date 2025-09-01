@@ -8,6 +8,7 @@ import { useMarket } from '@/hooks/use-market'
 import { cn } from '@/lib/utils'
 import type { ShopifyProduct, ShopifyProductVariant } from '@/lib/shopify/types'
 import { useTranslations } from 'next-intl'
+import { getColorFromName } from '@/lib/utils/product'
 import { Money } from './money'
 
 interface MobileBottomSheetProps {
@@ -26,7 +27,10 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
 
   // Get all variants and options
   const variants = product.variants.edges.map(edge => edge.node)
-  const colorOption = product.options?.find(opt => opt.name.toLowerCase() === 'color' || opt.name === 'Color')
+  const colorOption = product.options?.find(opt => {
+    const n = opt.name.toLowerCase().trim()
+    return n === 'color' || n === 'colour' || n === 'цвят'
+  })
   
   // Get available colors
   const availableColors = useMemo(() => {
@@ -43,7 +47,10 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
     
     // Set initial color if available
     if (firstAvailable && colorOption) {
-      const colorOpt = firstAvailable.selectedOptions?.find(opt => opt.name.toLowerCase() === 'color')
+      const colorOpt = firstAvailable.selectedOptions?.find(opt => {
+        const n = opt.name.toLowerCase().trim()
+        return n === 'color' || n === 'colour' || n === 'цвят'
+      })
       if (colorOpt) setSelectedColor(colorOpt.value)
     }
   }, [variants, colorOption])
@@ -54,7 +61,10 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
       setSelectedVariant(event.detail.variant)
       // Update color if changed
       if (event.detail.variant && colorOption) {
-        const colorOpt = event.detail.variant.selectedOptions?.find((opt: any) => opt.name.toLowerCase() === 'color')
+        const colorOpt = event.detail.variant.selectedOptions?.find((opt: any) => {
+          const n = (opt.name || '').toLowerCase().trim()
+          return n === 'color' || n === 'colour' || n === 'цвят'
+        })
         if (colorOpt) setSelectedColor(colorOpt.value)
       }
     }
@@ -68,7 +78,10 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
     setSelectedColor(color)
     // Find variant matching this color
     const newVariant = variants.find(v => {
-      const variantColor = v.selectedOptions?.find(opt => opt.name.toLowerCase() === 'color')
+      const variantColor = v.selectedOptions?.find(opt => {
+        const n = opt.name.toLowerCase().trim()
+        return n === 'color' || n === 'colour' || n === 'цвят'
+      })
       return variantColor?.value === color
     })
     if (newVariant) {
@@ -81,25 +94,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
   }
   
   // Map color names to hex values
-  const getColorHex = (colorName: string): string => {
-    const colorMap: Record<string, string> = {
-      'black': '#000000',
-      'white': '#ffffff', 
-      'red': '#ef4444',
-      'blue': '#3b82f6',
-      'green': '#10b981',
-      'yellow': '#f59e0b',
-      'purple': '#8b5cf6',
-      'pink': '#ec4899',
-      'gray': '#6b7280',
-      'grey': '#6b7280',
-      'brown': '#92400e',
-      'navy': '#1e3a8a',
-      'beige': '#f5e6d3',
-      'orange': '#f97316'
-    }
-    return colorMap[colorName.toLowerCase()] || '#e5e7eb'
-  }
+  const getColorHex = (colorName: string): string => getColorFromName(colorName)
 
   const handleQuantityChange = (delta: number) => {
     setQuantity(prev => Math.max(1, Math.min(10, prev + delta)))
