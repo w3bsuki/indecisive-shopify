@@ -33,15 +33,27 @@ export function QuickFilterChips({ className = '' }: QuickFilterChipsProps) {
     updateParam((p) => {
       const current = (p.get('availability') || '').split(',').filter(Boolean)
       const next = new Set(current)
-      if (next.has('in-stock')) next.delete('in-stock'); else next.add('in-stock')
+      if (next.has('in-stock')) {
+        next.delete('in-stock')
+      } else {
+        next.add('in-stock')
+      }
       const value = Array.from(next).join(',')
-      value ? p.set('availability', value) : p.delete('availability')
+      if (value) {
+        p.set('availability', value)
+      } else {
+        p.delete('availability')
+      }
     })
   }
 
   const toggleUnder50 = () => {
     updateParam((p) => {
-      if (p.get('maxPrice') === '50') p.delete('maxPrice'); else p.set('maxPrice', '50')
+      if (p.get('maxPrice') === '50') {
+        p.delete('maxPrice')
+      } else {
+        p.set('maxPrice', '50')
+      }
     })
   }
 
@@ -49,9 +61,17 @@ export function QuickFilterChips({ className = '' }: QuickFilterChipsProps) {
     updateParam((p) => {
       const current = (p.get('tags') || '').split(',').filter(Boolean)
       const next = new Set(current)
-      if (next.has('sale')) next.delete('sale'); else next.add('sale')
+      if (next.has('sale')) {
+        next.delete('sale')
+      } else {
+        next.add('sale')
+      }
       const value = Array.from(next).join(',')
-      value ? p.set('tags', value) : p.delete('tags')
+      if (value) {
+        p.set('tags', value)
+      } else {
+        p.delete('tags')
+      }
     })
   }
 

@@ -54,7 +54,11 @@ export function ActiveFiltersBar({ className = '' }: ActiveFiltersBarProps) {
         label: `${t('filters.colors') || 'Colors'}: ${c}`,
         onRemove: () => updateParams((p) => {
           const next = removeFromCsv(p.get('colors') || '', c)
-          next ? p.set('colors', next) : p.delete('colors')
+          if (next) {
+            p.set('colors', next)
+          } else {
+            p.delete('colors')
+          }
           p.delete('page')
         })
       })
@@ -65,7 +69,11 @@ export function ActiveFiltersBar({ className = '' }: ActiveFiltersBarProps) {
         label: `${t('filters.sizes') || 'Sizes'}: ${s}`,
         onRemove: () => updateParams((p) => {
           const next = removeFromCsv(p.get('sizes') || '', s)
-          next ? p.set('sizes', next) : p.delete('sizes')
+          if (next) {
+            p.set('sizes', next)
+          } else {
+            p.delete('sizes')
+          }
           p.delete('page')
         })
       })
@@ -81,7 +89,11 @@ export function ActiveFiltersBar({ className = '' }: ActiveFiltersBarProps) {
         label: `${t('filters.availability') || 'Availability'}: ${map[a] || a}`,
         onRemove: () => updateParams((p) => {
           const next = removeFromCsv(p.get('availability') || '', a)
-          next ? p.set('availability', next) : p.delete('availability')
+          if (next) {
+            p.set('availability', next)
+          } else {
+            p.delete('availability')
+          }
           p.delete('page')
         })
       })
@@ -92,12 +104,14 @@ export function ActiveFiltersBar({ className = '' }: ActiveFiltersBarProps) {
         key: 'price',
         label,
         onRemove: () => updateParams((p) => {
-          p.delete('minPrice'); p.delete('maxPrice'); p.delete('page')
+          p.delete('minPrice')
+          p.delete('maxPrice')
+          p.delete('page')
         })
       })
     }
     return items
-  }, [colors, sizes, availability, minPrice, maxPrice, t])
+  }, [colors, sizes, availability, minPrice, maxPrice, t, updateParams])
 
   if (!hasFilters) return null
 

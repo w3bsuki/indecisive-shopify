@@ -38,7 +38,7 @@ export default async function SalePage({
     colors: params.colors ? params.colors.split(',') : undefined,
     sizes: params.sizes ? params.sizes.split(',') : undefined,
     availability: params.availability ? params.availability.split(',') : undefined,
-    sort: params.sort as any,
+    sort: params.sort as 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'created-desc' | undefined,
   }
   
   // Fetch base products (up to 100) and then filter for on-sale items

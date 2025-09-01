@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 
-export async function ProductsPageContent({ products }: { products: any[] }) {
+import type { ShopifyProduct } from '@/lib/shopify/types'
+
+export async function ProductsPageContent({ products }: { products: ShopifyProduct[] }) {
   const t = await getTranslations('products')
   
   return (

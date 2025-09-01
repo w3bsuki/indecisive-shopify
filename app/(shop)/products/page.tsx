@@ -50,7 +50,7 @@ export default async function ProductsPage({
     colors: params.colors ? params.colors.split(',') : undefined,
     sizes: params.sizes ? params.sizes.split(',') : undefined,
     availability: params.availability ? params.availability.split(',') : undefined,
-    sort: params.sort as any,
+    sort: params.sort as 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'created-desc' | undefined,
     tags: params.tags ? params.tags.split(',') : undefined,
     keyword: params.q || undefined,
     // Simple tag mapping: crop-tops -> 'crop top', tees/tshirts -> 'tee'
