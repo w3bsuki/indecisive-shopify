@@ -81,7 +81,7 @@ export function ProductPageLayout({
       {/* Category Pills + Toolbar (sticky) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 px-safe">
         <div className="sticky top-14 md:top-0 z-20 bg-transparent backdrop-blur-0 shadow-none">
-          <div className="pt-3">
+          <div className="pt-4">
             <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
           </div>
           {/* Inline search (desktop only to reduce mobile header height) */}
@@ -90,12 +90,12 @@ export function ProductPageLayout({
           </div>
         </div>
         {/* Below-the-fold controls (reduce sticky header noise) */}
-        <div className="mt-3">
+        <div className="mt-0">
           {/* Show toolbar only on desktop; mobile uses bottom refine bar */}
           <div className="px-1 hidden sm:block">
             <ProductsToolbar totalCount={totalCount} />
           </div>
-          <div className="px-1 pt-1">
+          <div className="px-1">
             <ActiveFiltersBar />
           </div>
         </div>
@@ -103,7 +103,7 @@ export function ProductPageLayout({
         {/* Products Grid */}
         {products.length > 0 ? (
           <>
-            <div className={`grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 sm:gap-8 lg:gap-10 mt-8 ${gridClassName}`}>
+            <div className={`grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 sm:gap-8 lg:gap-10 mt-2 ${gridClassName}`}>
               {products.map((product, index) => (
                 product && typeof product !== 'string' ? (
                   <ProductCardServer 

@@ -46,7 +46,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
   }
 
   return (
-    <div className="group relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+    <div className="group relative bg-white rounded-2xl transition-all duration-300 overflow-hidden">
       {/* Image Section */}
       <div className="relative aspect-square bg-gray-50">
         {/* Sale Badge */}
@@ -82,7 +82,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
+      <div className="p-3">
         {/* Action Buttons and Color Variants Row */}
         <div className="flex items-center justify-between mb-3 gap-2">
           {/* Wishlist Button - Left */}

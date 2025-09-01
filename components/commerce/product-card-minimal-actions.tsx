@@ -52,7 +52,7 @@ export function ProductCardMinimalActions({
         <button
           onClick={handleWishlist}
           className={cn(
-            "absolute top-3 right-3 z-20 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-200",
+            "absolute top-3 right-3 z-20 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200",
             "bg-white shadow-lg hover:shadow-xl border border-gray-200",
             isWishlisted ? "text-red-500 bg-red-50 border-red-200" : "text-gray-600 hover:text-red-500"
           )}
@@ -60,7 +60,7 @@ export function ProductCardMinimalActions({
         >
           <Heart 
             className={cn(
-              "w-4 h-4 transition-all",
+              "w-5 h-5 transition-all",
               isWishlisted && "fill-current scale-110"
             )} 
           />
@@ -75,7 +75,7 @@ export function ProductCardMinimalActions({
             <button
               onClick={handleWishlist}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 transform scale-95 hover:scale-100",
+                "w-11 h-11 flex items-center justify-center rounded-full transition-all duration-200 transform scale-95 hover:scale-100",
                 "bg-white shadow-lg hover:shadow-xl border border-gray-200",
                 isWishlisted ? "text-red-500 bg-red-50 border-red-200" : "text-gray-600 hover:text-red-500"
               )}
@@ -83,7 +83,7 @@ export function ProductCardMinimalActions({
             >
               <Heart 
                 className={cn(
-                  "w-4 h-4 transition-all",
+                  "w-5 h-5 transition-all",
                   isWishlisted && "fill-current scale-110"
                 )} 
               />
@@ -93,12 +93,12 @@ export function ProductCardMinimalActions({
             <button
               onClick={handleAddToCart}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 transform scale-95 hover:scale-100",
+                "w-11 h-11 flex items-center justify-center rounded-full transition-all duration-200 transform scale-95 hover:scale-100",
                 "bg-black text-white shadow-lg hover:shadow-xl hover:bg-gray-800"
               )}
               aria-label={t('addToCart')}
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-5 h-5" />
             </button>
           </div>
         </div>

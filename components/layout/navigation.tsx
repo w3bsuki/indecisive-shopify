@@ -435,8 +435,8 @@ export function Navigation() {
         <div className="h-14 md:hidden" />
       </>
 
-      {/* Mobile Bottom Navigation - Hide on custom page */}
-      {pathname !== '/custom' && (
+      {/* Mobile Bottom Navigation - Hide on custom page and products page */}
+      {pathname !== '/custom' && pathname !== '/products' && (
         <div 
           className={cn(
             "fixed-bottom-mobile-safe bg-white border-t border-black/10 z-40 md:hidden touch-optimized shadow-lg",

@@ -102,7 +102,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
         <button
           onClick={handleWishlist}
           className={cn(
-            "absolute top-2 right-2 z-20 w-8 h-8 flex items-center justify-center rounded-full transition-colors",
+            "absolute top-2 right-2 z-20 w-9 h-9 flex items-center justify-center rounded-full transition-colors",
             "bg-white/90 backdrop-blur-sm shadow-sm",
             isWishlisted ? "text-red-500" : "text-gray-600"
           )}
@@ -140,7 +140,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
                 e.stopPropagation()
               }}
               className={cn(
-                "w-10 h-10 rounded-full bg-white flex items-center justify-center transition-all duration-300",
+                "w-11 h-11 rounded-full bg-white flex items-center justify-center transition-all duration-300",
                 "opacity-0 translate-y-2",
                 showOverlay && "opacity-100 translate-y-0"
               )}
@@ -154,7 +154,7 @@ export function ProductCardMinimal({ product, priority = false, size = 'default'
           <button
             onClick={handleWishlist}
             className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300",
+              "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300",
               "opacity-0 translate-y-2",
               showOverlay && "opacity-100 translate-y-0 delay-75",
               isWishlisted ? "bg-red-500 text-white" : "bg-white text-black"

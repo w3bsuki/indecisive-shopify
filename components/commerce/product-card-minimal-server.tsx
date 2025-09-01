@@ -32,7 +32,7 @@ export async function ProductCardMinimalServer({
     <div 
       className={cn(
         "group relative bg-white rounded-2xl",
-        "shadow-sm hover:shadow-md transition-all duration-300",
+        "transition-all duration-300",
         "overflow-hidden",
         size === 'large' && 'min-w-[280px] md:min-w-[320px]',
         size === 'mobile' && 'w-full'
@@ -75,7 +75,7 @@ export async function ProductCardMinimalServer({
       </div>
 
       {/* Modern Product Information */}
-      <div className="px-4 pt-3 pb-4">
+      <div className="px-3 pt-2 pb-3">
         {/* Modern Color Variants Display */}
         {availableColors.length > 0 && (
           <div className="flex items-center justify-center gap-1.5 mb-3">
