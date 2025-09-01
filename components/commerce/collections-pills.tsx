@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { useLocale } from 'next-intl'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 interface Collection {
   id: string
@@ -127,16 +127,29 @@ export function CollectionsPills({
   ]
 
   // Handle navigation without prefetch issues
+  const mobileScrollerRef = useRef<HTMLDivElement | null>(null)
+
   const handleCollectionClick = useCallback((href: string) => {
     router.push(href)
   }, [router])
+
+  // Center the active pill on mobile once to avoid left-bias
+  useEffect(() => {
+    const scroller = mobileScrollerRef.current
+    if (!scroller) return
+    const active = scroller.querySelector<HTMLButtonElement>('button[aria-current="page"]')
+    if (!active) return
+    const scrollerMid = scroller.clientWidth / 2
+    const activeMid = active.offsetLeft + active.offsetWidth / 2
+    scroller.scrollLeft = Math.max(0, activeMid - scrollerMid)
+  }, [])
 
   return (
     <div className={cn('w-full', className)}>
       {/* Container panel for category pills (use parent container width; no extra padding) */}
       <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-            {/* Modern Desktop view with rounded pills */}
-            <div className="hidden sm:flex justify-start py-4 px-5" role="navigation" aria-label="Product categories">
+            {/* Desktop: align perfectly with container; no edge hacks */}
+            <div className="hidden sm:flex justify-start py-3 px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Product categories">
               <div className="flex flex-wrap items-center justify-start gap-3 w-full">
                 {sortedCollections.map((collection) => (
                   <button
@@ -144,9 +157,9 @@ export function CollectionsPills({
                     onClick={() => handleCollectionClick(collection.href)}
                     className={cn(
                       "relative px-5 py-2 text-sm font-medium transition-all duration-200 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black",
-                    currentCategory === collection.handle
-                      ? "bg-black text-white"
-                      : "bg-gray-50 text-black hover:bg-gray-100 border border-gray-100"
+                      currentCategory === collection.handle
+                        ? "bg-black text-white"
+                        : "bg-gray-50 text-black hover:bg-gray-100 border border-gray-100"
                   )}
                     aria-current={currentCategory === collection.handle ? 'page' : undefined}
                   >
@@ -158,15 +171,15 @@ export function CollectionsPills({
               </div>
             </div>
 
-            {/* Modern Mobile view with rounded pills inside panel */}
+            {/* Mobile: horizontal scroll with consistent side padding */}
             <div className="sm:hidden py-3" role="navigation" aria-label="Product categories">
-              <div className="flex gap-3 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
+              <div ref={mobileScrollerRef} className="flex gap-3 overflow-x-auto scrollbar-hide px-4" style={{ scrollPaddingLeft: '16px', scrollPaddingRight: '16px' }}>
                 {sortedCollections.map((collection) => (
                   <button
                     key={collection.id}
                     onClick={() => handleCollectionClick(collection.href)}
                     className={cn(
-                      "px-4 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors rounded-xl snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black",
+                      "px-4 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black",
                       "min-w-[70px] flex-shrink-0",
                     currentCategory === collection.handle
                       ? "bg-black text-white"

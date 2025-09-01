@@ -31,7 +31,7 @@ export async function ProductCardMinimalServer({
   return (
     <div 
       className={cn(
-        "group relative bg-white rounded-2xl border border-gray-100 hover:border-gray-200",
+        "group relative bg-white rounded-2xl",
         "shadow-sm hover:shadow-md transition-all duration-300",
         "overflow-hidden",
         size === 'large' && 'min-w-[280px] md:min-w-[320px]',

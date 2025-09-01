@@ -46,7 +46,7 @@ export async function ProductCardServer({ product, priority: _priority = false }
   }
 
   return (
-    <div className="group relative bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-all duration-200 overflow-hidden">
+    <div className="group relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
       {/* Image Section */}
       <div className="relative aspect-square bg-gray-50">
         {/* Sale Badge */}

@@ -105,7 +105,7 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           "border shadow-sm",
           isWishlisted 
             ? "bg-black text-white border-black" 
-            : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
+            : "bg-white text-gray-600 border-gray-100 hover:border-gray-200"
         )}
         aria-label={isWishlisted ? translations.removeFromWishlist : translations.addToWishlist}
       >
@@ -183,7 +183,7 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           disabled={isLoading || !isAvailable || !cartReady}
           className={cn(
             "w-6 h-6 flex items-center justify-center rounded-full transition-all duration-200",
-            "bg-white border border-gray-200 shadow-sm",
+            "bg-white border border-gray-100 shadow-sm",
             isLoading || !isAvailable || !cartReady
               ? "text-gray-300 cursor-not-allowed"
               : "text-gray-600 hover:bg-black hover:text-white hover:border-black"
