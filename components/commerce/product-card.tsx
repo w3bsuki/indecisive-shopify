@@ -144,7 +144,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
   return (
     <>
-      <div className="group relative bg-white border border-gray-100 hover:border-gray-200 transition-all duration-200">
+      <div className="group relative bg-white transition-all duration-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
         {/* Sale Badge */}
         {isOnSale && (
           <div className="absolute top-2 left-2 z-10 bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase">

@@ -1,0 +1,25 @@
+# Development documentation and files
+docs/
+tests/
+agents/
+scripts/
+*.md
+!README.md
+!SECURITY.md  
+!DEPLOYMENT.md
+!SHOPIFY_MIGRATION_NOTE.md
+
+# Test and demo files
+test_crop.html
+Screenshot*.png
+*.test.tsx
+*.test.ts
+*.spec.ts
+jest.config.js
+playwright.config.ts
+lighthouserc.js
+
+# Development tools
+eslint.config.js
+extensions.json
+.github/
