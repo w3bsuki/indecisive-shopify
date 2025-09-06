@@ -9,8 +9,8 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
 import { Heart, ShoppingBag } from 'lucide-react'
 import { ProductPrice } from '@/components/commerce/product-price'
+import { EnhancedProductPrice } from '@/components/commerce/enhanced-product-price'
 import { useMarket } from '@/hooks/use-market'
-import { Money as MoneyClient } from '@/components/commerce/money'
 import {
   Dialog,
   DialogContent,
@@ -229,34 +229,17 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
     )
   }
 
-  // Price only
+  // Price only with enhanced sale styling using our new system
   if (variant === 'price-only') {
-    const price = product.priceRange.minVariantPrice
-    const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
-    const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
-    
     return (
       <div className="text-center">
-        {isOnSale && compareAtPrice ? (
-          <div className="flex items-center justify-center gap-2">
-            <MoneyClient 
-              data={price} 
-              showDualCurrency={market.countryCode === 'BG'}
-              className="text-sm font-bold text-black"
-            />
-            <MoneyClient 
-              data={compareAtPrice}
-              showDualCurrency={false}
-              className="text-xs text-gray-500 line-through"
-            />
-          </div>
-        ) : (
-          <MoneyClient 
-            data={price} 
-            showDualCurrency={market.countryCode === 'BG'}
-            className="text-sm font-bold text-black"
-          />
-        )}
+        <EnhancedProductPrice 
+          product={product}
+          size="sm"
+          showSavings={false}
+          showBadge={false}
+          className="justify-center"
+        />
       </div>
     )
   }

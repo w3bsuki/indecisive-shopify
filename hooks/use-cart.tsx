@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useEffect, useOptimistic, useState } from 'react';
+import { useCallback, useMemo, useEffect, useOptimistic, useState, startTransition } from 'react';
 import { useCart as useHydrogenCart, type Cart } from '@shopify/hydrogen-react';
 import { toast } from 'sonner';
 import { analytics } from '@/lib/analytics/events';
@@ -200,9 +200,11 @@ export function useCart() {
     // Generate temp ID for optimistic update
     const tempId = `temp-${Date.now()}-${Math.random()}`;
     
-    // Apply optimistic update immediately
-    dispatchOptimistic({ type: 'ADD_LINE', merchandiseId, quantity, tempId });
-    dispatchOptimisticQuantity({ type: 'ADD_LINE', merchandiseId, quantity, tempId });
+    // Apply optimistic update immediately within a transition
+    startTransition(() => {
+      dispatchOptimistic({ type: 'ADD_LINE', merchandiseId, quantity, tempId });
+      dispatchOptimisticQuantity({ type: 'ADD_LINE', merchandiseId, quantity, tempId });
+    });
     
     // Show instant success feedback
     // Check if mobile and use custom notification

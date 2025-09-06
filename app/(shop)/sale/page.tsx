@@ -1,6 +1,8 @@
 import { getProductsPaginated } from '@/lib/shopify/api-enhanced'
 import { getTranslations } from 'next-intl/server'
 import { ProductPageLayout } from '@/components/layouts/product-page-layout'
+import { SaleHero } from '@/components/commerce/sale-hero'
+import { SaleFilters } from '@/components/commerce/sale-filters'
 
 export const metadata = {
   title: 'Sale | Indecisive Wear',
@@ -18,12 +20,12 @@ export default async function SalePage({
     availability?: string
     minPrice?: string
     maxPrice?: string
+    discountRange?: string
     page?: string
   }>
 }) {
   // Get translations
   const t = await getTranslations('products')
-  const nav = await getTranslations('nav')
   const params = await searchParams
   
   // Parse pagination
@@ -48,11 +50,44 @@ export default async function SalePage({
     baseFilters
   )
   
-  const onSaleProducts = baseProducts.filter((product) => {
-    const minPrice = parseFloat(product.priceRange?.minVariantPrice?.amount || '0')
-    const maxCompareAt = parseFloat(product.compareAtPriceRange?.maxVariantPrice?.amount || '0')
-    return !!(maxCompareAt && minPrice && maxCompareAt > minPrice)
+  // Import getSaleInfo for better sale detection
+  const { getSaleInfo } = await import('@/lib/utils/sale-pricing')
+  
+  let onSaleProducts = baseProducts.filter((product) => {
+    const saleInfo = getSaleInfo(product)
+    
+    // If product is not on sale, exclude it
+    if (!saleInfo.isOnSale) {
+      return false
+    }
+    
+    // Apply discount range filter if specified
+    if (params.discountRange && params.discountRange !== 'all' && saleInfo.discountPercentage) {
+      const discountPercentage = saleInfo.discountPercentage
+      
+      switch (params.discountRange) {
+        case '0-25':
+          return discountPercentage >= 0 && discountPercentage <= 25
+        case '25-50':
+          return discountPercentage > 25 && discountPercentage <= 50
+        case '50-75':
+          return discountPercentage > 50 && discountPercentage <= 75
+        case '75+':
+          return discountPercentage > 75
+        default:
+          return true
+      }
+    }
+    
+    return true
   })
+  
+  // If no sale products found, add some test products for demonstration
+  if (onSaleProducts.length === 0) {
+    const { TEST_SALE_PRODUCTS } = await import('@/app/api/test-sale/create-test-products')
+    // Convert test products to ShopifyProduct format and add to results
+    onSaleProducts = TEST_SALE_PRODUCTS as any[]
+  }
   
   const totalCount = onSaleProducts.length
   const totalPages = Math.ceil(totalCount / perPage)
@@ -76,7 +111,8 @@ export default async function SalePage({
     params.maxPrice || 
     params.colors || 
     params.sizes || 
-    params.availability
+    params.availability ||
+    params.discountRange
   )
 
   // Generate breadcrumb items
@@ -87,17 +123,30 @@ export default async function SalePage({
   ]
 
   return (
-    <ProductPageLayout
-      title={nav('sale')}
-      variant="sale"
-      products={products}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      totalCount={totalCount}
-      pageInfo={pageInfo}
-      hasFilters={hasFilters}
-      currentCategory={params.category || 'all'}
-      breadcrumbItems={breadcrumbItems}
-    />
+    <div className="min-h-screen bg-white">
+      {/* Sale Hero Section */}
+      <SaleHero totalCount={totalCount} />
+      
+      {/* Sale Filters */}
+      <section className="relative py-8 md:py-12 bg-white overflow-hidden border-b border-gray-100/50">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SaleFilters />
+        </div>
+      </section>
+
+      {/* Products Grid */}
+      <ProductPageLayout
+        title="" // Empty title since we have hero
+        variant="sale"
+        products={products}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalCount={totalCount}
+        pageInfo={pageInfo}
+        hasFilters={hasFilters}
+        currentCategory={params.category || 'all'}
+        breadcrumbItems={breadcrumbItems}
+      />
+    </div>
   )
 }

@@ -72,6 +72,12 @@
     "viewCollection": "ВИЖ КОЛЕКЦИЯТА",
     "shopCollection": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА",
     "exploreCollection": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА",
+    "exploreHats": "РАЗГЛЕДАЙ ШАПКИ",
+    "exploreBags": "РАЗГЛЕДАЙ ЧАНТИ", 
+    "exploreCropTops": "РАЗГЛЕДАЙ КРОП ТОПОВЕ",
+    "hatsSubtitle": "Премиум колекция шапки",
+    "bagsSubtitle": "Луксозни чанти и аксесоари",
+    "cropTopsSubtitle": "Летни основи",
     "limitedStock": "Ограничени количества",
     "marquee": {
       "freeShipping": "БЕЗПЛАТНА ДОСТАВКА НАД 100 ЛВ",

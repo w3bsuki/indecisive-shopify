@@ -41,6 +41,7 @@ uploads/
 
 # Zone.Identifier files (Windows bloat)
 *.Zone.Identifier
+*:Zone.Identifier
 
 # Documentation bloat prevention
 **/DRAFT_*.md

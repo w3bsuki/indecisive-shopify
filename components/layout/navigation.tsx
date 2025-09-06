@@ -130,62 +130,81 @@ export function Navigation() {
       {/* Desktop Navigation */}
       <div className="hidden md:block">
 
-        {/* Main Navigation */}
-        <nav className="bg-white">
+        {/* Main Navigation - Modern Glass Style */}
+        <nav className="relative bg-white/80 backdrop-blur-xl border-b border-gray-100/50 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-20">
+            <div className="flex items-center justify-between h-18">
               {/* Logo */}
-              <Link href="/" className="flex items-center">
-                <h1 className="text-2xl font-bold font-mono tracking-wider">
-                  INDECISIVE WEAR
-                </h1>
+              <Link href="/" className="flex items-center group">
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1">
+                    <div className="w-3 h-3 bg-black rounded-sm"></div>
+                    <div className="w-3 h-3 bg-black/20 border border-black/30 rounded-sm"></div>
+                  </div>
+                  <h1 className="text-xl font-medium tracking-wide text-black group-hover:text-black/80 transition-colors duration-200">
+                    INDECISIVE WEAR
+                  </h1>
+                </div>
               </Link>
 
               {/* Center Navigation */}
               <NavigationMenu className="hidden lg:flex">
-                  <NavigationMenuList>
-                    {menuItems.map((category) => (
-                      <NavigationMenuItem key={category.href}>
-                        <NavigationMenuLink asChild>
-                          <Link 
-                            href={category.href}
-                            className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium  hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-                          >
-                            {category.name}
-                            {category.badge && (
-                              <Badge variant="outline" className="ml-2 text-[10px]">
-                                {category.badge}
-                              </Badge>
-                            )}
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    ))}
-                    
-                    {/* Dropdown for Collections */}
-                    <NavigationMenuItem>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
-                          {t('collections')}
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-48 p-2">
-                          <div className="space-y-1">
-                            {collections.map((item) => (
-                              <Link key={item.href} href={item.href}>
-                                <div className="px-3 py-2 text-sm hover:bg-gray-100 rounded cursor-pointer">
-                                  {item.name}
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                <NavigationMenuList className="gap-1">
+                  {menuItems.map((category) => (
+                    <NavigationMenuItem key={category.href}>
+                      <NavigationMenuLink asChild>
+                        <Link 
+                          href={category.href}
+                          className={cn(
+                            "group inline-flex h-9 w-max items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                            category.href === "/sale" 
+                              ? "bg-black text-white hover:bg-black/90 shadow-sm"
+                              : "text-black/70 hover:text-black hover:bg-black/5 backdrop-blur-sm"
+                          )}
+                        >
+                          {category.name}
+                          {category.badge && (
+                            <Badge 
+                              variant={category.href === "/sale" ? "secondary" : "outline"} 
+                              className={cn(
+                                "ml-2 text-[9px] h-4 px-1.5",
+                                category.href === "/sale" 
+                                  ? "bg-white text-black border-white" 
+                                  : "bg-black/10 text-black/80 border-black/20"
+                              )}
+                            >
+                              {category.badge}
+                            </Badge>
+                          )}
+                        </Link>
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
+                  ))}
+                  
+                  {/* Dropdown for Collections */}
+                  <NavigationMenuItem>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="group inline-flex h-9 w-max items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-black/70 hover:text-black hover:bg-black/5 backdrop-blur-sm transition-all duration-300 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                        {t('collections')}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-48 p-2 bg-white/90 backdrop-blur-xl border border-gray-200/50 shadow-xl rounded-xl">
+                        <div className="space-y-1">
+                          {collections.map((item) => (
+                            <Link key={item.href} href={item.href}>
+                              <div className="px-3 py-2 text-sm hover:bg-black/5 rounded-lg cursor-pointer transition-colors duration-200 text-black/80 hover:text-black">
+                                {item.name}
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
 
               {/* Right Actions */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 {/* Market Switcher */}
                 <MarketSwitcher />
 
@@ -199,8 +218,8 @@ export function Navigation() {
 
                 {/* Account */}
                 <Link href="/account">
-                  <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200 ">
-                    <User className="h-5 w-5 stroke-[1.5]" />
+                  <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-black/5 hover:backdrop-blur-sm active:bg-black/10 rounded-full transition-all duration-200">
+                    <User className="h-4 w-4 stroke-[1.5] text-black/70" />
                   </Button>
                 </Link>
 
@@ -213,14 +232,14 @@ export function Navigation() {
                     ref={cartIconRef}
                     variant="ghost" 
                     size="icon" 
-                    className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 "
+                    className="relative h-9 w-9 hover:bg-black/5 hover:backdrop-blur-sm active:bg-black/10 rounded-full transition-all duration-200"
                     onClick={() => setShowCartSlideout(true)}
                   >
-                    <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+                    <ShoppingBag className="h-4 w-4 stroke-[1.5] text-black/70" />
                     {totalItems > 0 && (
                       <Badge
                         variant="secondary"
-                        className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-black text-white border-2 border-white cart-icon-bounce"
+                        className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[9px] font-semibold bg-black text-white border border-white/20 cart-icon-bounce shadow-sm"
                       >
                         {totalItems}
                       </Badge>
@@ -232,13 +251,13 @@ export function Navigation() {
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="relative h-10 w-10 hover:bg-gray-100 active:bg-gray-200 "
+                      className="relative h-9 w-9 hover:bg-black/5 hover:backdrop-blur-sm active:bg-black/10 rounded-full transition-all duration-200"
                     >
-                      <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+                      <ShoppingBag className="h-4 w-4 stroke-[1.5] text-black/70" />
                       {totalItems > 0 && (
                         <Badge
                           variant="secondary"
-                          className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-black text-white border-2 border-white cart-icon-bounce"
+                          className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[9px] font-semibold bg-black text-white border border-white/20 cart-icon-bounce shadow-sm"
                         >
                           {totalItems}
                         </Badge>
@@ -439,97 +458,108 @@ export function Navigation() {
       {pathname !== '/custom' && pathname !== '/products' && (
         <div 
           className={cn(
-            "fixed-bottom-mobile-safe bg-white border-t border-black/10 z-40 md:hidden touch-optimized shadow-lg",
+            "fixed-bottom-mobile-safe z-40 md:hidden touch-optimized",
             "transition-transform duration-300 ease-in-out overscroll-contain",
             showBottomNav ? "transform translate-y-0" : "transform translate-y-full"
           )}
         >
-        <div className="grid grid-cols-5 gap-0 py-2 px-2 pr-4 pb-safe">
-          {/* Профил (Account) */}
-          <div className="flex justify-center">
-            <Link href="/account">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
-                  pathname === "/account" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
-                )}
-            >
-              <div className="relative">
-                <User className="h-5 w-5 stroke-[2.5]" />
-              </div>
-              <span className="text-[10px] font-medium">ПРОФИЛ</span>
-              </Button>
-            </Link>
-          </div>
-
-          {/* Custom (Design) */}
-          <div className="flex justify-center">
-            <Link href="/custom">
-              <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
-                pathname === "/custom" ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
-              )}
-            >
-              <div className="relative">
-                <Palette className="h-5 w-5 stroke-[2.5]" />
-              </div>
-              <span className="text-[10px] font-medium">CUSTOM</span>
-              </Button>
-            </Link>
-          </div>
-
-          {/* Магазин (Shop) or Филтри (Filters) */}
-          <div className="flex justify-center">
-            {pathname === "/products" ? (
-              <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
-                showFilterDrawer ? "text-black bg-gray-100" : "text-gray-600 hover:text-black hover:bg-gray-50"
-              )}
-              onClick={() => setShowFilterDrawer(true)}
-            >
-              <div className="relative">
-                <SlidersHorizontal className="h-5 w-5 stroke-[2.5]" />
-              </div>
-              <span className="text-[10px] font-medium">ФИЛТРИ</span>
-              </Button>
-            ) : (
-              <Link href="/products">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "flex flex-col items-center gap-1 h-auto py-2 px-2 min-w-[60px] min-h-[52px] transition-all duration-150 rounded-lg",
-                  "text-gray-600 hover:text-black hover:bg-gray-50"
-                )}
-              >
-                <div className="relative">
-                  <ShoppingBag className="h-5 w-5 stroke-[2.5]" />
+          {/* Glass Container */}
+          <div className="mx-2 mb-2">
+            <div className="relative bg-white/90 backdrop-blur-lg rounded-2xl border border-white/30 shadow-2xl overflow-hidden">
+              <div className="grid grid-cols-5 gap-0 py-3 px-3">
+                {/* Профил (Account) */}
+                <div className="flex justify-center">
+                  <Link href="/account">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "flex flex-col items-center gap-1.5 h-auto py-2.5 px-2 min-w-[56px] min-h-[50px] transition-all duration-300 rounded-xl",
+                        pathname === "/account" 
+                          ? "text-black bg-black/10 backdrop-blur-sm border border-black/20" 
+                          : "text-black/70 hover:text-black hover:bg-white/60 hover:backdrop-blur-sm"
+                      )}
+                    >
+                      <div className="relative">
+                        <User className="h-[18px] w-[18px] stroke-[2.5]" />
+                      </div>
+                      <span className="text-[9px] font-medium tracking-[0.05em]">ПРОФИЛ</span>
+                    </Button>
+                  </Link>
                 </div>
-                <span className="text-[10px] font-medium">МАГАЗИН</span>
-              </Button>
-              </Link>
-            )}
-          </div>
 
-          {/* Любими (Wishlist) */}
-          <div className="flex justify-center">
-            <WishlistDropdown isBottomNav />
-          </div>
+                {/* Custom (Design) */}
+                <div className="flex justify-center">
+                  <Link href="/custom">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "flex flex-col items-center gap-1.5 h-auto py-2.5 px-2 min-w-[56px] min-h-[50px] transition-all duration-300 rounded-xl",
+                        pathname === "/custom" 
+                          ? "text-black bg-black/10 backdrop-blur-sm border border-black/20" 
+                          : "text-black/70 hover:text-black hover:bg-white/60 hover:backdrop-blur-sm"
+                      )}
+                    >
+                      <div className="relative">
+                        <Palette className="h-[18px] w-[18px] stroke-[2.5]" />
+                      </div>
+                      <span className="text-[9px] font-medium tracking-[0.05em]">CUSTOM</span>
+                    </Button>
+                  </Link>
+                </div>
 
-          {/* Количка (Cart) */}
-          <div className="flex justify-center">
-            <MobileCartDropdown isBottomNav />
+                {/* Магазин (Shop) or Филтри (Filters) */}
+                <div className="flex justify-center">
+                  {pathname === "/products" ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "flex flex-col items-center gap-1.5 h-auto py-2.5 px-2 min-w-[56px] min-h-[50px] transition-all duration-300 rounded-xl",
+                        showFilterDrawer 
+                          ? "text-black bg-black/10 backdrop-blur-sm border border-black/20" 
+                          : "text-black/70 hover:text-black hover:bg-white/60 hover:backdrop-blur-sm"
+                      )}
+                      onClick={() => setShowFilterDrawer(true)}
+                    >
+                      <div className="relative">
+                        <SlidersHorizontal className="h-[18px] w-[18px] stroke-[2.5]" />
+                      </div>
+                      <span className="text-[9px] font-medium tracking-[0.05em]">ФИЛТРИ</span>
+                    </Button>
+                  ) : (
+                    <Link href="/products">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                          "flex flex-col items-center gap-1.5 h-auto py-2.5 px-2 min-w-[56px] min-h-[50px] transition-all duration-300 rounded-xl",
+                          "text-black/70 hover:text-black hover:bg-white/60 hover:backdrop-blur-sm"
+                        )}
+                      >
+                        <div className="relative">
+                          <ShoppingBag className="h-[18px] w-[18px] stroke-[2.5]" />
+                        </div>
+                        <span className="text-[9px] font-medium tracking-[0.05em]">МАГАЗИН</span>
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+
+                {/* Любими (Wishlist) */}
+                <div className="flex justify-center">
+                  <WishlistDropdown isBottomNav />
+                </div>
+
+                {/* Количка (Cart) */}
+                <div className="flex justify-center">
+                  <MobileCartDropdown isBottomNav />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
       )}
       
       

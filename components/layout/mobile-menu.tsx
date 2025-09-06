@@ -212,10 +212,10 @@ export function MobileMenu({ className }: MobileMenuProps) {
                     <Link
                       href="/sale"
                       onClick={() => setIsOpen(false)}
-                      className="block p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors relative"
+                      className="block p-3 bg-gradient-to-r from-red-600 to-red-700 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-200 relative shadow-sm border border-red-800"
                     >
-                      <span className="font-mono text-sm font-medium text-red-600">Sale Items</span>
-                      <span className="absolute top-2 right-2 text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded">UP TO 50%</span>
+                      <span className="font-mono text-sm font-medium text-white">Sale Items</span>
+                      <span className="absolute top-2 right-2 text-[10px] bg-white text-red-700 px-1.5 py-0.5 rounded font-semibold">UP TO 75%</span>
                     </Link>
                     <Link
                       href="/collections/bestsellers"

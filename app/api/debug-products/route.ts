@@ -1,29 +1,41 @@
 import { getProductsPaginated } from '@/lib/shopify/api-enhanced'
 import { NextResponse } from 'next/server'
+import { getSaleInfo } from '@/lib/utils/sale-pricing'
 
 export async function GET() {
   try {
     // Fetch all products without any filters to see what's available
     const { products } = await getProductsPaginated(1, 50, {})
     
-    // Extract all unique tags from all products
-    const allTags = new Set<string>()
-    const productInfo = products.map(product => {
-      const tags = product.tags || []
-      tags.forEach(tag => allTags.add(tag))
+    // Check for products with compare-at prices or sale tags
+    const productsWithPricing = products.map(product => {
+      const saleInfo = getSaleInfo(product)
       
       return {
         id: product.id,
         title: product.title,
         handle: product.handle,
-        tags: tags
+        tags: product.tags || [],
+        currentPrice: saleInfo.currentPrice,
+        originalPrice: saleInfo.originalPrice,
+        isOnSale: saleInfo.isOnSale,
+        discountPercentage: saleInfo.discountPercentage || 0,
+        saleMethod: saleInfo.isOnSale ? (
+          product.compareAtPriceRange?.maxVariantPrice ? 'compare-at-price' : 
+          product.tags?.some(tag => tag.toLowerCase().match(/^(sale|discount|was)-/)) ? 'tag' :
+          'generic-tag'
+        ) : 'none'
       }
     })
     
+    const saleProducts = productsWithPricing.filter(p => p.isOnSale)
+    
     return NextResponse.json({
       totalProducts: products.length,
-      allTags: Array.from(allTags).sort(),
-      products: productInfo
+      totalSaleProducts: saleProducts.length,
+      sampleProduct: productsWithPricing[0],
+      saleProducts,
+      allProducts: productsWithPricing
     })
   } catch (error) {
     console.error('Debug products error:', error)

@@ -5,6 +5,7 @@ import { ProductCardActions } from './product-card-actions'
 import { HydrogenImageServer } from './hydrogen-image'
 import { extractNodes } from '@/lib/shopify/flatten-connection'
 import { getProductColors, getColorFromName } from '@/lib/utils/product'
+import { getSaleInfo } from '@/lib/utils/sale-pricing'
 
 interface ProductCardServerProps {
   product: ShopifyProduct
@@ -16,8 +17,8 @@ export async function ProductCardServer({ product, priority: _priority = false }
   
   if (!product || typeof product === 'string') return null
   
-  const isOnSale = product.compareAtPriceRange && 
-    parseFloat(product.compareAtPriceRange.maxVariantPrice.amount) > parseFloat(product.priceRange.minVariantPrice.amount)
+  const saleInfo = getSaleInfo(product)
+  const isOnSale = saleInfo.isOnSale
 
   // Extract data
   const variants = product.variants ? extractNodes(product.variants) : []
@@ -49,10 +50,10 @@ export async function ProductCardServer({ product, priority: _priority = false }
     <div className="group relative bg-white rounded-2xl transition-all duration-300 overflow-hidden">
       {/* Image Section */}
       <div className="relative aspect-square bg-gray-50">
-        {/* Sale Badge */}
+        {/* Enhanced Sale Badge with Percentage */}
         {isOnSale && (
-          <div className="absolute top-3 left-3 z-20 bg-red-500 text-white px-2.5 py-1 text-xs font-bold rounded-full">
-            SALE
+          <div className="absolute top-3 left-3 z-20 bg-red-600 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
+            {saleInfo.discountPercentage ? `-${saleInfo.discountPercentage}%` : 'SALE'}
           </div>
         )}
 

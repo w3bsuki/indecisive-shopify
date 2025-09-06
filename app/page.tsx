@@ -24,92 +24,97 @@ export default async function HomePage() {
     const products = productsData.edges.map(edge => edge.node)
 
     return (
-    <div className="min-h-screen-dynamic bg-white font-mono">
-      {/* Navigation */}
-      <Navigation />
+      <div className="min-h-screen-dynamic bg-white font-mono">
+        {/* Navigation */}
+        <Navigation />
 
-      {/* Hero Section */}
-      <Hero />
+        {/* Hero Section */}
+        <Hero />
 
-      {/* FEATURED DROP Section - Enhanced for 2025 */}
-      <section className="py-8 md:py-12 bg-white border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header with Modern Typography */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1 relative inline-block">
-              {t('featured.subtitle')}
-              {/* Rough underline effect */}
-              <svg className="absolute -bottom-3 left-0 w-full" height="8" viewBox="0 0 300 8" preserveAspectRatio="none">
-                <path 
-                  d="M0,4 Q75,2 150,4 T300,4" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  fill="none"
-                  className="text-black"
-                  style={{ strokeDasharray: '0', strokeLinecap: 'round' }}
-                />
-              </svg>
-            </h2>
-            <p className="text-gray-700 text-sm md:text-base font-medium max-w-xl mx-auto">
-              {t('featured.description')}
-            </p>
-          </div>
+        {/* FEATURED DROP Section - Modern Seamless Style */}
+        <section className="relative py-12 md:py-16 bg-white overflow-hidden">
+          {/* Subtle background texture */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-50/30 to-transparent" />
           
-          {/* Mobile: Horizontal Carousel */}
-          <div className="md:hidden">
-            <ProductCarousel products={products} />
-          </div>
-          
-          {/* Desktop: Grid Layout */}
-          <div className="hidden md:block">
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 max-w-7xl mx-auto px-8">
-              {products.map((product, index) => (
-                <ProductCardMinimalServer 
-                  key={product.id} 
-                  product={product} 
-                  priority={index < 4}
-                  size="default"
-                />
-              ))}
-            </div>
-          </div>
-          
-          {/* Modern CTA Section */}
-          <div className="mt-12 md:mt-16 text-center">
-            <Link 
-              href="/products?category=bucket-hats" 
-              className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-semibold text-sm rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              <span className="tracking-wide">{t('featured.viewAll')}</span>
-              <div className="p-0.5 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors">
-                <svg className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {/* Section Header - Modern Typography */}
+            <div className="text-center mb-12">
+              {/* Collection Label */}
+              <div className="inline-flex items-center gap-2 mb-4">
+                <div className="w-12 h-px bg-black/30" />
+                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
+                  FEATURED
+                </span>
+                <div className="w-12 h-px bg-black/30" />
               </div>
-            </Link>
-            <p className="mt-6 text-sm font-medium text-gray-500 bg-gray-50 inline-block px-4 py-2 rounded-full">
-              {tp('viewAllCount', { count: productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length })}
-            </p>
+              
+              {/* Main Title */}
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-4 tracking-tight leading-[0.9]">
+                {t('featured.subtitle')}
+              </h2>
+              
+              {/* Description */}
+              <p className="text-black/70 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed">
+                {t('featured.description')}
+              </p>
+            </div>
+            
+            {/* Mobile: Horizontal Carousel */}
+            <div className="md:hidden mb-8">
+              <ProductCarousel products={products} />
+            </div>
+            
+            {/* Desktop: Modern Grid Layout */}
+            <div className="hidden md:block mb-12">
+              <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
+                {products.map((product, index) => (
+                  <ProductCardMinimalServer 
+                    key={product.id} 
+                    product={product} 
+                    priority={index < 4}
+                    size="default"
+                  />
+                ))}
+              </div>
+            </div>
+            
+            {/* Modern Glass CTA Section */}
+            <div className="text-center">
+              <Link href="/products?category=bucket-hats">
+                <button className="group inline-flex items-center gap-3 bg-black/10 backdrop-blur-md border border-black/20 text-black px-8 py-4 rounded-full font-medium text-sm tracking-wide hover:bg-black hover:text-white transition-all duration-500">
+                  <span>{t('featured.viewAll')}</span>
+                  <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
+                  </div>
+                </button>
+              </Link>
+              <p className="mt-4 text-sm font-light text-black/60">
+                {tp('viewAllCount', { count: productsData.edges.length > 8 ? `${productsData.edges.length}+` : productsData.edges.length })}
+              </p>
+            </div>
+            
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* T-shirts Section */}
-      <TshirtsCarousel />
+        {/* T-shirts Section */}
+        <TshirtsCarousel />
 
-      {/* Bags Section */}
-      <BagsCarousel />
+        {/* Bags Section */}
+        <BagsCarousel />
 
-      {/* Community Section with Instagram/TikTok Tabs */}
-      <CommunityCarousel />
+        {/* Community Section with Instagram/TikTok Tabs */}
+        <CommunityCarousel />
 
-      {/* Club Section */}
-      <ClubSection />
+        {/* Club Section */}
+        <ClubSection />
 
-      {/* Footer */}
-      <Footer />
-    </div>
-  )
+        {/* Footer */}
+        <Footer />
+      </div>
+    )
   } catch (_error) {
     // Fallback UI when data fetching fails
     return (

@@ -40,9 +40,11 @@ export function ProductPrice({
   const isOnSale = showCompareAt && minCompareAtPrice && 
     parseFloat(minCompareAtPrice.amount) > parseFloat(minPrice.amount)
   
-  // Calculate savings if on sale
+  // Calculate savings and discount percentage if on sale
   const savings = isOnSale && minCompareAtPrice ? 
     parseFloat(minCompareAtPrice.amount) - parseFloat(minPrice.amount) : 0
+  const discountPercentage = isOnSale && minCompareAtPrice ? 
+    Math.round(((parseFloat(minCompareAtPrice.amount) - parseFloat(minPrice.amount)) / parseFloat(minCompareAtPrice.amount)) * 100) : 0
   
   const sizeClasses = {
     sm: 'text-sm',
@@ -71,12 +73,12 @@ export function ProductPrice({
           />
         )}
         
-        {/* Compare At Price (crossed out) */}
+        {/* Compare At Price (crossed out with better styling) */}
         {isOnSale && minCompareAtPrice && (
           <Money 
             data={minCompareAtPrice}
             className={cn(
-              'font-mono text-gray-500 line-through',
+              'font-mono text-gray-400 line-through decoration-2 decoration-gray-400',
               size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base' : 'text-sm'
             )}
             withoutTrailingZeros
@@ -84,21 +86,21 @@ export function ProductPrice({
           />
         )}
         
-        {/* Sale Badge */}
-        {isOnSale && (
+        {/* Sale Badge with Percentage */}
+        {isOnSale && discountPercentage > 0 && (
           <span className={cn(
-            'px-2 py-0.5 bg-red-600 text-white font-mono font-bold rounded-none',
+            'px-2 py-0.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-mono font-bold rounded-sm shadow-sm border border-red-800',
             size === 'sm' ? 'text-xs' : 'text-xs'
           )}>
-            SALE
+            -{discountPercentage}%
           </span>
         )}
       </div>
       
-      {/* Savings Amount */}
+      {/* Savings Amount with Better Styling */}
       {isOnSale && savings > 0 && (
         <div className={cn(
-          'text-green-600 font-mono font-medium',
+          'text-emerald-600 font-mono font-semibold bg-emerald-50 px-2 py-1 rounded-sm border border-emerald-200',
           size === 'sm' ? 'text-xs' : 'text-sm'
         )}>
           Save <Money data={{ amount: savings.toString(), currencyCode: minPrice.currencyCode }} withoutTrailingZeros showDualCurrency={showDualCurrency} />
@@ -127,6 +129,8 @@ export function ProductPriceServer({
   const hasRange = showRange && minPrice.amount !== maxPrice.amount
   const isOnSale = showCompareAt && minCompareAtPrice && 
     parseFloat(minCompareAtPrice.amount) > parseFloat(minPrice.amount)
+  const discountPercentageServer = isOnSale && minCompareAtPrice ? 
+    Math.round(((parseFloat(minCompareAtPrice.amount) - parseFloat(minPrice.amount)) / parseFloat(minCompareAtPrice.amount)) * 100) : 0
   
   const formatPrice = (money: MoneyV2, withEur = false) => {
     // Convert to BGN first if needed
@@ -184,19 +188,19 @@ export function ProductPriceServer({
         
         {isOnSale && minCompareAtPrice && (
           <span className={cn(
-            'font-mono text-gray-500 line-through',
+            'font-mono text-gray-400 line-through decoration-2 decoration-gray-400',
             size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base' : 'text-sm'
           )}>
             {formatPrice(minCompareAtPrice)}
           </span>
         )}
         
-        {isOnSale && (
+        {isOnSale && discountPercentageServer > 0 && (
           <span className={cn(
-            'px-2 py-0.5 bg-red-600 text-white font-mono font-bold rounded-none',
+            'px-2 py-0.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-mono font-bold rounded-sm shadow-sm border border-red-800',
             size === 'sm' ? 'text-xs' : 'text-xs'
           )}>
-            SALE
+            -{discountPercentageServer}%
           </span>
         )}
       </div>

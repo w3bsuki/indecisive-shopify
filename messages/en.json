@@ -72,6 +72,12 @@
     "viewCollection": "VIEW COLLECTION",
     "shopCollection": "SHOP COLLECTION",
     "exploreCollection": "EXPLORE COLLECTION",
+    "exploreHats": "EXPLORE HATS",
+    "exploreBags": "EXPLORE BAGS",
+    "exploreCropTops": "EXPLORE CROP TOPS",
+    "hatsSubtitle": "Premium headwear collection",
+    "bagsSubtitle": "Luxury bags & accessories",
+    "cropTopsSubtitle": "Summer essentials",
     "limitedStock": "Limited stock available",
     "marquee": {
       "freeShipping": "FREE SHIPPING OVER $100",

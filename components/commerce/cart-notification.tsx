@@ -8,6 +8,9 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { useTranslations } from 'next-intl'
+import { useCart } from '@/hooks/use-cart'
+import { navigateToCheckout } from '@/lib/checkout'
+import { toast } from 'sonner'
 
 interface CartNotificationProps {
   isOpen: boolean
@@ -24,6 +27,21 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
   const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
   const t = useTranslations('notifications')
+  const { checkoutUrl, isLoading } = useCart()
+
+  const handleCheckout = async () => {
+    try {
+      if (checkoutUrl) {
+        await navigateToCheckout(checkoutUrl, {
+          redirectToLogin: false,
+        })
+      } else {
+        toast.error('Cart is not ready for checkout')
+      }
+    } catch (_error) {
+      toast.error('Failed to proceed to checkout')
+    }
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -144,11 +162,14 @@ export function CartNotification({ isOpen, onClose, product }: CartNotificationP
           >
             {t('continueShopping')}
           </Button>
-          <Link href="/cart" className="flex-1">
-            <Button size="sm" className="w-full h-11 bg-black hover:bg-gray-800 text-white rounded-xl font-medium">
-              {t('checkout')}
-            </Button>
-          </Link>
+          <Button 
+            size="sm" 
+            className="flex-1 h-11 bg-black hover:bg-gray-800 text-white rounded-xl font-medium"
+            onClick={handleCheckout}
+            disabled={isLoading || !checkoutUrl}
+          >
+            {isLoading ? 'Loading...' : t('checkout')}
+          </Button>
         </div>
       </div>
     </div>

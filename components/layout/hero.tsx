@@ -1,42 +1,34 @@
 import { getTranslations } from 'next-intl/server';
-import { unstable_cache } from 'next/cache';
-import { getHeroSlides } from '@/lib/shopify/hero-products';
 import { HeroClient } from './hero-client';
-import { CACHE_TIMES } from '@/lib/cache/config';
-
-// Cache hero slides data
-const getCachedHeroSlides = unstable_cache(
-  async () => getHeroSlides(3),
-  ['hero-slides'],
-  {
-    revalidate: CACHE_TIMES.HERO,
-    tags: ['hero', 'collections']
-  }
-);
 
 export async function Hero() {
   const t = await getTranslations('hero');
   const tb = await getTranslations('brand');
   
-  // Fetch hero slides on the server with caching
-  let slides;
-  try {
-    slides = await getCachedHeroSlides();
-  } catch (_error) {
-    // Fallback slides if API fails
-    slides = [
-      {
-        id: 'fallback-1',
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=1600&fit=crop',
-        name: 'Premium Collection',
-      },
-      {
-        id: 'fallback-2', 
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&h=1600&fit=crop',
-        name: 'Urban Style',
-      },
-    ];
-  }
+  // Hardcoded collection slides with new model images
+  const slides = [
+    {
+      id: 'hats-collection',
+      image: '/indecisive-stars/star18.webp',
+      name: 'HATS',
+      collectionHandle: 'hats',
+      ctaLink: '/hats'
+    },
+    {
+      id: 'bags-collection',
+      image: '/indecisive-stars/star11.webp',
+      name: 'BAGS',
+      collectionHandle: 'bags',
+      ctaLink: '/accessories'
+    },
+    {
+      id: 'croptops-collection',
+      image: '/indecisive-stars/star22.webp',
+      name: 'CROP TOPS',
+      collectionHandle: 'crop-tops',
+      ctaLink: '/crop-tops'
+    }
+  ];
   
   // Pre-translate all strings on the server
   const translations = {
@@ -47,6 +39,12 @@ export async function Hero() {
     shopNow: t('shopNow'),
     viewCollection: t('viewCollection'),
     shopCollection: t('shopCollection'),
+    exploreHats: t('exploreHats'),
+    exploreBags: t('exploreBags'),
+    exploreCropTops: t('exploreCropTops'),
+    hatsSubtitle: t('hatsSubtitle'),
+    bagsSubtitle: t('bagsSubtitle'),
+    cropTopsSubtitle: t('cropTopsSubtitle'),
     limitedStock: t('limitedStock'),
     marquee: {
       freeShipping: t('marquee.freeShipping'),

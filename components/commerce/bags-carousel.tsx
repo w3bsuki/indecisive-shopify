@@ -17,23 +17,37 @@ export async function BagsCarousel() {
     // If no bags found, show a message
     if (products.length === 0) {
       return (
-        <section className="py-8 md:py-12 bg-white border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative py-12 md:py-16 bg-white overflow-hidden">
+          {/* Subtle background texture */}
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-50/15 to-transparent" />
+          
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <div className="w-12 h-px bg-black/30" />
+                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
+                  BAGS
+                </span>
+                <div className="w-12 h-px bg-black/30" />
+              </div>
+              
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-4 tracking-tight leading-[0.9]">
                 {t('bags.title')}
               </h2>
-              <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto mb-8">
+              
+              <p className="text-black/70 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed mb-8">
                 {t('bags.emptyMessage')}
               </p>
-              <Link 
-                href="/products" 
-                className="inline-flex items-center gap-2 font-mono font-medium text-sm hover:underline"
-              >
-                {t('bags.browseAll')}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+              
+              <Link href="/products">
+                <button className="group inline-flex items-center gap-3 bg-black/10 backdrop-blur-md border border-black/20 text-black px-8 py-4 rounded-full font-medium text-sm tracking-wide hover:bg-black hover:text-white transition-all duration-500">
+                  <span>{t('bags.browseAll')}</span>
+                  <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
+                  </div>
+                </button>
               </Link>
             </div>
           </div>
@@ -42,37 +56,42 @@ export async function BagsCarousel() {
     }
     
     return (
-      <section className="py-8 md:py-12 bg-white border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-6xl font-handwritten text-black mb-6 transform -rotate-1 relative inline-block">
+      <section className="relative py-12 md:py-16 bg-white overflow-hidden">
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-50/15 to-transparent" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Header - Modern Typography */}
+          <div className="text-center mb-10">
+            {/* Collection Label */}
+            <div className="inline-flex items-center gap-2 mb-4">
+              <div className="w-12 h-px bg-black/30" />
+              <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
+                BAGS
+              </span>
+              <div className="w-12 h-px bg-black/30" />
+            </div>
+            
+            {/* Main Title */}
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-4 tracking-tight leading-[0.9]">
               {t('bags.title')}
-              {/* Rough underline effect */}
-              <svg className="absolute -bottom-3 left-0 w-full" height="8" viewBox="0 0 300 8" preserveAspectRatio="none">
-                <path 
-                  d="M0,4 Q75,2 150,4 T300,4" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  fill="none"
-                  className="text-black"
-                  style={{ strokeDasharray: '0', strokeLinecap: 'round' }}
-                />
-              </svg>
             </h2>
-            <p className="text-gray-700 text-sm md:text-base font-medium max-w-xl mx-auto">
+            
+            {/* Description */}
+            <p className="text-black/70 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed">
               {t('bags.subtitle')}
             </p>
           </div>
           
           {/* Mobile: Horizontal Carousel */}
-          <div className="md:hidden">
+          <div className="md:hidden mb-8">
             <ProductCarousel products={products} />
           </div>
           
-          {/* Desktop: Grid Layout */}
-          <div className="hidden md:block">
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+          {/* Desktop: Modern Grid Layout */}
+          <div className="hidden md:block mb-10">
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
               {products.slice(0, 8).map((product, index) => (
                 <ProductCardMinimalServer 
                   key={product.id} 
@@ -84,23 +103,23 @@ export async function BagsCarousel() {
             </div>
           </div>
           
-          {/* Modern CTA Section */}
-          <div className="mt-12 md:mt-16 text-center">
-            <Link 
-              href="/products?category=tote-bags" 
-              className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-semibold text-sm rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              <span className="tracking-wide">{t('bags.viewAll')}</span>
-              <div className="p-0.5 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors">
-                <svg className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </div>
+          {/* Modern Glass CTA Section */}
+          <div className="text-center">
+            <Link href="/products?category=tote-bags">
+              <button className="group inline-flex items-center gap-3 bg-black/10 backdrop-blur-md border border-black/20 text-black px-8 py-4 rounded-full font-medium text-sm tracking-wide hover:bg-black hover:text-white transition-all duration-500">
+                <span>{t('bags.viewAll')}</span>
+                <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+                </div>
+              </button>
             </Link>
-            <p className="mt-6 text-sm font-medium text-gray-500 bg-gray-50 inline-block px-4 py-2 rounded-full">
+            <p className="mt-4 text-sm font-light text-black/60">
               🎒 {tp('viewAllCount', { count: products.length > 8 ? `${products.length}+` : products.length })}
             </p>
           </div>
+          
         </div>
       </section>
     )

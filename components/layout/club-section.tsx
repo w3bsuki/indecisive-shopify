@@ -26,64 +26,84 @@ export async function ClubSection() {
         ))}
       </Marquee>
       
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Compact newsletter design */}
-          <div className="text-center space-y-6">
-            {/* Clean header */}
-            <div>
-              <h2 className="text-3xl md:text-5xl font-black font-mono text-black mb-2">
-                {locale === 'bg' ? 'INDECISIVE CLUB' : 'INDECISIVE CLUB'}
-              </h2>
-              <p className="text-base md:text-lg text-gray-600 font-medium">
-                {locale === 'bg' ? 'Открий уникални парчета' : 'Discover unique pieces'}
-              </p>
-            </div>
-            
-            {/* Email form */}
-            <form className="max-w-md mx-auto">
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder={locale === 'bg' ? 'Твоят имейл' : 'Your email'}
-                  className="w-full px-5 py-3 pr-28 bg-gray-50 border-2 border-black rounded-full text-black font-mono text-sm focus:outline-none focus:bg-white transition-colors"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-2 bottom-2 px-5 bg-black text-white font-mono font-bold text-xs uppercase hover:bg-gray-900 transition-colors rounded-full"
-                >
-                  {locale === 'bg' ? 'Влез' : 'Join'}
-                </button>
+      <section className="relative py-12 md:py-16 bg-white overflow-hidden">
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 bg-gradient-to-b from-neutral-50/25 to-transparent" />
+        
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Header - Modern Typography */}
+          <div className="text-center mb-12">
+                {/* Collection Label */}
+                <div className="inline-flex items-center gap-2 mb-4">
+                  <div className="w-12 h-px bg-black/30" />
+                  <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
+                    NEWSLETTER
+                  </span>
+                  <div className="w-12 h-px bg-black/30" />
+                </div>
+                
+                {/* Main Title */}
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-4 tracking-tight leading-[0.9]">
+                  {locale === 'bg' ? 'INDECISIVE CLUB' : 'INDECISIVE CLUB'}
+                </h2>
+                
+                {/* Description */}
+                <p className="text-black/70 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed">
+                  {locale === 'bg' ? 'Открий уникални парчета и присъедини се към общността' : 'Discover unique pieces and join the community'}
+                </p>
               </div>
-            </form>
-            
-            {/* Benefits - mobile optimized */}
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-xs font-mono text-gray-600">
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-black rounded-full"></span>
-                {locale === 'bg' ? 'Оферти' : 'Offers'}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-black rounded-full"></span>
-                {locale === 'bg' ? 'Ранен достъп' : 'Early access'}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-black rounded-full"></span>
-                {locale === 'bg' ? 'Общност' : 'Community'}
-              </span>
+              
+              {/* Email Form - Modern Design */}
+              <div className="max-w-md mx-auto mb-10">
+                <form className="relative">
+                  <input
+                    type="email"
+                    placeholder={locale === 'bg' ? 'Твоят имейл' : 'Your email'}
+                    className="w-full px-6 py-4 pr-32 bg-white/60 backdrop-blur-sm border border-white/30 rounded-full text-black placeholder-black/60 focus:outline-none focus:bg-white/80 focus:border-black/20 transition-all duration-300"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-2 bottom-2 px-6 bg-black/90 backdrop-blur-sm text-white font-medium text-sm hover:bg-black transition-all duration-300 rounded-full"
+                  >
+                    {locale === 'bg' ? 'Влез' : 'JOIN'}
+                  </button>
+                </form>
+              </div>
+              
+              {/* Benefits - Modern Layout */}
+              <div className="flex flex-row justify-center items-center gap-6 md:gap-8 text-sm text-black/70 mb-10 flex-wrap">
+                <span className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-black/60 rounded-full"></div>
+                  <span className="font-medium">{locale === 'bg' ? 'Ексклузивни оферти' : 'Exclusive offers'}</span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-black/60 rounded-full"></div>
+                  <span className="font-medium">{locale === 'bg' ? 'Ранен достъп' : 'Early access'}</span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-black/60 rounded-full"></div>
+                  <span className="font-medium">{locale === 'bg' ? 'VIP общност' : 'VIP community'}</span>
+                </span>
+              </div>
+              
+              {/* Modern Glass CTA Section */}
+              <div className="text-center">
+                <Link href="/products">
+                  <button className="group inline-flex items-center gap-3 bg-black/10 backdrop-blur-md border border-black/20 text-black px-8 py-4 rounded-full font-medium text-sm tracking-wide hover:bg-black hover:text-white transition-all duration-500">
+                    <span>{locale === 'bg' ? 'РАЗГЛЕДАЙ КОЛЕКЦИЯТА' : 'BROWSE COLLECTION'}</span>
+                    <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                      </svg>
+                    </div>
+                  </button>
+                </Link>
+              </div>
+              
             </div>
-            
-            {/* Shop link */}
-            <Link 
-              href="/products"
-              className="inline-block text-black underline underline-offset-4 font-mono text-sm font-medium hover:no-underline transition-all"
-            >
-              {locale === 'bg' ? 'Разгледай колекцията' : 'Browse collection'}
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
       
     </>
   )

@@ -8,7 +8,8 @@ import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
-import { Money } from '@/components/commerce/money'
+import { ProductPrice } from '@/components/commerce/product-price'
+import { getSaleInfo } from '@/lib/utils/sale-pricing'
 import { QuickViewDialog } from './quick-view-dialog'
 import { Heart, Eye, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -42,7 +43,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const price = product.priceRange.minVariantPrice
   const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
   
-  const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price.amount)
+  // Use getSaleInfo to check for sales from multiple sources (tags, compare-at price, etc)
+  const saleInfo = getSaleInfo(product)
+  const isOnSale = saleInfo.isOnSale
 
   // Extract color variants for display
   const availableColors = getProductColors(product)
@@ -145,10 +148,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
     <>
       <div className="group relative bg-white transition-all duration-200">
-        {/* Sale Badge */}
-        {isOnSale && (
-          <div className="absolute top-2 left-2 z-10 bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase">
-            {t('sale')}
+        {/* Enhanced Sale Badge with Percentage */}
+        {isOnSale && saleInfo.discountPercentage && (
+          <div className="absolute top-3 left-3 z-10 bg-red-600 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
+            -{saleInfo.discountPercentage}%
           </div>
         )}
 
@@ -262,11 +265,15 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                       />
                     </button>
                     
-                    {/* Middle - Price */}
-                    <div className="flex-1 flex items-center justify-center px-3 bg-white min-w-0" style={{ fontFamily: 'var(--font-mono)' }}>
-                      <Money 
-                        data={price as any} 
-                        className="text-sm font-medium text-gray-900 truncate"
+                    {/* Middle - Price with Sale Info */}
+                    <div className="flex-1 flex items-center justify-center px-3 bg-white min-w-0">
+                      <ProductPrice
+                        priceRange={{ minVariantPrice: price as any, maxVariantPrice: price as any }}
+                        compareAtPriceRange={compareAtPrice ? { minVariantPrice: compareAtPrice as any, maxVariantPrice: compareAtPrice as any } : undefined}
+                        size="sm"
+                        showCompareAt={true}
+                        showRange={false}
+                        className="truncate"
                       />
                     </div>
                     
@@ -323,11 +330,15 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                       />
                     </button>
                     
-                    {/* Right - Price (takes remaining space) */}
-                    <div className="flex-1 flex items-center justify-center px-3 bg-white" style={{ fontFamily: 'var(--font-mono)' }}>
-                      <Money 
-                        data={price as any} 
-                        className="text-sm font-medium text-gray-900"
+                    {/* Right - Price with Sale Info (takes remaining space) */}
+                    <div className="flex-1 flex items-center justify-center px-3 bg-white">
+                      <ProductPrice
+                        priceRange={{ minVariantPrice: price as any, maxVariantPrice: price as any }}
+                        compareAtPriceRange={compareAtPrice ? { minVariantPrice: compareAtPrice as any, maxVariantPrice: compareAtPrice as any } : undefined}
+                        size="sm"
+                        showCompareAt={true}
+                        showRange={false}
+                        className="text-center"
                       />
                     </div>
                   </div>
@@ -345,10 +356,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                   )}>
                     <Heart className={cn("text-gray-400", isMobile ? "w-5 h-5" : "w-4 h-4")} />
                   </div>
-                  <div className="flex-1 flex items-center justify-center px-3 bg-white" style={{ fontFamily: 'var(--font-mono)' }}>
-                    <Money 
-                      data={price as any} 
-                      className="text-sm font-normal text-gray-500"
+                  <div className="flex-1 flex items-center justify-center px-3 bg-white">
+                    <ProductPrice
+                      priceRange={{ minVariantPrice: price as any, maxVariantPrice: price as any }}
+                      compareAtPriceRange={compareAtPrice ? { minVariantPrice: compareAtPrice as any, maxVariantPrice: compareAtPrice as any } : undefined}
+                      size="sm"
+                      showCompareAt={true}
+                      showRange={false}
+                      className="text-gray-500"
                     />
                   </div>
                   {isMobile && (
