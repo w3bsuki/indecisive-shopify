@@ -224,6 +224,7 @@
 
   /* Offset content below fixed mobile nav */
   .mt-mobile-nav { margin-top: var(--mobile-nav-height); }
+  .pt-mobile-nav { padding-top: var(--mobile-nav-height); }
 
   /* Viewport height under fixed mobile nav */
   .h-screen-under-nav { height: calc(100dvh - var(--mobile-nav-height)); }
@@ -235,6 +236,8 @@
     .min-h-screen-under-nav { min-height: calc(100svh - var(--mobile-nav-height)); }
     .max-h-screen-under-nav { max-height: calc(100svh - var(--mobile-nav-height)); }
   }
+
+  /* Removed hero-frame-offset; using padding on section instead */
   /* Safe Area Utilities */
   .pt-safe {
     padding-top: var(--safe-area-inset-top);
