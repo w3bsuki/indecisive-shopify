@@ -256,6 +256,20 @@
     max-height: 100vh;
     position: relative;
   }
+
+  /* Stable viewport-height utilities using dvh to prevent mobile zoom/shift */
+  .h-screen-stable {
+    height: 100dvh;
+    position: relative;
+  }
+  .min-h-screen-stable {
+    min-height: 100dvh;
+    position: relative;
+  }
+  .max-h-screen-stable {
+    max-height: 100dvh;
+    position: relative;
+  }
   
   /* Mobile-Optimized Fixed Positioning */
   .fixed-mobile-safe {
@@ -1478,4 +1492,3 @@ body {
     height: 50vh;
   }
 }
-
