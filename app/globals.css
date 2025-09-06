@@ -259,16 +259,23 @@
 
   /* Stable viewport-height utilities using dvh to prevent mobile zoom/shift */
   .h-screen-stable {
-    height: 100dvh;
+    height: 100dvh; /* fallback */
     position: relative;
   }
   .min-h-screen-stable {
-    min-height: 100dvh;
+    min-height: 100dvh; /* fallback */
     position: relative;
   }
   .max-h-screen-stable {
-    max-height: 100dvh;
+    max-height: 100dvh; /* fallback */
     position: relative;
+  }
+
+  /* Prefer small viewport on mobile to fit visible area */
+  @supports (height: 100svh) {
+    .h-screen-stable { height: 100svh; }
+    .min-h-screen-stable { min-height: 100svh; }
+    .max-h-screen-stable { max-height: 100svh; }
   }
   
   /* Mobile-Optimized Fixed Positioning */
