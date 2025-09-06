@@ -4,27 +4,28 @@ import { HeroClient } from './hero-client';
 export async function Hero() {
   const t = await getTranslations('hero');
   const tb = await getTranslations('brand');
+  const tn = await getTranslations('nav');
   
   // Hardcoded collection slides with new model images
   const slides = [
     {
       id: 'hats-collection',
       image: '/indecisive-stars/star18.webp',
-      name: 'HATS',
+      name: tn('hats'),
       collectionHandle: 'hats',
       ctaLink: '/hats'
     },
     {
       id: 'bags-collection',
       image: '/indecisive-stars/star11.webp',
-      name: 'BAGS',
+      name: tn('bags'),
       collectionHandle: 'bags',
       ctaLink: '/accessories'
     },
     {
       id: 'croptops-collection',
       image: '/indecisive-stars/star22.webp',
-      name: 'CROP TOPS',
+      name: tn('cropTops'),
       collectionHandle: 'crop-tops',
       ctaLink: '/crop-tops'
     }

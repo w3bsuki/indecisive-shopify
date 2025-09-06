@@ -7,6 +7,7 @@ import { getTranslations } from 'next-intl/server'
 export async function BagsCarousel() {
   const t = await getTranslations('home')
   const tp = await getTranslations('products')
+  const tn = await getTranslations('nav')
   
   try {
     // Fetch bag products with proper tag filtering
@@ -25,9 +26,7 @@ export async function BagsCarousel() {
             <div className="text-center">
               <div className="inline-flex items-center gap-2 mb-4">
                 <div className="w-12 h-px bg-black/30" />
-                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
-                  BAGS
-                </span>
+                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">{tn('bags')}</span>
                 <div className="w-12 h-px bg-black/30" />
               </div>
               
@@ -67,9 +66,7 @@ export async function BagsCarousel() {
             {/* Collection Label */}
             <div className="inline-flex items-center gap-2 mb-4">
               <div className="w-12 h-px bg-black/30" />
-              <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
-                BAGS
-              </span>
+              <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">{tn('bags')}</span>
               <div className="w-12 h-px bg-black/30" />
             </div>
             

@@ -175,6 +175,22 @@
       "viewAll": "ВИЖ ВСИЧКИ ЧАНТИ"
     }
   },
+  "newsletter": {
+    "label": "ИНФОРМАТОР",
+    "title": "INDECISIVE CLUB",
+    "subtitle": "Открий уникални парчета и се присъедини към общността",
+    "joinTheClub": "ПРИСЪЕДИНИ СЕ КЪМ КЛУБА",
+    "emailPlaceholder": "Твоят имейл",
+    "joinButton": "ВЛЕЗ",
+    "ctaBrowseCollection": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА",
+    "beIndecisive": "БЪДИ НЕРЕШИТЕЛЕН",
+    "minimalDesign": "МИНИМАЛЕН ДИЗАЙН",
+    "benefits": {
+      "exclusiveOffers": "Ексклузивни оферти",
+      "earlyAccess": "Ранен достъп",
+      "vipCommunity": "VIP общност"
+    }
+  },
   "products": {
     "title": "ПРОДУКТИ",
     "subtitle": "Разгледайте нашата пълна колекция",

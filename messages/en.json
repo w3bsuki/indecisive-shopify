@@ -175,6 +175,22 @@
       "viewAll": "View All Bags"
     }
   },
+  "newsletter": {
+    "label": "NEWSLETTER",
+    "title": "INDECISIVE CLUB",
+    "subtitle": "Discover unique pieces and join the community",
+    "joinTheClub": "JOIN THE CLUB",
+    "emailPlaceholder": "Your email",
+    "joinButton": "JOIN",
+    "ctaBrowseCollection": "BROWSE COLLECTION",
+    "beIndecisive": "BE INDECISIVE",
+    "minimalDesign": "MINIMAL DESIGN",
+    "benefits": {
+      "exclusiveOffers": "Exclusive offers",
+      "earlyAccess": "Early access",
+      "vipCommunity": "VIP community"
+    }
+  },
   "products": {
     "title": "ALL PRODUCTS",
     "subtitle": "Browse our complete collection",

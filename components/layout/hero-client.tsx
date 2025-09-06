@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from 'next-intl'
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -46,6 +47,7 @@ interface HeroClientProps {
 }
 
 export function HeroClient({ slides, translations }: HeroClientProps) {
+  const tn = useTranslations('nav')
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
   React.useEffect(() => {
@@ -96,9 +98,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
                 {/* Collection Label - FIXED */}
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-8 h-px bg-white/60" />
-                  <span className="text-white/80 text-xs font-medium tracking-[0.2em] uppercase">
-                    COLLECTION
-                  </span>
+                  <span className="text-white/80 text-xs font-medium tracking-[0.2em] uppercase">{tn('collections')}</span>
                 </div>
                 
                 {/* Collection Title - FIXED HEIGHT AND POSITION */}

@@ -464,7 +464,7 @@ export function Navigation() {
           )}
         >
           {/* Glass Container */}
-          <div className="mx-2 mb-2">
+          <div className="mx-2 mb-0 pb-safe">
             <div className="relative bg-white/90 backdrop-blur-lg rounded-2xl border border-white/30 shadow-2xl overflow-hidden">
               <div className="grid grid-cols-5 gap-0 py-3 px-3">
                 {/* Профил (Account) */}

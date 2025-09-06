@@ -19,7 +19,7 @@ export async function ClubSection() {
         {[...Array(6)].map((_, i) => (
           <span key={i} className="flex">
             <MarqueeItem className="text-black">{t('beIndecisive')}</MarqueeItem>
-            <MarqueeItem className="text-black">{locale === 'bg' ? 'ПРИСЪЕДИНИ СЕ КЪМ КЛУБА' : 'JOIN THE CLUB'}</MarqueeItem>
+            <MarqueeItem className="text-black">{t('joinTheClub')}</MarqueeItem>
             <MarqueeItem className="text-black">{t('minimalDesign')}</MarqueeItem>
             <MarqueeItem className="text-black">{tb('name')}</MarqueeItem>
           </span>
@@ -37,21 +37,15 @@ export async function ClubSection() {
                 {/* Collection Label */}
                 <div className="inline-flex items-center gap-2 mb-4">
                   <div className="w-12 h-px bg-black/30" />
-                  <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
-                    NEWSLETTER
-                  </span>
+                  <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">{t('label')}</span>
                   <div className="w-12 h-px bg-black/30" />
                 </div>
                 
                 {/* Main Title */}
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-4 tracking-tight leading-[0.9]">
-                  {locale === 'bg' ? 'INDECISIVE CLUB' : 'INDECISIVE CLUB'}
-                </h2>
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-4 tracking-tight leading-[0.9]">{t('title')}</h2>
                 
                 {/* Description */}
-                <p className="text-black/70 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed">
-                  {locale === 'bg' ? 'Открий уникални парчета и присъедини се към общността' : 'Discover unique pieces and join the community'}
-                </p>
+                <p className="text-black/70 text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed">{t('subtitle')}</p>
               </div>
               
               {/* Email Form - Modern Design */}
@@ -59,7 +53,7 @@ export async function ClubSection() {
                 <form className="relative">
                   <input
                     type="email"
-                    placeholder={locale === 'bg' ? 'Твоят имейл' : 'Your email'}
+                    placeholder={t('emailPlaceholder')}
                     className="w-full px-6 py-4 pr-32 bg-white/60 backdrop-blur-sm border border-white/30 rounded-full text-black placeholder-black/60 focus:outline-none focus:bg-white/80 focus:border-black/20 transition-all duration-300"
                     required
                   />
@@ -67,7 +61,7 @@ export async function ClubSection() {
                     type="submit"
                     className="absolute right-2 top-2 bottom-2 px-6 bg-black/90 backdrop-blur-sm text-white font-medium text-sm hover:bg-black transition-all duration-300 rounded-full"
                   >
-                    {locale === 'bg' ? 'Влез' : 'JOIN'}
+                    {t('joinButton')}
                   </button>
                 </form>
               </div>
@@ -76,15 +70,15 @@ export async function ClubSection() {
               <div className="flex flex-row justify-center items-center gap-6 md:gap-8 text-sm text-black/70 mb-10 flex-wrap">
                 <span className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-black/60 rounded-full"></div>
-                  <span className="font-medium">{locale === 'bg' ? 'Ексклузивни оферти' : 'Exclusive offers'}</span>
+                  <span className="font-medium">{t('benefits.exclusiveOffers')}</span>
                 </span>
                 <span className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-black/60 rounded-full"></div>
-                  <span className="font-medium">{locale === 'bg' ? 'Ранен достъп' : 'Early access'}</span>
+                  <span className="font-medium">{t('benefits.earlyAccess')}</span>
                 </span>
                 <span className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-black/60 rounded-full"></div>
-                  <span className="font-medium">{locale === 'bg' ? 'VIP общност' : 'VIP community'}</span>
+                  <span className="font-medium">{t('benefits.vipCommunity')}</span>
                 </span>
               </div>
               
@@ -92,7 +86,7 @@ export async function ClubSection() {
               <div className="text-center">
                 <Link href="/products">
                   <button className="group inline-flex items-center gap-3 bg-black/10 backdrop-blur-md border border-black/20 text-black px-8 py-4 rounded-full font-medium text-sm tracking-wide hover:bg-black hover:text-white transition-all duration-500">
-                    <span>{locale === 'bg' ? 'РАЗГЛЕДАЙ КОЛЕКЦИЯТА' : 'BROWSE COLLECTION'}</span>
+                    <span>{t('ctaBrowseCollection')}</span>
                     <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />

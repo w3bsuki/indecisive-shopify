@@ -8,6 +8,8 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 
 export function CommunityCarousel() {
   const t = useTranslations('community')
+  const th = useTranslations('home')
+  const ther = useTranslations('hero')
   const [selectedImage, setSelectedImage] = useState<typeof starImages[0] | null>(null)
   
   // Indecisive stars images - using encodeURIComponent for filenames with spaces
@@ -46,9 +48,7 @@ export function CommunityCarousel() {
               {/* Collection Label */}
               <div className="inline-flex items-center gap-2 mb-4">
                 <div className="w-12 h-px bg-black/30" />
-                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
-                  COMMUNITY
-                </span>
+                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">{th('community.title')}</span>
                 <div className="w-12 h-px bg-black/30" />
               </div>
               
@@ -97,7 +97,7 @@ export function CommunityCarousel() {
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 bg-black/10 backdrop-blur-md border border-black/20 text-black px-8 py-4 rounded-full font-medium text-sm tracking-wide hover:bg-black hover:text-white transition-all duration-500"
               >
-                <span>FOLLOW US</span>
+                <span>{ther('marquee.followInstagram')}</span>
                 <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />

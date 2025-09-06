@@ -16,6 +16,7 @@ export default async function HomePage() {
   // Get translations for the home page
   const t = await getTranslations('home')
   const tp = await getTranslations('products')
+  const tn = await getTranslations('nav')
   
   // Fetch data from Shopify with error handling
   try {
@@ -43,9 +44,7 @@ export default async function HomePage() {
               {/* Collection Label */}
               <div className="inline-flex items-center gap-2 mb-4">
                 <div className="w-12 h-px bg-black/30" />
-                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">
-                  FEATURED
-                </span>
+                <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">{tn('featured')}</span>
                 <div className="w-12 h-px bg-black/30" />
               </div>
               
