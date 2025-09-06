@@ -58,7 +58,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   }, [slides.length]);
 
   return (
-    <section className="relative w-full h-screen-stable overflow-hidden bg-neutral-50">
+    <section className="relative w-full h-screen-under-nav md:h-screen-stable mt-mobile-nav md:mt-0 overflow-hidden bg-neutral-50">
       {/* Frame Border */}
       <div className="absolute inset-4 md:inset-8 border border-black/10 pointer-events-none z-30 rounded-2xl" />
       

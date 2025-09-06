@@ -217,6 +217,24 @@
 
 /* Mobile Safe Area & Viewport Utilities */
 @layer utilities {
+  /* Mobile nav height variable */
+  :root {
+    --mobile-nav-height: 56px; /* h-14 */
+  }
+
+  /* Offset content below fixed mobile nav */
+  .mt-mobile-nav { margin-top: var(--mobile-nav-height); }
+
+  /* Viewport height under fixed mobile nav */
+  .h-screen-under-nav { height: calc(100dvh - var(--mobile-nav-height)); }
+  .min-h-screen-under-nav { min-height: calc(100dvh - var(--mobile-nav-height)); }
+  .max-h-screen-under-nav { max-height: calc(100dvh - var(--mobile-nav-height)); }
+
+  @supports (height: 100svh) {
+    .h-screen-under-nav { height: calc(100svh - var(--mobile-nav-height)); }
+    .min-h-screen-under-nav { min-height: calc(100svh - var(--mobile-nav-height)); }
+    .max-h-screen-under-nav { max-height: calc(100svh - var(--mobile-nav-height)); }
+  }
   /* Safe Area Utilities */
   .pt-safe {
     padding-top: var(--safe-area-inset-top);
