@@ -45,7 +45,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
           }
         </button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[85vw] max-w-sm p-0 flex flex-col" style={{ height: 'calc(100vh - 64px)', bottom: '64px' }}>
+      <SheetContent side="left" className="!w-full !max-w-none !left-0 !right-0 p-0 flex flex-col" style={{ height: 'calc(100vh - 64px)', bottom: '64px' }}>
         {/* Header */}
         <SheetHeader className="px-6 pt-6 pb-4 border-b">
           <SheetTitle className="font-mono text-lg tracking-wide">INDECISIVE</SheetTitle>

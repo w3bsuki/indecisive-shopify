@@ -65,12 +65,20 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
   // Listen for variant changes to switch to the variant's image
   useEffect(() => {
     const handleVariantChange = (event: CustomEvent) => {
+      console.log('🎯 Image gallery received variant change:', event.detail)
       const variantImage = event.detail.image
+      console.log('🖼️ Variant image:', variantImage)
+      console.log('📸 Available images:', images.map(img => ({ url: img.url, alt: img.altText })))
+      
       if (variantImage?.url) {
         // Find the index of this image in the gallery
         const imageIndex = images.findIndex(img => img.url === variantImage.url)
+        console.log('📍 Found image at index:', imageIndex)
         if (imageIndex >= 0) {
           setSelectedIndex(imageIndex)
+          console.log('✅ Switched to image index:', imageIndex)
+        } else {
+          console.log('❌ Image not found in gallery')
         }
       }
     }
@@ -420,8 +428,8 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               className={cn(
                 "relative aspect-square bg-gray-100 rounded-xl overflow-hidden transition-all touch-manipulation",
                 selectedIndex === index 
-                  ? "ring-2 ring-black shadow-xl transform scale-[1.05]" 
-                  : "ring-1 ring-gray-200 hover:ring-gray-300 hover:shadow-sm"
+                  ? "opacity-100 shadow-2xl transform scale-[1.08]" 
+                  : "opacity-70 hover:opacity-90 hover:shadow-lg"
               )}
             >
               <HydrogenImageWrapper
@@ -446,8 +454,8 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                 className={cn(
                   "relative flex-none w-16 h-16 bg-gray-100 rounded-xl overflow-hidden transition-all snap-start touch-manipulation",
                   selectedIndex === index 
-                    ? "ring-2 ring-black shadow-lg transform scale-[1.08]" 
-                    : "ring-1 ring-gray-200"
+                    ? "opacity-100 shadow-2xl transform scale-[1.12]" 
+                    : "opacity-60 hover:opacity-85"
                 )}
               >
                 <HydrogenImageWrapper
