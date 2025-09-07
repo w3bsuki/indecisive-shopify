@@ -41,6 +41,10 @@ const buttonVariants = cva(
         "wishlist": "bg-transparent text-gray-600 hover:text-wishlist hover:bg-gray-50 active:bg-gray-100 border border-gray-200 hover:border-wishlist/30",
         
         "sale": "bg-sale-price text-text-inverse hover:bg-red-600 active:bg-red-700 border border-transparent font-bold tracking-wider",
+
+        // Glass variants for translucent, premium look
+        glass: "glass-light text-gray-900 hover:bg-white/80 active:bg-white/70 border-transparent",
+        "glass-dark": "glass-dark text-gray-50 hover:bg-black/70 active:bg-black/60 border-transparent",
       },
       size: {
         sm: "h-button-sm px-3 text-xs font-medium min-w-touch-target",

@@ -278,17 +278,17 @@ export function Navigation() {
 
           {/* Mobile Navigation Bar */}
           <nav className="bg-white shadow-sm border-b border-gray-100">
-            <div className="px-3 h-14 flex items-center justify-between">
-              {/* Left Side: Menu + Logo */}
-              <div className="flex items-center -space-x-2">
-                {/* Menu on LEFT */}
+            <div className="pl-1 pr-2 h-16 flex items-center justify-between">
+              {/* Left: Menu + Brand */}
+              <div className="flex items-center space-x-0">
                 <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <DropdownMenuTrigger asChild>
-                    <button className="relative min-h-[44px] min-w-[44px] flex items-center justify-center">
-                      {isMenuOpen ? 
-                        <X className="h-5 w-5 stroke-[1.5]" /> : 
+                    <button className="relative h-10 w-10 -mr-1 flex items-center justify-center focus:outline-none focus-visible:outline-none">
+                      {isMenuOpen ? (
+                        <X className="h-5 w-5 stroke-[1.5]" />
+                      ) : (
                         <Menu className="h-5 w-5 stroke-[1.5]" />
-                      }
+                      )}
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent 
@@ -298,6 +298,37 @@ export function Navigation() {
                     sideOffset={5}
                   >
                     <div className="p-4">
+                      {/* Social */}
+                      <div className="mb-3">
+                        <Link
+                          href="https://www.instagram.com/indecisive_wear/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center justify-between p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                        >
+                          <span className="flex items-center gap-2 text-sm font-medium">
+                            <Instagram className="h-4 w-4" /> Instagram
+                          </span>
+                          <span className="text-xs text-gray-500">@indecisive_wear</span>
+                        </Link>
+                      </div>
+                      {/* Social */}
+                      <div className="mb-3">
+                        <Link
+                          href="https://www.instagram.com/indecisive_wear/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center justify-between p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                        >
+                          <span className="flex items-center gap-2 text-sm font-medium">
+                            <Instagram className="h-4 w-4" /> Instagram
+                          </span>
+                          <span className="text-xs text-gray-500">@indecisive_wear</span>
+                        </Link>
+                      </div>
+
                       {/* Auth CTAs */}
                       <div className="flex items-center gap-2 mb-4">
                         {isAuthenticated ? (
@@ -358,31 +389,14 @@ export function Navigation() {
                     </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                
-                {/* Logo */}
-                <div className="flex items-center -space-x-3">
-                  <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90 mt-0.5">
-                    <span className="text-lg font-bold font-mono tracking-wide text-black">INDECISIVE</span>
-                  </Link>
-                  <Link 
-                    href="https://www.instagram.com/indecisive_wear/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="min-h-[44px] min-w-[44px] flex items-center justify-center hover:bg-gray-100 rounded mt-0.5"
-                  >
-                    <Instagram className="w-4 h-4 text-gray-600" />
-                  </Link>
-                </div>
+                <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90">
+                  <span className="text-xl font-bold font-mono leading-none text-black">INDECISIVE</span>
+                </Link>
               </div>
 
-              {/* Right Actions - Search + Cart ONLY */}
-              <div className="flex items-center">
-                {/* Search */}
-                <div className="-mr-2">
-                  <SearchDropdown />
-                </div>
-
-                {/* Cart */}
+              {/* Right: Search then Cart (tight) */}
+              <div className="flex items-center space-x-0">
+                <SearchDropdown />
                 <MobileCartDropdown />
               </div>
             </div>
@@ -390,7 +404,7 @@ export function Navigation() {
         </div>
 
         {/* Mobile Header Spacer */}
-        <div className="h-14 md:hidden" />
+        <div className="h-16 md:hidden" />
       </>
 
       {/* Mobile Bottom Navigation - Hide on custom page and all product routes */}
@@ -404,7 +418,7 @@ export function Navigation() {
         >
           {/* Glass Container */}
           <div className="mx-2 mb-0 pb-safe">
-            <div className="relative bg-white/90 backdrop-blur-lg rounded-2xl border border-white/30 shadow-2xl overflow-hidden">
+            <div className="relative glass-light rounded-2xl shadow-2xl overflow-hidden">
               <div className="grid grid-cols-5 gap-0 py-3 px-3">
                 {/* Профил (Account) */}
                 <div className="flex justify-center">

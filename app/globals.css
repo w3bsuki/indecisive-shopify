@@ -277,7 +277,7 @@
 @layer utilities {
   /* Mobile nav height variable */
   :root {
-    --mobile-nav-height: 56px; /* h-14 */
+    --mobile-nav-height: 64px; /* h-16 */
   }
 
   /* Offset content below fixed mobile nav */
@@ -400,24 +400,43 @@
 @layer utilities {
   /* Glass Effects */
   .glass-light {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Slightly less opaque for a lighter, premium look */
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    /* Brighter edge for glass on light backgrounds */
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    /* Crisp inner highlight + subtle outer lift */
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.30),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+      0 4px 12px rgba(0, 0, 0, 0.06);
   }
   
   .glass-dark {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 6px 18px rgba(0, 0, 0, 0.25);
   }
   
   .glass-subtle {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  /* Optional: a border-only helper you can add to any translucent element */
+  .glass-edge {
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.30),
+      0 4px 12px rgba(0, 0, 0, 0.06);
   }
   
   .glass-strong {

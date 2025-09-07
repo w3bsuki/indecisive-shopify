@@ -62,7 +62,7 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
       variant="ghost"
       size="sm"
       className={cn(
-        "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg text-gray-600 hover:text-black hover:bg-gray-50",
+        "flex flex-col items-center gap-1 h-auto py-2 px-3 min-w-[64px] min-h-[52px] transition-all duration-150 rounded-lg text-gray-600 hover:text-black hover:bg-gray-50 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
         isAnimating && "cart-icon-bounce"
       )}
     >
@@ -83,16 +83,16 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
     <button
       ref={cartIconRef}
       className={cn(
-        "relative h-10 w-10 flex items-center justify-center transition-all duration-200 active:scale-95",
+        "relative h-12 w-12 md:h-10 md:w-10 -ml-2 flex items-center justify-center transition-all duration-200 active:scale-95 focus:outline-none focus-visible:outline-none",
         isAnimating && "cart-icon-bounce"
       )}
     >
-      <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+      <ShoppingBag className="h-6 w-6 stroke-[1.5]" />
       <span className="sr-only">Shopping Cart</span>
       {totalItems > 0 && (
         <Badge
           variant="secondary"
-          className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white border-2 border-white shadow-lg"
+          className="absolute -top-0.5 -right-0.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-bold bg-red-500 text-white border-2 border-white shadow-lg"
         >
           {totalItems}
         </Badge>
@@ -109,8 +109,10 @@ export function MobileCartDropdown({ isBottomNav = false }: { isBottomNav?: bool
         align={isBottomNav ? "center" : "end"}
         side={isBottomNav ? "top" : "bottom"}
         className={cn(
-          "max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none",
-          isBottomNav ? "w-[calc(100vw-32px)] mx-4" : "w-[calc(100vw-24px)] sm:w-[380px]"
+          "p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none",
+          isBottomNav 
+            ? "w-[calc(100vw-24px)] mx-3"
+            : "w-[calc(100vw-24px)] mx-3 sm:w-[380px] sm:mx-0"
         )}
         sideOffset={isBottomNav ? 12 : 8}
       >

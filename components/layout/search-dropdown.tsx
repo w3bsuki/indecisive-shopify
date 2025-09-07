@@ -105,21 +105,20 @@ export function SearchDropdown() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon"
-          className="h-10 w-10 hover:bg-gray-100 active:bg-gray-200"
+        <button
+          className="relative h-12 w-12 md:h-10 md:w-10 flex items-center justify-center transition-all duration-200 active:scale-95 focus:outline-none focus-visible:outline-none"
         >
-          <Search className="h-5 w-5 stroke-[1.5]" />
-        </Button>
+          <Search className="h-6 w-6 stroke-[1.5]" />
+          <span className="sr-only">Search</span>
+        </button>
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        align="center"
+        align="end"
         side="bottom"
         className={cn(
-          "max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none",
-          "w-[calc(100vw-32px)] mx-4"
+          "p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none",
+          "w-[calc(100vw-24px)] mx-3 md:w-[420px] md:mx-0"
         )}
         sideOffset={8}
       >

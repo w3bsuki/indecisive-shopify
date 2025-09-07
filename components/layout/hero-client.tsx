@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import Image from 'next/image';
 import Link from 'next/link';
+import { cn } from '@/lib/utils'
 
 interface HeroSlide {
   id: string;
@@ -48,6 +49,8 @@ interface HeroClientProps {
 
 export function HeroClient({ slides, translations }: HeroClientProps) {
   const tn = useTranslations('nav')
+  const locale = useLocale()
+  const isBg = locale?.toLowerCase() === 'bg'
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
   // Lock hero height to initial viewport height (ignore URL bar scroll resizes)
@@ -112,7 +115,12 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
                 {/* Collection Label - FIXED */}
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-8 h-px bg-white/60" />
-                  <span className="text-white/80 text-xs font-medium tracking-[0.2em] uppercase">{tn('collections')}</span>
+                  <span className={cn(
+                    'text-white/80 text-xs font-medium tracking-[0.2em]',
+                    isBg ? 'normal-case' : 'uppercase'
+                  )}>
+                    {tn('collections')}
+                  </span>
                 </div>
                 
                 {/* Collection Title - FIXED HEIGHT AND POSITION */}
@@ -125,7 +133,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
                 {/* CTA Button - FIXED */}
                 <Link href={slide.ctaLink}>
                   <button className="group flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-medium text-sm tracking-wide hover:bg-white hover:text-black transition-all duration-300">
-                    <span className="whitespace-nowrap">
+                    <span className="whitespace-nowrap tracking-normal">
                       {index === 0 && translations.exploreHats}
                       {index === 1 && translations.exploreBags}
                       {index === 2 && translations.exploreCropTops}
