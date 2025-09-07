@@ -207,7 +207,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
     <div className="space-y-4">
       {/* Color Selector */}
       {colorOption && availableColors.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-2" role="radiogroup" aria-label={tc('color')}>
           <div className="flex items-center justify-between">
             <Label className="text-sm font-medium">
               {tc('color')}{selectedColor && <span className="ml-2 text-gray-500 font-normal text-xs">{selectedColor}</span>}
@@ -221,8 +221,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
                   key={value}
                   onClick={() => available && handleColorSelect(value)}
                   disabled={!available}
+                  role="radio"
+                  aria-checked={isSelected}
                   className={cn(
-                    "relative w-8 h-8 border transition-all touch-manipulation rounded-full overflow-hidden",
+                    "relative w-8 h-8 border transition-all touch-manipulation rounded-full overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
                     isSelected ? "border-black border-2 ring-2 ring-black ring-offset-2" : "border-gray-300 hover:border-gray-500",
                     !available && "opacity-40 cursor-not-allowed"
                   )}
@@ -247,7 +249,7 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
 
       {/* Size Selector - Nike Style Grid */}
       {sizeOption && availableSizes.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-2" role="radiogroup" aria-label={tc('size')}>
           <div className="flex items-center justify-between">
             <Label className="text-sm font-medium">
               {tc('size')}{selectedSize && <span className="ml-2 text-gray-500 font-normal text-xs">{selectedSize}</span>}
@@ -269,8 +271,10 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
                   key={value}
                   onClick={() => available && handleSizeSelect(value)}
                   disabled={!available}
+                  role="radio"
+                  aria-checked={isSelected}
                   className={cn(
-                    "relative h-10 px-4 min-w-[60px] border text-sm font-medium transition-all touch-manipulation",
+                    "relative h-10 px-4 min-w-[60px] border text-sm font-medium transition-all touch-manipulation outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
                     "flex items-center justify-center rounded-md",
                     isSelected 
                       ? "border-black bg-black text-white" 
@@ -382,21 +386,21 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
       </div>
 
       {/* Stock Status - Hidden on mobile (shown in bottom sheet) */}
-      {selectedVariant && (
-        <div className="hidden md:block text-sm">
-          {selectedVariant.availableForSale ? (
+      <div aria-live="polite" className="hidden md:block text-sm">
+        {selectedVariant && (
+          selectedVariant.availableForSale ? (
             <div className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-xl text-sm font-medium w-fit">
               <div className="w-2 h-2 bg-green-500 rounded-full" />
-              <span>In stock • Ready to ship</span>
+              <span>{t('available')}</span>
             </div>
           ) : (
             <div className="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 rounded-xl text-sm font-medium w-fit">
               <div className="w-2 h-2 bg-red-500 rounded-full" />
               <span>{tc('outOfStock')}</span>
             </div>
-          )}
-        </div>
-      )}
+          )
+        )}
+      </div>
 
       {/* Size Guide Modal */}
       {showSizeGuide && (

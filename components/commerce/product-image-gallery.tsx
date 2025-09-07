@@ -172,7 +172,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" aria-label={`${productTitle} gallery`}>
       {/* Main Image */}
       <div 
         ref={containerRef}
@@ -195,7 +195,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
             alt={selectedImage.altText || productTitle}
             aspectRatio="1/1"
             priority={selectedIndex === 0}
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 640px"
             className="rounded-lg select-none"
           />
         </div>
@@ -243,6 +243,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               size="icon"
               className="absolute top-2 right-2 bg-white/90 hover:bg-white h-8 w-8"
               onClick={() => setAutoplayEnabled(!autoplayEnabled)}
+              aria-label={autoplayEnabled ? 'Disable autoplay' : 'Enable autoplay'}
             >
               <div className={cn(
                 "w-3 h-3 rounded-full transition-colors",
@@ -260,6 +261,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               size="icon"
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex"
               onClick={handlePrevious}
+              aria-label="Previous image"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -268,6 +270,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               size="icon"
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex"
               onClick={handleNext}
+              aria-label="Next image"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -296,11 +299,12 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               variant="ghost"
               size="icon"
               className="absolute bottom-2 right-2 bg-white/90 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex h-8 w-8"
+              aria-label="Open fullscreen"
             >
               <Maximize2 className="h-3 w-3" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-7xl w-full h-[90vh] p-0">
+          <DialogContent className="max-w-7xl w-full h-[90vh] p-0" aria-label={`${productTitle} fullscreen image`}>
             <div className="relative w-full h-full bg-black flex items-center justify-center">
               {/* Fullscreen Image */}
               <div className="relative w-full h-full flex items-center justify-center">
@@ -345,6 +349,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                     size="icon"
                     className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white"
                     onClick={handlePrevious}
+                    aria-label="Previous image"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </Button>
@@ -353,6 +358,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                     size="icon"
                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white"
                     onClick={handleNext}
+                    aria-label="Next image"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </Button>
@@ -369,7 +375,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
 
         {/* Image Counter - Desktop only */}
         {images.length > 1 && (
-          <div className="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded hidden md:block">
+          <div className="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded hidden md:block" aria-live="polite">
             {selectedIndex + 1} / {images.length}
           </div>
         )}
