@@ -109,10 +109,34 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
         variantImage: selectedVariantFromOptions?.image?.url,
         variantOptions: selectedVariantFromOptions?.selectedOptions
       })
+      
+      // Create fallback image if variant doesn't have proper image
+      let imageToUse = selectedVariantFromOptions?.image
+      
+      if ((!imageToUse?.url || imageToUse.url.includes('the_ind.png')) && selectedColor && product.images?.edges) {
+        // Fallback color-to-image mapping
+        const colorLower = selectedColor.toLowerCase()
+        const availableImages = product.images.edges.map(edge => edge.node)
+        let fallbackIndex = -1
+        
+        if (colorLower.includes('червен') || colorLower.includes('red')) {
+          fallbackIndex = 0 // First image
+        } else if (colorLower.includes('лилав') || colorLower.includes('purple') || colorLower.includes('violet')) {
+          fallbackIndex = 1 // Second image  
+        } else if (colorLower.includes('син') || colorLower.includes('blue')) {
+          fallbackIndex = 2 // Third image
+        }
+        
+        if (fallbackIndex >= 0 && fallbackIndex < availableImages.length) {
+          imageToUse = availableImages[fallbackIndex]
+          console.log('🎨 Form fallback mapping - using image index:', fallbackIndex, 'for color:', selectedColor)
+        }
+      }
+      
       window.dispatchEvent(new CustomEvent('variant-changed', {
         detail: { 
           variant: selectedVariantFromOptions,
-          image: selectedVariantFromOptions?.image
+          image: imageToUse
         }
       }))
     }

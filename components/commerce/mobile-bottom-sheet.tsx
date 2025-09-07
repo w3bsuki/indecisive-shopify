@@ -86,9 +86,33 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
     })
     if (newVariant) {
       setSelectedVariant(newVariant)
+      
+      // Create fallback image if variant doesn't have proper image
+      let imageToUse = newVariant.image
+      
+      if (!imageToUse?.url && product.images?.edges) {
+        // Fallback color-to-image mapping
+        const colorLower = color.toLowerCase()
+        const availableImages = product.images.edges.map(edge => edge.node)
+        let fallbackIndex = -1
+        
+        if (colorLower.includes('червен') || colorLower.includes('red')) {
+          fallbackIndex = 0 // First image
+        } else if (colorLower.includes('лилав') || colorLower.includes('purple') || colorLower.includes('violet')) {
+          fallbackIndex = 1 // Second image
+        } else if (colorLower.includes('син') || colorLower.includes('blue')) {
+          fallbackIndex = 2 // Third image
+        }
+        
+        if (fallbackIndex >= 0 && fallbackIndex < availableImages.length) {
+          imageToUse = availableImages[fallbackIndex]
+          console.log('🎨 Bottom sheet fallback mapping - using image index:', fallbackIndex, 'for color:', color)
+        }
+      }
+      
       // Emit event for main form sync AND image gallery update
       const event = new CustomEvent('variant-changed', {
-        detail: { variant: newVariant, image: newVariant.image }
+        detail: { variant: newVariant, image: imageToUse }
       })
       window.dispatchEvent(event)
     }
