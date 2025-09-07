@@ -10,12 +10,14 @@ interface ProductCardMinimalServerProps {
   product: ShopifyProduct
   priority?: boolean
   size?: 'default' | 'large' | 'mobile'
+  variant?: 'default' | 'borderless'
 }
 
 export async function ProductCardMinimalServer({ 
   product, 
   priority: _priority = false, 
-  size = 'default' 
+  size = 'default',
+  variant = 'default'
 }: ProductCardMinimalServerProps) {
   const price = product.priceRange.minVariantPrice
   const compareAtPrice = product.compareAtPriceRange?.maxVariantPrice || null
@@ -31,9 +33,11 @@ export async function ProductCardMinimalServer({
   return (
     <div 
       className={cn(
-        "group relative bg-white rounded-2xl",
+        "group relative",
         "transition-all duration-300",
         "overflow-hidden",
+        variant === 'default' && "bg-white rounded-2xl",
+        variant === 'borderless' && "bg-transparent",
         size === 'large' && 'min-w-[280px] md:min-w-[320px]',
         size === 'mobile' && 'w-full'
       )}
@@ -75,7 +79,7 @@ export async function ProductCardMinimalServer({
       </div>
 
       {/* Modern Product Information */}
-      <div className="px-3 pt-2 pb-3">
+      <div className={cn("px-3 pt-2 pb-3", variant === 'borderless' && "px-0 pt-2 pb-2") }>
         {/* Modern Color Variants Display */}
         {availableColors.length > 0 && (
           <div className="flex items-center justify-center gap-1.5 mb-3">
@@ -106,7 +110,8 @@ export async function ProductCardMinimalServer({
 
         {/* Modern Product Title */}
         <h3 className={cn(
-          "text-base sm:text-lg font-semibold text-gray-900 text-center leading-snug mb-3 transition-colors duration-300",
+          "text-base sm:text-lg font-semibold text-gray-900 text-center leading-snug mb-2 transition-colors duration-300",
+          variant === 'borderless' && "mb-1",
           size === 'mobile' ? "text-sm" : ""
         )}>
           <Link 
@@ -118,7 +123,11 @@ export async function ProductCardMinimalServer({
         </h3>
         
         {/* Modern Price Section */}
-        <div className="text-center bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl py-2.5 px-3 mt-auto" style={{ fontFamily: 'var(--font-mono)' }}>
+        <div className={cn(
+          "text-center mt-auto",
+          variant === 'default' && "bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl py-2.5 px-3",
+          variant === 'borderless' && "py-1"
+        )} style={{ fontFamily: 'var(--font-mono)' }}>
           {isOnSale ? (
             <SalePriceServer 
               price={price}

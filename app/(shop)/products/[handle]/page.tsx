@@ -261,7 +261,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="flex gap-3 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
                 {relatedProducts.slice(0, 6).map((product) => (
                   <div key={product.id} className="flex-none snap-start w-36">
-                    <ProductCardMinimalServer product={product} />
+                    <ProductCardMinimalServer product={product} variant="borderless" />
                   </div>
                 ))}
               </div>
@@ -270,7 +270,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Desktop: Grid */}
             <div className="hidden md:grid grid-cols-4 gap-3">
               {relatedProducts.slice(0, 4).map((product) => (
-                <ProductCardMinimalServer key={product.id} product={product} />
+                <ProductCardMinimalServer key={product.id} product={product} variant="borderless" />
               ))}
             </div>
           </div>
