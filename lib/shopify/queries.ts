@@ -36,6 +36,12 @@ const PRODUCT_FRAGMENT = `
           name
           value
         }
+        image {
+          url
+          altText
+          width
+          height
+        }
       }
     }
   }
