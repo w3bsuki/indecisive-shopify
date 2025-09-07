@@ -176,7 +176,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Product Details - Desktop */}
             <div className="hidden md:block px-4 md:px-0 py-6">
               {/* Product Info */}
-              <div className="space-y-6">
+              <div className="space-y-6 rounded-2xl border border-black/10 bg-white p-6">
                 <div className="space-y-3">
                   <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{product.title}</h1>
                   <ProductRating product={product} size="sm" />
@@ -213,7 +213,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Mobile Content Above Bottom Sheet */}
             <div className="md:hidden px-4 py-4 pb-20">
               {/* Clean Mobile Product Info */}
-              <div className="space-y-4">
+              <div className="space-y-4 rounded-2xl border border-black/10 bg-white p-4">
                 <div className="space-y-3 text-center">
                   {/* Category label */}
                   {translatedCategory ? (

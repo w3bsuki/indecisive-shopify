@@ -312,7 +312,8 @@
       "freeReturns": "Free returns within Bulgaria",
       "exchanges": "Easy exchanges for different sizes",
       "deliveryPartners": "Delivery Partners",
-      "calculator": "Shipping Calculator"
+      "calculator": "Shipping Calculator",
+      "officePickupNote": "* Office pickup available with 20% discount on shipping"
     },
     "details": "Details",
     "noAdditionalDetails": "No additional details available.",

@@ -16,22 +16,22 @@ export function ProductTabs({ description }: ProductTabsProps) {
   
   return (
     <Tabs defaultValue="details" className="w-full">
-      <TabsList>
-        <TabsTrigger value="details" className="flex items-center gap-2">
+      <TabsList className="mx-auto mb-4 inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white/70 px-1 py-1 shadow-sm backdrop-blur">
+        <TabsTrigger value="details" className="flex items-center gap-2 rounded-full px-4 py-2 text-sm data-[state=active]:bg-black data-[state=active]:text-white">
           <Package className="h-4 w-4" />
           {t('details')}
         </TabsTrigger>
-        <TabsTrigger value="size" className="flex items-center gap-2">
+        <TabsTrigger value="size" className="flex items-center gap-2 rounded-full px-4 py-2 text-sm data-[state=active]:bg-black data-[state=active]:text-white">
           <Ruler className="h-4 w-4" />
           {t('sizeTab')}
         </TabsTrigger>
-        <TabsTrigger value="shipping" className="flex items-center gap-2">
+        <TabsTrigger value="shipping" className="flex items-center gap-2 rounded-full px-4 py-2 text-sm data-[state=active]:bg-black data-[state=active]:text-white">
           <Truck className="h-4 w-4" />
           {t('shippingTab')}
         </TabsTrigger>
       </TabsList>
       
-      <TabsContent value="details" className="space-y-6">
+      <TabsContent value="details" className="space-y-6 pt-2">
         <div className="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed text-product-description">
           {description ? (
             <p>{description}</p>
@@ -63,25 +63,25 @@ export function ProductTabs({ description }: ProductTabsProps) {
         </div>
       </TabsContent>
       
-      <TabsContent value="size" className="space-y-6">
+      <TabsContent value="size" className="space-y-6 pt-2">
         <div className="space-y-4">
           <h4 className="font-semibold font-mono uppercase tracking-wide text-black">{t('sizeGuide')}</h4>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border-2 border-gray-200">
+          <div className="overflow-x-auto rounded-xl border border-gray-200">
+            <table className="w-full text-sm">
               <thead>
-                <tr className="border-b-2 border-gray-200 bg-gray-50">
+                <tr className="border-b border-gray-200 bg-gray-50/80">
                   <th className="text-left py-3 px-4 font-mono font-medium">{tc('size')}</th>
                   <th className="text-center py-3 px-4 font-mono font-medium">{t('size.headCircumference')}</th>
                   <th className="text-center py-3 px-4 font-mono font-medium">{t('size.fit')}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200">
+                <tr className="border-b border-gray-100">
                   <td className="py-3 px-4 font-medium">S/M</td>
                   <td className="text-center py-3 px-4">56-58 cm</td>
                   <td className="text-center py-3 px-4">{t('size.snug')}</td>
                 </tr>
-                <tr className="border-b border-gray-200">
+                <tr>
                   <td className="py-3 px-4 font-medium">L/XL</td>
                   <td className="text-center py-3 px-4">58-60 cm</td>
                   <td className="text-center py-3 px-4">{t('size.relaxed')}</td>
@@ -106,7 +106,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
         </div>
       </TabsContent>
       
-      <TabsContent value="shipping" className="space-y-6">
+      <TabsContent value="shipping" className="space-y-6 pt-2">
         <div className="space-y-4">
           <h4 className="font-semibold font-mono uppercase tracking-wide text-black">{t('shippingReturns')}</h4>
           
@@ -117,7 +117,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-3">
-                  <div className="border border-gray-200 p-3 rounded">
+                  <div className="border border-gray-200 p-3 rounded-xl bg-white">
                     <h6 className="font-semibold mb-2">Econt Express</h6>
                     <ul className="space-y-1 text-xs text-gray-700">
                       <li>• Nationwide coverage in Bulgaria</li>
@@ -126,7 +126,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
                       <li>• Real-time tracking</li>
                     </ul>
                   </div>
-                  <div className="border border-gray-200 p-3 rounded">
+                  <div className="border border-gray-200 p-3 rounded-xl bg-white">
                     <h6 className="font-semibold mb-2">Speedy</h6>
                     <ul className="space-y-1 text-xs text-gray-700">
                       <li>• Express delivery service</li>
@@ -135,9 +135,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
                       <li>• SMS notifications</li>
                     </ul>
                   </div>
-                  <p className="text-xs text-gray-600 mt-2">
-                    * Office pickup available with 20% discount on shipping
-                  </p>
+                  <p className="text-xs text-gray-600 mt-2">{t('shipping.officePickupNote')}</p>
                 </div>
               </AccordionContent>
             </AccordionItem>
