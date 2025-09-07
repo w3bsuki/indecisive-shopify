@@ -292,9 +292,9 @@ export function Navigation() {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent 
-                    align="start" 
+                    align="end" 
                     side="bottom"
-                    className="w-[calc(100vw-32px)] max-w-none p-0 ml-4 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden"
+                    className="w-[calc(100vw-24px)] max-w-none p-0 mx-3 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden"
                     sideOffset={16}
                     onCloseAutoFocus={(e) => e.preventDefault()}
                   >
