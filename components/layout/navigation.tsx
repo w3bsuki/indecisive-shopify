@@ -294,29 +294,50 @@ export function Navigation() {
                   <DropdownMenuContent 
                     align="start" 
                     side="bottom"
-                    className="w-screen max-w-none p-0 border-0 border-t border-gray-200 shadow-xl bg-white rounded-none overflow-hidden animate-none"
-                    sideOffset={0}
-                    style={{ position: 'fixed', top: '64px', left: '0', right: '0', zIndex: 999 }}
+                    className="w-[calc(100vw-32px)] max-w-none p-0 ml-4 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden"
+                    sideOffset={16}
                     onCloseAutoFocus={(e) => e.preventDefault()}
                   >
-                    <div className="p-6 max-h-[calc(100vh-64px)] overflow-y-auto">
-                      {/* Social */}
-                      <div className="mb-3">
-                        <Link
-                          href="https://www.instagram.com/indecisive_wear/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center justify-between p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
-                        >
-                          <span className="flex items-center gap-2 text-sm font-medium">
-                            <Instagram className="h-4 w-4" /> Instagram
-                          </span>
-                          <span className="text-xs text-gray-500">@indecisive_wear</span>
-                        </Link>
+                    <div className="p-4 max-h-[calc(100vh-120px)] overflow-y-auto">
+                      {/* 1. Sale/Best Sellers */}
+                      <div className="mb-4">
+                        <div className="grid grid-cols-2 gap-2">
+                          <Link
+                            href="/sale"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center justify-center p-3 bg-red-50 border border-red-100 rounded-xl hover:bg-red-100 transition-colors"
+                          >
+                            <span className="text-sm font-medium text-red-700">🔥 Sale</span>
+                          </Link>
+                          <Link
+                            href="/products?sort=best-selling"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center justify-center p-3 bg-yellow-50 border border-yellow-100 rounded-xl hover:bg-yellow-100 transition-colors"
+                          >
+                            <span className="text-sm font-medium text-yellow-700">⭐ Best Sellers</span>
+                          </Link>
+                        </div>
                       </div>
-                      {/* Social */}
-                      <div className="mb-3">
+
+                      {/* 2. Collections */}
+                      <div className="mb-4">
+                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-1">{t('collections')}</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {collections.map((item) => (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              className="p-3 text-center bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              <span className="text-sm font-mono">{item.name}</span>
+                            </Link>
+                        ))}
+                        </div>
+                      </div>
+
+                      {/* 3. Instagram */}
+                      <div className="mb-4">
                         <Link
                           href="https://www.instagram.com/indecisive_wear/"
                           target="_blank"
@@ -331,7 +352,7 @@ export function Navigation() {
                         </Link>
                       </div>
 
-                      {/* Auth CTAs */}
+                      {/* 4. Auth CTAs */}
                       <div className="flex items-center gap-2 mb-4">
                         {isAuthenticated ? (
                           <Link
@@ -360,21 +381,6 @@ export function Navigation() {
                             </Link>
                           </>
                         )}
-                      </div>
-
-                      {/* Collections (minimal) */}
-                      <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">{t('collections')}</h3>
-                      <div className="grid grid-cols-2 gap-2 mb-2">
-                        {collections.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            className="p-3 text-center bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            <span className="text-sm font-mono">{item.name}</span>
-                          </Link>
-                        ))}
                       </div>
 
                       {/* Legal/Support (compact, no-scroll) */}

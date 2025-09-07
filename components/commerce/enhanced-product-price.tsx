@@ -40,6 +40,7 @@ export function EnhancedProductPrice({
           }}
           className={cn('font-mono font-semibold', sizeClasses[size])}
           withoutTrailingZeros 
+          showDualCurrency={true}
         />
         
         {/* Original Price (crossed out) */}
@@ -54,6 +55,7 @@ export function EnhancedProductPrice({
               size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base' : 'text-sm'
             )}
             withoutTrailingZeros
+            showDualCurrency={true}
           />
         )}
         
@@ -80,6 +82,7 @@ export function EnhancedProductPrice({
               currencyCode: product.priceRange.minVariantPrice.currencyCode
             }}
             withoutTrailingZeros 
+            showDualCurrency={true}
           />
         </div>
       )}
