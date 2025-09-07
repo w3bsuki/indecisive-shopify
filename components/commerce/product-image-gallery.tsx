@@ -65,20 +65,12 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
   // Listen for variant changes to switch to the variant's image
   useEffect(() => {
     const handleVariantChange = (event: CustomEvent) => {
-      console.log('🎯 Image gallery received variant change:', event.detail)
       const variantImage = event.detail.image
-      console.log('🖼️ Variant image:', variantImage)
-      console.log('📸 Available images:', images.map(img => ({ url: img.url, alt: img.altText })))
-      
       if (variantImage?.url) {
         // Find the index of this image in the gallery
         const imageIndex = images.findIndex(img => img.url === variantImage.url)
-        console.log('📍 Found image at index:', imageIndex)
         if (imageIndex >= 0) {
           setSelectedIndex(imageIndex)
-          console.log('✅ Switched to image index:', imageIndex)
-        } else {
-          console.log('❌ Image not found in gallery')
         }
       }
     }

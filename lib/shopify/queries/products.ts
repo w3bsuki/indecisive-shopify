@@ -44,6 +44,12 @@ export const PRODUCTS_QUERY = `
                   name
                   value
                 }
+                image {
+                  url
+                  altText
+                  width
+                  height
+                }
               }
             }
           }
@@ -210,6 +216,12 @@ export const COLLECTION_PRODUCTS_QUERY = `
                   selectedOptions {
                     name
                     value
+                  }
+                  image {
+                    url
+                    altText
+                    width
+                    height
                   }
                 }
               }
