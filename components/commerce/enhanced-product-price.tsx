@@ -10,7 +10,7 @@ interface EnhancedProductPriceProps {
   className?: string
   size?: 'sm' | 'md' | 'lg'
   showSavings?: boolean
-  showBadge?: boolean
+  _showBadge?: boolean
 }
 
 export function EnhancedProductPrice({
@@ -18,7 +18,7 @@ export function EnhancedProductPrice({
   className,
   size = 'md',
   showSavings = true,
-  showBadge = true
+  _showBadge = true
 }: EnhancedProductPriceProps) {
   const saleInfo = getSaleInfo(product)
   
@@ -85,7 +85,7 @@ export function EnhancedProductPriceServer({
   className,
   size = 'md',
   showSavings = true,
-  showBadge = true
+  _showBadge = true
 }: EnhancedProductPriceProps) {
   const saleInfo = getSaleInfo(product)
   

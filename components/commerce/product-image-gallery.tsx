@@ -69,7 +69,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
       console.log('🔄 Variant changed:', { 
         variantImage: variantImage?.url,
         availableImages: images.map((img, i) => ({ index: i, url: img.url, filename: img.url.split('/').pop() })),
-        selectedColor: event.detail.variant?.selectedOptions?.find(opt => opt.name.toLowerCase().includes('color') || opt.name.toLowerCase().includes('цвят'))?.value
+        selectedColor: event.detail.variant?.selectedOptions?.find((opt: { name: string; value: string }) => opt.name.toLowerCase().includes('color') || opt.name.toLowerCase().includes('цвят'))?.value
       })
       
       if (variantImage?.url) {
@@ -100,7 +100,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
           console.log('✅ Switched to image index:', imageIndex)
         } else {
           // Fallback: If variants don't have proper images, try to map by color name
-          const selectedColor = event.detail.variant?.selectedOptions?.find(opt => 
+          const selectedColor = event.detail.variant?.selectedOptions?.find((opt: { name: string; value: string }) => 
             opt.name.toLowerCase().includes('color') || opt.name.toLowerCase().includes('цвят')
           )?.value?.toLowerCase()
           

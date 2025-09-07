@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, ShoppingBag, Heart, User, Instagram, SlidersHorizontal, Palette } from "lucide-react"
+import { Menu, X, ShoppingBag, User, Instagram, SlidersHorizontal, Palette } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MobileCartSheet } from "@/components/layout/mobile-cart-sheet"
@@ -34,11 +34,11 @@ import {
 
 export function Navigation() {
   const t = useTranslations('nav')
-  const tc = useTranslations('common')
+  const _tc = useTranslations('common')
   const tf = useTranslations('footer')
   const pathname = usePathname()
   const { totalItems, cartReady: _cartReady } = useCart()
-  const { totalItems: wishlistCount } = useWishlist()
+  const { totalItems: _wishlistCount } = useWishlist()
   const { } = useIndecisive()
   const { setCartIconRef } = useFlyToCart()
   const { isAuthenticated } = useAuth()

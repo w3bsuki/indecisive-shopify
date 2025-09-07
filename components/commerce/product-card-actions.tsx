@@ -236,7 +236,7 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           product={product}
           size="sm"
           showSavings={false}
-          showBadge={false}
+          _showBadge={false}
           className="justify-center"
         />
       </div>
