@@ -120,8 +120,8 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
   const isDisabled = !selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding
 
   return (
-    <div className="md:hidden fixed inset-x-0 bottom-0 bg-white border-t border-gray-200 shadow-2xl z-40">
-      <div className="px-4 pb-4 pt-2">
+    <div className="md:hidden fixed inset-x-0 bottom-0 bg-white border-t border-gray-200 shadow-2xl z-50">
+      <div className="px-4 pb-4 pb-safe pt-2">
         {/* Handle */}
         <div className="flex justify-center py-2">
           <div className="w-12 h-1 bg-gray-300 rounded-full" />
@@ -155,7 +155,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
                     <Money data={product.priceRange.minVariantPrice} showDualCurrency={market.countryCode === 'BG'} />
                   ) : (
                     <>
-                      <span className="text-xs text-gray-600 font-normal">from </span>
+                      <span className="text-xs text-gray-600 font-normal">{t('priceFrom')} </span>
                       <Money data={product.priceRange.minVariantPrice} showDualCurrency={market.countryCode === 'BG'} />
                     </>
                   )}
@@ -165,7 +165,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
                     "text-xs",
                     selectedVariant.availableForSale ? "text-green-600" : "text-red-600"
                   )}>
-                    {selectedVariant.availableForSale ? '• In stock' : '• Out of stock'}
+                    {selectedVariant.availableForSale ? `• ${t('available')}` : `• ${t('soldOut')}`}
                   </span>
                 )}
               </div>

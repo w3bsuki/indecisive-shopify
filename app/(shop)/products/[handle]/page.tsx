@@ -121,12 +121,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
           
         {/* Product Header - Desktop Only */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="hidden md:flex items-center justify-between">
+          <div className="hidden md:flex items-end justify-between">
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-black truncate">{product.title}</h1>
-                <span className="text-sm text-gray-600 whitespace-nowrap">Premium collection</span>
+              {/* Category label */}
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-px bg-black/20" />
+                {translatedCategory ? (
+                  <span className="text-black/70 text-xs font-medium tracking-[0.2em] uppercase">{translatedCategory}</span>
+                ) : null}
+                <div className="w-8 h-px bg-black/20" />
               </div>
+              <h1 className="text-3xl lg:text-4xl font-light text-black tracking-tight leading-[0.95] truncate">
+                {product.title}
+              </h1>
             </div>
             
             {/* Product Navigation - Previous/Next placeholder for future */}
@@ -144,9 +151,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      <div className="bg-white">
+      <div className="relative bg-white">
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50/30 to-transparent pointer-events-none" />
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto">
+        <div className="relative max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-12">
             {/* Product Images */}
             <div className="md:sticky md:top-20 md:self-start">
@@ -154,10 +163,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <Suspense fallback={
                   <div className="aspect-square bg-gray-50 animate-pulse rounded-2xl" />
                 }>
-                  <ProductImageGallery 
-                    images={images} 
-                    productTitle={product.title} 
-                  />
+                  <div className="rounded-2xl overflow-hidden border border-black/10 bg-white">
+                    <ProductImageGallery 
+                      images={images} 
+                      productTitle={product.title} 
+                    />
+                  </div>
                 </Suspense>
               </div>
             </div>
@@ -178,7 +189,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       <Money data={product.priceRange.minVariantPrice} />
                     ) : (
                       <>
-                        <span className="text-base text-gray-600 font-normal">from </span>
+                        <span className="text-base text-gray-600 font-normal">{t('priceFrom')}&nbsp;</span>
                         <Money data={product.priceRange.minVariantPrice} />
                       </>
                     )}
@@ -203,8 +214,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="md:hidden px-4 py-4 pb-20">
               {/* Clean Mobile Product Info */}
               <div className="space-y-4">
-                <div className="space-y-2 text-center">
-                  <h1 className="text-xl font-bold text-gray-900">{product.title}</h1>
+                <div className="space-y-3 text-center">
+                  {/* Category label */}
+                  {translatedCategory ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-8 h-px bg-black/20" />
+                      <span className="text-black/70 text-[10px] font-medium tracking-[0.25em] uppercase">{translatedCategory}</span>
+                      <div className="w-8 h-px bg-black/20" />
+                    </div>
+                  ) : null}
+                  <h1 className="text-2xl font-light text-black tracking-tight">{product.title}</h1>
                   <div className="flex justify-center">
                     <ProductRating product={product} size="sm" />
                   </div>

@@ -331,7 +331,7 @@ export function Navigation() {
 
                       {/* Collections (minimal) */}
                       <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">{t('collections')}</h3>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-2 mb-2">
                         {collections.map((item) => (
                           <Link
                             key={item.href}
@@ -342,6 +342,18 @@ export function Navigation() {
                             <span className="text-sm font-mono">{item.name}</span>
                           </Link>
                         ))}
+                      </div>
+
+                      {/* Legal/Support (compact, no-scroll) */}
+                      <div className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-600 leading-relaxed">
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          <Link href="/privacy" onClick={() => setIsMenuOpen(false)} className="hover:text-black">{tf('privacy')}</Link>
+                          <Link href="/terms" onClick={() => setIsMenuOpen(false)} className="hover:text-black">{tf('terms')}</Link>
+                          <Link href="/shipping" onClick={() => setIsMenuOpen(false)} className="hover:text-black">{tf('shipping')}</Link>
+                          <Link href="/returns" onClick={() => setIsMenuOpen(false)} className="hover:text-black">{tf('returns')}</Link>
+                          <Link href="/size-guide" onClick={() => setIsMenuOpen(false)} className="hover:text-black">{tf('sizeGuide')}</Link>
+                          <Link href="/contact" onClick={() => setIsMenuOpen(false)} className="hover:text-black">{tf('contact')}</Link>
+                        </div>
                       </div>
                     </div>
                   </DropdownMenuContent>
@@ -381,8 +393,8 @@ export function Navigation() {
         <div className="h-14 md:hidden" />
       </>
 
-      {/* Mobile Bottom Navigation - Hide on custom page and products page */}
-      {pathname !== '/custom' && pathname !== '/products' && (
+      {/* Mobile Bottom Navigation - Hide on custom page and all product routes */}
+      {!pathname.startsWith('/products') && pathname !== '/custom' && (
         <div 
           className={cn(
             "fixed-bottom-mobile-safe z-40 md:hidden touch-optimized",
