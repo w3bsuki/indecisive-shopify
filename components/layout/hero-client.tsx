@@ -50,19 +50,18 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   const tn = useTranslations('nav')
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
-  // Lock hero height to initial viewport height (no scroll resizing)
+  // Lock hero height to initial viewport height (ignore URL bar scroll resizes)
   React.useEffect(() => {
-    const setVH = () => {
+    const setInitialVH = () => {
       const h = window.innerHeight;
       document.documentElement.style.setProperty('--hero-vh', `${h}px`);
     };
-    setVH();
-    window.addEventListener('orientationchange', setVH);
-    window.addEventListener('resize', setVH);
-    return () => {
-      window.removeEventListener('orientationchange', setVH);
-      window.removeEventListener('resize', setVH);
-    };
+    // After first paint to capture initial toolbar state
+    requestAnimationFrame(setInitialVH);
+    // Update only on orientation changes (not on resize)
+    const onOrientation = () => setTimeout(setInitialVH, 250);
+    window.addEventListener('orientationchange', onOrientation);
+    return () => window.removeEventListener('orientationchange', onOrientation);
   }, []);
 
   React.useEffect(() => {
