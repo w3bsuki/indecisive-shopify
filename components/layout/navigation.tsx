@@ -74,7 +74,7 @@ export function Navigation() {
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight
       
-      // Hide nav when on hero section (top of page)
+      // Always show top nav on mobile
       if (currentScrollY < 100) {
         setShowBottomNav(false)
       }
@@ -274,7 +274,7 @@ export function Navigation() {
       {/* Mobile Navigation */}
       <>
         {/* Mobile Navigation Stack */}
-        <div className="fixed-mobile-safe w-full z-40 md:hidden touch-optimized">
+        <div className="fixed-mobile-safe w-full z-50 md:hidden touch-optimized">
 
           {/* Mobile Navigation Bar */}
           <nav className="bg-white shadow-sm border-b border-gray-100">
@@ -294,10 +294,12 @@ export function Navigation() {
                   <DropdownMenuContent 
                     align="start" 
                     side="bottom"
-                    className="w-[calc(100vw-16px)] max-w-none p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
-                    sideOffset={5}
+                    className="w-screen max-w-none p-0 border-0 border-t border-gray-200 shadow-xl bg-white rounded-none overflow-hidden animate-none"
+                    sideOffset={0}
+                    style={{ position: 'fixed', top: '64px', left: '0', right: '0', zIndex: 999 }}
+                    onCloseAutoFocus={(e) => e.preventDefault()}
                   >
-                    <div className="p-4">
+                    <div className="p-6 max-h-[calc(100vh-64px)] overflow-y-auto">
                       {/* Social */}
                       <div className="mb-3">
                         <Link
