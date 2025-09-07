@@ -193,7 +193,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
       {/* Main Image */}
       <div 
         ref={containerRef}
-        className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group touch-pan-y"
+        className="relative aspect-square bg-gray-50 rounded-2xl overflow-hidden group touch-pan-y shadow-sm"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onDoubleClick={handleDoubleClick}
@@ -294,16 +294,20 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
           </>
         )}
         
-        {/* Mobile swipe indicator */}
+        {/* Mobile swipe indicators - Modern dots */}
         {images.length > 1 && (
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 md:hidden">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 md:hidden">
             {images.map((_, index) => (
-              <div
+              <button
                 key={index}
+                onClick={() => setSelectedIndex(index)}
                 className={cn(
-                  "w-1.5 h-1.5 rounded-full transition-colors",
-                  selectedIndex === index ? "bg-white" : "bg-white/50"
+                  "w-2 h-2 rounded-full transition-all duration-300 touch-manipulation",
+                  selectedIndex === index 
+                    ? "bg-white shadow-lg scale-125" 
+                    : "bg-white/60 hover:bg-white/80"
                 )}
+                aria-label={`View image ${index + 1}`}
               />
             ))}
           </div>
@@ -405,59 +409,68 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
         )}
       </div>
 
-      {/* Thumbnail Grid - Hidden on mobile when more than 4 images */}
+      {/* Mobile-First Thumbnail Selection */}
       {images.length > 1 && (
-        <div className={cn(
-          "grid gap-2",
-          images.length <= 4 
-            ? "grid-cols-4 md:grid-cols-6" 
-            : "hidden md:grid md:grid-cols-6"
-        )}>
-          {images.map((image, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedIndex(index)}
-              className={cn(
-                "relative aspect-square bg-gray-100 rounded-xl overflow-hidden transition-all touch-manipulation",
-                selectedIndex === index 
-                  ? "opacity-100 shadow-2xl transform scale-[1.08]" 
-                  : "opacity-70 hover:opacity-90 hover:shadow-lg"
-              )}
-            >
-              <HydrogenImageWrapper
-                data={image}
-                alt={image.altText || `${productTitle} ${index + 1}`}
-                aspectRatio="1/1"
-                sizes="(max-width: 768px) 25vw, 10vw"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-      
-      {/* Mobile thumbnail scroll - Only for >4 images */}
-      {images.length > 4 && (
-        <div className="md:hidden -mx-4">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 snap-x snap-mandatory">
-            {images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedIndex(index)}
-                className={cn(
-                  "relative flex-none w-16 h-16 bg-gray-100 rounded-xl overflow-hidden transition-all snap-start touch-manipulation",
-                  selectedIndex === index 
-                    ? "opacity-100 shadow-2xl transform scale-[1.12]" 
-                    : "opacity-60 hover:opacity-85"
-                )}
-              >
-                <HydrogenImageWrapper
-                  data={image}
-                  alt={image.altText || `${productTitle} ${index + 1}`}
-                  aspectRatio="1/1"
-                  sizes="64px"
-                />
-              </button>
-            ))}
+        <div className="mt-4">
+          {/* Mobile: Always horizontal scroll for perfect UX */}
+          <div className="md:hidden">
+            <div className="flex gap-3 overflow-x-auto scrollbar-hide px-1 pb-2 snap-x snap-mandatory">
+              {images.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedIndex(index)}
+                  className={cn(
+                    "relative flex-none w-[72px] h-[72px] rounded-2xl overflow-hidden transition-all duration-300 snap-start touch-manipulation",
+                    selectedIndex === index 
+                      ? "ring-2 ring-black ring-offset-2 shadow-xl" 
+                      : "ring-1 ring-gray-200 hover:ring-gray-300"
+                  )}
+                >
+                  <HydrogenImageWrapper
+                    data={image}
+                    alt={image.altText || `${productTitle} ${index + 1}`}
+                    aspectRatio="1/1"
+                    sizes="72px"
+                    className="object-cover"
+                  />
+                  {/* Selected indicator dot */}
+                  {selectedIndex === index && (
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                      <div className="w-2 h-2 bg-black rounded-full shadow-lg" />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Desktop: Clean grid layout */}
+          <div className="hidden md:block">
+            <div className={cn(
+              "grid gap-3",
+              images.length <= 6 ? `grid-cols-${Math.min(images.length, 6)}` : "grid-cols-6"
+            )}>
+              {images.slice(0, 6).map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedIndex(index)}
+                  className={cn(
+                    "relative aspect-square rounded-xl overflow-hidden transition-all duration-200 touch-manipulation",
+                    selectedIndex === index 
+                      ? "ring-2 ring-black shadow-lg transform scale-105" 
+                      : "ring-1 ring-gray-200 hover:ring-gray-300 hover:shadow-md"
+                  )}
+                >
+                  <HydrogenImageWrapper
+                    data={image}
+                    alt={image.altText || `${productTitle} ${index + 1}`}
+                    aspectRatio="1/1"
+                    sizes="(max-width: 768px) 25vw, 120px"
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
