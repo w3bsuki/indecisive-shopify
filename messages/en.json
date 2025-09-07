@@ -61,7 +61,9 @@
     "belts": "Belts",
     "watches": "Watches",
     "jewelry": "Jewelry",
-    "wishlist": "Wishlist"
+    "wishlist": "Wishlist",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
   },
   "hero": {
     "customers": "customers",

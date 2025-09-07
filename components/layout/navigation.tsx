@@ -297,124 +297,51 @@ export function Navigation() {
                     className="w-[calc(100vw-24px)] sm:w-[calc(100vw-48px)] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
                     sideOffset={5}
                   >
-                    <div className="max-h-[70vh] overflow-y-auto">
-                      {/* User Actions - Top Priority */}
-                      <div className="p-4 border-b border-gray-100">
-                        <div className="flex items-center gap-2 mb-3">
-                          {/* Account/Auth */}
-                          {isAuthenticated ? (
+                    <div className="p-4">
+                      {/* Auth CTAs */}
+                      <div className="flex items-center gap-2 mb-4">
+                        {isAuthenticated ? (
+                          <Link
+                            href="/account"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 rounded-xl transition-colors"
+                          >
+                            <User className="h-4 w-4 mr-1.5" />
+                            <span className="text-sm font-medium">{t('account')}</span>
+                          </Link>
+                        ) : (
+                          <>
                             <Link
-                              href="/account"
+                              href="/account/login"
                               onClick={() => setIsMenuOpen(false)}
                               className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 rounded-xl transition-colors"
                             >
-                              <User className="h-4 w-4 mr-1.5" />
-                              <span className="text-sm font-medium">{t('account')}</span>
+                              <span className="text-sm font-medium">{t('signIn')}</span>
                             </Link>
-                          ) : (
-                            <>
-                              <Link
-                                href="/account/login"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="flex-1 h-10 flex items-center justify-center bg-black text-white hover:bg-gray-800 rounded-xl transition-colors"
-                              >
-                                <span className="text-sm font-medium">Sign In</span>
-                              </Link>
-                              <Link
-                                href="/account/register"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="flex-1 h-10 flex items-center justify-center border border-black text-black hover:bg-gray-50 rounded-xl transition-colors"
-                              >
-                                <span className="text-sm font-medium">Sign Up</span>
-                              </Link>
-                            </>
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          {/* Wishlist */}
-                          <Link
-                            href="/wishlist"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex-1 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl relative transition-colors"
-                          >
-                            <Heart className="h-4 w-4 mr-1.5" />
-                            <span className="text-sm font-medium">{tc('wishlist')}</span>
-                            {wishlistCount > 0 && (
-                              <Badge className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-red-500 text-white">
-                                {wishlistCount}
-                              </Badge>
-                            )}
-                          </Link>
-                          
-                          {/* Cart */}
-                          <Link
-                            href="/cart"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex-1 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl relative transition-colors"
-                          >
-                            <ShoppingBag className="h-4 w-4 mr-1.5" />
-                            <span className="text-sm font-medium">{t('cart')}</span>
-                            {totalItems > 0 && (
-                              <Badge className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full p-0 flex items-center justify-center text-[10px] font-semibold bg-red-500 text-white">
-                                {totalItems}
-                              </Badge>
-                            )}
-                          </Link>
-                        </div>
+                            <Link
+                              href="/account/register"
+                              onClick={() => setIsMenuOpen(false)}
+                              className="flex-1 h-10 flex items-center justify-center border border-black text-black hover:bg-gray-50 rounded-xl transition-colors"
+                            >
+                              <span className="text-sm font-medium">{t('signUp')}</span>
+                            </Link>
+                          </>
+                        )}
                       </div>
 
-                      {/* Main Navigation */}
-                      <div className="p-4">
-                        {/* Shop Categories */}
-                        <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Shop</h3>
-                        <div className="space-y-2 mb-4">
-                          {menuItems.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <span className="font-medium text-sm">{item.name}</span>
-                              {item.badge && (
-                                <Badge variant="secondary" className="text-xs">
-                                  {item.badge}
-                                </Badge>
-                              )}
-                            </Link>
-                          ))}
-                        </div>
-                        
-                        {/* Collections */}
-                        <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Collections</h3>
-                        <div className="space-y-2">
-                          {collections.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="flex items-center p-3 hover:bg-gray-50 rounded-xl transition-colors"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <span className="font-medium text-sm">{item.name}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      {/* Support Links */}
-                      <div className="border-t border-gray-100 p-4 bg-gray-50/50">
-                        <div className="flex items-center justify-center gap-4">
-                          <Link href="/support" onClick={() => setIsMenuOpen(false)} className="text-xs text-gray-600 hover:text-black transition-colors">
-                            {tf('customerService')}
+                      {/* Collections (minimal) */}
+                      <h3 className="font-mono text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">{t('collections')}</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {collections.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className="p-3 text-center bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <span className="text-sm font-mono">{item.name}</span>
                           </Link>
-                          <Link href="/size-guide" onClick={() => setIsMenuOpen(false)} className="text-xs text-gray-600 hover:text-black transition-colors">
-                            {tf('sizeGuide')}
-                          </Link>
-                          <Link href="/shipping" onClick={() => setIsMenuOpen(false)} className="text-xs text-gray-600 hover:text-black transition-colors">
-                            {tf('shipping')}
-                          </Link>
-                        </div>
+                        ))}
                       </div>
                     </div>
                   </DropdownMenuContent>
