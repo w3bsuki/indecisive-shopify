@@ -12,6 +12,7 @@ interface HeroSlide {
   name: string;
   collectionHandle: string;
   ctaLink: string;
+  isSale?: boolean;
 }
 
 interface HeroClientProps {
@@ -27,6 +28,7 @@ interface HeroClientProps {
     exploreHats: string;
     exploreBags: string;
     exploreCropTops: string;
+    shopSale: string;
     hatsSubtitle: string;
     bagsSubtitle: string;
     cropTopsSubtitle: string;
@@ -104,6 +106,15 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
             />
             {/* Subtle Gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+            
+            {/* Sale Badge for sale slide */}
+            {slide.isSale && (
+              <div className="absolute top-6 right-6 z-10">
+                <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold tracking-wider shadow-lg">
+                  {isBg ? 'РАЗПРОДАЖБА' : 'SALE'}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Content Container */}
@@ -125,7 +136,9 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
                 
                 {/* Collection Title - FIXED HEIGHT AND POSITION */}
                 <div className="mb-4">
-                  <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[0.85]">
+                  <h1 className={`text-5xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[0.85] ${
+                    slide.isSale ? 'text-red-400 font-black' : ''
+                  }`}>
                     {slide.name}
                   </h1>
                 </div>
@@ -135,9 +148,10 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
                   <button className="group relative flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-medium text-sm tracking-wide overflow-hidden">
                     <div className="absolute inset-0 bg-white transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
                     <span className="relative whitespace-nowrap tracking-normal transition-colors duration-300 group-hover:text-black">
-                      {index === 0 && translations.exploreHats}
-                      {index === 1 && translations.exploreBags}
-                      {index === 2 && translations.exploreCropTops}
+                      {index === 0 && translations.shopSale}
+                      {index === 1 && translations.exploreHats}
+                      {index === 2 && translations.exploreBags}
+                      {index === 3 && translations.exploreCropTops}
                     </span>
                     <div className="relative w-4 h-4 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-all duration-300 group-hover:border-black">
                       <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

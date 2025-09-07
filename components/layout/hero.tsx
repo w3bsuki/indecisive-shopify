@@ -6,8 +6,16 @@ export async function Hero() {
   const tb = await getTranslations('brand');
   const tn = await getTranslations('nav');
   
-  // Hardcoded collection slides with new model images
+  // Hardcoded collection slides with new model images + SALE slide
   const slides = [
+    {
+      id: 'sale-collection',
+      image: '/indecisive-stars/star11.webp',
+      name: 'SALE',
+      collectionHandle: 'sale',
+      ctaLink: '/sale',
+      isSale: true
+    },
     {
       id: 'hats-collection',
       image: '/indecisive-stars/star18.webp',
@@ -43,6 +51,7 @@ export async function Hero() {
     exploreHats: t('exploreHats'),
     exploreBags: t('exploreBags'),
     exploreCropTops: t('exploreCropTops'),
+    shopSale: t('shopSale'),
     hatsSubtitle: t('hatsSubtitle'),
     bagsSubtitle: t('bagsSubtitle'),
     cropTopsSubtitle: t('cropTopsSubtitle'),
