@@ -111,8 +111,8 @@ export async function ProductCardMinimalServer({
         {/* Modern Product Title */}
         <h3 className={cn(
           "text-base sm:text-lg font-semibold text-gray-900 text-center leading-snug mb-2 transition-colors duration-300",
-          variant === 'borderless' && "mb-1",
-          size === 'mobile' ? "text-sm" : ""
+          variant === 'borderless' && "text-sm sm:text-base font-medium mb-1",
+          size === 'mobile' && variant !== 'borderless' ? "text-sm" : ""
         )}>
           <Link 
             href={`/products/${product.handle}`} 
@@ -126,7 +126,7 @@ export async function ProductCardMinimalServer({
         <div className={cn(
           "text-center mt-auto",
           variant === 'default' && "bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl py-2.5 px-3",
-          variant === 'borderless' && "py-1"
+          variant === 'borderless' && "py-0.5"
         )} style={{ fontFamily: 'var(--font-mono)' }}>
           {isOnSale ? (
             <SalePriceServer 
@@ -135,12 +135,12 @@ export async function ProductCardMinimalServer({
               showDualCurrency={market.countryCode === 'BG'}
               marketCountryCode={market.countryCode}
               className={cn(
-                "font-bold tracking-tight text-black",
-                size === 'mobile' ? "text-sm" : "text-base"
+                "font-semibold tracking-tight text-black",
+                variant === 'borderless' ? "text-xs sm:text-sm" : (size === 'mobile' ? "text-sm" : "text-base")
               )}
               compareClassName={cn(
                 "line-through text-gray-400 font-normal",
-                size === 'mobile' ? "text-xs" : "text-sm"
+                variant === 'borderless' ? "text-[11px] sm:text-xs" : (size === 'mobile' ? "text-xs" : "text-sm")
               )}
             />
           ) : (
@@ -149,8 +149,8 @@ export async function ProductCardMinimalServer({
               showDualCurrency={market.countryCode === 'BG'}
               marketCountryCode={market.countryCode}
               className={cn(
-                "font-bold tracking-tight text-black",
-                size === 'mobile' ? "text-sm" : "text-base"
+                "font-semibold tracking-tight text-black",
+                variant === 'borderless' ? "text-xs sm:text-sm" : (size === 'mobile' ? "text-sm" : "text-base")
               )}
             />
           )}

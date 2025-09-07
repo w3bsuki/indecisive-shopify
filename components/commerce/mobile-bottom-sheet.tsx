@@ -120,11 +120,11 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
   const isDisabled = !selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding
 
   return (
-    <div className="md:hidden fixed inset-x-0 bottom-0 bg-white border-t border-gray-200 shadow-2xl z-50">
+    <div className="md:hidden fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border border-white/30 bg-white/80 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
       <div className="px-4 pb-4 pb-safe pt-2">
         {/* Handle */}
         <div className="flex justify-center py-2">
-          <div className="w-12 h-1 bg-gray-300 rounded-full" />
+          <div className="w-12 h-1 bg-white/60 rounded-full" />
         </div>
         
         {/* Content Container */}

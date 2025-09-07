@@ -254,7 +254,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {relatedProducts.length > 0 && (
         <div className="border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-2 md:py-3">
-            <h2 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{t('youMayAlsoLike')}</h2>
+            <h2 className="text-base md:text-lg font-medium mb-2 text-gray-900 tracking-tight">{t('youMayAlsoLike')}</h2>
             
             {/* Mobile: Horizontal scroll */}
             <div className="md:hidden -mx-4">
