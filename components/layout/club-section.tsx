@@ -5,7 +5,7 @@ import Link from 'next/link'
 export async function ClubSection() {
   const t = await getTranslations('newsletter')
   const tb = await getTranslations('brand')
-  const locale = await getLocale()
+  const _locale = await getLocale()
   
   return (
     <>

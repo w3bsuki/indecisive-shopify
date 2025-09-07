@@ -79,7 +79,7 @@ export function ProductPageLayout({
       )}
       
       {/* Category Pills + Toolbar (sticky) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 px-safe">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-8 px-safe">
         <div className="sticky top-14 md:top-0 z-20 bg-transparent backdrop-blur-0 shadow-none">
           <div className="pt-4">
             <CollectionsPillsServer variant={variant} currentCategory={currentCategory} />
@@ -103,7 +103,7 @@ export function ProductPageLayout({
         {/* Products Grid */}
         {products.length > 0 ? (
           <>
-            <div className={`grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 sm:gap-8 lg:gap-10 mt-2 ${gridClassName}`}>
+            <div className={`grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:gap-6 lg:gap-8 mt-2 ${gridClassName}`}>
               {products.map((product, index) => (
                 product && typeof product !== 'string' ? (
                   <ProductCardServer 

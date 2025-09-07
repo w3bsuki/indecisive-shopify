@@ -15,27 +15,26 @@ export function MobileRefineBar({ totalCount }: MobileRefineBarProps) {
 
   return (
     <>
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur border-t border-gray-200 rounded-t-2xl shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-2">
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-30 glass-strong border-t border-gray-200 rounded-t-radius-lg shadow-xl">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3 sheet-safe-bottom">
           <button
             onClick={() => setShowFilterDrawer(true)}
-            className="flex-1 h-10 inline-flex items-center justify-center gap-2 rounded-full border border-gray-100 bg-white text-sm hover:bg-gray-50"
+            className="flex-1 h-11 inline-flex items-center justify-center gap-2 rounded-radius-lg border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-colors duration-fast touch-manipulation"
             aria-label="Open filters"
           >
             <Filter className="w-4 h-4" />
             <span>Filters</span>
           </button>
-          <div className="px-2 text-xs text-gray-500 select-none">{totalCount} items</div>
+          <div className="px-3 text-xs text-gray-600 select-none font-medium">{totalCount} items</div>
           <button
             onClick={() => setShowSortDrawer(true)}
-            className="flex-1 h-10 inline-flex items-center justify-center gap-2 rounded-full border border-gray-100 bg-white text-sm hover:bg-gray-50"
+            className="flex-1 h-11 inline-flex items-center justify-center gap-2 rounded-radius-lg border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-colors duration-fast touch-manipulation"
             aria-label="Open sort"
           >
             <ArrowUpDown className="w-4 h-4" />
             <span>Sort</span>
           </button>
         </div>
-        <div className="h-safe-area-inset-bottom" />
       </div>
       
       {/* Filter Drawer */}

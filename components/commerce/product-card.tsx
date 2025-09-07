@@ -25,9 +25,10 @@ import {
 interface ProductCardProps {
   product: ShopifyProduct
   priority?: boolean
+  variant?: 'default' | 'borderless'
 }
 
-export function ProductCard({ product, priority = false }: ProductCardProps) {
+export function ProductCard({ product, priority = false, variant = 'default' }: ProductCardProps) {
   const { addItem, cartReady } = useCart()
   const { toggleItem, isInWishlist } = useWishlist()
   const isMobile = useIsMobile()
@@ -147,7 +148,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
   return (
     <>
-      <div className="group relative bg-white transition-all duration-200">
+      <div className={cn(
+        "group relative transition-all duration-200",
+        variant === 'default' && "bg-white rounded-radius-lg",
+        variant === 'borderless' && "bg-transparent"
+      )}>
         {/* Enhanced Sale Badge with Percentage */}
         {isOnSale && saleInfo.discountPercentage && (
           <div className="absolute top-3 left-3 z-10 bg-red-600 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
@@ -208,10 +213,17 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         )}
 
         {/* Product Information */}
-        <div className="p-4">
+        <div className={cn(
+          variant === 'default' && "p-4",
+          variant === 'borderless' && "px-0 py-2"
+        )}>
           <div className="space-y-4">
             {/* Product Title */}
-            <h3 className="text-sm font-medium text-gray-900 text-center md:text-left">
+            <h3 className={cn(
+              "text-gray-900 text-center md:text-left",
+              variant === 'default' && "text-sm font-medium",
+              variant === 'borderless' && "text-sm font-medium"
+            )}>
               <Link 
                 href={`/products/${product.handle}`} 
                 className="hover:text-black transition-colors duration-200 block truncate"

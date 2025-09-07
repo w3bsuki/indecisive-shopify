@@ -28,7 +28,20 @@ const RadioGroupItem = React.forwardRef<
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        "aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        // Visual radio size
+        "relative aspect-square h-5 w-5 rounded-full border transition-all duration-fast",
+        // Touch target enhancement - creates larger clickable area
+        "after:absolute after:-inset-2.5 after:content-['']",
+        // Border and states
+        "border-gray-300 hover:border-gray-400 data-[state=checked]:border-primary",
+        // Focus styles
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        // Disabled state
+        "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-300",
+        // Colors
+        "text-primary ring-offset-background",
+        // Touch optimization
+        "touch-manipulation",
         className
       )}
       {...props}

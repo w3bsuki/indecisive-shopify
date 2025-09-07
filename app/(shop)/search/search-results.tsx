@@ -92,34 +92,34 @@ export function SearchResults({ query, sort, category }: SearchResultsProps) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:gap-6">
         {products.map((product) => (
           <Link
             key={product.id}
             href={`/products/${product.handle}`}
-            className="group"
+            className="group touch-manipulation"
           >
-            <div className="aspect-square relative overflow-hidden border-2 border-black/10 group-hover:border-black/30 transition-colors">
+            <div className="aspect-square relative overflow-hidden rounded-radius-lg bg-gray-50 border border-gray-200 group-hover:border-gray-300 group-hover:shadow-md transition-all duration-fast">
               <Image
                 src={product.featuredImage?.url || '/placeholder.svg'}
                 alt={product.featuredImage?.altText || product.title}
                 fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-slow"
+                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
               />
             </div>
-            <div className="mt-3 space-y-1">
-              <h3 className="font-mono font-bold text-sm line-clamp-1">
+            <div className="mt-3 space-y-1 px-1">
+              <h3 className="text-product-name line-clamp-2 group-hover:text-black transition-colors duration-fast">
                 {product.title}
               </h3>
-              <p className="font-mono text-sm">
+              <p className="text-price">
                 {formatPrice(
                   product.priceRange.minVariantPrice.amount,
                   product.priceRange.minVariantPrice.currencyCode
                 )}
               </p>
               {product.variants?.edges?.[0]?.node && (
-                <p className="text-xs text-black/60">
+                <p className="text-caption text-gray-500">
                   {product.variants.edges[0].node.availableForSale ? 'In Stock' : 'Out of Stock'}
                 </p>
               )}

@@ -67,10 +67,13 @@
   --font-feature-settings-bulgarian: "loclBGR" 1, "kern" 1, "liga" 1;
   --font-feature-settings-default: "kern" 1, "liga" 1;
   
-  /* Radius */
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
+  /* Radius - Mobile-first rounded system */
+  --radius-none: 0;
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
+  --radius-xl: 1rem; /* 16px */
+  --radius-2xl: 1.5rem; /* 24px */
   --radius-full: 9999px;
   
   /* Button Sizes - Ensuring 44px minimum touch targets */
@@ -138,6 +141,51 @@
   --button-danger-hover: hsl(0 84.2% 50.2%);
   --button-accent-gradient: linear-gradient(135deg, var(--color-gray-950) 0%, var(--color-gray-800) 100%);
   
+  /* Spacing System - 4px baseline */
+  --space-0: 0;
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-7: 1.75rem; /* 28px */
+  --space-8: 2rem; /* 32px */
+  --space-9: 2.25rem; /* 36px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-14: 3.5rem; /* 56px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
+  
+  /* Enhanced Shadow System */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.06);
+  
+  /* Mobile-first Typography Scale */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
 }
 
 /* CSS Custom Properties for Safe Area */
@@ -161,12 +209,22 @@
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Mobile-first font size: 14px base */
+    font-size: 87.5%; /* 14px */
+  }
+  
+  /* Desktop font size */
+  @media (min-width: 768px) {
+    html {
+      font-size: 100%; /* 16px */
+    }
   }
   
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-family-sans);
     font-feature-settings: var(--font-feature-settings-default);
+    line-height: var(--leading-normal);
     /* Disable blue highlight on tap in WebKit */
     -webkit-tap-highlight-color: transparent;
     /* Force smooth scrolling */
@@ -338,23 +396,232 @@
   }
 }
 
+/* Glassmorphism Utilities */
+@layer utilities {
+  /* Glass Effects */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  /* Glass with colored tints */
+  .glass-blue {
+    background: rgba(59, 130, 246, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  
+  .glass-gray {
+    background: rgba(107, 114, 128, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+  }
+  
+  /* Enhanced Safe Area Padding */
+  .p-safe-x {
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+  }
+  
+  .p-safe-y {
+    padding-top: max(var(--space-4), env(safe-area-inset-top));
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+  
+  .p-safe-top {
+    padding-top: max(var(--space-4), env(safe-area-inset-top));
+  }
+  
+  .p-safe-bottom {
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+  
+  .p-safe-left {
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+  }
+  
+  .p-safe-right {
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+  }
+  
+  /* Mobile-optimized containers with safe areas */
+  .container-safe {
+    @apply container mx-auto;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  /* Bottom sheet specific safe area */
+  .sheet-safe-bottom {
+    padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+  }
+  
+  /* Fixed positioning with safe areas */
+  .fixed-safe-top {
+    position: fixed;
+    top: env(safe-area-inset-top);
+    left: env(safe-area-inset-left);
+    right: env(safe-area-inset-right);
+  }
+  
+  .fixed-safe-bottom {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom);
+    left: env(safe-area-inset-left);
+    right: env(safe-area-inset-right);
+  }
+  
+  /* Sticky positioning with safe areas */
+  .sticky-safe-top {
+    position: sticky;
+    top: env(safe-area-inset-top);
+  }
+  
+  .sticky-safe-bottom {
+    position: sticky;
+    bottom: env(safe-area-inset-bottom);
+  }
+}
+
 /* Typography Classes */
 @layer utilities {
+  /* Mobile-first Typography Scale */
+  .text-h1 {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  @media (min-width: 768px) {
+    .text-h1 {
+      font-size: var(--text-4xl);
+    }
+  }
+  
+  .text-h2 {
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  
+  @media (min-width: 768px) {
+    .text-h2 {
+      font-size: var(--text-3xl);
+    }
+  }
+  
+  .text-h3 {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+  }
+  
+  @media (min-width: 768px) {
+    .text-h3 {
+      font-size: var(--text-2xl);
+    }
+  }
+  
+  .text-h4 {
+    font-size: var(--text-base);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+  }
+  
+  @media (min-width: 768px) {
+    .text-h4 {
+      font-size: var(--text-xl);
+    }
+  }
+  
+  .text-body {
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+  
+  .text-body-sm {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+  
+  .text-caption {
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+  }
+  
+  /* Product-specific typography */
   .text-price {
     font-family: var(--font-family-mono);
     font-weight: 700;
     letter-spacing: -0.02em;
-    @apply text-base md:text-lg;
+    font-size: var(--text-base);
+  }
+  
+  @media (min-width: 768px) {
+    .text-price {
+      font-size: var(--text-lg);
+    }
+  }
+  
+  .text-price-lg {
+    font-family: var(--font-family-mono);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-size: var(--text-xl);
+  }
+  
+  @media (min-width: 768px) {
+    .text-price-lg {
+      font-size: var(--text-2xl);
+    }
   }
   
   .text-product-name {
     font-family: var(--font-family-sans);
-    @apply text-sm md:text-base font-medium leading-snug;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: var(--leading-snug);
+  }
+  
+  @media (min-width: 768px) {
+    .text-product-name {
+      font-size: var(--text-base);
+    }
   }
   
   .text-product-brand {
     font-family: var(--font-family-sans);
-    @apply text-xs uppercase tracking-wider text-muted-foreground;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
   }
   
   /* Drawer/Sheet Typography Standards */

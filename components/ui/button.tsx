@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
   // Base styles - sharp, sophisticated, touch-optimized
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 select-none",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 select-none touch-manipulation rounded-radius-md",
   {
     variants: {
       variant: {
@@ -17,7 +17,7 @@ const buttonVariants = cva(
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive border border-transparent",
         
         // Outline - Subtle bordered button
-        outline: "border border-gray-300 bg-transparent text-text-primary hover:bg-gray-900 hover:text-text-inverse hover:border-gray-900 active:bg-gray-800 active:border-gray-800",
+        outline: "border border-gray-300 bg-transparent text-text-primary hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200 active:border-gray-500 focus-visible:border-gray-950",
         
         // Secondary - Subtle gray button
         secondary: "bg-gray-100 text-text-primary hover:bg-gray-200 active:bg-gray-300 border border-transparent",
@@ -31,7 +31,7 @@ const buttonVariants = cva(
         // Sharp variants for e-commerce
         "primary-sharp": "bg-gray-950 text-text-inverse hover:bg-gray-800 active:bg-gray-900 border border-gray-950 hover:border-gray-800 active:border-gray-900",
         
-        "outline-sharp": "border border-gray-400 bg-transparent text-gray-950 hover:bg-gray-900 hover:text-text-inverse hover:border-gray-900 active:bg-gray-800 active:border-gray-800",
+        "outline-sharp": "border border-gray-400 bg-transparent text-gray-950 hover:bg-gray-100 hover:border-gray-500 active:bg-gray-200 active:border-gray-600 rounded-none",
         
         "white-sharp": "bg-gray-0 text-gray-950 hover:bg-gray-50 active:bg-gray-100 border border-gray-300 hover:border-gray-400",
         
@@ -114,6 +114,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     fullWidth = false,
     children,
     disabled,
+    type = "button",
     ...props 
   }, ref) => {
     const Comp = asChild ? Slot : "button"
@@ -198,10 +199,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           })
         )}
         ref={ref}
+        type={type}
         disabled={isDisabled}
         aria-disabled={isDisabled}
         aria-busy={loading}
+        aria-label={loading && !loadingText ? "Loading" : undefined}
         data-loading={loading}
+        data-variant={variant}
+        data-size={size}
         {...props}
       >
         {renderContent()}
