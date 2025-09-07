@@ -102,6 +102,13 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
     
     // Emit variant change event for mobile footer AND image gallery
     if (typeof window !== 'undefined') {
+      console.log('🎯 Form dispatching variant:', {
+        variantId: selectedVariantFromOptions?.id,
+        selectedColor,
+        selectedSize,
+        variantImage: selectedVariantFromOptions?.image?.url,
+        variantOptions: selectedVariantFromOptions?.selectedOptions
+      })
       window.dispatchEvent(new CustomEvent('variant-changed', {
         detail: { 
           variant: selectedVariantFromOptions,

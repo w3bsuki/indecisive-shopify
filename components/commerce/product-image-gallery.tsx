@@ -68,7 +68,7 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
       const variantImage = event.detail.image
       console.log('🔄 Variant changed:', { 
         variantImage: variantImage?.url,
-        availableImages: images.map((img, i) => ({ index: i, url: img.url }))
+        availableImages: images.map((img, i) => ({ index: i, url: img.url, filename: img.url.split('/').pop() }))
       })
       
       if (variantImage?.url) {
