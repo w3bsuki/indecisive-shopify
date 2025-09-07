@@ -66,18 +66,44 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
   useEffect(() => {
     const handleVariantChange = (event: CustomEvent) => {
       const variantImage = event.detail.image
+      console.log('🔄 Variant changed:', { 
+        variantImage: variantImage?.url,
+        availableImages: images.map((img, i) => ({ index: i, url: img.url }))
+      })
+      
       if (variantImage?.url) {
-        // Find the index of this image in the gallery
-        const imageIndex = images.findIndex(img => img.url === variantImage.url)
-        if (imageIndex >= 0) {
+        // Try exact URL match first
+        let imageIndex = images.findIndex(img => img.url === variantImage.url)
+        
+        // If no exact match, try without query parameters
+        if (imageIndex === -1) {
+          const cleanVariantUrl = variantImage.url.split('?')[0]
+          imageIndex = images.findIndex(img => img.url.split('?')[0] === cleanVariantUrl)
+        }
+        
+        // If still no match, try by filename
+        if (imageIndex === -1) {
+          const variantFilename = variantImage.url.split('/').pop()?.split('?')[0]
+          if (variantFilename) {
+            imageIndex = images.findIndex(img => {
+              const filename = img.url.split('/').pop()?.split('?')[0]
+              return filename === variantFilename
+            })
+          }
+        }
+        
+        console.log('📍 Image match result:', { imageIndex, selectedIndex })
+        
+        if (imageIndex >= 0 && imageIndex !== selectedIndex) {
           setSelectedIndex(imageIndex)
+          console.log('✅ Switched to image index:', imageIndex)
         }
       }
     }
 
     window.addEventListener('variant-changed', handleVariantChange as EventListener)
     return () => window.removeEventListener('variant-changed', handleVariantChange as EventListener)
-  }, [images])
+  }, [images, selectedIndex])
 
   const handlePrevious = useCallback(() => {
     setSelectedIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
@@ -414,16 +440,16 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
         <div className="mt-4">
           {/* Mobile: Always horizontal scroll for perfect UX */}
           <div className="md:hidden">
-            <div className="flex gap-3 overflow-x-auto scrollbar-hide px-1 pb-2 snap-x snap-mandatory">
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide px-2 pb-2 snap-x snap-mandatory">
               {images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedIndex(index)}
                   className={cn(
-                    "relative flex-none w-[72px] h-[72px] rounded-2xl overflow-hidden transition-all duration-300 snap-start touch-manipulation",
+                    "relative flex-none w-[68px] h-[68px] rounded-xl overflow-hidden transition-all duration-200 snap-start touch-manipulation border-2",
                     selectedIndex === index 
-                      ? "ring-2 ring-black ring-offset-2 shadow-xl" 
-                      : "ring-1 ring-gray-200 hover:ring-gray-300"
+                      ? "border-black shadow-lg" 
+                      : "border-gray-200 hover:border-gray-400"
                   )}
                 >
                   <HydrogenImageWrapper
@@ -433,12 +459,6 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                     sizes="72px"
                     className="object-cover"
                   />
-                  {/* Selected indicator dot */}
-                  {selectedIndex === index && (
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">
-                      <div className="w-2 h-2 bg-black rounded-full shadow-lg" />
-                    </div>
-                  )}
                 </button>
               ))}
             </div>
@@ -455,10 +475,10 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                   key={index}
                   onClick={() => setSelectedIndex(index)}
                   className={cn(
-                    "relative aspect-square rounded-xl overflow-hidden transition-all duration-200 touch-manipulation",
+                    "relative aspect-square rounded-xl overflow-hidden transition-all duration-200 touch-manipulation border-2",
                     selectedIndex === index 
-                      ? "ring-2 ring-black shadow-lg transform scale-105" 
-                      : "ring-1 ring-gray-200 hover:ring-gray-300 hover:shadow-md"
+                      ? "border-black shadow-lg transform scale-105" 
+                      : "border-gray-200 hover:border-gray-400 hover:shadow-md"
                   )}
                 >
                   <HydrogenImageWrapper
