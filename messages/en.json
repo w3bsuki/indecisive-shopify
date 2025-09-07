@@ -193,6 +193,14 @@
       "vipCommunity": "VIP community"
     }
   },
+  "legal": {
+    "privacyIntro": "We respect your privacy. Our full privacy policy will be published here.",
+    "termsIntro": "These are our terms of service. The full document will be published here.",
+    "shippingIntro": "Shipping information, timelines, and rates will be detailed here.",
+    "returnsIntro": "Our returns and exchanges policy will be outlined here.",
+    "contactIntro": "Reach out anytime at support@indecisivewear.com.",
+    "sizeGuideIntro": "Size charts and fit guidance will be provided here."
+  },
   "products": {
     "title": "ALL PRODUCTS",
     "subtitle": "Browse our complete collection",
