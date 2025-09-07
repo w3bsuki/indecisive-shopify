@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import type { ShopifyProduct, ShopifyProductVariant, ShopifyImage } from '@/lib/shopify/types'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 import { ProductCardActions } from './product-card-actions'
 import { HydrogenImageServer } from './hydrogen-image'
 import { extractNodes } from '@/lib/shopify/flatten-connection'
 import { getProductColors, getColorFromName } from '@/lib/utils/product'
-import { getSaleInfo } from '@/lib/utils/sale-pricing'
+import { getSaleInfo, getSaleBadgeText } from '@/lib/utils/sale-pricing'
 
 interface ProductCardServerProps {
   product: ShopifyProduct
@@ -14,6 +14,7 @@ interface ProductCardServerProps {
 
 export async function ProductCardServer({ product, priority: _priority = false }: ProductCardServerProps) {
   const t = await getTranslations('products')
+  const locale = await getLocale()
   
   if (!product || typeof product === 'string') return null
   
@@ -50,10 +51,10 @@ export async function ProductCardServer({ product, priority: _priority = false }
     <div className="group relative bg-white rounded-2xl transition-all duration-300 overflow-hidden">
       {/* Image Section */}
       <div className="relative aspect-square bg-gray-50">
-        {/* Enhanced Sale Badge with Percentage */}
+        {/* Sale Price Badge */}
         {isOnSale && (
-          <div className="absolute top-3 left-3 z-20 bg-red-600 text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg">
-            {saleInfo.discountPercentage ? `-${saleInfo.discountPercentage}%` : 'SALE'}
+          <div className="absolute top-3 left-3 z-20 bg-red-600 text-white px-3 py-1.5 text-xs font-bold rounded-full shadow-lg">
+            {getSaleBadgeText(product, locale) || 'SALE'}
           </div>
         )}
 

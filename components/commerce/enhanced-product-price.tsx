@@ -32,19 +32,8 @@ export function EnhancedProductPrice({
     <div className={cn('flex flex-col gap-1', className)}>
       {/* Main Price Display */}
       <div className="flex items-center justify-center gap-2 flex-wrap">
-        {/* Current Price */}
-        <Money 
-          data={{
-            amount: saleInfo.currentPrice.toString(),
-            currencyCode: product.priceRange.minVariantPrice.currencyCode
-          }}
-          className={cn('font-mono font-semibold', sizeClasses[size])}
-          withoutTrailingZeros 
-          showDualCurrency={true}
-        />
-        
-        {/* Original Price (crossed out) */}
-        {saleInfo.isOnSale && saleInfo.originalPrice && (
+        {/* Show only original price with strikethrough for sale items, or current price for non-sale */}
+        {saleInfo.isOnSale && saleInfo.originalPrice ? (
           <Money 
             data={{
               amount: saleInfo.originalPrice.toString(),
@@ -57,16 +46,16 @@ export function EnhancedProductPrice({
             withoutTrailingZeros
             showDualCurrency={true}
           />
-        )}
-        
-        {/* Sale Badge */}
-        {showBadge && saleInfo.isOnSale && saleInfo.discountPercentage && (
-          <span className={cn(
-            'px-2.5 py-1 bg-red-600 text-white font-semibold rounded-full shadow-sm',
-            size === 'sm' ? 'text-xs' : 'text-xs'
-          )}>
-            -{saleInfo.discountPercentage}%
-          </span>
+        ) : (
+          <Money 
+            data={{
+              amount: saleInfo.currentPrice.toString(),
+              currencyCode: product.priceRange.minVariantPrice.currencyCode
+            }}
+            className={cn('font-mono font-semibold', sizeClasses[size])}
+            withoutTrailingZeros 
+            showDualCurrency={true}
+          />
         )}
       </div>
       
@@ -130,16 +119,6 @@ export function EnhancedProductPriceServer({
             size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base' : 'text-sm'
           )}>
             {formatPrice(saleInfo.originalPrice, product.priceRange.minVariantPrice.currencyCode)}
-          </span>
-        )}
-        
-        {/* Sale Badge */}
-        {showBadge && saleInfo.isOnSale && saleInfo.discountPercentage && (
-          <span className={cn(
-            'px-2.5 py-1 bg-red-600 text-white font-semibold rounded-full shadow-sm',
-            size === 'sm' ? 'text-xs' : 'text-xs'
-          )}>
-            -{saleInfo.discountPercentage}%
           </span>
         )}
       </div>

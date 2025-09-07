@@ -115,9 +115,32 @@ export function isProductOnSale(product: ShopifyProduct): boolean {
 }
 
 /**
- * Get formatted sale badge text
+ * Get formatted sale badge text showing actual price
  */
-export function getSaleBadgeText(product: ShopifyProduct): string | null {
+export function getSaleBadgeText(product: ShopifyProduct, locale = 'bg'): string | null {
+  const saleInfo = getSaleInfo(product)
+  if (!saleInfo.isOnSale) return null
+  
+  // Format price based on locale without EUR conversion
+  const currencyCode = product.priceRange.minVariantPrice.currencyCode
+  const price = saleInfo.currentPrice
+  
+  if (locale === 'bg') {
+    // For Bulgarian: show as "20лв" 
+    return `${Math.round(price)}лв`
+  } else if (locale === 'en-GB' || locale === 'gb') {
+    // For UK: show as "£20"
+    return currencyCode === 'GBP' ? `£${Math.round(price)}` : `${Math.round(price)} ${currencyCode}`
+  } else {
+    // Default: show with currency code
+    return `${Math.round(price)} ${currencyCode}`
+  }
+}
+
+/**
+ * Get formatted sale badge text (legacy percentage version)
+ */
+export function getSalePercentageBadge(product: ShopifyProduct): string | null {
   const saleInfo = getSaleInfo(product)
   if (!saleInfo.isOnSale || !saleInfo.discountPercentage) return null
   
