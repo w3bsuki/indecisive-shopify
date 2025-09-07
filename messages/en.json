@@ -185,6 +185,13 @@
     "emailPlaceholder": "Your email",
     "joinButton": "JOIN",
     "ctaBrowseCollection": "BROWSE COLLECTION",
+    "stayMinimal": "STAY MINIMAL",
+    "stayBold": "STAY BOLD",
+    "minimalDesc": "Embrace simplicity and timeless style",
+    "boldDesc": "Make confident choices and express yourself",
+    "subscribe": "SUBSCRIBE",
+    "enterEmail": "Enter email",
+    "joinNewsletter": "JOIN OUR NEWSLETTER",
     "beIndecisive": "BE INDECISIVE",
     "minimalDesign": "MINIMAL DESIGN",
     "benefits": {
@@ -498,17 +505,6 @@
       "follow": "Follow Us"
     },
     "copyright": "© {year} Indecisive Wear. All rights reserved."
-  },
-  "newsletter": {
-    "stayMinimal": "STAY MINIMAL",
-    "stayBold": "STAY BOLD",
-    "minimalDesc": "Embrace simplicity and timeless style",
-    "boldDesc": "Make confident choices and express yourself",
-    "subscribe": "SUBSCRIBE",
-    "enterEmail": "Enter email",
-    "joinNewsletter": "JOIN OUR NEWSLETTER",
-    "beIndecisive": "BE INDECISIVE",
-    "minimalDesign": "MINIMAL DESIGN"
   },
   "messages": {
     "addedToCart": "Added to cart",

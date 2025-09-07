@@ -185,6 +185,13 @@
     "emailPlaceholder": "Твоят имейл",
     "joinButton": "ВЛЕЗ",
     "ctaBrowseCollection": "РАЗГЛЕДАЙ КОЛЕКЦИЯТА",
+    "stayMinimal": "ОСТАНИ МИНИМАЛЕН",
+    "stayBold": "ОСТАНИ СМЕЛ",
+    "minimalDesc": "Прегърни простотата и вечния стил",
+    "boldDesc": "Прави уверени избори и изрази себе си",
+    "subscribe": "АБОНИРАНЕ",
+    "enterEmail": "Въведи имейл",
+    "joinNewsletter": "ПРИСЪЕДИНИ СЕ КЪМ НАШИЯ БЮЛЕТИН",
     "beIndecisive": "БЪДИ НЕРЕШИТЕЛЕН",
     "minimalDesign": "МИНИМАЛЕН ДИЗАЙН",
     "benefits": {
@@ -538,18 +545,6 @@
       "hats": "ШАПКИ",
       "bags": "ЧАНТИ"
     }
-  },
-  "newsletter": {
-    "stayMinimal": "ОСТАНИ МИНИМАЛЕН",
-    "stayBold": "ОСТАНИ СМЕЛ",
-    "minimalDesc": "Прегърни простотата и вечния стил",
-    "boldDesc": "Прави уверени избори и изрази себе си",
-    "subscribe": "АБОНИРАНЕ",
-    "enterEmail": "Въведи имейл",
-    "joinNewsletter": "ПРИСЪЕДИНИ СЕ КЪМ НАШИЯ БЮЛЕТИН",
-    "joinTheClub": "ПРИСЪЕДИНИ СЕ КЪМ НЕРЕШИТЕЛНИЯ КЛУБ",
-    "beIndecisive": "БЪДИ НЕРЕШИТЕЛЕН",
-    "minimalDesign": "МИНИМАЛЕН ДИЗАЙН"
   },
   "messages": {
     "addedToCart": "Добавено в кошницата",
