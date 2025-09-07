@@ -315,6 +315,7 @@
       "calculator": "Shipping Calculator"
     },
     "details": "Details",
+    "noAdditionalDetails": "No additional details available.",
     "sizeTab": "Size",
     "shippingTab": "Shipping",
     "careInstructions": "Care Instructions",

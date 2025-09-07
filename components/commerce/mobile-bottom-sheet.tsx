@@ -229,13 +229,16 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
             <Button
               onClick={handleAddToCart}
               disabled={isDisabled}
-              className="flex-1 bg-black text-white h-11 rounded-xl font-medium text-sm hover:bg-gray-800 transition-colors"
+              aria-disabled={isDisabled}
+              className="flex-1 bg-black text-white h-11 rounded-xl font-medium text-sm hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isAdding ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
                   <span>{t('addingToCart')}</span>
                 </>
+              ) : selectedVariant && !selectedVariant.availableForSale ? (
+                <span>{t('soldOut')}</span>
               ) : (
                 <>
                   <ShoppingCart className="w-4 h-4 mr-2" />

@@ -36,7 +36,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
           {description ? (
             <p>{description}</p>
           ) : (
-            <p className="text-gray-500">No additional details available.</p>
+            <p className="text-gray-500">{t('noAdditionalDetails')}</p>
           )}
         </div>
         

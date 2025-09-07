@@ -329,6 +329,7 @@
       "calculator": "Калкулатор за доставка"
     },
     "details": "Детайли",
+    "noAdditionalDetails": "Няма допълнителни детайли.",
     "sizeTab": "Размер",
     "shippingTab": "Доставки"
   },
