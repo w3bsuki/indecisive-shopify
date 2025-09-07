@@ -86,10 +86,11 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
     })
     if (newVariant) {
       setSelectedVariant(newVariant)
-      // Emit event for main form sync
-      window.dispatchEvent(new CustomEvent('variant-changed', {
-        detail: { variant: newVariant }
-      }))
+      // Emit event for main form sync AND image gallery update
+      const event = new CustomEvent('variant-changed', {
+        detail: { variant: newVariant, image: newVariant.image }
+      })
+      window.dispatchEvent(event)
     }
   }
   
@@ -120,7 +121,7 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
   const isDisabled = !selectedVariant || !selectedVariant.availableForSale || !cartReady || isAdding
 
   return (
-    <div className="md:hidden fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border border-white/30 bg-white/80 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
+    <div className="md:hidden fixed inset-x-0 bottom-0 z-50 rounded-t-2xl bg-white/90 backdrop-blur-xl shadow-[0_-10px_30px_rgba(0,0,0,0.1)] border-t border-gray-200/50">
       <div className="px-4 pb-4 pb-safe pt-2">
         {/* Handle */}
         <div className="flex justify-center py-2">
@@ -131,16 +132,22 @@ export function MobileBottomSheet({ product }: MobileBottomSheetProps) {
         <div className="space-y-2.5">
           {/* Product Info Row */}
           <div className="flex items-center gap-3">
-            {/* Product Image */}
+            {/* Product Image - Show variant image if available */}
             <div className="w-14 h-14 flex-shrink-0">
               <div className="w-full h-full bg-gray-100 rounded-xl overflow-hidden">
-                {product.featuredImage && (
-                  <img 
-                    src={product.featuredImage.url} 
-                    alt={product.title}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+                {(() => {
+                  const variantImage = selectedVariant?.image?.url
+                  const fallbackImage = product.featuredImage?.url
+                  const imageUrl = variantImage || fallbackImage
+                  
+                  return imageUrl ? (
+                    <img 
+                      src={imageUrl} 
+                      alt={selectedVariant?.image?.altText || product.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : null
+                })()}
               </div>
             </div>
             

@@ -100,10 +100,13 @@ export function AddToCartForm({ product, showProductInfo: _showProductInfo = tru
   useEffect(() => {
     setSelectedVariant(selectedVariantFromOptions)
     
-    // Emit variant change event for mobile footer
+    // Emit variant change event for mobile footer AND image gallery
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('variant-changed', {
-        detail: { variant: selectedVariantFromOptions }
+        detail: { 
+          variant: selectedVariantFromOptions,
+          image: selectedVariantFromOptions?.image
+        }
       }))
     }
   }, [selectedVariantFromOptions])

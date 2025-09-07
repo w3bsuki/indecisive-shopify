@@ -62,6 +62,23 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
     setIsZoomed(false)
   }, [selectedIndex])
 
+  // Listen for variant changes to switch to the variant's image
+  useEffect(() => {
+    const handleVariantChange = (event: CustomEvent) => {
+      const variantImage = event.detail.image
+      if (variantImage?.url) {
+        // Find the index of this image in the gallery
+        const imageIndex = images.findIndex(img => img.url === variantImage.url)
+        if (imageIndex >= 0) {
+          setSelectedIndex(imageIndex)
+        }
+      }
+    }
+
+    window.addEventListener('variant-changed', handleVariantChange as EventListener)
+    return () => window.removeEventListener('variant-changed', handleVariantChange as EventListener)
+  }, [images])
+
   const handlePrevious = useCallback(() => {
     setSelectedIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
   }, [images.length])
@@ -401,10 +418,10 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
               key={index}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                "relative aspect-square bg-gray-100 rounded overflow-hidden border-2 transition-all touch-manipulation",
+                "relative aspect-square bg-gray-100 rounded-xl overflow-hidden transition-all touch-manipulation",
                 selectedIndex === index 
-                  ? "border-gray-900 shadow-lg ring-2 ring-gray-900 ring-offset-2" 
-                  : "border-transparent hover:border-gray-300"
+                  ? "ring-2 ring-black shadow-xl transform scale-[1.05]" 
+                  : "ring-1 ring-gray-200 hover:ring-gray-300 hover:shadow-sm"
               )}
             >
               <HydrogenImageWrapper
@@ -427,10 +444,10 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
                 key={index}
                 onClick={() => setSelectedIndex(index)}
                 className={cn(
-                  "relative flex-none w-16 h-16 bg-gray-100 rounded overflow-hidden border-2 transition-all snap-start touch-manipulation",
+                  "relative flex-none w-16 h-16 bg-gray-100 rounded-xl overflow-hidden transition-all snap-start touch-manipulation",
                   selectedIndex === index 
-                    ? "border-gray-900 ring-2 ring-gray-900 ring-offset-1" 
-                    : "border-transparent"
+                    ? "ring-2 ring-black shadow-lg transform scale-[1.08]" 
+                    : "ring-1 ring-gray-200"
                 )}
               >
                 <HydrogenImageWrapper
