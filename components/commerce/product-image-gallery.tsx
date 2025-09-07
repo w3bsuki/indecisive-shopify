@@ -68,7 +68,8 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
       const variantImage = event.detail.image
       console.log('🔄 Variant changed:', { 
         variantImage: variantImage?.url,
-        availableImages: images.map((img, i) => ({ index: i, url: img.url, filename: img.url.split('/').pop() }))
+        availableImages: images.map((img, i) => ({ index: i, url: img.url, filename: img.url.split('/').pop() })),
+        selectedColor: event.detail.variant?.selectedOptions?.find(opt => opt.name.toLowerCase().includes('color') || opt.name.toLowerCase().includes('цвят'))?.value
       })
       
       if (variantImage?.url) {
@@ -97,6 +98,29 @@ export function ProductImageGallery({ images, productTitle }: ProductImageGaller
         if (imageIndex >= 0 && imageIndex !== selectedIndex) {
           setSelectedIndex(imageIndex)
           console.log('✅ Switched to image index:', imageIndex)
+        } else {
+          // Fallback: If variants don't have proper images, try to map by color name
+          const selectedColor = event.detail.variant?.selectedOptions?.find(opt => 
+            opt.name.toLowerCase().includes('color') || opt.name.toLowerCase().includes('цвят')
+          )?.value?.toLowerCase()
+          
+          if (selectedColor && images.length > 1) {
+            let fallbackIndex = -1
+            
+            // Try to match color names to image positions based on common patterns
+            if (selectedColor.includes('червен') || selectedColor.includes('red')) {
+              fallbackIndex = images.findIndex((_, i) => i === 0) // First image
+            } else if (selectedColor.includes('лилав') || selectedColor.includes('purple') || selectedColor.includes('violet')) {
+              fallbackIndex = images.findIndex((_, i) => i === 1) // Second image
+            } else if (selectedColor.includes('син') || selectedColor.includes('blue')) {
+              fallbackIndex = images.findIndex((_, i) => i === 2) // Third image if exists
+            }
+            
+            if (fallbackIndex >= 0 && fallbackIndex !== selectedIndex) {
+              setSelectedIndex(fallbackIndex)
+              console.log('🎨 Fallback color mapping - switched to image index:', fallbackIndex, 'for color:', selectedColor)
+            }
+          }
         }
       }
     }
