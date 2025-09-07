@@ -237,6 +237,19 @@
     .max-h-screen-under-nav { max-height: calc(100svh - var(--mobile-nav-height)); }
   }
 
+  /* Hero-specific: lock height to initial viewport (no scroll resize) */
+  .h-hero-under-nav {
+    height: calc(var(--hero-vh, 100svh) - var(--mobile-nav-height));
+    position: relative;
+    contain: layout paint;
+  }
+  @media (min-width: 768px) {
+    .h-hero-under-nav { height: 100dvh; }
+    @supports (height: 100svh) {
+      .h-hero-under-nav { height: 100svh; }
+    }
+  }
+
   /* Removed hero-frame-offset; using padding on section instead */
   /* Safe Area Utilities */
   .pt-safe {

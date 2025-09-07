@@ -50,6 +50,21 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   const tn = useTranslations('nav')
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
+  // Lock hero height to initial viewport height (no scroll resizing)
+  React.useEffect(() => {
+    const setVH = () => {
+      const h = window.innerHeight;
+      document.documentElement.style.setProperty('--hero-vh', `${h}px`);
+    };
+    setVH();
+    window.addEventListener('orientationchange', setVH);
+    window.addEventListener('resize', setVH);
+    return () => {
+      window.removeEventListener('orientationchange', setVH);
+      window.removeEventListener('resize', setVH);
+    };
+  }, []);
+
   React.useEffect(() => {
     if (slides.length <= 1) return;
     
@@ -60,7 +75,7 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
   }, [slides.length]);
 
   return (
-    <section className="relative w-full pt-mobile-nav h-screen-under-nav md:pt-0 md:h-screen-stable overflow-hidden bg-neutral-50">
+    <section className="relative w-full pt-mobile-nav md:pt-0 h-hero-under-nav overflow-hidden bg-neutral-50">
       {/* Frame Border */}
       <div className="absolute inset-4 md:inset-8 border border-black/10 pointer-events-none z-30 rounded-2xl" />
       
