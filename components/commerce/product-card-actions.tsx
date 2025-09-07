@@ -182,18 +182,17 @@ export function ProductCardActions({ product, price: _price, sizes, variant = 'd
           onClick={() => handleAddToCart()}
           disabled={isLoading || !isAvailable || !cartReady}
           className={cn(
-            "w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200",
-            "bg-white border border-gray-100 shadow-sm",
+            "w-10 h-10 flex items-center justify-center transition-all duration-200",
             isLoading || !isAvailable || !cartReady
               ? "text-gray-300 cursor-not-allowed"
-              : "text-gray-600 hover:bg-black hover:text-white hover:border-black"
+              : "text-gray-600 hover:text-black hover:scale-110"
           )}
           aria-label={translations.addToCart}
         >
           {isLoading ? (
             <div className="w-3 h-3 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
           ) : (
-            <ShoppingBag className="w-3.5 h-3.5" />
+            <ShoppingBag className="w-6 h-6" />
           )}
         </button>
 
