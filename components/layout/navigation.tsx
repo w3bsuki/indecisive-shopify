@@ -280,11 +280,11 @@ export function Navigation() {
           <nav className="bg-white shadow-sm border-b border-gray-100">
             <div className="px-3 h-14 flex items-center justify-between">
               {/* Left Side: Menu + Logo */}
-              <div className="flex items-center gap-0">
+              <div className="flex items-center -space-x-2">
                 {/* Menu on LEFT */}
                 <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <DropdownMenuTrigger asChild>
-                    <button className="relative min-h-[44px] min-w-[44px] flex items-center justify-center -ml-1">
+                    <button className="relative min-h-[44px] min-w-[44px] flex items-center justify-center">
                       {isMenuOpen ? 
                         <X className="h-5 w-5 stroke-[1.5]" /> : 
                         <Menu className="h-5 w-5 stroke-[1.5]" />
@@ -294,7 +294,7 @@ export function Navigation() {
                   <DropdownMenuContent 
                     align="start" 
                     side="bottom"
-                    className="w-[calc(100vw-24px)] sm:w-[calc(100vw-48px)] max-w-md p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
+                    className="w-[calc(100vw-16px)] max-w-none p-0 mt-1 border border-gray-200 shadow-xl bg-white rounded-xl overflow-hidden animate-none"
                     sideOffset={5}
                   >
                     <div className="p-4">
@@ -360,15 +360,15 @@ export function Navigation() {
                 </DropdownMenu>
                 
                 {/* Logo */}
-                <div className="flex items-center gap-1">
-                  <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90">
+                <div className="flex items-center -space-x-3">
+                  <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90 mt-0.5">
                     <span className="text-lg font-bold font-mono tracking-wide text-black">INDECISIVE</span>
                   </Link>
                   <Link 
                     href="https://www.instagram.com/indecisive_wear/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1 hover:bg-gray-100 rounded "
+                    className="min-h-[44px] min-w-[44px] flex items-center justify-center hover:bg-gray-100 rounded mt-0.5"
                   >
                     <Instagram className="w-4 h-4 text-gray-600" />
                   </Link>
