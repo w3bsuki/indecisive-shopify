@@ -54,7 +54,7 @@ export async function ClubSection() {
                   <input
                     type="email"
                     placeholder={t('emailPlaceholder')}
-                    className="w-full px-6 py-4 pr-32 bg-white/60 backdrop-blur-sm border border-white/30 rounded-full text-black placeholder-black/60 focus:outline-none focus:bg-white/80 focus:border-black/20 transition-all duration-300"
+                    className="w-full px-6 py-4 pr-32 bg-white/60 backdrop-blur-sm border border-gray-300 rounded-full text-black placeholder-black/60 focus:outline-none focus:ring-2 focus:ring-black/20 focus:ring-offset-1 focus:bg-white/80 focus:border-black transition-all duration-300"
                     required
                   />
                   <button

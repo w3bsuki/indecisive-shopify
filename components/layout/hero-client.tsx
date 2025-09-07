@@ -132,13 +132,14 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
 
                 {/* CTA Button - FIXED */}
                 <Link href={slide.ctaLink}>
-                  <button className="group flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-medium text-sm tracking-wide hover:bg-white hover:text-black transition-all duration-300">
-                    <span className="whitespace-nowrap tracking-normal">
+                  <button className="group relative flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-medium text-sm tracking-wide overflow-hidden">
+                    <div className="absolute inset-0 bg-white transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
+                    <span className="relative whitespace-nowrap tracking-normal transition-colors duration-300 group-hover:text-black">
                       {index === 0 && translations.exploreHats}
                       {index === 1 && translations.exploreBags}
                       {index === 2 && translations.exploreCropTops}
                     </span>
-                    <div className="w-4 h-4 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                    <div className="relative w-4 h-4 rounded-full border border-current flex items-center justify-center group-hover:rotate-45 transition-all duration-300 group-hover:border-black">
                       <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                       </svg>
@@ -148,45 +149,47 @@ export function HeroClient({ slides, translations }: HeroClientProps) {
               </div>
 
               {/* Right Side - Desktop Navigation */}
-              <div className="hidden md:flex flex-col items-end gap-6">
-                {/* Slide Counter */}
-                <div className="text-white/60 text-sm font-light">
-                  <span className="text-white font-medium">0{currentSlide + 1}</span>
-                  <span className="mx-2">/</span>
-                  <span>0{slides.length}</span>
-                </div>
+              <div className="hidden md:block absolute bottom-16 md:bottom-20 right-8 md:right-16 lg:right-20">
+                <div className="flex flex-col items-end gap-6">
+                  {/* Slide Counter */}
+                  <div className="text-white/60 text-sm font-light">
+                    <span className="text-white font-medium">0{currentSlide + 1}</span>
+                    <span className="mx-2">/</span>
+                    <span>0{slides.length}</span>
+                  </div>
 
-                {/* Slide Indicators */}
-                <div className="flex flex-col gap-3">
-                  {slides.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`h-12 w-px transition-all duration-300 ${
-                        index === currentSlide 
-                          ? 'bg-white' 
-                          : 'bg-white/30 hover:bg-white/60'
-                      }`}
-                      aria-label={`Go to ${slides[index].name} collection`}
-                    />
-                  ))}
-                </div>
+                  {/* Slide Indicators */}
+                  <div className="flex flex-col gap-3">
+                    {slides.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`h-12 w-px transition-all duration-300 ${
+                          index === currentSlide 
+                            ? 'bg-white' 
+                            : 'bg-white/30 hover:bg-white/60'
+                        }`}
+                        aria-label={`Go to ${slides[index].name} collection`}
+                      />
+                    ))}
+                  </div>
 
-                {/* Collection Names */}
-                <div className="flex flex-col gap-2 text-right">
-                  {slides.map((slide, index) => (
-                    <button
-                      key={slide.id}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`text-sm font-light transition-all duration-300 ${
-                        index === currentSlide 
-                          ? 'text-white' 
-                          : 'text-white/40 hover:text-white/70'
-                      }`}
-                    >
-                      {slide.name}
-                    </button>
-                  ))}
+                  {/* Collection Names */}
+                  <div className="flex flex-col gap-2 text-right">
+                    {slides.map((slide, index) => (
+                      <button
+                        key={slide.id}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`text-sm font-light transition-all duration-300 ${
+                          index === currentSlide 
+                            ? 'text-white' 
+                            : 'text-white/40 hover:text-white/70'
+                        }`}
+                      >
+                        {slide.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
